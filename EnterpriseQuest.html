@@ -1,0 +1,1555 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="theme-color" content="#0b1235">
+<title>Enterprise Quest: Architect's Dungeon</title>
+<style>
+/* ============================================================
+   Enterprise Quest: Architect's Dungeon
+   v0.0.1-Zachman — single-file HTML5 bordspel
+   iCt Horse — PUBLIC AGPL-3.0
+   ============================================================ */
+
+:root{
+  --c-bg:#070c22;
+  --c-bg2:#0b1235;
+  --c-panel:#131a44;
+  --c-panel2:#1a2359;
+  --c-border:#2b3572;
+  --c-gold:#f5c542;
+  --c-gold2:#d4a017;
+  --c-purple:#8a5cf5;
+  --c-purple2:#6c3fd9;
+  --c-silver:#cfd6e6;
+  --c-silver2:#8f97ad;
+  --c-red:#e5484d;
+  --c-green:#3dd68c;
+  --c-cyan:#43d5f5;
+  --c-text:#f0f3ff;
+  --c-text-dim:#a4acc9;
+  --font:'Segoe UI',Roboto,'Helvetica Neue',Arial,sans-serif;
+  --radius:10px;
+  --shadow:0 4px 20px rgba(0,0,0,.5);
+  --shadow-glow:0 0 20px rgba(245,197,66,.4);
+}
+
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%;overflow:hidden;background:var(--c-bg);color:var(--c-text);font-family:var(--font);-webkit-font-smoothing:antialiased}
+body{
+  background:
+    radial-gradient(circle at 20% 20%,rgba(138,92,245,.15),transparent 40%),
+    radial-gradient(circle at 80% 70%,rgba(245,197,66,.10),transparent 45%),
+    linear-gradient(135deg,var(--c-bg) 0%,var(--c-bg2) 100%);
+}
+button{font-family:inherit;cursor:pointer;border:none;outline:none;background:none;color:inherit}
+button:disabled{opacity:.4;cursor:not-allowed}
+
+/* ---------- Screens ---------- */
+#app{position:relative;width:100vw;height:100vh;overflow:hidden}
+.screen{position:absolute;inset:0;display:none;padding:20px;overflow-y:auto;overflow-x:hidden}
+.screen.active{display:flex;flex-direction:column}
+.screen-center{align-items:center;justify-content:center;text-align:center}
+
+/* ---------- Typography ---------- */
+h1{font-size:clamp(28px,4vw,52px);font-weight:800;letter-spacing:.02em;
+   background:linear-gradient(180deg,var(--c-gold) 0%,var(--c-gold2) 100%);
+   -webkit-background-clip:text;background-clip:text;color:transparent;
+   text-shadow:0 2px 30px rgba(245,197,66,.4);margin-bottom:6px}
+h2{font-size:clamp(18px,2.4vw,28px);color:var(--c-gold);margin-bottom:10px;font-weight:700}
+h3{font-size:16px;color:var(--c-purple);margin-bottom:6px;font-weight:600}
+.sub{color:var(--c-silver2);font-size:14px;margin-bottom:20px}
+
+/* ---------- Buttons ---------- */
+.btn{
+  display:inline-flex;align-items:center;justify-content:center;gap:8px;
+  padding:12px 26px;border-radius:var(--radius);
+  background:linear-gradient(180deg,var(--c-panel2) 0%,var(--c-panel) 100%);
+  border:1px solid var(--c-border);color:var(--c-text);
+  font-size:16px;font-weight:600;letter-spacing:.02em;
+  transition:all .2s;min-width:200px;
+}
+.btn:hover:not(:disabled){transform:translateY(-2px);border-color:var(--c-gold);box-shadow:var(--shadow-glow)}
+.btn:active:not(:disabled){transform:translateY(0)}
+.btn-gold{background:linear-gradient(180deg,var(--c-gold) 0%,var(--c-gold2) 100%);color:#1a1200;border-color:var(--c-gold2);text-shadow:0 1px 0 rgba(255,255,255,.3)}
+.btn-purple{background:linear-gradient(180deg,var(--c-purple) 0%,var(--c-purple2) 100%);border-color:var(--c-purple2)}
+.btn-danger{background:linear-gradient(180deg,#c0292c 0%,#8a1e21 100%);border-color:#8a1e21}
+.btn-small{padding:6px 12px;font-size:13px;min-width:auto}
+.btn-icon{padding:8px 12px;min-width:auto;font-size:18px}
+
+/* ---------- Start screen ---------- */
+#screen-start .title-wrap{margin-top:auto}
+#screen-start .menu{display:flex;flex-direction:column;gap:14px;margin:40px 0 auto;width:min(320px,90vw)}
+.subtitle{color:var(--c-purple);font-size:clamp(14px,1.6vw,20px);font-style:italic;margin-bottom:30px;letter-spacing:.08em;text-transform:uppercase}
+.version-tag{position:absolute;bottom:12px;right:16px;color:var(--c-silver2);font-size:11px;font-family:monospace}
+.credit-line{position:absolute;bottom:12px;left:16px;color:var(--c-silver2);font-size:11px}
+
+/* ---------- Class select ---------- */
+.class-grid{
+  display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));
+  gap:16px;max-width:1000px;margin:0 auto;width:100%;padding:20px;
+}
+.class-card{
+  background:linear-gradient(160deg,var(--c-panel) 0%,var(--c-bg2) 100%);
+  border:2px solid var(--c-border);border-radius:var(--radius);
+  padding:18px;cursor:pointer;transition:all .25s;position:relative;
+  display:flex;flex-direction:column;gap:8px;text-align:left;
+}
+.class-card:hover{transform:translateY(-4px);border-color:var(--c-gold);box-shadow:var(--shadow-glow)}
+.class-card.selected{border-color:var(--c-gold);background:linear-gradient(160deg,var(--c-panel2) 0%,var(--c-panel) 100%)}
+.class-card .icon{font-size:38px;line-height:1}
+.class-card .name{font-size:18px;font-weight:700;color:var(--c-gold)}
+.class-card .role{font-size:12px;color:var(--c-silver2);text-transform:uppercase;letter-spacing:.05em}
+.class-card .desc{font-size:13px;color:var(--c-text-dim);flex:1}
+.class-card .special{font-size:12px;color:var(--c-purple);border-top:1px solid var(--c-border);padding-top:6px;margin-top:4px}
+.class-card .attrs{display:grid;grid-template-columns:1fr 1fr;gap:2px 10px;font-size:11px;color:var(--c-silver);font-family:monospace}
+.class-card .attrs b{color:var(--c-gold)}
+
+/* ---------- Game layout ---------- */
+#screen-game{padding:0;overflow:hidden}
+.game-root{display:grid;grid-template-columns:280px 1fr 260px;grid-template-rows:1fr;gap:8px;height:100%;padding:8px}
+.dashboard,.side-panel{background:linear-gradient(180deg,var(--c-panel) 0%,var(--c-bg2) 100%);border:1px solid var(--c-border);border-radius:var(--radius);padding:12px;overflow-y:auto}
+.board-wrap{background:linear-gradient(180deg,var(--c-bg2) 0%,var(--c-bg) 100%);border:1px solid var(--c-border);border-radius:var(--radius);position:relative;overflow:hidden;display:flex;flex-direction:column}
+
+/* ---------- Dashboard ---------- */
+.dash-h{color:var(--c-gold);font-size:13px;text-transform:uppercase;letter-spacing:.08em;margin:12px 0 6px;border-bottom:1px solid var(--c-border);padding-bottom:4px}
+.dash-h:first-child{margin-top:0}
+.stat-row{display:flex;justify-content:space-between;align-items:center;font-size:13px;padding:3px 0}
+.stat-row .label{color:var(--c-silver2)}
+.stat-row .val{color:var(--c-text);font-weight:600;font-family:monospace}
+.bar{height:8px;background:var(--c-bg);border-radius:4px;overflow:hidden;margin:2px 0 4px;border:1px solid var(--c-border)}
+.bar-fill{height:100%;transition:width .4s ease}
+.bar-hp{background:linear-gradient(90deg,var(--c-red) 0%,#f5836b 100%)}
+.bar-xp{background:linear-gradient(90deg,var(--c-purple) 0%,var(--c-cyan) 100%)}
+.bar-chaos{background:linear-gradient(90deg,var(--c-gold) 0%,var(--c-red) 100%)}
+.chaos-meter{margin-top:8px}
+.chip-list{display:flex;flex-wrap:wrap;gap:4px}
+.chip{background:var(--c-bg2);border:1px solid var(--c-border);border-radius:14px;padding:3px 8px;font-size:11px;color:var(--c-silver)}
+.chip.artifact{border-color:var(--c-gold);color:var(--c-gold)}
+.chip.achievement{border-color:var(--c-purple);color:var(--c-purple)}
+
+/* ---------- Board ---------- */
+#board{
+  flex:1;position:relative;overflow:auto;padding:16px;
+  display:grid;grid-template-columns:repeat(8,minmax(70px,1fr));gap:4px;
+  background:
+    radial-gradient(circle at 30% 30%,rgba(138,92,245,.08),transparent 40%),
+    radial-gradient(circle at 70% 70%,rgba(245,197,66,.06),transparent 40%);
+}
+.tile{
+  position:relative;background:var(--c-panel);border:1px solid var(--c-border);
+  border-radius:6px;padding:6px 4px;font-size:10px;line-height:1.15;text-align:center;
+  cursor:pointer;transition:transform .15s,box-shadow .15s;min-height:60px;
+  display:flex;flex-direction:column;justify-content:center;align-items:center;overflow:hidden;
+}
+.tile .tile-num{position:absolute;top:2px;left:4px;font-family:monospace;font-size:9px;color:var(--c-silver2)}
+.tile .tile-icon{font-size:20px;line-height:1;margin-bottom:2px}
+.tile .tile-label{color:var(--c-text);font-weight:600}
+.tile:hover{transform:scale(1.04);z-index:3;box-shadow:var(--shadow)}
+.tile.type-start{background:linear-gradient(160deg,var(--c-purple) 0%,var(--c-purple2) 100%);border-color:var(--c-purple)}
+.tile.type-boss{background:linear-gradient(160deg,#5b1a1e 0%,#8a1e21 100%);border-color:var(--c-red)}
+.tile.type-final{background:linear-gradient(160deg,#8a1e21 0%,#c0292c 100%);border-color:var(--c-gold);animation:finalPulse 2s infinite ease-in-out}
+.tile.type-quest{background:linear-gradient(160deg,#153a5f 0%,#0e2544 100%)}
+.tile.type-chaos{background:linear-gradient(160deg,#4a1a55 0%,#2d0f34 100%)}
+.tile.type-event{background:linear-gradient(160deg,#134f3d 0%,#0a2e23 100%)}
+.tile.type-combat{background:linear-gradient(160deg,#5a2b12 0%,#341808 100%)}
+.tile.type-artifact{background:linear-gradient(160deg,var(--c-gold2) 0%,#664c00 100%);border-color:var(--c-gold)}
+.tile.type-portal{background:linear-gradient(160deg,var(--c-cyan) 0%,#0f6b8a 100%);border-color:var(--c-cyan)}
+.tile.type-rest{background:linear-gradient(160deg,#1e4a2f 0%,#0f2e1e 100%)}
+.tile.player-here{outline:3px solid var(--c-gold);z-index:4;box-shadow:var(--shadow-glow)}
+.pawn{position:absolute;top:-6px;right:-6px;width:22px;height:22px;background:var(--c-gold);color:#1a1200;border-radius:50%;font-size:12px;display:flex;align-items:center;justify-content:center;font-weight:800;border:2px solid #fff;box-shadow:0 0 10px rgba(245,197,66,.9);animation:pawnFloat 1.4s infinite ease-in-out}
+@keyframes finalPulse{0%,100%{box-shadow:0 0 0 rgba(245,197,66,0)}50%{box-shadow:0 0 30px rgba(245,197,66,.7)}}
+@keyframes pawnFloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-3px)}}
+
+/* ---------- Side panel ---------- */
+#log{display:flex;flex-direction:column-reverse;gap:4px;font-size:12px;max-height:100%}
+.log-item{padding:6px 8px;background:var(--c-bg2);border-radius:6px;border-left:3px solid var(--c-border);animation:logIn .3s ease}
+.log-item.info{border-left-color:var(--c-cyan)}
+.log-item.good{border-left-color:var(--c-green)}
+.log-item.bad{border-left-color:var(--c-red)}
+.log-item.magic{border-left-color:var(--c-purple)}
+.log-item.legendary{border-left-color:var(--c-gold);background:linear-gradient(90deg,rgba(245,197,66,.15),var(--c-bg2))}
+@keyframes logIn{from{opacity:0;transform:translateX(-6px)}to{opacity:1;transform:none}}
+
+/* ---------- Dice ---------- */
+#dice-panel{padding:10px;border-top:1px solid var(--c-border);display:flex;align-items:center;gap:12px;background:var(--c-panel);flex-wrap:wrap}
+.dice{
+  width:60px;height:60px;border-radius:12px;
+  background:linear-gradient(135deg,var(--c-gold) 0%,var(--c-gold2) 100%);
+  color:#1a1200;display:flex;align-items:center;justify-content:center;
+  font-size:26px;font-weight:800;font-family:monospace;
+  box-shadow:0 4px 12px rgba(0,0,0,.5),inset 0 -3px 0 rgba(0,0,0,.2);
+  transition:transform .1s;cursor:pointer;user-select:none;flex-shrink:0;
+}
+.dice:hover{transform:scale(1.05)}
+.dice.rolling{animation:diceRoll .6s ease-in-out}
+@keyframes diceRoll{0%{transform:rotate(0) scale(1)}25%{transform:rotate(180deg) scale(1.1)}50%{transform:rotate(360deg) scale(.95)}75%{transform:rotate(540deg) scale(1.05)}100%{transform:rotate(720deg) scale(1)}}
+.dice-info{flex:1;font-size:13px;color:var(--c-silver);min-width:120px}
+.dice-info .last{color:var(--c-gold);font-weight:700}
+
+/* ---------- Modal ---------- */
+.modal-back{position:absolute;inset:0;background:rgba(4,7,20,.85);backdrop-filter:blur(4px);z-index:100;display:none;align-items:center;justify-content:center;padding:20px;animation:fadeIn .2s}
+.modal-back.active{display:flex}
+.modal{background:linear-gradient(180deg,var(--c-panel2) 0%,var(--c-panel) 100%);border:2px solid var(--c-gold);border-radius:var(--radius);padding:24px;max-width:560px;width:100%;max-height:90vh;overflow-y:auto;box-shadow:var(--shadow),var(--shadow-glow);animation:modalIn .3s ease}
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+@keyframes modalIn{from{opacity:0;transform:scale(.9) translateY(20px)}to{opacity:1;transform:none}}
+.modal h2{color:var(--c-gold);text-align:center}
+.modal .cardface{background:linear-gradient(160deg,var(--c-bg2) 0%,var(--c-bg) 100%);border:1px solid var(--c-border);border-radius:var(--radius);padding:14px;margin:12px 0;min-height:80px}
+.modal .cardface .desc{color:var(--c-text-dim);font-size:14px;line-height:1.4;margin:8px 0}
+.modal .effects{display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:6px;font-size:12px;font-family:monospace}
+.effect-pos{color:var(--c-green)}
+.effect-neg{color:var(--c-red)}
+.effect-neutral{color:var(--c-silver)}
+.modal .actions{display:flex;flex-wrap:wrap;gap:10px;justify-content:center;margin-top:16px}
+.modal .choice{background:var(--c-bg2);border:1px solid var(--c-border);border-radius:var(--radius);padding:10px 12px;text-align:left;transition:all .15s;cursor:pointer;color:var(--c-text)}
+.modal .choice:hover{border-color:var(--c-gold);background:var(--c-panel)}
+.modal .choice-title{font-weight:600;color:var(--c-gold);font-size:14px;margin-bottom:2px}
+.modal .choice-effect{font-size:11px;color:var(--c-silver2);font-family:monospace}
+
+/* ---------- Combat ---------- */
+.combat-arena{display:grid;grid-template-columns:1fr 60px 1fr;gap:12px;align-items:center;margin:12px 0}
+.combatant{text-align:center;padding:10px;background:var(--c-bg2);border-radius:var(--radius);border:1px solid var(--c-border)}
+.combatant.player-side{border-color:var(--c-cyan)}
+.combatant.enemy-side{border-color:var(--c-red)}
+.combatant .cname{font-weight:700;color:var(--c-gold);font-size:14px}
+.combatant .cicon{font-size:40px;line-height:1;margin:6px 0}
+.combatant .cstats{font-size:12px;font-family:monospace;color:var(--c-silver)}
+.vs{font-size:22px;font-weight:800;color:var(--c-red);text-align:center;text-shadow:0 0 10px var(--c-red)}
+.combat-log{max-height:150px;overflow-y:auto;background:var(--c-bg);border-radius:6px;padding:8px;font-size:12px;font-family:monospace;color:var(--c-silver);border:1px solid var(--c-border);margin-top:8px}
+.combat-log div{padding:2px 0}
+.hit{color:var(--c-red);animation:hitFlash .5s}
+.crit{color:var(--c-gold);font-weight:700;animation:critFlash .8s}
+.miss{color:var(--c-silver2)}
+.heal{color:var(--c-green)}
+@keyframes hitFlash{0%{background:rgba(229,72,77,.4)}100%{background:transparent}}
+@keyframes critFlash{0%,50%{background:rgba(245,197,66,.5);text-shadow:0 0 12px var(--c-gold)}100%{background:transparent}}
+
+/* ---------- Level up ---------- */
+.levelup{
+  position:absolute;top:40%;left:50%;transform:translate(-50%,-50%);
+  padding:20px 40px;background:linear-gradient(180deg,var(--c-gold) 0%,var(--c-gold2) 100%);
+  color:#1a1200;font-size:24px;font-weight:800;border-radius:12px;z-index:200;
+  box-shadow:var(--shadow-glow),0 0 60px rgba(245,197,66,.6);
+  animation:levelupPop 2s ease forwards;pointer-events:none;
+}
+@keyframes levelupPop{0%{opacity:0;transform:translate(-50%,-50%) scale(.5)}20%{opacity:1;transform:translate(-50%,-50%) scale(1.15)}80%{opacity:1;transform:translate(-50%,-50%) scale(1)}100%{opacity:0;transform:translate(-50%,-140%) scale(.9)}}
+
+/* ---------- Toasts ---------- */
+#toasts{position:absolute;top:10px;left:50%;transform:translateX(-50%);z-index:300;display:flex;flex-direction:column;gap:6px;pointer-events:none}
+.toast{padding:10px 18px;background:linear-gradient(180deg,var(--c-panel2) 0%,var(--c-panel) 100%);border:1px solid var(--c-gold);border-radius:var(--radius);color:var(--c-text);font-size:13px;box-shadow:var(--shadow);animation:toastIn .3s ease,toastOut .3s ease 2.5s forwards}
+@keyframes toastIn{from{opacity:0;transform:translateY(-10px)}to{opacity:1;transform:none}}
+@keyframes toastOut{to{opacity:0;transform:translateY(-6px)}}
+.toast.achievement{border-color:var(--c-purple);background:linear-gradient(180deg,var(--c-purple2) 0%,var(--c-panel) 100%)}
+.toast.artifact{border-color:var(--c-gold)}
+.toast.bad{border-color:var(--c-red)}
+
+/* ---------- Damage/heal floaters ---------- */
+.float-num{position:absolute;font-size:20px;font-weight:800;pointer-events:none;animation:floatUp 1s ease forwards;text-shadow:0 2px 6px rgba(0,0,0,.8);z-index:150}
+.float-num.dmg{color:var(--c-red)}
+.float-num.heal{color:var(--c-green)}
+.float-num.xp{color:var(--c-cyan)}
+@keyframes floatUp{0%{opacity:1;transform:translateY(0)}100%{opacity:0;transform:translateY(-40px)}}
+
+/* ---------- Day/night ---------- */
+.night{filter:brightness(.72) saturate(.85) hue-rotate(-10deg)}
+
+/* ---------- Settings & credits ---------- */
+.settings-panel,.credits-panel,.tutorial-panel{max-width:600px;margin:0 auto;background:var(--c-panel);border:1px solid var(--c-border);border-radius:var(--radius);padding:24px;width:100%}
+.settings-row{display:flex;justify-content:space-between;align-items:center;padding:10px 0;border-bottom:1px solid var(--c-border);gap:12px}
+.settings-row:last-child{border-bottom:none}
+.settings-row .label{font-size:14px}
+.toggle{width:48px;height:26px;background:var(--c-bg);border:1px solid var(--c-border);border-radius:14px;position:relative;cursor:pointer;transition:.2s}
+.toggle::after{content:'';position:absolute;top:2px;left:2px;width:20px;height:20px;border-radius:50%;background:var(--c-silver);transition:.2s}
+.toggle.on{background:var(--c-gold)}
+.toggle.on::after{left:24px;background:var(--c-bg)}
+
+/* ---------- Tutorial ---------- */
+.tutorial-panel ol{padding-left:22px;line-height:1.7;font-size:14px;color:var(--c-text-dim)}
+.tutorial-panel li{margin-bottom:6px}
+.tutorial-panel strong{color:var(--c-gold)}
+
+/* ---------- Achievements screen ---------- */
+.ach-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:10px;max-width:1000px;margin:0 auto;width:100%}
+.ach-card{background:var(--c-panel);border:1px solid var(--c-border);border-radius:var(--radius);padding:10px;display:flex;gap:10px;align-items:flex-start;font-size:12px}
+.ach-card.unlocked{border-color:var(--c-gold);background:linear-gradient(160deg,var(--c-panel2) 0%,var(--c-panel) 100%)}
+.ach-card .icon{font-size:24px;flex-shrink:0}
+.ach-card .info b{color:var(--c-gold);font-size:13px;display:block;margin-bottom:2px}
+.ach-card .info span{color:var(--c-silver2)}
+.ach-card.locked{opacity:.4}
+
+/* ---------- Header row on game screen ---------- */
+.game-topbar{display:flex;gap:6px;padding:6px 8px;background:var(--c-panel);border-bottom:1px solid var(--c-border);align-items:center}
+.game-topbar .title-small{color:var(--c-gold);font-weight:700;font-size:14px;margin-right:auto}
+.game-topbar .btn{min-width:auto;padding:6px 10px;font-size:12px}
+
+/* ---------- Responsive ---------- */
+@media (max-width:1100px){
+  .game-root{grid-template-columns:220px 1fr 220px}
+  #board{grid-template-columns:repeat(6,minmax(60px,1fr))}
+}
+@media (max-width:820px){
+  .game-root{grid-template-columns:1fr;grid-template-rows:auto 1fr auto}
+  .dashboard,.side-panel{max-height:180px}
+  #board{grid-template-columns:repeat(5,minmax(56px,1fr))}
+  .tile{min-height:50px;font-size:9px}
+  .tile .tile-icon{font-size:16px}
+}
+@media (max-width:520px){
+  #board{grid-template-columns:repeat(4,minmax(52px,1fr))}
+  .btn{min-width:auto;padding:10px 16px;font-size:14px}
+  .dice{width:50px;height:50px;font-size:20px}
+  .modal{padding:16px}
+  h1{font-size:26px}
+}
+
+/* ---------- Accessibility ---------- */
+@media (prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation-duration:.01s!important;transition-duration:.01s!important}
+}
+</style>
+</head>
+<body>
+<div id="app">
+
+  <!-- ==================== START SCREEN ==================== -->
+  <div id="screen-start" class="screen screen-center active">
+    <div class="title-wrap">
+      <h1>Enterprise Quest</h1>
+      <div class="subtitle">Architect's Dungeon</div>
+    </div>
+    <div class="menu">
+      <button class="btn btn-gold" data-action="new-game">Nieuw spel</button>
+      <button class="btn" data-action="continue" id="btn-continue">Verder spelen</button>
+      <button class="btn" data-action="tutorial">Speluitleg</button>
+      <button class="btn" data-action="achievements">Achievements</button>
+      <button class="btn" data-action="settings">Instellingen</button>
+      <button class="btn" data-action="credits">Credits</button>
+    </div>
+    <div style="margin-top:auto"></div>
+    <div class="version-tag">v0.0.1-Zachman</div>
+    <div class="credit-line">iCt Horse — AGPL-3.0</div>
+  </div>
+
+  <!-- ==================== CLASS SELECT ==================== -->
+  <div id="screen-classselect" class="screen">
+    <h2 style="text-align:center;margin-top:20px">Kies je architect-klasse</h2>
+    <div class="sub" style="text-align:center">Elke klasse heeft eigen sterktes en een unieke special ability.</div>
+    <div class="class-grid" id="class-grid"></div>
+    <div style="display:flex;gap:12px;justify-content:center;margin:20px 0">
+      <button class="btn" data-action="back-start">Terug</button>
+      <button class="btn btn-gold" id="btn-start-run" disabled>Start avontuur</button>
+    </div>
+  </div>
+
+  <!-- ==================== GAME SCREEN ==================== -->
+  <div id="screen-game" class="screen">
+    <div class="game-topbar">
+      <div class="title-small">Enterprise Quest</div>
+      <button class="btn" data-action="save-now">Opslaan</button>
+      <button class="btn" data-action="show-inventory">Inventaris</button>
+      <button class="btn" data-action="show-achievements-game">Achievements</button>
+      <button class="btn" data-action="quit-to-menu">Menu</button>
+    </div>
+    <div class="game-root">
+      <div class="dashboard" id="dashboard"></div>
+      <div class="board-wrap">
+        <div id="board"></div>
+        <div id="dice-panel">
+          <div class="dice" id="dice">?</div>
+          <div class="dice-info" id="dice-info">Klik op de D20 om te rollen.</div>
+          <button class="btn btn-gold" id="btn-roll">Rol D20</button>
+          <button class="btn" id="btn-end-turn">Einde beurt</button>
+        </div>
+      </div>
+      <div class="side-panel">
+        <div class="dash-h">Log</div>
+        <div id="log"></div>
+      </div>
+    </div>
+    <div class="modal-back" id="modal-back"><div class="modal" id="modal"></div></div>
+    <div id="toasts"></div>
+  </div>
+
+  <!-- ==================== SETTINGS ==================== -->
+  <div id="screen-settings" class="screen">
+    <h2 style="text-align:center;margin-top:20px">Instellingen</h2>
+    <div class="settings-panel" id="settings-panel"></div>
+    <div style="display:flex;justify-content:center;margin:20px 0">
+      <button class="btn" data-action="back-start">Terug</button>
+    </div>
+  </div>
+
+  <!-- ==================== CREDITS ==================== -->
+  <div id="screen-credits" class="screen">
+    <h2 style="text-align:center;margin-top:20px">Credits</h2>
+    <div class="credits-panel">
+      <p style="line-height:1.7">
+        <strong style="color:var(--c-gold)">Enterprise Quest: Architect's Dungeon</strong><br>
+        v0.0.1-Zachman<br><br>
+        Ontwerp &amp; ontwikkeling: iCt Horse<br>
+        Concept &amp; opdracht: Joyce Kaag-Glebbeek<br>
+        Code: Christian Glebbeek + Claude (Anthropic)<br><br>
+        Codenaam-thema: <em>Enterprise Architecture pioniers</em><br>
+        v0.0.1 — <strong>John Zachman</strong>, grondlegger van het Zachman Framework (1987)<br><br>
+        Geen externe libraries. Geen assets. Pure HTML/CSS/JS + Web Audio API.<br>
+        Vrijgegeven onder GNU AGPL-3.0.
+      </p>
+    </div>
+    <div style="display:flex;justify-content:center;margin:20px 0">
+      <button class="btn" data-action="back-start">Terug</button>
+    </div>
+  </div>
+
+  <!-- ==================== TUTORIAL ==================== -->
+  <div id="screen-tutorial" class="screen">
+    <h2 style="text-align:center;margin-top:20px">Speluitleg</h2>
+    <div class="tutorial-panel">
+      <ol>
+        <li>Je bent een <strong>architect</strong> die een organisatie moet redden van The Chaos Architect.</li>
+        <li>Kies een <strong>klasse</strong> (Enterprise / Solution / Business / Security / Data / DevOps Architect).</li>
+        <li>Rol de <strong>D20-dobbelsteen</strong> om over het bord te bewegen (40 vakken, 12 regio's).</li>
+        <li>Landen op een vak trekt een <strong>kaart</strong> uit het bijhorende deck:
+          <ul style="margin-left:16px">
+            <li><strong>Quest</strong> — voer een architectuur-uitdaging uit voor XP en beloning</li>
+            <li><strong>Chaos</strong> — negatieve gebeurtenis, verhoogt Chaos Meter</li>
+            <li><strong>Event</strong> — vaak met keuzes (branching)</li>
+            <li><strong>Combat</strong> — vecht een monster in D20-turnbased combat</li>
+            <li><strong>Artifact</strong> — vind een uitrusting die passieve bonussen geeft</li>
+            <li><strong>Portal</strong> — teleporteer naar een andere regio</li>
+            <li><strong>Rest</strong> — herstel HP en denk na</li>
+          </ul>
+        </li>
+        <li>Verzamel <strong>XP</strong> om te levelen: Junior → Legendary Architect (10 levels).</li>
+        <li>Beheer <strong>resources</strong>: Budget, Security, Stakeholder Trust, Architecture Quality, Cloud Maturity, Business Value.</li>
+        <li>De <strong>Chaos Meter</strong> stijgt bij tegenslag; op 100 verlies je.</li>
+        <li>Verzamel <strong>artifacts</strong> en gebruik ze in combat (aanvals-/verdedigingsbonus).</li>
+        <li>Ontgrendel <strong>achievements</strong> voor bonus-XP.</li>
+        <li>Versla <strong>The Chaos Architect</strong> (3 fases) om te winnen.</li>
+        <li>Autosave staat aan — kies "Verder spelen" op het startscherm om terug te keren.</li>
+      </ol>
+    </div>
+    <div style="display:flex;justify-content:center;margin:20px 0">
+      <button class="btn" data-action="back-start">Terug</button>
+    </div>
+  </div>
+
+  <!-- ==================== ACHIEVEMENTS ==================== -->
+  <div id="screen-achievements" class="screen">
+    <h2 style="text-align:center;margin-top:20px">Achievements</h2>
+    <div class="sub" style="text-align:center" id="ach-progress">0/0 ontgrendeld</div>
+    <div class="ach-grid" id="ach-grid"></div>
+    <div style="display:flex;justify-content:center;margin:20px 0">
+      <button class="btn" data-action="back-start">Terug</button>
+    </div>
+  </div>
+
+  <!-- ==================== GAME OVER ==================== -->
+  <div id="screen-gameover" class="screen screen-center">
+    <h1 id="go-title">Game Over</h1>
+    <div class="sub" id="go-reason"></div>
+    <div id="go-stats" style="max-width:400px;margin:20px auto"></div>
+    <div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap">
+      <button class="btn btn-gold" data-action="restart">Nieuw spel</button>
+      <button class="btn" data-action="back-start">Naar menu</button>
+    </div>
+  </div>
+
+</div>
+
+<script>
+"use strict";
+/* ============================================================
+   ENTERPRISE QUEST — GAME ENGINE
+   ============================================================ */
+
+/* ---------- CONTENT — placeholders, will be filled ---------- */
+const CONTENT_CLASSES = [{"id": "enterprise", "name": "Enterprise Architect", "icon": "👁", "role": "Governance · Strategie · Overzicht", "description": "Overziet het hele landschap: houdt strategie, portfolio en principes op één lijn.", "hp": 110, "attrs": {"communication": 9, "leadership": 10, "architecture": 10, "technology": 6, "innovation": 8, "security": 7, "businessKnowledge": 9}, "special": "Architect Vision", "specialDesc": "Ziet de zwakke plek — feilloos aanval + XP bonus"}, {"id": "solution", "name": "Solution Architect", "icon": "⚔", "role": "Oplossingen · Techniek", "description": "Ontwerpt concrete oplossingen; koppelt patterns aan requirements.", "hp": 100, "attrs": {"communication": 7, "leadership": 6, "architecture": 9, "technology": 10, "innovation": 8, "security": 7, "businessKnowledge": 6}, "special": "Elegant Solution", "specialDesc": "Rolt 2 D20 en kiest de beste"}, {"id": "business", "name": "Business Architect", "icon": "🤝", "role": "Stakeholders · Processen", "description": "Verbindt IT met business; capability maps en value streams.", "hp": 95, "attrs": {"communication": 10, "leadership": 9, "architecture": 7, "technology": 5, "innovation": 7, "security": 5, "businessKnowledge": 10}, "special": "Stakeholder Rally", "specialDesc": "Genees +HP en val aan"}, {"id": "security", "name": "Security Architect", "icon": "🛡", "role": "Cyber · Compliance", "description": "Beschermt de organisatie: Zero Trust, threat modelling, IAM.", "hp": 115, "attrs": {"communication": 6, "leadership": 7, "architecture": 8, "technology": 9, "innovation": 6, "security": 10, "businessKnowledge": 6}, "special": "Zero Trust Shield", "specialDesc": "Blokkeert de volgende 2 vijandelijke aanvallen"}, {"id": "data", "name": "Data Architect", "icon": "🧠", "role": "Data · AI · Analytics", "description": "Ontwerpt de datalaag: lakehouse, mesh, MLOps, RAG.", "hp": 100, "attrs": {"communication": 7, "leadership": 6, "architecture": 8, "technology": 9, "innovation": 10, "security": 8, "businessKnowledge": 7}, "special": "Predictive Strike", "specialDesc": "Data-crit: dubbele attack bonus"}, {"id": "devops", "name": "DevOps Architect", "icon": "⚙", "role": "Automation · CI/CD · Cloud", "description": "Automatiseert alles: pipelines, GitOps, Kubernetes, observability.", "hp": 105, "attrs": {"communication": 6, "leadership": 6, "architecture": 8, "technology": 10, "innovation": 9, "security": 7, "businessKnowledge": 6}, "special": "CI/CD Barrage", "specialDesc": "3 snelle hits achter elkaar"}];
+const CONTENT_LEVELS = [{"n": 1, "name": "Junior Architect"}, {"n": 2, "name": "Medior Architect"}, {"n": 3, "name": "Senior Architect"}, {"n": 4, "name": "Domain Architect"}, {"n": 5, "name": "Lead Architect"}, {"n": 6, "name": "Enterprise Architect"}, {"n": 7, "name": "Principal Architect"}, {"n": 8, "name": "Chief Architect"}, {"n": 9, "name": "Digital Strategist"}, {"n": 10, "name": "Legendary Architect"}];
+const CONTENT_REGIONS = [{"id": "business_village", "name": "Business Village", "color": "#8FBC8F", "icon": "🏘️", "description": "Startpunt waar business capabilities en stakeholders wonen.", "difficulty": 1, "cardTypes": ["quest", "event"]}, {"id": "legacy_dungeon", "name": "Legacy Dungeon", "color": "#5C4033", "icon": "🕸️", "description": "Duistere kerker vol vergeten COBOL-systemen en technische schuld.", "difficulty": 4, "cardTypes": ["combat", "chaos", "artifact"]}, {"id": "cloud_mountains", "name": "Cloud Mountains", "color": "#87CEEB", "icon": "☁️", "description": "Hooggebergte van hyperscalers waar schaalbaarheid regeert.", "difficulty": 3, "cardTypes": ["quest", "event", "artifact"]}, {"id": "security_castle", "name": "Security Castle", "color": "#4B0082", "icon": "🏰", "description": "Versterkte burcht met firewalls, IAM en zero-trust wallen.", "difficulty": 4, "cardTypes": ["combat", "quest", "event"]}, {"id": "data_forest", "name": "Data Forest", "color": "#228B22", "icon": "🌲", "description": "Dicht woud van datastromen, lakes en warehouses.", "difficulty": 3, "cardTypes": ["quest", "chaos", "artifact"]}, {"id": "innovation_tower", "name": "Innovation Tower", "color": "#FFD700", "icon": "🗼", "description": "Torenhoge R&D-labs waar prototypes en experimenten schitteren.", "difficulty": 2, "cardTypes": ["event", "artifact", "quest"]}, {"id": "ai_temple", "name": "AI Temple", "color": "#DA70D6", "icon": "🛕", "description": "Heilige tempel van modellen, orakels en generatieve krachten.", "difficulty": 5, "cardTypes": ["quest", "chaos", "artifact", "combat"]}, {"id": "executive_palace", "name": "Executive Palace", "color": "#B22222", "icon": "👑", "description": "Marmerpaleis van C-suite waar strategie en budgetten worden bezworen.", "difficulty": 4, "cardTypes": ["event", "quest", "chaos"]}, {"id": "integration_bridge", "name": "Integration Bridge", "color": "#20B2AA", "icon": "🌉", "description": "Brug van APIs, ESB's en event buses tussen alle werelden.", "difficulty": 3, "cardTypes": ["quest", "event", "combat"]}, {"id": "compliance_swamp", "name": "Compliance Swamp", "color": "#556B2F", "icon": "🐊", "description": "Moeras vol GDPR-modder, audit-drijfzand en regelgeving-krokodillen.", "difficulty": 4, "cardTypes": ["chaos", "combat", "event"]}, {"id": "vendor_market", "name": "Vendor Market", "color": "#FF8C00", "icon": "🏪", "description": "Rumoerige bazaar van leveranciers, licenties en gouden kettingen.", "difficulty": 2, "cardTypes": ["event", "chaos", "artifact"]}, {"id": "digital_portal", "name": "Digital Portal", "color": "#000000", "icon": "🌀", "description": "De poort naar het eindspel — waar de Chaos Architect wacht.", "difficulty": 5, "cardTypes": ["combat", "chaos", "artifact"]}];
+const CONTENT_BOARD = {"totalTiles": 40, "startTileId": 0, "finalBossTileId": 39, "tiles": [{"id": 0, "regionId": "business_village", "type": "start", "label": "Kick-off Plaza", "effect": "Ontvang startbudget €1000 en 3 stakeholder-tokens."}, {"id": 1, "regionId": "business_village", "type": "quest", "label": "Business Case", "effect": "Trek een quest-kaart."}, {"id": 2, "regionId": "business_village", "type": "event", "label": "Town Hall", "effect": "Trek een event-kaart."}, {"id": 3, "regionId": "business_village", "type": "rest", "label": "Coffee Corner", "effect": "Herstel 5 HP."}, {"id": 4, "regionId": "business_village", "type": "quest", "label": "Capability Map", "effect": "Trek een quest-kaart."}, {"id": 5, "regionId": "vendor_market", "type": "event", "label": "Vendor Pitch", "effect": "Trek een event-kaart."}, {"id": 6, "regionId": "vendor_market", "type": "chaos", "label": "Licentie-boete", "effect": "Trek een chaos-kaart."}, {"id": 7, "regionId": "vendor_market", "type": "artifact", "label": "Golden Contract", "effect": "Trek een artifact-kaart."}, {"id": 8, "regionId": "vendor_market", "type": "combat", "label": "Vendor Hydra", "effect": "Vecht: Vendor Hydra."}, {"id": 9, "regionId": "vendor_market", "type": "boss", "label": "Vendor Lord", "effect": "Regio-boss: Chaos CIO."}, {"id": 10, "regionId": "integration_bridge", "type": "portal", "label": "API Gateway Portal", "effect": "Teleporteer naar tile 20 of 30."}, {"id": 11, "regionId": "integration_bridge", "type": "quest", "label": "REST vs Events", "effect": "Trek een quest-kaart."}, {"id": 12, "regionId": "integration_bridge", "type": "event", "label": "Broken Pipeline", "effect": "Trek een event-kaart."}, {"id": 13, "regionId": "integration_bridge", "type": "combat", "label": "Middleware Monster", "effect": "Vecht: Shadow IT Goblins."}, {"id": 14, "regionId": "data_forest", "type": "quest", "label": "Data Lineage", "effect": "Trek een quest-kaart."}, {"id": 15, "regionId": "data_forest", "type": "chaos", "label": "GDPR-lek", "effect": "Trek een chaos-kaart."}, {"id": 16, "regionId": "data_forest", "type": "artifact", "label": "Master Data Crown", "effect": "Trek een artifact-kaart."}, {"id": 17, "regionId": "data_forest", "type": "combat", "label": "Kraken Attack", "effect": "Vecht: Data Kraken."}, {"id": 18, "regionId": "data_forest", "type": "rest", "label": "Data Lake Shore", "effect": "Herstel 8 HP."}, {"id": 19, "regionId": "data_forest", "type": "boss", "label": "Data Overlord", "effect": "Regio-boss: Shadow Board."}, {"id": 20, "regionId": "cloud_mountains", "type": "portal", "label": "Multi-Cloud Portal", "effect": "Teleporteer naar tile 10 of 30."}, {"id": 21, "regionId": "cloud_mountains", "type": "quest", "label": "Landing Zone", "effect": "Trek een quest-kaart."}, {"id": 22, "regionId": "cloud_mountains", "type": "event", "label": "Cost Explosion", "effect": "Trek een event-kaart."}, {"id": 23, "regionId": "cloud_mountains", "type": "artifact", "label": "Terraform Staff", "effect": "Trek een artifact-kaart."}, {"id": 24, "regionId": "innovation_tower", "type": "quest", "label": "Innovation Sprint", "effect": "Trek een quest-kaart."}, {"id": 25, "regionId": "innovation_tower", "type": "event", "label": "Hackathon", "effect": "Trek een event-kaart, +50 XP."}, {"id": 26, "regionId": "innovation_tower", "type": "artifact", "label": "Prototype Gem", "effect": "Trek een artifact-kaart."}, {"id": 27, "regionId": "legacy_dungeon", "type": "chaos", "label": "COBOL Curse", "effect": "Trek een chaos-kaart."}, {"id": 28, "regionId": "legacy_dungeon", "type": "combat", "label": "Legacy Dragon", "effect": "Vecht: Legacy Dragon."}, {"id": 29, "regionId": "legacy_dungeon", "type": "boss", "label": "Debt King's Lair", "effect": "Regio-boss: Technical Debt King."}, {"id": 30, "regionId": "security_castle", "type": "portal", "label": "Zero-Trust Portal", "effect": "Teleporteer naar tile 10 of 20."}, {"id": 31, "regionId": "security_castle", "type": "combat", "label": "Security Troll", "effect": "Vecht: Security Troll."}, {"id": 32, "regionId": "security_castle", "type": "quest", "label": "IAM Redesign", "effect": "Trek een quest-kaart."}, {"id": 33, "regionId": "security_castle", "type": "boss", "label": "Firewall Fortress", "effect": "Regio-boss: Cyber Lord."}, {"id": 34, "regionId": "compliance_swamp", "type": "chaos", "label": "Audit Ambush", "effect": "Trek een chaos-kaart."}, {"id": 35, "regionId": "compliance_swamp", "type": "combat", "label": "Compliance Ghost", "effect": "Vecht: Compliance Ghost."}, {"id": 36, "regionId": "compliance_swamp", "type": "boss", "label": "Titan of Regulation", "effect": "Regio-boss: Compliance Titan."}, {"id": 37, "regionId": "ai_temple", "type": "quest", "label": "Model Alignment", "effect": "Trek een quest-kaart."}, {"id": 38, "regionId": "executive_palace", "type": "event", "label": "Board Presentation", "effect": "Trek een event-kaart, +100 stakeholder."}, {"id": 39, "regionId": "digital_portal", "type": "final", "label": "Throne of Chaos", "effect": "Final boss: The Chaos Architect (3 fases)."}]};
+const CONTENT_QUESTS = [{"id": "Q001", "title": "Legacy Dragon eist tribuut", "description": "De Legacy Dragon eist een tribuut van goud voor het niet-verwoesten van de mainframe-batch.", "effect": {"xp": 150, "budget": -200, "security": 5, "stakeholderImpact": -10, "hp": -5}, "region": "Legacy Dungeon", "difficulty": 3}, {"id": "Q002", "title": "TOGAF ADM Fase A", "description": "De Grote Raad vraagt om een Architecture Vision; verzamel stakeholders en smeed een gedeeld doel.", "effect": {"xp": 200, "budget": -50, "security": 0, "stakeholderImpact": 20, "hp": 0}, "region": "Executive Palace", "difficulty": 2}, {"id": "Q003", "title": "Cloud Migratie Sprint", "description": "Beklim de Cloud Mountains met een lift-and-shift van drie kritische workloads voor het weekeinde.", "effect": {"xp": 250, "budget": -150, "security": 10, "stakeholderImpact": 15, "hp": -10}, "region": "Cloud Mountains", "difficulty": 3}, {"id": "Q004", "title": "Zero Trust Fundering", "description": "Sla de fundering van het Zero Trust bastion; nooit vertrouwen, altijd verifieren aan de poort.", "effect": {"xp": 300, "budget": -250, "security": 35, "stakeholderImpact": 10, "hp": 0}, "region": "Security Castle", "difficulty": 4}, {"id": "Q005", "title": "Capability Map Tekenen", "description": "Teken de capability map van het Business Village op perkament; verlicht duistere hoeken.", "effect": {"xp": 180, "budget": -30, "security": 0, "stakeholderImpact": 25, "hp": 0}, "region": "Business Village", "difficulty": 2}, {"id": "Q006", "title": "Productie Vuur Doven", "description": "Het serverwoud staat in brand; blus de P1-incident voor de zonsopgang of verlies aanzien.", "effect": {"xp": 220, "budget": -100, "security": -5, "stakeholderImpact": -15, "hp": -20}, "region": "Legacy Dungeon", "difficulty": 4}, {"id": "Q007", "title": "API Strategy Concilie", "description": "Roep het API Concilie bijeen en beslis over REST, GraphQL of gRPC voor de Integration Bridge.", "effect": {"xp": 170, "budget": -40, "security": 5, "stakeholderImpact": 15, "hp": 0}, "region": "Integration Bridge", "difficulty": 3}, {"id": "Q008", "title": "AI Governance Kroning", "description": "Kroon de eerste AI Governance Board in de AI Temple; leg risicoclassificatie vast in stenen tafelen.", "effect": {"xp": 260, "budget": -120, "security": 20, "stakeholderImpact": 20, "hp": 0}, "region": "AI Temple", "difficulty": 4}, {"id": "Q009", "title": "ArchiMate Rune Tekenen", "description": "Ets ArchiMate 3.2 runen op de kaart; business, application en technology in elegante lagen.", "effect": {"xp": 140, "budget": -20, "security": 0, "stakeholderImpact": 10, "hp": 0}, "region": "Business Village", "difficulty": 2}, {"id": "Q010", "title": "Data Mesh Federatie", "description": "Sticht een federatie van data-domeinen in het Data Forest; ieder domein eigenaar van eigen product.", "effect": {"xp": 280, "budget": -180, "security": 10, "stakeholderImpact": 15, "hp": -5}, "region": "Data Forest", "difficulty": 4}, {"id": "Q011", "title": "Event Driven Rivier", "description": "Grave een Kafka-rivier door het rijk; laat gebeurtenissen stromen van bron naar consument.", "effect": {"xp": 230, "budget": -160, "security": 5, "stakeholderImpact": 10, "hp": -5}, "region": "Integration Bridge", "difficulty": 3}, {"id": "Q012", "title": "Microservices Splitsing", "description": "Splits de monolithische reus in kleine wendbare wezens; pas op voor distributed monolith-vloek.", "effect": {"xp": 320, "budget": -220, "security": 0, "stakeholderImpact": 5, "hp": -15}, "region": "Innovation Tower", "difficulty": 5}, {"id": "Q013", "title": "Vendor Lock In Ontsnapping", "description": "Ontsnap uit de gouden kooi van een SaaS-vendor; abstractielaag als touwladder naar vrijheid.", "effect": {"xp": 260, "budget": -180, "security": 10, "stakeholderImpact": -5, "hp": -10}, "region": "Vendor Market", "difficulty": 4}, {"id": "Q014", "title": "Business IT Alignment", "description": "Verbind de dorpsoudsten met de IT-magiers; harmonieuze roadmap ontvouwt zich.", "effect": {"xp": 200, "budget": -40, "security": 0, "stakeholderImpact": 35, "hp": 5}, "region": "Business Village", "difficulty": 3}, {"id": "Q015", "title": "Roadmap Voor Drie Jaar", "description": "Teken een driejarige roadmap met horizon-1/2/3 en overtuig de Executive Palace van waarde.", "effect": {"xp": 210, "budget": -30, "security": 0, "stakeholderImpact": 30, "hp": 0}, "region": "Executive Palace", "difficulty": 3}, {"id": "Q016", "title": "Stakeholder Diner", "description": "Organiseer een diner met CIO, CFO en CISO; smeed alliantie met wijn en wireframes.", "effect": {"xp": 130, "budget": -80, "security": 0, "stakeholderImpact": 40, "hp": 5}, "region": "Executive Palace", "difficulty": 2}, {"id": "Q017", "title": "Tech Debt Aflossing", "description": "Betaal een deel van de tech debt-schuld aan de Legacy Dungeon; refactor drie hot-spots.", "effect": {"xp": 190, "budget": -140, "security": 10, "stakeholderImpact": -5, "hp": 10}, "region": "Legacy Dungeon", "difficulty": 3}, {"id": "Q018", "title": "Sunset Legacy Ritueel", "description": "Voer het sunset-ritueel uit voor het oude COBOL-systeem; data migreert veilig naar het nieuwe.", "effect": {"xp": 300, "budget": -200, "security": 15, "stakeholderImpact": 10, "hp": -10}, "region": "Legacy Dungeon", "difficulty": 4}, {"id": "Q019", "title": "Disaster Recovery Test", "description": "Test de DR-uitwijk in de Cloud Mountains; failover binnen RTO of verlies vertrouwen van de Raad.", "effect": {"xp": 240, "budget": -100, "security": 25, "stakeholderImpact": 10, "hp": -10}, "region": "Cloud Mountains", "difficulty": 4}, {"id": "Q020", "title": "DevSecOps Pijplijn", "description": "Bouw een pijplijn waar security-scans en SAST-runen automatisch worden geworpen op elke commit.", "effect": {"xp": 270, "budget": -160, "security": 30, "stakeholderImpact": 10, "hp": 0}, "region": "Security Castle", "difficulty": 4}, {"id": "Q021", "title": "FinOps Schatkist", "description": "Open de FinOps-schatkist; tag elke resource en jaag verspilling op in de Cloud Mountains.", "effect": {"xp": 180, "budget": 150, "security": 0, "stakeholderImpact": 20, "hp": 0}, "region": "Cloud Mountains", "difficulty": 3}, {"id": "Q022", "title": "GreenOps Bosgeest", "description": "De Bosgeest eist minder CO2; optimaliseer workloads en schakel dode VMs uit.", "effect": {"xp": 160, "budget": 50, "security": 0, "stakeholderImpact": 15, "hp": 0}, "region": "Cloud Mountains", "difficulty": 2}, {"id": "Q023", "title": "Observability Kristal", "description": "Plaats het observability-kristal met metrics, logs en traces; zie alles wat beweegt.", "effect": {"xp": 220, "budget": -140, "security": 15, "stakeholderImpact": 10, "hp": 5}, "region": "Innovation Tower", "difficulty": 3}, {"id": "Q024", "title": "Service Mesh Weefsel", "description": "Weef een Istio-mesh tussen de microservices; mTLS-draden verbinden elke pod.", "effect": {"xp": 250, "budget": -180, "security": 25, "stakeholderImpact": 5, "hp": -5}, "region": "Integration Bridge", "difficulty": 4}, {"id": "Q025", "title": "Master Data Domein", "description": "Verklaar het MDM-domein tot single source of truth; kruistocht tegen duplicate klantrecords.", "effect": {"xp": 230, "budget": -160, "security": 10, "stakeholderImpact": 20, "hp": 0}, "region": "Data Forest", "difficulty": 4}, {"id": "Q026", "title": "GDPR Perkamentrol", "description": "De GDPR-perkamentrol ontrolt zich in de Compliance Swamp; DPIA vereist voor elk nieuw AI-model.", "effect": {"xp": 180, "budget": -100, "security": 20, "stakeholderImpact": 5, "hp": -5}, "region": "Compliance Swamp", "difficulty": 3}, {"id": "Q027", "title": "NIS2 Zwaard", "description": "Smeed het NIS2-zwaard; incident-melding binnen 24 uur of boete van de EU-baron.", "effect": {"xp": 210, "budget": -140, "security": 30, "stakeholderImpact": 0, "hp": 0}, "region": "Compliance Swamp", "difficulty": 4}, {"id": "Q028", "title": "DORA Financiele Storm", "description": "Weersta de DORA financiele storm; ICT-risico governance en third-party register op orde.", "effect": {"xp": 250, "budget": -180, "security": 25, "stakeholderImpact": 10, "hp": -5}, "region": "Compliance Swamp", "difficulty": 4}, {"id": "Q029", "title": "EU AI Act Tribunaal", "description": "Verdedig je RAG-toepassing bij het EU AI Act tribunaal; high-risk classificatie afwenden.", "effect": {"xp": 260, "budget": -200, "security": 15, "stakeholderImpact": 10, "hp": -10}, "region": "AI Temple", "difficulty": 5}, {"id": "Q030", "title": "Quantum Ready Crypto", "description": "Vervang RSA door post-quantum kyber-runen; bereid het rijk voor op de kwantum-invasie.", "effect": {"xp": 300, "budget": -260, "security": 40, "stakeholderImpact": -5, "hp": -10}, "region": "Security Castle", "difficulty": 5}, {"id": "Q031", "title": "Edge Computing Buitenpost", "description": "Bouw een edge-buitenpost bij de Digital Portal; lage latency voor IoT-legers.", "effect": {"xp": 220, "budget": -180, "security": 10, "stakeholderImpact": 15, "hp": 0}, "region": "Digital Portal", "difficulty": 3}, {"id": "Q032", "title": "MLOps Werkplaats", "description": "Sticht een MLOps-werkplaats; model registry, feature store en pijplijn allemaal geketend.", "effect": {"xp": 270, "budget": -200, "security": 10, "stakeholderImpact": 15, "hp": -5}, "region": "AI Temple", "difficulty": 4}, {"id": "Q033", "title": "LLMOps Discipline", "description": "Introduceer LLMOps-discipline; evaluaties, drift-detectie en prompt-versioning voor elk model.", "effect": {"xp": 240, "budget": -160, "security": 10, "stakeholderImpact": 10, "hp": 0}, "region": "AI Temple", "difficulty": 4}, {"id": "Q034", "title": "RAG Grimoire", "description": "Bind het RAG-grimoire aan de bedrijfskennis; vector-embeddings verlichten elk antwoord.", "effect": {"xp": 230, "budget": -140, "security": 5, "stakeholderImpact": 25, "hp": 0}, "region": "AI Temple", "difficulty": 3}, {"id": "Q035", "title": "Lakehouse Reservoir", "description": "Bouw een Data Lakehouse-reservoir; bronze, silver en gold-lagen stromen door het Data Forest.", "effect": {"xp": 260, "budget": -220, "security": 10, "stakeholderImpact": 15, "hp": -5}, "region": "Data Forest", "difficulty": 4}, {"id": "Q036", "title": "IAM Sleutelmeester", "description": "Kroon de IAM-sleutelmeester met PAM-vault; elke geheime rol geregistreerd en gerouteerd.", "effect": {"xp": 250, "budget": -180, "security": 35, "stakeholderImpact": 5, "hp": 0}, "region": "Security Castle", "difficulty": 4}, {"id": "Q037", "title": "SASE Handelsroute", "description": "Open de SASE handelsroute; SD-WAN en cloud-security in een enkel edge-fabric.", "effect": {"xp": 260, "budget": -220, "security": 30, "stakeholderImpact": 10, "hp": 0}, "region": "Digital Portal", "difficulty": 4}, {"id": "Q038", "title": "ZTNA Poortwacht", "description": "Vervang de VPN-draak door ZTNA-poortwachters; identiteit en context beslissen bij elke request.", "effect": {"xp": 270, "budget": -200, "security": 35, "stakeholderImpact": 10, "hp": -5}, "region": "Security Castle", "difficulty": 4}, {"id": "Q039", "title": "Target Architecture Baken", "description": "Plant het baken van de target architecture; het pad naar to-be wordt zichtbaar in de mist.", "effect": {"xp": 220, "budget": -60, "security": 5, "stakeholderImpact": 25, "hp": 0}, "region": "Executive Palace", "difficulty": 3}, {"id": "Q040", "title": "Baseline Architecture Kaart", "description": "Karteer de baseline architecture van het huidige koninkrijk; sommige regionen zijn terra incognita.", "effect": {"xp": 170, "budget": -40, "security": 0, "stakeholderImpact": 15, "hp": 0}, "region": "Business Village", "difficulty": 2}, {"id": "Q041", "title": "Gap Analyse Ravijn", "description": "Overbrug het ravijn tussen baseline en target; prioriteer initiatieven op waarde en risico.", "effect": {"xp": 200, "budget": -50, "security": 5, "stakeholderImpact": 20, "hp": 0}, "region": "Executive Palace", "difficulty": 3}, {"id": "Q042", "title": "CMDB Herstel Ritueel", "description": "Herstel de vervallen CMDB; ontdek verweesde servers en vergeten spookprocessen.", "effect": {"xp": 210, "budget": -140, "security": 15, "stakeholderImpact": 10, "hp": -5}, "region": "Legacy Dungeon", "difficulty": 3}, {"id": "Q043", "title": "Kubernetes Pantheon", "description": "Betreed het Kubernetes-pantheon; ontwerp cluster met node-pools en HPA voor piekbelasting.", "effect": {"xp": 240, "budget": -180, "security": 10, "stakeholderImpact": 10, "hp": -5}, "region": "Cloud Mountains", "difficulty": 4}, {"id": "Q044", "title": "Serverless Nevel", "description": "Betreed de serverless nevel; functies verschijnen en verdwijnen op vraag als geesten.", "effect": {"xp": 200, "budget": -120, "security": 5, "stakeholderImpact": 10, "hp": 0}, "region": "Cloud Mountains", "difficulty": 3}, {"id": "Q045", "title": "Multi Cloud Diplomatie", "description": "Onderhandel een multi-cloud strategie tussen AWS, Azure en GCP-vorsten; vermijd chaos.", "effect": {"xp": 280, "budget": -240, "security": 10, "stakeholderImpact": 15, "hp": -10}, "region": "Cloud Mountains", "difficulty": 5}, {"id": "Q046", "title": "Container Sandkorrel", "description": "Verpak de applicatie in een container-zandkorrel; onveranderlijk, herhaalbaar, draagbaar.", "effect": {"xp": 180, "budget": -100, "security": 10, "stakeholderImpact": 10, "hp": 0}, "region": "Innovation Tower", "difficulty": 2}, {"id": "Q047", "title": "CI CD Fabriek", "description": "Bouw een CI/CD-fabriek; van commit tot productie in minuten met kwaliteitspoorten.", "effect": {"xp": 230, "budget": -160, "security": 15, "stakeholderImpact": 15, "hp": 0}, "region": "Innovation Tower", "difficulty": 3}, {"id": "Q048", "title": "IaC Toverstaf", "description": "Zwaai de Terraform-toverstaf; infrastructuur als code verrijst in dagen niet maanden.", "effect": {"xp": 220, "budget": -120, "security": 15, "stakeholderImpact": 10, "hp": 0}, "region": "Cloud Mountains", "difficulty": 3}, {"id": "Q049", "title": "GitOps Cirkel", "description": "Teken de GitOps-cirkel; Git als single source of truth voor de gehele runtime-staat.", "effect": {"xp": 210, "budget": -100, "security": 15, "stakeholderImpact": 5, "hp": 0}, "region": "Innovation Tower", "difficulty": 3}, {"id": "Q050", "title": "Platform Engineering Gilde", "description": "Sticht het Platform Engineering-gilde; internal developer platform verlicht ieders werk.", "effect": {"xp": 260, "budget": -200, "security": 10, "stakeholderImpact": 30, "hp": 0}, "region": "Innovation Tower", "difficulty": 4}, {"id": "Q051", "title": "Chaos Monkey Duel", "description": "Verdedig productie tegen de Chaos Monkey; resilience-testen versterken elke service.", "effect": {"xp": 240, "budget": -80, "security": 20, "stakeholderImpact": 5, "hp": -10}, "region": "Security Castle", "difficulty": 4}, {"id": "Q052", "title": "SRE Wachtpost", "description": "Bemand de SRE-wachtpost; error budgets en SLOs bewaken beschikbaarheid.", "effect": {"xp": 220, "budget": -140, "security": 10, "stakeholderImpact": 20, "hp": -5}, "region": "Innovation Tower", "difficulty": 3}, {"id": "Q053", "title": "Feature Flag Bezwering", "description": "Werp de feature-flag bezwering; deploy zonder release, release zonder deploy.", "effect": {"xp": 170, "budget": -60, "security": 5, "stakeholderImpact": 15, "hp": 0}, "region": "Innovation Tower", "difficulty": 2}, {"id": "Q054", "title": "Blue Green Passage", "description": "Open de blauw-groene passage voor zero-downtime deploys; verkeer schakelt in een oogwenk.", "effect": {"xp": 190, "budget": -140, "security": 5, "stakeholderImpact": 15, "hp": 0}, "region": "Cloud Mountains", "difficulty": 3}, {"id": "Q055", "title": "Canary Kanarie", "description": "Laat de canary-kanarie los; nieuwe versie eerst 5% verkeer, dan geleidelijk groter.", "effect": {"xp": 160, "budget": -60, "security": 5, "stakeholderImpact": 10, "hp": 0}, "region": "Innovation Tower", "difficulty": 2}, {"id": "Q056", "title": "Digital Twin Portaal", "description": "Open het Digital Twin-portaal; fysieke werkelijkheid gespiegeld in real-time model.", "effect": {"xp": 270, "budget": -220, "security": 5, "stakeholderImpact": 25, "hp": 0}, "region": "Digital Portal", "difficulty": 4}, {"id": "Q057", "title": "BPMN Diplomaten", "description": "Stuur BPMN-diplomaten naar het proces-domein; end-to-end flows worden zichtbaar.", "effect": {"xp": 170, "budget": -40, "security": 0, "stakeholderImpact": 25, "hp": 0}, "region": "Business Village", "difficulty": 2}, {"id": "Q058", "title": "Value Stream Landkaart", "description": "Teken de value-stream landkaart; ontdek bottlenecks tussen idee en klantwaarde.", "effect": {"xp": 190, "budget": -30, "security": 0, "stakeholderImpact": 30, "hp": 0}, "region": "Business Village", "difficulty": 3}, {"id": "Q059", "title": "OKR Kompas", "description": "Kalibreer het OKR-kompas met de Executive Palace; objectives verbinden strategie met werk.", "effect": {"xp": 150, "budget": -20, "security": 0, "stakeholderImpact": 30, "hp": 0}, "region": "Executive Palace", "difficulty": 2}, {"id": "Q060", "title": "CIO Audientie", "description": "Vraag audientie bij de CIO; verdedig het architectuur-budget voor het volgende kwartaal.", "effect": {"xp": 180, "budget": 100, "security": 0, "stakeholderImpact": 15, "hp": -5}, "region": "Executive Palace", "difficulty": 3}, {"id": "Q061", "title": "CFO Onderhandeling", "description": "Onderhandel met de CFO over CapEx versus OpEx; cloud-migratie krijgt of verliest gunst.", "effect": {"xp": 200, "budget": 150, "security": 0, "stakeholderImpact": 10, "hp": -5}, "region": "Executive Palace", "difficulty": 3}, {"id": "Q062", "title": "CISO Alliantie", "description": "Sluit alliantie met de CISO; gedeelde security-roadmap versterkt beide slotgrachten.", "effect": {"xp": 210, "budget": -40, "security": 20, "stakeholderImpact": 25, "hp": 0}, "region": "Security Castle", "difficulty": 3}, {"id": "Q063", "title": "Board Presentatie", "description": "Presenteer target architecture aan de Board; overtuigen in tien minuten of budget vervalt.", "effect": {"xp": 250, "budget": 80, "security": 0, "stakeholderImpact": 30, "hp": -10}, "region": "Executive Palace", "difficulty": 4}, {"id": "Q064", "title": "RACI Rolverdeling", "description": "Verdeel RACI-rollen voor het transformatieprogramma; verwarring wijkt voor duidelijkheid.", "effect": {"xp": 140, "budget": -20, "security": 0, "stakeholderImpact": 25, "hp": 0}, "region": "Business Village", "difficulty": 2}, {"id": "Q065", "title": "Change Advisory Ridderzaal", "description": "Roep de CAB-ridderzaal bijeen; risicovolle changes worden gewogen en gesanctioneerd.", "effect": {"xp": 160, "budget": -40, "security": 10, "stakeholderImpact": 10, "hp": 0}, "region": "Business Village", "difficulty": 2}, {"id": "Q066", "title": "Data Governance Concilie", "description": "Sticht het data-governance concilie; stewards en owners per domein benoemd en beedigd.", "effect": {"xp": 210, "budget": -100, "security": 15, "stakeholderImpact": 20, "hp": 0}, "region": "Data Forest", "difficulty": 3}, {"id": "Q067", "title": "Data Catalog Bibliotheek", "description": "Open de data-catalog bibliotheek; elke dataset ontsloten via lineage en metadata.", "effect": {"xp": 190, "budget": -140, "security": 10, "stakeholderImpact": 15, "hp": 0}, "region": "Data Forest", "difficulty": 3}, {"id": "Q068", "title": "Data Quality Herstel", "description": "Herstel data-kwaliteit in het Data Forest; nulwaardes en duplicaten worden gebannen.", "effect": {"xp": 200, "budget": -120, "security": 5, "stakeholderImpact": 20, "hp": -5}, "region": "Data Forest", "difficulty": 3}, {"id": "Q069", "title": "Real Time Analytics Poort", "description": "Open de real-time analytics poort; dashboards updaten in seconden ipv uren.", "effect": {"xp": 220, "budget": -160, "security": 0, "stakeholderImpact": 25, "hp": 0}, "region": "Data Forest", "difficulty": 3}, {"id": "Q070", "title": "AI Ethiek Raad", "description": "Roep de AI-ethiek raad bijeen; bias-detectie en explainability voor elk model verplicht.", "effect": {"xp": 230, "budget": -100, "security": 10, "stakeholderImpact": 20, "hp": 0}, "region": "AI Temple", "difficulty": 3}, {"id": "Q071", "title": "Guardrails Bezwering", "description": "Werp guardrails-bezwering op de LLM; prompt-injection en jailbreaks worden geweerd.", "effect": {"xp": 250, "budget": -160, "security": 30, "stakeholderImpact": 10, "hp": -5}, "region": "AI Temple", "difficulty": 4}, {"id": "Q072", "title": "Vendor Beoordeling", "description": "Beoordeel drie SaaS-vendors op de Vendor Market; TCO, exitclausules en referenties.", "effect": {"xp": 170, "budget": -60, "security": 10, "stakeholderImpact": 10, "hp": 0}, "region": "Vendor Market", "difficulty": 2}, {"id": "Q073", "title": "Contract Onderhandeling", "description": "Onderhandel meerjarencontract met een cloud-provider; korting in ruil voor commitment.", "effect": {"xp": 220, "budget": 180, "security": 0, "stakeholderImpact": 5, "hp": -5}, "region": "Vendor Market", "difficulty": 3}, {"id": "Q074", "title": "Exit Strategie Kaart", "description": "Teken exit-strategie voor kritieke vendor; portabiliteit en dataverhuizing zijn nu haalbaar.", "effect": {"xp": 230, "budget": -100, "security": 15, "stakeholderImpact": 10, "hp": 0}, "region": "Vendor Market", "difficulty": 4}, {"id": "Q075", "title": "Open Source Bondgenoot", "description": "Sluit een bondgenootschap met de open-source community; strategische bijdrage versterkt roadmap.", "effect": {"xp": 190, "budget": -40, "security": 5, "stakeholderImpact": 20, "hp": 0}, "region": "Vendor Market", "difficulty": 2}, {"id": "Q076", "title": "SBOM Inventaris", "description": "Maak een Software Bill of Materials; iedere library-worm bekend en herleidbaar.", "effect": {"xp": 180, "budget": -80, "security": 25, "stakeholderImpact": 5, "hp": 0}, "region": "Security Castle", "difficulty": 3}, {"id": "Q077", "title": "Log4Shell Nachtmerrie", "description": "Een nieuwe Log4Shell-nachtmerrie ontwaakt; patch alle systemen voor de dageraad.", "effect": {"xp": 280, "budget": -160, "security": 25, "stakeholderImpact": -10, "hp": -25}, "region": "Security Castle", "difficulty": 5}, {"id": "Q078", "title": "Ransomware Belegering", "description": "De burcht wordt belegerd door ransomware; backups en runbooks bewijzen hun waarde.", "effect": {"xp": 300, "budget": -280, "security": 15, "stakeholderImpact": -20, "hp": -30}, "region": "Security Castle", "difficulty": 5}, {"id": "Q079", "title": "Pentest Uitdaging", "description": "Roep de rode ridders in voor een pentest; kwetsbaarheden worden onthuld voor de vijand komt.", "effect": {"xp": 220, "budget": -140, "security": 30, "stakeholderImpact": 5, "hp": -5}, "region": "Security Castle", "difficulty": 3}, {"id": "Q080", "title": "Threat Modeling Ronde", "description": "Voer STRIDE-threat modeling uit op het nieuwe systeem; ontwerp weerbaar voor livegang.", "effect": {"xp": 200, "budget": -80, "security": 25, "stakeholderImpact": 10, "hp": 0}, "region": "Security Castle", "difficulty": 3}, {"id": "Q081", "title": "Confluence Kroniek", "description": "Actualiseer de Confluence-kroniek; architectuurbeslissingen als ADR vastgelegd voor de eeuwigheid.", "effect": {"xp": 140, "budget": -20, "security": 0, "stakeholderImpact": 15, "hp": 0}, "region": "Business Village", "difficulty": 1}, {"id": "Q082", "title": "C4 Diagram Trilogie", "description": "Teken de C4-trilogie: Context, Container, Component; complexiteit wordt begrijpelijk.", "effect": {"xp": 170, "budget": -30, "security": 0, "stakeholderImpact": 20, "hp": 0}, "region": "Business Village", "difficulty": 2}, {"id": "Q083", "title": "Innovation Sprint", "description": "Organiseer innovation-sprint in de Innovation Tower; drie prototypes in vijf dagen tijd.", "effect": {"xp": 230, "budget": -140, "security": 0, "stakeholderImpact": 25, "hp": -5}, "region": "Innovation Tower", "difficulty": 3}, {"id": "Q084", "title": "Hackathon Toernooi", "description": "Roep een hackathon-toernooi uit; nieuwe ideeen kiemen tussen pizza en energiedrank.", "effect": {"xp": 210, "budget": -120, "security": 0, "stakeholderImpact": 30, "hp": -10}, "region": "Innovation Tower", "difficulty": 2}, {"id": "Q085", "title": "Design Sprint Kompas", "description": "Loods een design-sprint door vijf fases; van challenge tot getest prototype.", "effect": {"xp": 180, "budget": -80, "security": 0, "stakeholderImpact": 25, "hp": 0}, "region": "Innovation Tower", "difficulty": 2}, {"id": "Q086", "title": "Wardley Verkenningskaart", "description": "Teken een Wardley-verkenningskaart; strategische bewegingen op evolutionaire assen zichtbaar.", "effect": {"xp": 210, "budget": -30, "security": 0, "stakeholderImpact": 20, "hp": 0}, "region": "Executive Palace", "difficulty": 3}, {"id": "Q087", "title": "Business Model Canvas", "description": "Herteken het Business Model Canvas met stakeholders; nieuwe kansen ontluiken in leegtes.", "effect": {"xp": 160, "budget": -30, "security": 0, "stakeholderImpact": 25, "hp": 0}, "region": "Business Village", "difficulty": 2}, {"id": "Q088", "title": "Iso 27001 Certificering", "description": "Behaal ISO 27001-certificering; audits doorstaan versterkt reputatie bij klanten.", "effect": {"xp": 270, "budget": -260, "security": 30, "stakeholderImpact": 20, "hp": -10}, "region": "Compliance Swamp", "difficulty": 5}, {"id": "Q089", "title": "SOC2 Type II Beproeving", "description": "Doorsta de SOC2 Type II beproeving; twaalf maanden bewijs van control-effectiviteit.", "effect": {"xp": 260, "budget": -240, "security": 25, "stakeholderImpact": 15, "hp": -10}, "region": "Compliance Swamp", "difficulty": 4}, {"id": "Q090", "title": "Privacy By Design", "description": "Vlecht privacy-by-design door alle nieuwe diensten; minimale dataverzameling als principe.", "effect": {"xp": 190, "budget": -80, "security": 20, "stakeholderImpact": 15, "hp": 0}, "region": "Compliance Swamp", "difficulty": 3}, {"id": "Q091", "title": "BIA Impact Analyse", "description": "Voer BIA uit op alle kritische processen; RTO en RPO gekend voor elke applicatie.", "effect": {"xp": 200, "budget": -60, "security": 15, "stakeholderImpact": 15, "hp": 0}, "region": "Compliance Swamp", "difficulty": 3}, {"id": "Q092", "title": "Portal Modernisering", "description": "Moderniseer het Digital Portal met headless CMS en Jamstack; snelheid verrast bezoekers.", "effect": {"xp": 230, "budget": -180, "security": 10, "stakeholderImpact": 25, "hp": 0}, "region": "Digital Portal", "difficulty": 3}, {"id": "Q093", "title": "Progressive Web App", "description": "Verhef de portal tot Progressive Web App; offline werken en push-notifications ontgrendeld.", "effect": {"xp": 200, "budget": -140, "security": 10, "stakeholderImpact": 20, "hp": 0}, "region": "Digital Portal", "difficulty": 3}, {"id": "Q094", "title": "BFF Patroonwever", "description": "Weef Backend-for-Frontend-patronen door de Integration Bridge; elke client krijgt eigen API.", "effect": {"xp": 220, "budget": -140, "security": 10, "stakeholderImpact": 15, "hp": 0}, "region": "Integration Bridge", "difficulty": 3}, {"id": "Q095", "title": "Saga Orchestratie", "description": "Orchestreer de saga tussen microservices; compenserende transacties redden consistentie.", "effect": {"xp": 260, "budget": -180, "security": 10, "stakeholderImpact": 10, "hp": -10}, "region": "Integration Bridge", "difficulty": 4}, {"id": "Q096", "title": "EDI Legacy Brug", "description": "Overbrug de oude EDI-legacy met een modern iPaaS; handel met partners blijft ongestoord.", "effect": {"xp": 180, "budget": -120, "security": 5, "stakeholderImpact": 15, "hp": -5}, "region": "Integration Bridge", "difficulty": 3}, {"id": "Q097", "title": "Legacy Refactor Duel", "description": "Duel met een spaghetti-monoliet; strangler-fig patroon wurgt hem stukje bij beetje.", "effect": {"xp": 290, "budget": -220, "security": 10, "stakeholderImpact": 5, "hp": -20}, "region": "Legacy Dungeon", "difficulty": 5}, {"id": "Q098", "title": "Mainframe Verkenning", "description": "Verken de mainframe-catacomben; JCL-manuscripten leiden naar vergeten batchprocessen.", "effect": {"xp": 170, "budget": -60, "security": 5, "stakeholderImpact": 5, "hp": -10}, "region": "Legacy Dungeon", "difficulty": 3}, {"id": "Q099", "title": "Marktplaats Beoordeling", "description": "Doorkruis de Vendor Market op zoek naar iPaaS; drie leveranciers demonstreren hun wonderen.", "effect": {"xp": 160, "budget": -40, "security": 5, "stakeholderImpact": 10, "hp": 0}, "region": "Vendor Market", "difficulty": 2}, {"id": "Q100", "title": "CMMI Volwassenheid", "description": "Beklim de CMMI-ladder van niveau 2 naar 3; processen worden meetbaar en herhaalbaar.", "effect": {"xp": 240, "budget": -180, "security": 10, "stakeholderImpact": 20, "hp": -5}, "region": "Business Village", "difficulty": 4}];
+const CONTENT_CHAOS = [{"id": "C001", "title": "Budget Bevroren", "description": "De CFO bevriest per direct alle IT-budgetten wegens tegenvallende kwartaalcijfers.", "effect": {"xp": 0, "budget": -300, "security": 0, "stakeholderImpact": -10, "hp": -10, "chaos": 10}, "severity": 3}, {"id": "C002", "title": "Ransomware-aanval", "description": "Een ransomware-groep versleutelt kritieke fileshares. Losgeld gevraagd in Bitcoin.", "effect": {"xp": 5, "budget": -500, "security": -40, "stakeholderImpact": -25, "hp": -50, "chaos": 25}, "severity": 5}, {"id": "C003", "title": "NIS2-deadline Nadert", "description": "De NIS2-richtlijn wordt actief geimplementeerd. Compliance-gap ontdekt.", "effect": {"xp": 10, "budget": -400, "security": -20, "stakeholderImpact": -15, "hp": -20, "chaos": 15}, "severity": 4}, {"id": "C004", "title": "DORA-audit", "description": "De DORA-toezichthouder eist bewijs van operationele veerkracht binnen 30 dagen.", "effect": {"xp": 10, "budget": -350, "security": -15, "stakeholderImpact": -10, "hp": -15, "chaos": 15}, "severity": 4}, {"id": "C005", "title": "AI Act Compliance-schok", "description": "Je high-risk AI-systeem valt onder de EU AI Act. Documentatie ontbreekt.", "effect": {"xp": 15, "budget": -300, "security": -10, "stakeholderImpact": -15, "hp": -20, "chaos": 15}, "severity": 4}, {"id": "C006", "title": "CEO Wisselt Strategie", "description": "De CEO kondigt een pivot aan. Alle lopende roadmaps zijn achterhaald.", "effect": {"xp": 5, "budget": -200, "security": 0, "stakeholderImpact": -20, "hp": -25, "chaos": 20}, "severity": 4}, {"id": "C007", "title": "Key-Architect Vertrekt", "description": "Je senior architect neemt ontslag en gaat naar de concurrent.", "effect": {"xp": 0, "budget": -150, "security": -10, "stakeholderImpact": -15, "hp": -30, "chaos": 15}, "severity": 4}, {"id": "C008", "title": "Legacy-server Crasht", "description": "De mainframe uit 1998 stort in. Niemand herinnert zich het root-wachtwoord.", "effect": {"xp": 5, "budget": -250, "security": -15, "stakeholderImpact": -20, "hp": -25, "chaos": 15}, "severity": 4}, {"id": "C009", "title": "Cloud-provider Storing", "description": "AWS eu-west-1 ligt eruit. Multi-region setup ontbreekt.", "effect": {"xp": 5, "budget": -100, "security": 0, "stakeholderImpact": -20, "hp": -20, "chaos": 15}, "severity": 3}, {"id": "C010", "title": "Shadow IT Ontdekt", "description": "Marketing draait al een jaar een niet-goedgekeurde SaaS met klantdata.", "effect": {"xp": 10, "budget": -150, "security": -25, "stakeholderImpact": -10, "hp": -15, "chaos": 15}, "severity": 3}, {"id": "C011", "title": "Data-lek Gepubliceerd", "description": "50.000 klantrecords verschijnen op een dark-web forum.", "effect": {"xp": 10, "budget": -450, "security": -35, "stakeholderImpact": -25, "hp": -40, "chaos": 25}, "severity": 5}, {"id": "C012", "title": "Audit Failure", "description": "ISO 27001 audit faalt op 12 controls. Recertificering in gevaar.", "effect": {"xp": 5, "budget": -300, "security": -20, "stakeholderImpact": -20, "hp": -25, "chaos": 15}, "severity": 4}, {"id": "C013", "title": "Vendor Gaat Failliet", "description": "Je kritieke SaaS-leverancier vraagt surseance van betaling aan.", "effect": {"xp": 5, "budget": -400, "security": -10, "stakeholderImpact": -15, "hp": -30, "chaos": 20}, "severity": 4}, {"id": "C014", "title": "Security-incident P1", "description": "SOC meldt actieve intrusion. Incident response teams staan paraat.", "effect": {"xp": 15, "budget": -250, "security": -30, "stakeholderImpact": -15, "hp": -35, "chaos": 20}, "severity": 5}, {"id": "C015", "title": "Kubernetes-cluster Corrupt", "description": "etcd-corruptie legt productie-cluster plat. Backup te oud.", "effect": {"xp": 10, "budget": -200, "security": -10, "stakeholderImpact": -20, "hp": -30, "chaos": 15}, "severity": 4}, {"id": "C016", "title": "DDoS-aanval", "description": "1.2 Tbps volumetrische aanval bereikt je edge-routers. Cloudflare bibbert.", "effect": {"xp": 5, "budget": -150, "security": -15, "stakeholderImpact": -15, "hp": -25, "chaos": 15}, "severity": 4}, {"id": "C017", "title": "Insider Threat", "description": "Een systeembeheerder blijkt data naar de concurrent te sluizen.", "effect": {"xp": 10, "budget": -200, "security": -30, "stakeholderImpact": -20, "hp": -30, "chaos": 20}, "severity": 5}, {"id": "C018", "title": "Dependency CVE 9.8", "description": "Kritieke RCE in een populaire NPM-package. 400 microservices geraakt.", "effect": {"xp": 15, "budget": -150, "security": -25, "stakeholderImpact": -10, "hp": -20, "chaos": 15}, "severity": 4}, {"id": "C019", "title": "Licentie-explosie", "description": "Oracle audit rekent 3x overshoot van CPU-licenties.", "effect": {"xp": 0, "budget": -500, "security": 0, "stakeholderImpact": -10, "hp": -20, "chaos": 10}, "severity": 4}, {"id": "C020", "title": "SLA Breach", "description": "Downtime overschrijdt SLA. Klanten eisen penalty-uitkeringen.", "effect": {"xp": 5, "budget": -300, "security": 0, "stakeholderImpact": -25, "hp": -25, "chaos": 15}, "severity": 4}, {"id": "C021", "title": "GDPR Boete", "description": "Autoriteit Persoonsgegevens legt boete van 4% jaaromzet op.", "effect": {"xp": 5, "budget": -500, "security": -10, "stakeholderImpact": -20, "hp": -30, "chaos": 20}, "severity": 5}, {"id": "C022", "title": "Certificaat Verlopen", "description": "Wildcard-TLS expired om 03:00. Iedere API roept om oma.", "effect": {"xp": 5, "budget": -50, "security": -10, "stakeholderImpact": -15, "hp": -15, "chaos": 10}, "severity": 2}, {"id": "C023", "title": "Domain Hijack", "description": "Registrar-account gecompromitteerd. Domein wijst naar phishing-site.", "effect": {"xp": 10, "budget": -200, "security": -30, "stakeholderImpact": -20, "hp": -25, "chaos": 20}, "severity": 5}, {"id": "C024", "title": "Backup Corrupt", "description": "Restore-test faalt. Laatste 3 maanden backups zijn onbruikbaar.", "effect": {"xp": 10, "budget": -250, "security": -20, "stakeholderImpact": -15, "hp": -30, "chaos": 20}, "severity": 4}, {"id": "C025", "title": "Phishing Sweep", "description": "40% van je medewerkers klikt op de simulatie. Waarschijnlijk hoger in echt.", "effect": {"xp": 10, "budget": -100, "security": -20, "stakeholderImpact": -10, "hp": -15, "chaos": 10}, "severity": 3}, {"id": "C026", "title": "Log4Shell 2.0", "description": "Nieuwe zero-day in ubiquitous logging-lib. Patch-treadmill start weer.", "effect": {"xp": 15, "budget": -200, "security": -30, "stakeholderImpact": -10, "hp": -25, "chaos": 20}, "severity": 5}, {"id": "C027", "title": "Interne Reorg", "description": "IT-afdeling wordt gesplitst. Team-topologieen door de shredder.", "effect": {"xp": 5, "budget": -150, "security": -5, "stakeholderImpact": -25, "hp": -25, "chaos": 20}, "severity": 4}, {"id": "C028", "title": "M&A Aangekondigd", "description": "Bedrijf wordt overgenomen. Applicatielandschap moet integreren.", "effect": {"xp": 15, "budget": -300, "security": -10, "stakeholderImpact": -20, "hp": -30, "chaos": 20}, "severity": 5}, {"id": "C029", "title": "Legacy COBOL Batch Faalt", "description": "Nachtelijke batch stopt op record 27.394. Niemand kent de code.", "effect": {"xp": 5, "budget": -150, "security": -5, "stakeholderImpact": -15, "hp": -20, "chaos": 15}, "severity": 3}, {"id": "C030", "title": "Vendor Lock-in Ontdekt", "description": "Exit-clausule blijkt onbestaand. Migratie kost fortuin.", "effect": {"xp": 5, "budget": -400, "security": 0, "stakeholderImpact": -15, "hp": -20, "chaos": 15}, "severity": 4}, {"id": "C031", "title": "Compliance-officer Vertrekt", "description": "De CISO neemt ontslag midden in audit-seizoen.", "effect": {"xp": 0, "budget": -100, "security": -20, "stakeholderImpact": -15, "hp": -25, "chaos": 15}, "severity": 4}, {"id": "C032", "title": "Datacenter Waterschade", "description": "Airco-lek in DC-2 zet 40 racks onder water.", "effect": {"xp": 5, "budget": -450, "security": -10, "stakeholderImpact": -20, "hp": -35, "chaos": 20}, "severity": 5}, {"id": "C033", "title": "Supply Chain Attack", "description": "Kwaadaardige update via CI/CD-pipeline vendor.", "effect": {"xp": 15, "budget": -350, "security": -35, "stakeholderImpact": -15, "hp": -35, "chaos": 25}, "severity": 5}, {"id": "C034", "title": "SaaS Prijsverhoging 40%", "description": "Marktleider verdrievoudigt licentiekosten na acquisitie.", "effect": {"xp": 0, "budget": -400, "security": 0, "stakeholderImpact": -10, "hp": -15, "chaos": 10}, "severity": 3}, {"id": "C035", "title": "Pentest Vernietigend", "description": "Red team wandelt binnen 2 uur naar Domain Admin.", "effect": {"xp": 15, "budget": -250, "security": -30, "stakeholderImpact": -15, "hp": -25, "chaos": 15}, "severity": 4}, {"id": "C036", "title": "Klantopstand", "description": "Grootste klant dreigt met opzegging vanwege performance-issues.", "effect": {"xp": 5, "budget": -300, "security": 0, "stakeholderImpact": -25, "hp": -30, "chaos": 20}, "severity": 4}, {"id": "C037", "title": "Legacy API Deprecated", "description": "Externe partner trekt v1 API in. 200 integraties breken.", "effect": {"xp": 10, "budget": -200, "security": -10, "stakeholderImpact": -15, "hp": -20, "chaos": 15}, "severity": 3}, {"id": "C038", "title": "Kabel Doorgegraven", "description": "Bouwvakker raakt fiberpaar. Datacenter geisoleerd 8 uur.", "effect": {"xp": 5, "budget": -150, "security": -5, "stakeholderImpact": -20, "hp": -20, "chaos": 15}, "severity": 3}, {"id": "C039", "title": "Onthullende Bloomberg-artikel", "description": "Journalist publiceert lek over interne security-praktijken.", "effect": {"xp": 5, "budget": -200, "security": -15, "stakeholderImpact": -25, "hp": -30, "chaos": 20}, "severity": 5}, {"id": "C040", "title": "Storage Array Failure", "description": "SAN-controller crasht met dubbele disk-failure. Rebuild loopt vast.", "effect": {"xp": 10, "budget": -300, "security": -10, "stakeholderImpact": -20, "hp": -30, "chaos": 20}, "severity": 4}, {"id": "C041", "title": "OT/IT Convergence-incident", "description": "Malware springt van kantoornetwerk naar productielijn.", "effect": {"xp": 15, "budget": -400, "security": -30, "stakeholderImpact": -20, "hp": -35, "chaos": 25}, "severity": 5}, {"id": "C042", "title": "Quantum-hype Board-vraag", "description": "Board eist quantum-safe roadmap binnen 60 dagen.", "effect": {"xp": 20, "budget": -200, "security": -5, "stakeholderImpact": -10, "hp": -15, "chaos": 10}, "severity": 3}, {"id": "C043", "title": "Public Cloud Kostenpiek", "description": "Ongebreidelde spend: maandbudget verdriedubbelt door runaway job.", "effect": {"xp": 5, "budget": -450, "security": 0, "stakeholderImpact": -15, "hp": -25, "chaos": 15}, "severity": 4}, {"id": "C044", "title": "AD Domain Compromis", "description": "Golden ticket detected. Volledige AD-rebuild noodzakelijk.", "effect": {"xp": 15, "budget": -400, "security": -35, "stakeholderImpact": -20, "hp": -40, "chaos": 25}, "severity": 5}, {"id": "C045", "title": "OSS-license Violation", "description": "AGPL-code in commercieel product. Copyleft-clan komt langs.", "effect": {"xp": 10, "budget": -350, "security": 0, "stakeholderImpact": -15, "hp": -25, "chaos": 15}, "severity": 4}, {"id": "C046", "title": "Stroomstoring", "description": "Regionale black-out. UPS houdt 12 minuten. Generator start niet.", "effect": {"xp": 5, "budget": -200, "security": -5, "stakeholderImpact": -20, "hp": -30, "chaos": 20}, "severity": 4}, {"id": "C047", "title": "Documentatie Ontbreekt", "description": "Nieuwe medewerker vindt geen enkele architectuurbeschrijving.", "effect": {"xp": 5, "budget": -100, "security": -10, "stakeholderImpact": -10, "hp": -15, "chaos": 10}, "severity": 2}, {"id": "C048", "title": "Legacy-integratie Breekt", "description": "ESB-adapter uit 2007 stopt met werken na TLS 1.0-uitfasering.", "effect": {"xp": 5, "budget": -200, "security": -10, "stakeholderImpact": -15, "hp": -20, "chaos": 15}, "severity": 3}, {"id": "C049", "title": "Twee Architecten Ruzien", "description": "Micro vs Modulith debat blokkeert alle beslissingen.", "effect": {"xp": 5, "budget": -100, "security": -5, "stakeholderImpact": -15, "hp": -20, "chaos": 15}, "severity": 3}, {"id": "C050", "title": "IoT-fleet Gehackt", "description": "300.000 smart-devices ingezet in botnet. Aansprakelijkheid dreigt.", "effect": {"xp": 15, "budget": -400, "security": -35, "stakeholderImpact": -25, "hp": -40, "chaos": 25}, "severity": 5}];
+const CONTENT_ARTIFACTS = [{"id": "A001", "title": "TOGAF Scroll", "description": "Een vergeeld perkament met de ADM-cyclus in gouden runen. Wijst de dwalende architect de weg.", "passiveEffect": {"attackBonus": 1, "defenseBonus": 1, "xpMultiplier": 1.1, "budgetPerTurn": 0, "securityBonus": 0, "chaosResist": 0}, "rarity": "common", "slot": "scroll"}, {"id": "A002", "title": "Architecture Compass", "description": "Een messing kompas dat altijd naar de business capability wijst.", "passiveEffect": {"attackBonus": 0, "defenseBonus": 2, "xpMultiplier": 1.0, "budgetPerTurn": 0, "securityBonus": 0, "chaosResist": 5}, "rarity": "common", "slot": "compass"}, {"id": "A003", "title": "Cloud Crystal", "description": "Een pulserende kristallen bol vol nevelige VMs. Schaalt vanzelf.", "passiveEffect": {"attackBonus": 1, "defenseBonus": 0, "xpMultiplier": 1.0, "budgetPerTurn": 20, "securityBonus": 0, "chaosResist": 0}, "rarity": "common", "slot": "crystal"}, {"id": "A004", "title": "Security Shield", "description": "Beukelaar van gehard staal met OWASP-runen.", "passiveEffect": {"attackBonus": 0, "defenseBonus": 3, "xpMultiplier": 1.0, "budgetPerTurn": 0, "securityBonus": 10, "chaosResist": 0}, "rarity": "common", "slot": "armor"}, {"id": "A005", "title": "API Sword", "description": "Rank REST-blade, snijdt door monolieten alsof het boter is.", "passiveEffect": {"attackBonus": 3, "defenseBonus": 0, "xpMultiplier": 1.0, "budgetPerTurn": 0, "securityBonus": 0, "chaosResist": 0}, "rarity": "common", "slot": "weapon"}, {"id": "A006", "title": "ArchiMate Amulet", "description": "Zilveren medaillon dat business, application en technology triple in stand houdt.", "passiveEffect": {"attackBonus": 1, "defenseBonus": 1, "xpMultiplier": 1.1, "budgetPerTurn": 0, "securityBonus": 0, "chaosResist": 0}, "rarity": "common", "slot": "scroll"}, {"id": "A007", "title": "Sprint Sceptre", "description": "Ceremoniele scepter waarmee je burndown-charts kunt ombuigen.", "passiveEffect": {"attackBonus": 2, "defenseBonus": 0, "xpMultiplier": 1.05, "budgetPerTurn": 0, "securityBonus": 0, "chaosResist": 0}, "rarity": "common", "slot": "weapon"}, {"id": "A008", "title": "Firewall Vest", "description": "Kevlar-vest doorweven met iptables-regels.", "passiveEffect": {"attackBonus": 0, "defenseBonus": 2, "xpMultiplier": 1.0, "budgetPerTurn": 0, "securityBonus": 8, "chaosResist": 0}, "rarity": "common", "slot": "armor"}, {"id": "A009", "title": "Runbook Codex", "description": "Verzegeld boek met noodprocedures. Opent zichzelf tijdens incidenten.", "passiveEffect": {"attackBonus": 0, "defenseBonus": 1, "xpMultiplier": 1.0, "budgetPerTurn": 0, "securityBonus": 0, "chaosResist": 8}, "rarity": "common", "slot": "scroll"}, {"id": "A010", "title": "Docker Dagger", "description": "Handzame dolk die alles containeriseert wat hij snijdt.", "passiveEffect": {"attackBonus": 2, "defenseBonus": 1, "xpMultiplier": 1.0, "budgetPerTurn": 0, "securityBonus": 0, "chaosResist": 0}, "rarity": "common", "slot": "weapon"}, {"id": "A011", "title": "Git Grimoire", "description": "Boek waarin elke handeling herroepen kan worden door een simpele reset.", "passiveEffect": {"attackBonus": 1, "defenseBonus": 1, "xpMultiplier": 1.1, "budgetPerTurn": 0, "securityBonus": 0, "chaosResist": 5}, "rarity": "common", "slot": "scroll"}, {"id": "A012", "title": "Ansible Amulet", "description": "Sluier met playbooks die vanzelf uitrollen op iedere node.", "passiveEffect": {"attackBonus": 1, "defenseBonus": 1, "xpMultiplier": 1.0, "budgetPerTurn": 15, "securityBonus": 0, "chaosResist": 0}, "rarity": "common", "slot": "scroll"}, {"id": "A013", "title": "Bronze Kanban Board", "description": "Verweerd houten bord waarop taken vanzelf naar Done schuiven.", "passiveEffect": {"attackBonus": 0, "defenseBonus": 1, "xpMultiplier": 1.05, "budgetPerTurn": 10, "securityBonus": 0, "chaosResist": 0}, "rarity": "common", "slot": "compass"}, {"id": "A014", "title": "Grafana Goggles", "description": "Bril die metrics als sterrenbeelden laat zien.", "passiveEffect": {"attackBonus": 1, "defenseBonus": 1, "xpMultiplier": 1.0, "budgetPerTurn": 0, "securityBonus": 0, "chaosResist": 5}, "rarity": "common", "slot": "armor"}, {"id": "A015", "title": "Postman Papyrus", "description": "Rol met beproefde requests uit vervlogen tijden.", "passiveEffect": {"attackBonus": 1, "defenseBonus": 0, "xpMultiplier": 1.05, "budgetPerTurn": 0, "securityBonus": 0, "chaosResist": 0}, "rarity": "common", "slot": "scroll"}, {"id": "A016", "title": "Backup Belt", "description": "Riem vol snapshot-flesjes. Trekt tijd terug bij nood.", "passiveEffect": {"attackBonus": 0, "defenseBonus": 2, "xpMultiplier": 1.0, "budgetPerTurn": 0, "securityBonus": 5, "chaosResist": 8}, "rarity": "common", "slot": "armor"}, {"id": "A017", "title": "Retro Runes", "description": "Set stenen voor postmortems, spreekt de waarheid over incidenten.", "passiveEffect": {"attackBonus": 0, "defenseBonus": 1, "xpMultiplier": 1.1, "budgetPerTurn": 0, "securityBonus": 0, "chaosResist": 5}, "rarity": "common", "slot": "scroll"}, {"id": "A018", "title": "Slack Bell", "description": "Rinkelklok die alleen betekenisvolle notificaties doorlaat.", "passiveEffect": {"attackBonus": 0, "defenseBonus": 1, "xpMultiplier": 1.0, "budgetPerTurn": 0, "securityBonus": 0, "chaosResist": 5}, "rarity": "common", "slot": "compass"}, {"id": "A019", "title": "Wiki Wand", "description": "Toverstaf die pagina's schrijft, mits je metadata invult.", "passiveEffect": {"attackBonus": 1, "defenseBonus": 0, "xpMultiplier": 1.1, "budgetPerTurn": 0, "securityBonus": 0, "chaosResist": 0}, "rarity": "common", "slot": "weapon"}, {"id": "A020", "title": "Standup Staff", "description": "Wandelstok die time-boxing afdwingt bij dagelijkse rituelen.", "passiveEffect": {"attackBonus": 1, "defenseBonus": 1, "xpMultiplier": 1.05, "budgetPerTurn": 0, "securityBonus": 0, "chaosResist": 0}, "rarity": "common", "slot": "weapon"}, {"id": "A021", "title": "DDD Codex", "description": "Zwaar leren boek met bounded contexts. Slaat monolieten uit elkaar.", "passiveEffect": {"attackBonus": 3, "defenseBonus": 2, "xpMultiplier": 1.15, "budgetPerTurn": 0, "securityBonus": 0, "chaosResist": 5}, "rarity": "rare", "slot": "scroll"}, {"id": "A022", "title": "Terraform Talisman", "description": "Kristal dat infrastructuur uit gedachten schept. HCL flonkert eruit.", "passiveEffect": {"attackBonus": 2, "defenseBonus": 2, "xpMultiplier": 1.1, "budgetPerTurn": 30, "securityBonus": 0, "chaosResist": 5}, "rarity": "rare", "slot": "crystal"}, {"id": "A023", "title": "ADM Cycle Ring", "description": "Ring met 8 fasen. Draait onophoudelijk mee met je programma.", "passiveEffect": {"attackBonus": 2, "defenseBonus": 2, "xpMultiplier": 1.15, "budgetPerTurn": 0, "securityBonus": 5, "chaosResist": 5}, "rarity": "rare", "slot": "scroll"}, {"id": "A024", "title": "Capability Map Grimoire", "description": "Kaart die verborgen business-capabilities onthult bij aanraking.", "passiveEffect": {"attackBonus": 1, "defenseBonus": 2, "xpMultiplier": 1.2, "budgetPerTurn": 0, "securityBonus": 0, "chaosResist": 0}, "rarity": "rare", "slot": "compass"}, {"id": "A025", "title": "SIEM Sentinel", "description": "Bewakende steenreus met duizend ogen en Splunk-runen.", "passiveEffect": {"attackBonus": 1, "defenseBonus": 3, "xpMultiplier": 1.0, "budgetPerTurn": 0, "securityBonus": 15, "chaosResist": 10}, "rarity": "rare", "slot": "armor"}, {"id": "A026", "title": "GraphQL Gauntlet", "description": "Handschoen die precies grijpt wat gevraagd wordt, niets meer.", "passiveEffect": {"attackBonus": 3, "defenseBonus": 1, "xpMultiplier": 1.1, "budgetPerTurn": 0, "securityBonus": 0, "chaosResist": 0}, "rarity": "rare", "slot": "weapon"}, {"id": "A027", "title": "Chaos Monkey Cage", "description": "Kooi met tam gemaakt oerbeest. Test veerkracht van je systeem.", "passiveEffect": {"attackBonus": 2, "defenseBonus": 2, "xpMultiplier": 1.1, "budgetPerTurn": 0, "securityBonus": 5, "chaosResist": 15}, "rarity": "rare", "slot": "crystal"}, {"id": "A028", "title": "Event-storming Chalk", "description": "Krijt dat domeinevents op iedere muur tovert.", "passiveEffect": {"attackBonus": 2, "defenseBonus": 1, "xpMultiplier": 1.2, "budgetPerTurn": 0, "securityBonus": 0, "chaosResist": 5}, "rarity": "rare", "slot": "scroll"}, {"id": "A029", "title": "Service Mesh Mantle", "description": "Mantel doorweven met Istio-draden. Regelt verkeer tussen goden.", "passiveEffect": {"attackBonus": 1, "defenseBonus": 3, "xpMultiplier": 1.05, "budgetPerTurn": 0, "securityBonus": 10, "chaosResist": 10}, "rarity": "rare", "slot": "armor"}, {"id": "A030", "title": "OKR Obelisk", "description": "Miniatuur granieten zuil die doelen richt en resultaten meet.", "passiveEffect": {"attackBonus": 1, "defenseBonus": 1, "xpMultiplier": 1.25, "budgetPerTurn": 20, "securityBonus": 0, "chaosResist": 0}, "rarity": "rare", "slot": "compass"}, {"id": "A031", "title": "CI/CD Chariot", "description": "Miniwagen die je code van commit tot prod voert in seconden.", "passiveEffect": {"attackBonus": 3, "defenseBonus": 1, "xpMultiplier": 1.15, "budgetPerTurn": 25, "securityBonus": 0, "chaosResist": 0}, "rarity": "rare", "slot": "weapon"}, {"id": "A032", "title": "Observability Orb", "description": "Kristallen bol met traces, logs en metrics in eeuwig ballet.", "passiveEffect": {"attackBonus": 2, "defenseBonus": 2, "xpMultiplier": 1.1, "budgetPerTurn": 0, "securityBonus": 5, "chaosResist": 10}, "rarity": "rare", "slot": "crystal"}, {"id": "A033", "title": "SRE Rulebook", "description": "Boek met error budgets en SLO's. Weegt zwaarder dan het lijkt.", "passiveEffect": {"attackBonus": 1, "defenseBonus": 3, "xpMultiplier": 1.15, "budgetPerTurn": 0, "securityBonus": 5, "chaosResist": 5}, "rarity": "rare", "slot": "scroll"}, {"id": "A034", "title": "PKI Pendant", "description": "Kettinghanger met eeuwig-frisse certificaten.", "passiveEffect": {"attackBonus": 1, "defenseBonus": 2, "xpMultiplier": 1.0, "budgetPerTurn": 0, "securityBonus": 15, "chaosResist": 5}, "rarity": "rare", "slot": "scroll"}, {"id": "A035", "title": "Refactor Rapier", "description": "Elegant zwaard dat legacy-schulden doorklieft zonder tests te breken.", "passiveEffect": {"attackBonus": 4, "defenseBonus": 1, "xpMultiplier": 1.1, "budgetPerTurn": 0, "securityBonus": 0, "chaosResist": 0}, "rarity": "rare", "slot": "weapon"}, {"id": "A036", "title": "Kubernetes Kraken-slayer", "description": "Harpoen die corrupte pods vangt en gracieus opnieuw laat baren.", "passiveEffect": {"attackBonus": 4, "defenseBonus": 2, "xpMultiplier": 1.15, "budgetPerTurn": 0, "securityBonus": 5, "chaosResist": 10}, "rarity": "epic", "slot": "weapon"}, {"id": "A037", "title": "Zero-Trust Aegis", "description": "Legendarisch schild dat elke request opnieuw verifieert.", "passiveEffect": {"attackBonus": 1, "defenseBonus": 5, "xpMultiplier": 1.1, "budgetPerTurn": 0, "securityBonus": 25, "chaosResist": 15}, "rarity": "epic", "slot": "armor"}, {"id": "A038", "title": "Golden Roadmap", "description": "Roadmap in bladgoud die de weg naar de volgende target-state toont.", "passiveEffect": {"attackBonus": 2, "defenseBonus": 2, "xpMultiplier": 1.3, "budgetPerTurn": 40, "securityBonus": 0, "chaosResist": 10}, "rarity": "epic", "slot": "compass"}, {"id": "A039", "title": "Event-driven Aegis", "description": "Schild dat elke boodschap opvangt en asynchroon retourneert.", "passiveEffect": {"attackBonus": 2, "defenseBonus": 4, "xpMultiplier": 1.15, "budgetPerTurn": 0, "securityBonus": 10, "chaosResist": 15}, "rarity": "epic", "slot": "armor"}, {"id": "A040", "title": "SBOM Chalice", "description": "Kelk vol supply-chain waarheden. Toont elke afhankelijkheid.", "passiveEffect": {"attackBonus": 2, "defenseBonus": 3, "xpMultiplier": 1.1, "budgetPerTurn": 0, "securityBonus": 20, "chaosResist": 15}, "rarity": "epic", "slot": "crystal"}, {"id": "A041", "title": "Enterprise Continuum Cape", "description": "Mantel die abstract en concreet tegelijk drapeert.", "passiveEffect": {"attackBonus": 3, "defenseBonus": 3, "xpMultiplier": 1.25, "budgetPerTurn": 0, "securityBonus": 5, "chaosResist": 10}, "rarity": "epic", "slot": "armor"}, {"id": "A042", "title": "Domain Language Lexicon", "description": "Woordenboek dat ubiquitous language afdwingt in elk gesprek.", "passiveEffect": {"attackBonus": 3, "defenseBonus": 2, "xpMultiplier": 1.3, "budgetPerTurn": 0, "securityBonus": 0, "chaosResist": 5}, "rarity": "epic", "slot": "scroll"}, {"id": "A043", "title": "FinOps Ledger", "description": "Grootboek dat cloud-spend bijhoudt en verspilling laat oplichten.", "passiveEffect": {"attackBonus": 2, "defenseBonus": 2, "xpMultiplier": 1.1, "budgetPerTurn": 60, "securityBonus": 0, "chaosResist": 5}, "rarity": "epic", "slot": "scroll"}, {"id": "A044", "title": "Data Mesh Trident", "description": "Drietand met data-products aan iedere punt.", "passiveEffect": {"attackBonus": 4, "defenseBonus": 2, "xpMultiplier": 1.2, "budgetPerTurn": 20, "securityBonus": 5, "chaosResist": 5}, "rarity": "epic", "slot": "weapon"}, {"id": "A045", "title": "Business Model Canvas Cloak", "description": "Cape met 9 vakken die value proposition zichtbaar maakt.", "passiveEffect": {"attackBonus": 2, "defenseBonus": 3, "xpMultiplier": 1.25, "budgetPerTurn": 25, "securityBonus": 0, "chaosResist": 5}, "rarity": "epic", "slot": "armor"}, {"id": "A046", "title": "Leadership Crown", "description": "Kroon van de Chief Architect. Stakeholders buigen vanzelf mee.", "passiveEffect": {"attackBonus": 3, "defenseBonus": 3, "xpMultiplier": 1.4, "budgetPerTurn": 75, "securityBonus": 10, "chaosResist": 20}, "rarity": "legendary", "slot": "crown"}, {"id": "A047", "title": "The Architect's Eye", "description": "Alziend oog dat elke abstractie-laag doorziet. Geeft ware inzichten.", "passiveEffect": {"attackBonus": 5, "defenseBonus": 5, "xpMultiplier": 1.5, "budgetPerTurn": 50, "securityBonus": 20, "chaosResist": 25}, "rarity": "legendary", "slot": "crystal"}, {"id": "A048", "title": "Excalibur of Enterprise Architecture", "description": "Het eeuwige zwaard van EA. Alleen wie visie heeft kan het trekken.", "passiveEffect": {"attackBonus": 8, "defenseBonus": 3, "xpMultiplier": 1.4, "budgetPerTurn": 30, "securityBonus": 10, "chaosResist": 15}, "rarity": "legendary", "slot": "weapon"}, {"id": "A049", "title": "Grand Enterprise Compass", "description": "Kompas van pure obsidiaan dat noord, zuid, business en tech samensnoert.", "passiveEffect": {"attackBonus": 4, "defenseBonus": 4, "xpMultiplier": 1.5, "budgetPerTurn": 60, "securityBonus": 15, "chaosResist": 30}, "rarity": "legendary", "slot": "compass"}, {"id": "A050", "title": "Codex of the Ancients", "description": "Verzameld werk van Zachman, TOGAF, ArchiMate en DDD in een enkel foliant.", "passiveEffect": {"attackBonus": 5, "defenseBonus": 5, "xpMultiplier": 1.6, "budgetPerTurn": 40, "securityBonus": 15, "chaosResist": 25}, "rarity": "legendary", "slot": "scroll"}];
+const CONTENT_EVENTS = [{"id": "E001", "title": "Board-vergadering", "description": "De Raad van Bestuur eist een 15-minuten pitch over je roadmap.", "effect": {}, "choices": [{"label": "Visieverhaal met heldere metaforen", "effect": {"xp": 20, "stakeholderImpact": 15, "hp": -5, "chaos": 0}}, {"label": "Feitelijke slide-deck met KPI's", "effect": {"xp": 10, "stakeholderImpact": 5, "budget": 100, "chaos": 0}}]}, {"id": "E002", "title": "RFI van Vendor", "description": "Vendor stuurt uitgebreide Request For Information. Deadline: vrijdag.", "effect": {"xp": 5, "stakeholderImpact": 0, "budget": -20, "chaos": 5}}, {"id": "E003", "title": "RFP-tender Aankondiging", "description": "Grote publieke tender wordt uitgeschreven waar jouw bedrijf aan mee kan doen.", "effect": {}, "choices": [{"label": "Meedoen (kost tijd, kans op deal)", "effect": {"xp": 25, "budget": -200, "stakeholderImpact": 10, "chaos": 10}}, {"label": "Overslaan (focus behouden)", "effect": {"xp": 5, "budget": 0, "stakeholderImpact": -5, "chaos": -5}}]}, {"id": "E004", "title": "Interne Hackathon", "description": "48 uur pizza, koffie en creatieve chaos.", "effect": {"xp": 20, "stakeholderImpact": 10, "hp": -10, "chaos": 5}}, {"id": "E005", "title": "TOGAF Summit", "description": "Uitnodiging voor internationaal EA-congres. Ticket kost geld, netwerk is goud.", "effect": {}, "choices": [{"label": "Zelf gaan", "effect": {"xp": 30, "budget": -250, "stakeholderImpact": 5, "chaos": 0}}, {"label": "Junior sturen", "effect": {"xp": 10, "budget": -150, "stakeholderImpact": 10, "chaos": 0}}]}, {"id": "E006", "title": "DevSecCon Conferentie", "description": "3 dagen security-talks. Slides worden gedeeld.", "effect": {"xp": 15, "security": 10, "budget": -150, "chaos": 0}}, {"id": "E007", "title": "Architecture Review Board", "description": "ARB moet 3 solution designs beoordelen.", "effect": {}, "choices": [{"label": "Streng, alles wordt afgekeurd", "effect": {"xp": 15, "stakeholderImpact": -15, "security": 10, "chaos": 5}}, {"label": "Coachend, alles wordt goedgekeurd", "effect": {"xp": 5, "stakeholderImpact": 15, "security": -5, "chaos": 10}}]}, {"id": "E008", "title": "Mentor Ontmoet", "description": "Op een borrel spreek je een gepensioneerd Chief Architect.", "effect": {"xp": 25, "stakeholderImpact": 5, "chaosResist": 5, "chaos": 0}}, {"id": "E009", "title": "Junior Team-lid", "description": "Nieuwe junior wil graag begeleid worden.", "effect": {}, "choices": [{"label": "Investeer tijd in mentoring", "effect": {"xp": 15, "budget": -50, "stakeholderImpact": 10, "chaos": -5}}, {"label": "Verwijs door naar HR-programma", "effect": {"xp": 5, "budget": 0, "stakeholderImpact": -5, "chaos": 5}}]}, {"id": "E010", "title": "Tech-radar Update", "description": "Nieuwe Thoughtworks tech-radar publicatie beweegt de discussie.", "effect": {"xp": 10, "stakeholderImpact": 0, "chaos": 5}}, {"id": "E011", "title": "Pilot vs POC", "description": "Team vraagt: gaan we voor een pilot of een POC?", "effect": {}, "choices": [{"label": "Pilot: kleiner, korter, minder budget", "effect": {"xp": 15, "budget": -100, "stakeholderImpact": 5, "chaos": 0}}, {"label": "POC: groter, langer, meer inzicht", "effect": {"xp": 25, "budget": -300, "stakeholderImpact": 10, "chaos": 10}}]}, {"id": "E012", "title": "Buy-vs-Build Dilemma", "description": "Nieuwe capability nodig. SaaS beschikbaar, ontwikkelen kan ook.", "effect": {}, "choices": [{"label": "Buy: snelle time-to-value", "effect": {"xp": 5, "budget": -350, "stakeholderImpact": 10, "chaos": 5}}, {"label": "Build: eigen IP, langere weg", "effect": {"xp": 25, "budget": -450, "stakeholderImpact": -5, "chaos": 15}}]}, {"id": "E013", "title": "War-room Ingericht", "description": "Grote outage, iedereen samen in een kamer.", "effect": {"xp": 20, "stakeholderImpact": -5, "hp": -15, "chaos": 15}}, {"id": "E014", "title": "Retrospective Gehouden", "description": "Kwartaal-retro brengt patronen aan het licht.", "effect": {"xp": 15, "stakeholderImpact": 10, "chaosResist": 5, "chaos": -10}}, {"id": "E015", "title": "Onaangekondigd Bezoek CFO", "description": "CFO wandelt onaangekondigd binnen met vragen over cloud-spend.", "effect": {}, "choices": [{"label": "Toon FinOps-dashboard direct", "effect": {"xp": 20, "budget": 100, "stakeholderImpact": 15, "chaos": 0}}, {"label": "Wees vaag over de cijfers", "effect": {"xp": -5, "budget": -100, "stakeholderImpact": -20, "chaos": 10}}]}, {"id": "E016", "title": "Zomer-stagiair Meldt Zich", "description": "Enthousiaste student wil 3 maanden meelopen.", "effect": {"xp": 10, "budget": -50, "stakeholderImpact": 5, "chaos": 0}}, {"id": "E017", "title": "Consultant Biedt Zich Aan", "description": "Ex-Gartner analyst wil je EA-praktijk auditeren.", "effect": {}, "choices": [{"label": "Inhuren voor 4 weken", "effect": {"xp": 20, "budget": -400, "stakeholderImpact": 10, "chaos": 0}}, {"label": "Bedanken", "effect": {"xp": 0, "budget": 0, "stakeholderImpact": 0, "chaos": 5}}]}, {"id": "E018", "title": "Team Wint Prijs", "description": "Interne innovatieprijs voor je platformteam!", "effect": {"xp": 15, "stakeholderImpact": 20, "hp": 10, "chaos": -5}}, {"id": "E019", "title": "Postmortem Gepubliceerd", "description": "Blameless postmortem trekt bewondering intern.", "effect": {"xp": 20, "stakeholderImpact": 15, "chaosResist": 10, "chaos": -10}}, {"id": "E020", "title": "Legacy Sunset Voorstel", "description": "Eindelijk voorstel om oud CRM uit te faseren. Weerstand groot.", "effect": {}, "choices": [{"label": "Doordrukken", "effect": {"xp": 25, "budget": -200, "stakeholderImpact": -15, "chaos": 15}}, {"label": "Nog een jaar uitstellen", "effect": {"xp": 0, "budget": -100, "stakeholderImpact": 10, "chaos": 5}}]}, {"id": "E021", "title": "Externe Podcast Uitnodiging", "description": "EA-podcast wil je interviewen over cloud-strategie.", "effect": {}, "choices": [{"label": "Ja zeggen (branding+)", "effect": {"xp": 15, "stakeholderImpact": 10, "hp": -5, "chaos": 0}}, {"label": "Nee zeggen (focus)", "effect": {"xp": 5, "stakeholderImpact": 0, "chaos": -5}}]}, {"id": "E022", "title": "Kwartaalcijfers Groen", "description": "Bedrijf overtreft prognose. Budget voor Q3 verhoogd.", "effect": {"xp": 5, "budget": 250, "stakeholderImpact": 10, "chaos": -5}}, {"id": "E023", "title": "Open-source Bijdrage", "description": "Je team wil upstream contributen aan een populaire lib.", "effect": {}, "choices": [{"label": "Officieel goedkeuren", "effect": {"xp": 20, "budget": -50, "stakeholderImpact": 10, "chaos": 0}}, {"label": "Naar juridische commissie schuiven", "effect": {"xp": 5, "budget": -20, "stakeholderImpact": -5, "chaos": 5}}]}, {"id": "E024", "title": "Nieuwe CTO Geinstalleerd", "description": "Nieuwe technisch directeur wil je roadmap uitleggen krijgen.", "effect": {"xp": 15, "stakeholderImpact": 0, "chaos": 10}}, {"id": "E025", "title": "Klant-advisory Board", "description": "3 grootste klanten geven feedback op product-roadmap.", "effect": {"xp": 20, "stakeholderImpact": 15, "budget": 100, "chaos": -5}}, {"id": "E026", "title": "Junior Ontdekt Bug", "description": "Nieuwe medewerker vindt kritieke bug in productie.", "effect": {"xp": 15, "security": 15, "stakeholderImpact": 5, "chaos": -5}}, {"id": "E027", "title": "Gartner Magic Quadrant Update", "description": "Je platformleverancier zakt van Leaders naar Challengers.", "effect": {}, "choices": [{"label": "Herevalueer keuze (kost tijd)", "effect": {"xp": 20, "budget": -150, "stakeholderImpact": 0, "chaos": 10}}, {"label": "Blijf zitten", "effect": {"xp": 0, "budget": 0, "stakeholderImpact": -5, "chaos": 5}}]}, {"id": "E028", "title": "Meetup Georganiseerd", "description": "Je host een lokale EA-meetup in kantoor.", "effect": {"xp": 15, "stakeholderImpact": 10, "budget": -50, "chaos": 0}}, {"id": "E029", "title": "Whitepaper Publicatie", "description": "Je bedrijf publiceert whitepaper waar jij co-author van bent.", "effect": {"xp": 20, "stakeholderImpact": 15, "chaos": 0}}, {"id": "E030", "title": "Prijsvraag Innovation Award", "description": "Interne innovatie-competitie: doe je mee?", "effect": {}, "choices": [{"label": "Meedoen", "effect": {"xp": 25, "budget": -75, "stakeholderImpact": 10, "chaos": 5}}, {"label": "Overslaan", "effect": {"xp": 0, "stakeholderImpact": -5, "chaos": 0}}]}, {"id": "E031", "title": "Analyst Briefing", "description": "Forrester wil met je spreken over adoption-trends.", "effect": {"xp": 15, "stakeholderImpact": 10, "chaos": 0}}, {"id": "E032", "title": "Reorganisatie-geruchten", "description": "Gerucht: nieuwe org-structuur op komst. Onzekerheid stijgt.", "effect": {"xp": 5, "stakeholderImpact": -10, "hp": -15, "chaos": 15}}, {"id": "E033", "title": "Externe Auditor Bezoek", "description": "PWC komt langs voor SOX-review.", "effect": {}, "choices": [{"label": "Voorbereiden met team-oefensessies", "effect": {"xp": 20, "budget": -100, "security": 10, "stakeholderImpact": 10, "chaos": 0}}, {"label": "Improviseren op de dag zelf", "effect": {"xp": 5, "security": -10, "stakeholderImpact": -10, "chaos": 15}}]}, {"id": "E034", "title": "Nieuwe Compliance-wet", "description": "Nationale wet over data-soevereiniteit aangekondigd.", "effect": {"xp": 15, "budget": -150, "security": 5, "chaos": 10}}, {"id": "E035", "title": "Klantcase Publicatie", "description": "Grote klant wil je bedrijf als succes-case gebruiken.", "effect": {"xp": 10, "stakeholderImpact": 20, "budget": 200, "chaos": -5}}, {"id": "E036", "title": "Team-uitje", "description": "Escape room met het architectuur-team.", "effect": {"xp": 10, "stakeholderImpact": 15, "hp": 15, "chaos": -10}}, {"id": "E037", "title": "Cross-team Initiatief", "description": "IT en Business willen gezamenlijke value-streams definieren.", "effect": {"xp": 20, "stakeholderImpact": 15, "budget": -100, "chaos": 0}}, {"id": "E038", "title": "Nieuwe Certificering", "description": "Kans op TOGAF 10 certificering. Studietijd nodig.", "effect": {}, "choices": [{"label": "Zelf halen", "effect": {"xp": 30, "budget": -200, "hp": -15, "chaos": 0}}, {"label": "Delegeren aan team", "effect": {"xp": 10, "budget": -400, "stakeholderImpact": 5, "chaos": 0}}]}, {"id": "E039", "title": "Roadmap Herijking", "description": "Halfjaarlijkse review van de architectuur-roadmap.", "effect": {"xp": 15, "stakeholderImpact": 5, "chaosResist": 5, "chaos": -5}}, {"id": "E040", "title": "Rekruteren Junior EA", "description": "Vacature voor Junior Enterprise Architect open.", "effect": {"xp": 5, "budget": -300, "stakeholderImpact": 5, "chaos": 5}}, {"id": "E041", "title": "Interview Nieuwe Talent", "description": "Zeldzaam cloud-architect solliciteert.", "effect": {}, "choices": [{"label": "Aannemen (senior tarief)", "effect": {"xp": 25, "budget": -500, "stakeholderImpact": 10, "chaos": -5}}, {"label": "Wachten op goedkoper alternatief", "effect": {"xp": 5, "budget": 0, "stakeholderImpact": -5, "chaos": 5}}]}, {"id": "E042", "title": "Community-of-Practice Start", "description": "Architecten willen een informele CoP oprichten.", "effect": {"xp": 15, "stakeholderImpact": 10, "chaos": -5}}, {"id": "E043", "title": "Executive Coaching", "description": "HR biedt executive-coach traject aan.", "effect": {"xp": 25, "stakeholderImpact": 10, "hp": 10, "chaos": -5}}, {"id": "E044", "title": "Public Speaking Kans", "description": "Uitnodiging voor keynote op Nederlandse EA-conferentie.", "effect": {}, "choices": [{"label": "Accepteren", "effect": {"xp": 30, "stakeholderImpact": 15, "hp": -10, "chaos": 5}}, {"label": "Doorschuiven naar collega", "effect": {"xp": 5, "stakeholderImpact": 5, "chaos": 0}}]}, {"id": "E045", "title": "Innovation Lab Bezoek", "description": "Rondleiding bij Google Cloud innovation-lab.", "effect": {"xp": 20, "budget": -100, "stakeholderImpact": 5, "chaos": -5}}, {"id": "E046", "title": "AI Copilot Rollout", "description": "Board vraagt: rollen we GitHub Copilot uit voor alle devs?", "effect": {}, "choices": [{"label": "Enterprise licentie kopen", "effect": {"xp": 15, "budget": -400, "stakeholderImpact": 15, "security": -5, "chaos": 5}}, {"label": "Pilot bij 10% van team", "effect": {"xp": 20, "budget": -100, "stakeholderImpact": 5, "security": 5, "chaos": 0}}]}, {"id": "E047", "title": "Sustainability-doel", "description": "Duurzaamheidsrapportage vraagt CO2-footprint van IT.", "effect": {"xp": 15, "budget": -100, "stakeholderImpact": 10, "chaos": 5}}, {"id": "E048", "title": "Diversity & Inclusion Program", "description": "HR vraagt bijdrage vanuit architectuur-community.", "effect": {"xp": 10, "stakeholderImpact": 15, "chaos": -5}}, {"id": "E049", "title": "White Paper Peer Review", "description": "Collega vraagt review van zijn nieuwe reference architecture.", "effect": {"xp": 15, "stakeholderImpact": 10, "chaos": 0}}, {"id": "E050", "title": "Vrije Vrijdag", "description": "Kwartaal-innovation-day: iedereen werkt aan wat hij wil.", "effect": {"xp": 20, "stakeholderImpact": 5, "hp": 10, "chaos": -10}}];
+const CONTENT_MONSTERS = [{"id": "m01", "name": "Legacy Dragon", "description": "Eeuwenoude draak die COBOL-vuur ademt en refactor-pogingen verpulvert.", "hp": 80, "attack": 18, "defense": 12, "xpReward": 120, "budgetReward": 200, "specialAbility": "Breath of Technical Debt: +2 debt per beurt", "regionId": "legacy_dungeon", "tier": "elite", "icon": "🐉"}, {"id": "m02", "name": "Shadow IT Goblins", "description": "Zwerm ondergrondse goblins met eigen SaaS-abonnementen buiten CMDB.", "hp": 25, "attack": 6, "defense": 3, "xpReward": 30, "budgetReward": 40, "specialAbility": "Swarm: verschijnt in groep van 3", "regionId": "integration_bridge", "tier": "minion", "icon": "👻"}, {"id": "m03", "name": "Technical Debt Golem", "description": "Kolossale golem van spaghetti-code en TODO-comments.", "hp": 120, "attack": 15, "defense": 20, "xpReward": 150, "budgetReward": 220, "specialAbility": "Regenerate: +5 HP per beurt", "regionId": "legacy_dungeon", "tier": "elite", "icon": "🗿"}, {"id": "m04", "name": "Vendor Hydra", "description": "Zevenkoppige hydra met licentie-modellen; hak er een af, twee groeien terug.", "hp": 100, "attack": 14, "defense": 10, "xpReward": 130, "budgetReward": 250, "specialAbility": "Multi-head: 2 aanvallen per beurt", "regionId": "vendor_market", "tier": "elite", "icon": "🐍"}, {"id": "m05", "name": "Compliance Ghost", "description": "Spookachtige auditor die verschijnt bij ontbrekende documentatie.", "hp": 60, "attack": 12, "defense": 15, "xpReward": 90, "budgetReward": 100, "specialAbility": "Phase: 50% kans schade te ontwijken", "regionId": "compliance_swamp", "tier": "minion", "icon": "👤"}, {"id": "m06", "name": "Security Troll", "description": "Onder de brug van elk request wacht deze troll met een authenticatievraag.", "hp": 70, "attack": 13, "defense": 14, "xpReward": 85, "budgetReward": 110, "specialAbility": "Block: eerste aanval per gevecht mislukt", "regionId": "security_castle", "tier": "minion", "icon": "🧟"}, {"id": "m07", "name": "Data Kraken", "description": "Enorme kraken met tentakels in elke datasilo van de organisatie.", "hp": 150, "attack": 17, "defense": 12, "xpReward": 180, "budgetReward": 260, "specialAbility": "Tentacle Grip: skip volgende beurt", "regionId": "data_forest", "tier": "elite", "icon": "🐙"}, {"id": "m08", "name": "Zombie Server", "description": "Ongepatchte server die maar niet uit productie wil.", "hp": 40, "attack": 8, "defense": 6, "xpReward": 40, "budgetReward": 50, "specialAbility": "Undead: herrijst 1x met 10 HP", "regionId": "legacy_dungeon", "tier": "minion", "icon": "🕷"}, {"id": "m09", "name": "Phishing Imp", "description": "Kleine duivel die zich voordoet als CEO in een mail.", "hp": 20, "attack": 10, "defense": 2, "xpReward": 25, "budgetReward": 30, "specialAbility": "Deceive: eerste worp krijgt -2", "regionId": "security_castle", "tier": "minion", "icon": "🦇"}, {"id": "m10", "name": "API Slime", "description": "Slijmerig ongedocumenteerd endpoint dat overal doorheen sijpelt.", "hp": 30, "attack": 7, "defense": 5, "xpReward": 35, "budgetReward": 45, "specialAbility": "Split: bij 15 HP splitst in twee", "regionId": "integration_bridge", "tier": "minion", "icon": "👹"}, {"id": "m11", "name": "Bias Wraith", "description": "Schim uit een AI-model die vooroordelen in datasets voedt.", "hp": 55, "attack": 11, "defense": 9, "xpReward": 80, "budgetReward": 90, "specialAbility": "Amplify: schade neemt +1 per beurt toe", "regionId": "ai_temple", "tier": "minion", "icon": "💀"}, {"id": "m12", "name": "Cloud Cost Wyvern", "description": "Kleine draak die egress-bandbreedte opeet en de rekening bezorgt.", "hp": 65, "attack": 12, "defense": 8, "xpReward": 75, "budgetReward": 150, "specialAbility": "Bill Shock: -50 budget per beurt", "regionId": "cloud_mountains", "tier": "minion", "icon": "⚡"}, {"id": "m13", "name": "Scope Creep Rat", "description": "Vermenigvuldigt zich terwijl niemand oplet.", "hp": 15, "attack": 5, "defense": 2, "xpReward": 20, "budgetReward": 25, "specialAbility": "Multiply: +1 rat per beurt", "regionId": "business_village", "tier": "minion", "icon": "🔥"}, {"id": "m14", "name": "Consultancy Vampire", "description": "Zuigt uurtje-factuurtje het budget leeg.", "hp": 50, "attack": 10, "defense": 7, "xpReward": 65, "budgetReward": 120, "specialAbility": "Drain: -25 budget per aanval", "regionId": "vendor_market", "tier": "minion", "icon": "❄"}, {"id": "m15", "name": "Prompt Injection Djinn", "description": "Djinn die verborgen instructies in tokens fluistert.", "hp": 45, "attack": 14, "defense": 6, "xpReward": 85, "budgetReward": 100, "specialAbility": "Override: negeert defense 1x", "regionId": "ai_temple", "tier": "minion", "icon": "🤖"}, {"id": "mb01", "name": "Chaos CIO", "description": "CIO die strategie per kwartaal omgooit; regeert de Vendor Market.", "hp": 220, "attack": 22, "defense": 15, "xpReward": 400, "budgetReward": 600, "specialAbility": "Reorg: reset speler-buffs", "regionId": "vendor_market", "tier": "boss", "icon": "👾"}, {"id": "mb02", "name": "Shadow Board", "description": "Anonieme raad die parallelle beslissingen forceert in het Data Forest.", "hp": 240, "attack": 20, "defense": 18, "xpReward": 420, "budgetReward": 650, "specialAbility": "Veto: annuleert 1 speler-actie", "regionId": "data_forest", "tier": "boss", "icon": "👾"}, {"id": "mb03", "name": "Compliance Titan", "description": "Reus van regelgeving die AVG, DORA en NIS2 tegelijk zwaait.", "hp": 260, "attack": 19, "defense": 22, "xpReward": 450, "budgetReward": 700, "specialAbility": "Regulation Slam: schade + audit-token", "regionId": "compliance_swamp", "tier": "boss", "icon": "👾"}, {"id": "mb04", "name": "Cyber Lord", "description": "Duistere heerser over ransomware en zero-days in het Security Castle.", "hp": 250, "attack": 24, "defense": 16, "xpReward": 440, "budgetReward": 680, "specialAbility": "Ransom: kies verlies HP of budget", "regionId": "security_castle", "tier": "boss", "icon": "👾"}, {"id": "mb05", "name": "Technical Debt King", "description": "Gekroonde vorst op troon van dead code en workarounds.", "hp": 280, "attack": 21, "defense": 20, "xpReward": 460, "budgetReward": 720, "specialAbility": "Crown of Rework: +2 debt per beurt", "regionId": "legacy_dungeon", "tier": "boss", "icon": "👾"}, {"id": "mb06", "name": "Model Oracle", "description": "Extra mid-boss: orakel-LLM die hallucinaties tot doctrine verheft.", "hp": 230, "attack": 23, "defense": 14, "xpReward": 430, "budgetReward": 660, "specialAbility": "Hallucinate: random speler-status", "regionId": "ai_temple", "tier": "boss", "icon": "👾"}, {"id": "final01", "name": "The Chaos Architect", "description": "De schaduwarchitect achter elk anti-pattern; heerser van de Digital Portal, verschijnt in drie kwaadaardige fases.", "regionId": "digital_portal", "tier": "final", "phases": [{"phase": 1, "name": "The Whiteboard Phase", "description": "Bewapend met eindeloze whiteboards en PowerPoint-artefacten.", "hp": 200, "attack": 25, "defense": 18, "xpReward": 800, "budgetReward": 1000, "specialAbility": "Scope Explosion: +1 vijand per 3 beurten"}, {"phase": 2, "name": "The Implementation Phase", "description": "Verandert whiteboard-dromen in een chaos van microservices.", "hp": 350, "attack": 30, "defense": 22, "xpReward": 1200, "budgetReward": 1500, "specialAbility": "Cascading Failure: 3 aanvallen per beurt bij <50% HP"}, {"phase": 3, "name": "The Chaos Ascendant", "description": "Volledig ontketend; werkelijkheid en architectuur vallen samen in entropie.", "hp": 500, "attack": 38, "defense": 28, "xpReward": 2000, "budgetReward": 2500, "specialAbility": "Reality Rewrite: negeert alle artefacten 1x + roept 2 minions op"}], "hp": 200, "attack": 25, "defense": 18, "xpReward": 800, "budgetReward": 1000, "icon": "👹"}];
+const CONTENT_ACHIEVEMENTS = [{"id": "ach01", "title": "First Blood", "description": "Versla je eerste monster.", "condition": "Win 1 gevecht.", "xpReward": 50, "icon": "🩸"}, {"id": "ach02", "title": "Perfect Roll", "description": "Gooi een natuurlijke 20 met de d20.", "condition": "Roll = 20 op d20.", "xpReward": 75, "icon": "🎲"}, {"id": "ach03", "title": "Untouchable", "description": "Win een gevecht zonder HP-schade te lopen.", "condition": "Combat win met 0 damage taken.", "xpReward": 150, "icon": "🛡️"}, {"id": "ach04", "title": "Speed Run", "description": "Bereik de eindbaas binnen 20 beurten.", "condition": "Reach tile 39 in <=20 turns.", "xpReward": 400, "icon": "⚡"}, {"id": "ach05", "title": "Completionist", "description": "Bezoek alle 12 regio's minstens één keer.", "condition": "Visit all regions.", "xpReward": 300, "icon": "🗺️"}, {"id": "ach06", "title": "Frugal", "description": "Win het spel met minder dan 500 budget uitgegeven.", "condition": "Win met totalSpent<500.", "xpReward": 350, "icon": "💰"}, {"id": "ach07", "title": "Diplomat", "description": "Verkrijg 100+ stakeholder-score.", "condition": "Stakeholder>=100.", "xpReward": 200, "icon": "🤝"}, {"id": "ach08", "title": "Cloud Master", "description": "Voltooi alle Cloud Mountains quests.", "condition": "All quests in cloud_mountains done.", "xpReward": 250, "icon": "☁️"}, {"id": "ach09", "title": "Security Hero", "description": "Versla Cyber Lord zonder healing.", "condition": "Beat Cyber Lord no-heal.", "xpReward": 300, "icon": "🦸"}, {"id": "ach10", "title": "TOGAF Champion", "description": "Voltooi de TOGAF ADM cyclus.", "condition": "Complete ADM quest chain.", "xpReward": 400, "icon": "🏆"}, {"id": "ach11", "title": "TOGAF ADM Cycle Complete", "description": "Doorloop alle 8 ADM-fases op één run.", "condition": "All 8 ADM tiles in single run.", "xpReward": 500, "icon": "🔁"}, {"id": "ach12", "title": "Innovation Guru", "description": "Verzamel 3 prototype-artefacten.", "condition": "3 prototype artifacts held.", "xpReward": 200, "icon": "💡"}, {"id": "ach13", "title": "Stakeholder Whisperer", "description": "Overtuig 5 stakeholders in één beurt.", "condition": "5 stakeholder events won same turn.", "xpReward": 250, "icon": "🗣️"}, {"id": "ach14", "title": "Dragon Slayer", "description": "Versla de Legacy Dragon.", "condition": "Beat m01.", "xpReward": 200, "icon": "🐉"}, {"id": "ach15", "title": "Legendary Architect", "description": "Bereik XP-level 20.", "condition": "Level>=20.", "xpReward": 1000, "icon": "🧙"}, {"id": "ach16", "title": "Zero Trust Adept", "description": "Voltooi 3 Zero-Trust events.", "condition": "3 zero-trust events completed.", "xpReward": 220, "icon": "🔐"}, {"id": "ach17", "title": "Data Whisperer", "description": "Voltooi alle Data Forest quests.", "condition": "All quests in data_forest done.", "xpReward": 250, "icon": "🌳"}, {"id": "ach18", "title": "Kraken Slayer", "description": "Versla de Data Kraken.", "condition": "Beat m07.", "xpReward": 250, "icon": "🐙"}, {"id": "ach19", "title": "Debt Free", "description": "Elimineer alle technical-debt tokens.", "condition": "Debt=0 at any point.", "xpReward": 300, "icon": "🧾"}, {"id": "ach20", "title": "Compliance Master", "description": "Overleef de Compliance Swamp zonder audit-token.", "condition": "Cross compliance_swamp audit_tokens=0.", "xpReward": 280, "icon": "📜"}, {"id": "ach21", "title": "Vendor Tamer", "description": "Onderhandel 3 vendor-korting-events.", "condition": "3 vendor-discount events.", "xpReward": 180, "icon": "🤑"}, {"id": "ach22", "title": "API Whisperer", "description": "Bouw 5 integraties op de Integration Bridge.", "condition": "5 integration quests done.", "xpReward": 220, "icon": "🔌"}, {"id": "ach23", "title": "Chaos Slayer", "description": "Versla The Chaos Architect fase 3.", "condition": "Beat final phase 3.", "xpReward": 2000, "icon": "👹"}, {"id": "ach24", "title": "Phase One Down", "description": "Versla The Chaos Architect fase 1.", "condition": "Beat final phase 1.", "xpReward": 500, "icon": "1️⃣"}, {"id": "ach25", "title": "Phase Two Down", "description": "Versla The Chaos Architect fase 2.", "condition": "Beat final phase 2.", "xpReward": 800, "icon": "2️⃣"}, {"id": "ach26", "title": "Portal Hopper", "description": "Gebruik 3 verschillende portals in één run.", "condition": "Use 3 portals same run.", "xpReward": 150, "icon": "🌀"}, {"id": "ach27", "title": "Hack Champion", "description": "Win de Innovation Tower Hackathon.", "condition": "Win hackathon event tile 25.", "xpReward": 200, "icon": "💻"}, {"id": "ach28", "title": "AI Whisperer", "description": "Overwin de Model Oracle mid-boss.", "condition": "Beat mb06.", "xpReward": 430, "icon": "🤖"}, {"id": "ach29", "title": "Shadow IT Buster", "description": "Elimineer 3 Shadow IT Goblins-swarms.", "condition": "3 shadow_it wins.", "xpReward": 150, "icon": "👥"}, {"id": "ach30", "title": "Firewall Titan", "description": "Blokkeer 10 aanvallen met defense.", "condition": "Block>=10 attacks.", "xpReward": 200, "icon": "🔥"}, {"id": "ach31", "title": "Cache Hit", "description": "Roll dezelfde waarde 3 keer op rij.", "condition": "3x identical d20 rolls.", "xpReward": 100, "icon": "♻️"}, {"id": "ach32", "title": "Downtime Zero", "description": "Voltooi een regio zonder rust-tile.", "condition": "Complete region 0 rest tiles used.", "xpReward": 180, "icon": "⏱️"}, {"id": "ach33", "title": "Budget King", "description": "Bereik 5000 budget.", "condition": "Budget>=5000.", "xpReward": 300, "icon": "🪙"}, {"id": "ach34", "title": "Broke But Standing", "description": "Win het spel met 0 budget.", "condition": "Win met budget=0.", "xpReward": 450, "icon": "🧦"}, {"id": "ach35", "title": "Artefact Hunter", "description": "Verzamel 10 artefact-kaarten.", "condition": "Artifacts>=10.", "xpReward": 300, "icon": "🗝️"}, {"id": "ach36", "title": "Quest Machine", "description": "Voltooi 25 quests.", "condition": "Quests>=25.", "xpReward": 350, "icon": "📜"}, {"id": "ach37", "title": "Chaos Survivor", "description": "Overleef 10 chaos-kaarten.", "condition": "Survive 10 chaos cards.", "xpReward": 200, "icon": "🌪️"}, {"id": "ach38", "title": "Board Whisperer", "description": "Win de Board Presentation event tile 38.", "condition": "Win executive event.", "xpReward": 250, "icon": "📊"}, {"id": "ach39", "title": "Zero Bug", "description": "Voltooi run zonder faalworp <5.", "condition": "No rolls <5.", "xpReward": 500, "icon": "🐛"}, {"id": "ach40", "title": "Team Player", "description": "Speel een coop-run en win.", "condition": "Win coop mode.", "xpReward": 400, "icon": "🧑‍🤝‍🧑"}, {"id": "ach41", "title": "Solo Legend", "description": "Win solo op difficulty 5.", "condition": "Win solo diff=5.", "xpReward": 600, "icon": "🏅"}, {"id": "ach42", "title": "Mid-Boss Slayer", "description": "Versla alle 6 mid-bosses in één run.", "condition": "Beat all 6 midbosses.", "xpReward": 900, "icon": "⚔️"}, {"id": "ach43", "title": "Legacy Liberator", "description": "Voltooi alle Legacy Dungeon quests.", "condition": "Legacy dungeon 100%.", "xpReward": 300, "icon": "⛓️"}, {"id": "ach44", "title": "Cloud Native", "description": "Gebruik alleen cloud-artefacten.", "condition": "Only cloud artifacts used.", "xpReward": 250, "icon": "🌩️"}, {"id": "ach45", "title": "Reference Architect", "description": "Publiceer een reference architecture (quest).", "condition": "Complete ref-arch quest.", "xpReward": 220, "icon": "📐"}, {"id": "ach46", "title": "Enterprise Guardian", "description": "Verlies nooit stakeholder-tokens.", "condition": "Never lose stakeholders.", "xpReward": 350, "icon": "🛡️"}, {"id": "ach47", "title": "Prompt Master", "description": "Versla de Prompt Injection Djinn.", "condition": "Beat m15.", "xpReward": 120, "icon": "💬"}, {"id": "ach48", "title": "Green IT Champion", "description": "Voltooi 3 sustainability-events.", "condition": "3 sustainability events.", "xpReward": 200, "icon": "🌱"}, {"id": "ach49", "title": "Documentation Sage", "description": "Trek 5 documentation-artefacten.", "condition": "5 doc artifacts drawn.", "xpReward": 180, "icon": "📚"}, {"id": "ach50", "title": "Chaos Architect Nemesis", "description": "Versla The Chaos Architect zonder healing in fase 3.", "condition": "Beat final p3 no-heal.", "xpReward": 1500, "icon": "☠️"}, {"id": "ach51", "title": "Meta Master", "description": "Voltooi elke andere achievement.", "condition": "All 50 other achievements unlocked.", "xpReward": 5000, "icon": "🌟"}];
+
+/* ---------- Utility ---------- */
+const $ = (sel,root=document)=>root.querySelector(sel);
+const $$ = (sel,root=document)=>Array.from(root.querySelectorAll(sel));
+const clamp = (v,lo,hi)=>Math.max(lo,Math.min(hi,v));
+const rand = (n)=>Math.floor(Math.random()*n);
+const pick = (arr)=>arr[rand(arr.length)];
+const shuffle = (arr)=>{const a=arr.slice();for(let i=a.length-1;i>0;i--){const j=rand(i+1);[a[i],a[j]]=[a[j],a[i]]}return a};
+const now = ()=>Date.now();
+const fmt = (n)=>(n>=0?'+':'')+n;
+
+/* ============================================================
+   AudioEngine — Web Audio API (geen externe assets)
+   ============================================================ */
+class AudioEngine{
+  constructor(){
+    this.ctx=null; this.enabled=true; this.musicEnabled=true; this.volume=.4;
+    this.musicNode=null;
+  }
+  ensure(){ if(!this.ctx){try{this.ctx=new (window.AudioContext||window.webkitAudioContext)()}catch(e){this.enabled=false}} }
+  tone(freq,dur=.12,type='sine',gain=.5){
+    if(!this.enabled)return; this.ensure(); if(!this.ctx)return;
+    const t=this.ctx.currentTime, o=this.ctx.createOscillator(), g=this.ctx.createGain();
+    o.type=type; o.frequency.setValueAtTime(freq,t);
+    g.gain.setValueAtTime(0,t); g.gain.linearRampToValueAtTime(gain*this.volume,t+.01);
+    g.gain.exponentialRampToValueAtTime(.001,t+dur);
+    o.connect(g); g.connect(this.ctx.destination); o.start(t); o.stop(t+dur+.05);
+  }
+  sweep(f1,f2,dur=.2,type='sawtooth',gain=.35){
+    if(!this.enabled)return; this.ensure(); if(!this.ctx)return;
+    const t=this.ctx.currentTime, o=this.ctx.createOscillator(), g=this.ctx.createGain();
+    o.type=type; o.frequency.setValueAtTime(f1,t); o.frequency.exponentialRampToValueAtTime(f2,t+dur);
+    g.gain.setValueAtTime(0,t); g.gain.linearRampToValueAtTime(gain*this.volume,t+.01);
+    g.gain.exponentialRampToValueAtTime(.001,t+dur);
+    o.connect(g); g.connect(this.ctx.destination); o.start(t); o.stop(t+dur+.05);
+  }
+  chord(freqs,dur=.3,gain=.25){
+    freqs.forEach(f=>this.tone(f,dur,'triangle',gain));
+  }
+  noise(dur=.15,gain=.3){
+    if(!this.enabled)return; this.ensure(); if(!this.ctx)return;
+    const t=this.ctx.currentTime, bufferSize=this.ctx.sampleRate*dur;
+    const buf=this.ctx.createBuffer(1,bufferSize,this.ctx.sampleRate);
+    const data=buf.getChannelData(0); for(let i=0;i<bufferSize;i++)data[i]=Math.random()*2-1;
+    const src=this.ctx.createBufferSource(); src.buffer=buf;
+    const g=this.ctx.createGain(); g.gain.setValueAtTime(gain*this.volume,t); g.gain.exponentialRampToValueAtTime(.001,t+dur);
+    src.connect(g); g.connect(this.ctx.destination); src.start(t);
+  }
+  // Presets
+  click(){ this.tone(600,.05,'square',.25) }
+  diceRoll(){ this.noise(.35,.15); this.sweep(200,800,.35,'square',.25) }
+  cardFlip(){ this.sweep(400,900,.12,'triangle',.3) }
+  levelUp(){ this.chord([523.25,659.25,783.99],.6,.35); setTimeout(()=>this.chord([659.25,783.99,987.77],.6,.35),200) }
+  hit(){ this.noise(.08,.35); this.tone(180,.12,'square',.4) }
+  crit(){ this.chord([880,1108.73],.15,.4); setTimeout(()=>this.tone(1318.51,.2,'triangle',.4),100) }
+  miss(){ this.sweep(300,180,.15,'triangle',.2) }
+  heal(){ this.chord([523.25,659.25],.3,.3) }
+  achievement(){ this.chord([659.25,783.99,987.77,1318.51],.5,.3) }
+  bad(){ this.sweep(300,80,.35,'sawtooth',.35) }
+  win(){ this.chord([523.25,659.25,783.99,1046.5],.9,.4); setTimeout(()=>this.chord([783.99,987.77,1174.66,1568],.9,.4),300) }
+  gameover(){ this.sweep(400,50,1.2,'sawtooth',.4) }
+  startMusic(){
+    if(!this.musicEnabled||!this.enabled)return; this.ensure(); if(!this.ctx)return;
+    // Ambient drone
+    this.stopMusic();
+    const t=this.ctx.currentTime, o1=this.ctx.createOscillator(), o2=this.ctx.createOscillator(), g=this.ctx.createGain();
+    o1.type='sine'; o2.type='sine'; o1.frequency.value=110; o2.frequency.value=165;
+    g.gain.value=.04*this.volume;
+    o1.connect(g); o2.connect(g); g.connect(this.ctx.destination);
+    o1.start(t); o2.start(t);
+    this.musicNode={o1,o2,g};
+  }
+  stopMusic(){
+    if(this.musicNode){
+      try{const t=this.ctx.currentTime;this.musicNode.g.gain.exponentialRampToValueAtTime(.0001,t+.2);
+        this.musicNode.o1.stop(t+.3); this.musicNode.o2.stop(t+.3)}catch(e){}
+      this.musicNode=null;
+    }
+  }
+  setEnabled(v){ this.enabled=v; if(!v)this.stopMusic() }
+  setMusic(v){ this.musicEnabled=v; if(!v)this.stopMusic(); else this.startMusic() }
+}
+
+/* ============================================================
+   SaveSystem — LocalStorage
+   ============================================================ */
+class SaveSystem{
+  constructor(){ this.key='enterprisequest.save.v1'; this.settingsKey='enterprisequest.settings.v1'; this.statsKey='enterprisequest.stats.v1'; this.achKey='enterprisequest.achievements.v1' }
+  save(data){ try{localStorage.setItem(this.key,JSON.stringify(data));return true}catch(e){return false} }
+  load(){ try{const v=localStorage.getItem(this.key);return v?JSON.parse(v):null}catch(e){return null} }
+  clear(){ try{localStorage.removeItem(this.key)}catch(e){} }
+  has(){ return !!this.load() }
+  saveSettings(s){ try{localStorage.setItem(this.settingsKey,JSON.stringify(s))}catch(e){} }
+  loadSettings(){ try{const v=localStorage.getItem(this.settingsKey);return v?JSON.parse(v):null}catch(e){return null} }
+  saveStats(s){ try{localStorage.setItem(this.statsKey,JSON.stringify(s))}catch(e){} }
+  loadStats(){ try{const v=localStorage.getItem(this.statsKey);return v?JSON.parse(v):null}catch(e){return null} }
+  saveAch(a){ try{localStorage.setItem(this.achKey,JSON.stringify(a))}catch(e){} }
+  loadAch(){ try{const v=localStorage.getItem(this.achKey);return v?JSON.parse(v):null}catch(e){return null} }
+  resetAll(){ [this.key,this.settingsKey,this.statsKey,this.achKey].forEach(k=>{try{localStorage.removeItem(k)}catch(e){}}) }
+}
+
+/* ============================================================
+   Player
+   ============================================================ */
+class Player{
+  constructor(cls){
+    this.class=cls;
+    this.name=cls.name;
+    this.level=1;
+    this.xp=0;
+    this.xpNext=100;
+    this.hp=cls.hp;
+    this.maxHp=cls.hp;
+    this.attrs={...cls.attrs};
+    this.resources={
+      budget:1000, security:50, stakeholder:50,
+      quality:50, techDebt:20, cloudMaturity:30, businessValue:40
+    };
+    this.chaos=0;
+    this.position=0;
+    this.inventory=[]; // artifact IDs
+    this.equipped={weapon:null,armor:null,scroll:null,crystal:null,crown:null,compass:null};
+    this.unlockedAchievements=[];
+    this.stats={
+      turns:0, rolls:0, quests:0, chaosSuffered:0, combats:0, wins:0, crits:0, nat20:0, nat1:0,
+      damageDealt:0, damageTaken:0, achievements:0, artifacts:0, cardsDrawn:0
+    };
+    this.specialUsed=0;
+    this.specialCooldown=0;
+    this.startTime=now();
+    this.dayNight='day'; // day|night
+    this.turnCount=0;
+  }
+  addXp(n,ui){
+    this.xp+=n; if(n>0)this.stats.xp=(this.stats.xp||0)+n;
+    while(this.xp>=this.xpNext && this.level<CONTENT_LEVELS.length){
+      this.xp-=this.xpNext; this.level++;
+      const lvl=CONTENT_LEVELS[this.level-1];
+      this.maxHp+=15; this.hp=this.maxHp;
+      this.xpNext=Math.round(this.xpNext*1.5);
+      if(ui) ui.onLevelUp(lvl);
+    }
+  }
+  attackBonus(){
+    let b=Math.floor((this.attrs.technology+this.attrs.architecture)/6)+this.level;
+    for(const key in this.equipped){
+      const id=this.equipped[key]; if(!id)continue;
+      const a=CONTENT_ARTIFACTS.find(x=>x.id===id); if(a&&a.passiveEffect&&a.passiveEffect.attackBonus)b+=a.passiveEffect.attackBonus;
+    }
+    return b;
+  }
+  defenseBonus(){
+    let b=Math.floor((this.attrs.security+this.attrs.leadership)/6)+Math.floor(this.level/2);
+    for(const key in this.equipped){
+      const id=this.equipped[key]; if(!id)continue;
+      const a=CONTENT_ARTIFACTS.find(x=>x.id===id); if(a&&a.passiveEffect&&a.passiveEffect.defenseBonus)b+=a.passiveEffect.defenseBonus;
+    }
+    return b;
+  }
+  xpMultiplier(){
+    let m=1;
+    for(const key in this.equipped){
+      const id=this.equipped[key]; if(!id)continue;
+      const a=CONTENT_ARTIFACTS.find(x=>x.id===id); if(a&&a.passiveEffect&&a.passiveEffect.xpMultiplier)m*=a.passiveEffect.xpMultiplier;
+    }
+    return m;
+  }
+  chaosResist(){
+    let r=0;
+    for(const key in this.equipped){
+      const id=this.equipped[key]; if(!id)continue;
+      const a=CONTENT_ARTIFACTS.find(x=>x.id===id); if(a&&a.passiveEffect&&a.passiveEffect.chaosResist)r+=a.passiveEffect.chaosResist;
+    }
+    return r;
+  }
+  applyEffect(eff){
+    if(!eff) return;
+    if(eff.hp)this.hp=clamp(this.hp+eff.hp,0,this.maxHp);
+    if(eff.xp)this.addXp(Math.round(eff.xp*this.xpMultiplier()));
+    if(eff.budget)this.resources.budget=Math.max(0,this.resources.budget+eff.budget);
+    if(eff.security)this.resources.security=clamp(this.resources.security+eff.security,0,100);
+    if(eff.stakeholderImpact)this.resources.stakeholder=clamp(this.resources.stakeholder+eff.stakeholderImpact,0,100);
+    if(eff.stakeholder)this.resources.stakeholder=clamp(this.resources.stakeholder+eff.stakeholder,0,100);
+    if(eff.quality)this.resources.quality=clamp(this.resources.quality+eff.quality,0,100);
+    if(eff.techDebt)this.resources.techDebt=clamp(this.resources.techDebt+eff.techDebt,0,100);
+    if(eff.cloudMaturity)this.resources.cloudMaturity=clamp(this.resources.cloudMaturity+eff.cloudMaturity,0,100);
+    if(eff.businessValue)this.resources.businessValue=clamp(this.resources.businessValue+eff.businessValue,0,100);
+    if(eff.chaos){
+      const resist=this.chaosResist();
+      const delta=Math.max(0,eff.chaos-resist);
+      this.chaos=clamp(this.chaos+delta,0,100);
+    }
+  }
+  equip(artifact){
+    if(!artifact||!artifact.slot)return false;
+    this.equipped[artifact.slot]=artifact.id;
+    if(!this.inventory.includes(artifact.id))this.inventory.push(artifact.id);
+    return true;
+  }
+  serialize(){ return JSON.parse(JSON.stringify(this)) }
+  static deserialize(obj){
+    const p=new Player(obj.class);
+    Object.assign(p,obj);
+    return p;
+  }
+}
+
+/* ============================================================
+   Deck
+   ============================================================ */
+class Deck{
+  constructor(source){ this.source=source.slice(); this.pile=shuffle(source.slice()); this.discard=[] }
+  draw(){
+    if(this.pile.length===0){ this.pile=shuffle(this.discard); this.discard=[] }
+    const c=this.pile.pop(); if(c)this.discard.push(c); return c;
+  }
+  size(){ return this.pile.length }
+}
+
+/* ============================================================
+   Combat — D20 turn-based
+   ============================================================ */
+class Combat{
+  constructor(player,monster,audio,ui){
+    this.player=player;
+    this.monster=JSON.parse(JSON.stringify(monster));
+    this.monsterMaxHp=this.monster.hp;
+    this.audio=audio;
+    this.ui=ui;
+    this.log=[];
+    this.turn=0;
+    this.done=false;
+    this.result=null;
+    this.phase=1; // for multi-phase bosses
+  }
+  playerRoll(){
+    if(this.done)return;
+    this.turn++;
+    const d=1+rand(20);
+    const attack=d+this.player.attackBonus();
+    const defense=(this.monster.defense||5)+2;
+    let dmg=0, msg='', kind='';
+    if(d===20){
+      dmg=Math.max(1,attack*2 - Math.floor(defense/2));
+      msg=`Nat 20! Kritieke hit — ${dmg} schade`;
+      kind='crit'; this.audio.crit(); this.player.stats.crits++; this.player.stats.nat20++;
+    } else if(d===1){
+      msg='Nat 1! Kritieke miss'; kind='miss'; this.audio.miss(); this.player.stats.nat1++;
+    } else if(attack>=defense){
+      dmg=Math.max(1,attack-Math.floor(defense/2));
+      msg=`Hit — ${dmg} schade (rolled ${d}, atk ${attack})`; kind='hit'; this.audio.hit();
+    } else {
+      msg=`Miss (rolled ${d}, atk ${attack} vs def ${defense})`; kind='miss'; this.audio.miss();
+    }
+    this.monster.hp-=dmg; this.player.stats.damageDealt+=dmg;
+    this.log.push({side:'player',msg,kind,dmg,roll:d});
+    if(this.monster.hp<=0) return this.onMonsterDefeat();
+    // Enemy counter
+    setTimeout(()=>this.monsterAttack(),650);
+  }
+  monsterAttack(){
+    if(this.done)return;
+    const d=1+rand(20);
+    const mAtk=(this.monster.attack||6)+Math.floor(d/2);
+    const pDef=10+this.player.defenseBonus();
+    let dmg=0, msg='', kind='';
+    if(d===20){
+      dmg=Math.max(1,mAtk*2-Math.floor(pDef/2));
+      msg=`${this.monster.name} scoort een crit — ${dmg} schade!`; kind='crit'; this.audio.crit();
+    } else if(mAtk>=pDef){
+      dmg=Math.max(1,mAtk-Math.floor(pDef/2));
+      msg=`${this.monster.name} valt aan — ${dmg} schade`; kind='hit'; this.audio.hit();
+    } else {
+      msg=`${this.monster.name} mist (${d})`; kind='miss'; this.audio.miss();
+    }
+    this.player.hp=clamp(this.player.hp-dmg,0,this.player.maxHp);
+    this.player.stats.damageTaken+=dmg;
+    this.log.push({side:'enemy',msg,kind,dmg,roll:d});
+    this.ui.renderCombat(this);
+    if(this.player.hp<=0){ this.done=true; this.result='defeat'; setTimeout(()=>this.ui.onCombatEnd(this),400); return; }
+  }
+  useSpecial(){
+    if(this.done||this.player.specialCooldown>0)return false;
+    const cls=this.player.class;
+    let msg='', kind='crit', dmg=0;
+    switch(cls.id){
+      case 'enterprise':
+        // Architect Vision: sees weakness — always hit + XP bonus
+        dmg=Math.max(2,this.player.attackBonus()+8);
+        msg=`Architect Vision — feilloos aanval: ${dmg} schade`;
+        this.player.addXp(30);
+        break;
+      case 'solution':
+        // Elegant Solution — extra dice
+        const d1=1+rand(20), d2=1+rand(20), best=Math.max(d1,d2);
+        dmg=Math.max(1,best+this.player.attackBonus());
+        msg=`Elegant Solution — dubbele roll (${d1}/${d2}): ${dmg} schade`;
+        break;
+      case 'business':
+        // Stakeholder Rally — heal + attack
+        const heal=15+Math.floor(this.player.attrs.leadership/2);
+        this.player.hp=clamp(this.player.hp+heal,0,this.player.maxHp);
+        dmg=Math.max(1,this.player.attackBonus()+4);
+        msg=`Stakeholder Rally — +${heal} HP en ${dmg} schade`;
+        this.audio.heal();
+        break;
+      case 'security':
+        // Zero Trust Shield — negate next 2 enemy attacks + light attack
+        dmg=Math.max(1,this.player.attackBonus()+3);
+        msg=`Zero Trust Shield actief — ${dmg} schade + verhoogde verdediging`;
+        this.player.stats.zeroTrustShield=2;
+        break;
+      case 'data':
+        // Predictive Strike — analytics-based crit
+        dmg=Math.max(3,this.player.attackBonus()*2);
+        msg=`Predictive Strike — data-analyse crit: ${dmg} schade`;
+        break;
+      case 'devops':
+        // CI/CD Barrage — 3 quick attacks
+        const h1=Math.max(1,Math.floor(this.player.attackBonus()/1.2));
+        dmg=h1*3;
+        msg=`CI/CD Barrage — 3x snelle hits: ${dmg} schade`;
+        break;
+    }
+    this.monster.hp-=dmg;
+    this.player.stats.damageDealt+=dmg;
+    this.player.specialCooldown=4;
+    this.player.specialUsed++;
+    this.audio.crit();
+    this.log.push({side:'player',msg,kind,dmg,roll:0,special:true});
+    if(this.monster.hp<=0) return this.onMonsterDefeat();
+    setTimeout(()=>this.monsterAttack(),650);
+    this.ui.renderCombat(this);
+    return true;
+  }
+  onMonsterDefeat(){
+    // Multi-phase boss?
+    if(this.monster.phases && this.phase < this.monster.phases.length){
+      this.phase++;
+      const nextPhase=this.monster.phases[this.phase-1];
+      this.log.push({side:'enemy',msg:`${this.monster.name} — fase ${this.phase}: ${nextPhase.name||'transformeert'}!`,kind:'crit'});
+      Object.assign(this.monster,{hp:nextPhase.hp,attack:nextPhase.attack||this.monster.attack,defense:nextPhase.defense||this.monster.defense,specialAbility:nextPhase.specialAbility});
+      this.monsterMaxHp=nextPhase.hp;
+      this.ui.renderCombat(this);
+      return;
+    }
+    this.done=true; this.result='victory';
+    this.player.stats.wins++; this.player.stats.combats++;
+    this.player.addXp(this.monster.xpReward||100);
+    if(this.monster.budgetReward)this.player.resources.budget+=this.monster.budgetReward;
+    this.ui.renderCombat(this);
+    setTimeout(()=>this.ui.onCombatEnd(this),700);
+  }
+  flee(){
+    if(this.done)return;
+    const d=1+rand(20);
+    if(d>=12){ this.done=true; this.result='flee'; this.log.push({side:'player',msg:`Ontsnapt (roll ${d})`,kind:'miss'}); setTimeout(()=>this.ui.onCombatEnd(this),400); }
+    else{ this.log.push({side:'player',msg:`Kan niet ontsnappen (roll ${d})`,kind:'miss'}); this.monsterAttack(); }
+  }
+}
+
+/* ============================================================
+   Achievements
+   ============================================================ */
+class AchievementManager{
+  constructor(save){ this.save=save; this.unlocked=new Set(save.loadAch()||[]) }
+  isUnlocked(id){ return this.unlocked.has(id) }
+  unlock(id,ui){
+    if(this.unlocked.has(id))return false;
+    this.unlocked.add(id);
+    this.save.saveAch(Array.from(this.unlocked));
+    const a=CONTENT_ACHIEVEMENTS.find(x=>x.id===id);
+    if(a && ui){ ui.toast(`🏆 ${a.title}`,'achievement'); ui.log(`Achievement: ${a.title}`,'legendary'); if(ui.audio)ui.audio.achievement(); }
+    return true;
+  }
+  check(player,ctx,ui){
+    // id-based predicates matching the ach01..ach51 set
+    const p=player, c=ctx||{};
+    const has=(rarity)=>p.inventory.some(id=>{const a=CONTENT_ARTIFACTS.find(x=>x.id===id);return a&&a.rarity===rarity});
+    const preds={
+      ach01:()=>p.stats.wins>=1,
+      ach02:()=>p.stats.nat20>=1,
+      ach03:()=>c.combatEnded && p.stats.damageTaken===0,
+      ach04:()=>c.finalBossDefeated && p.stats.turns<=20,
+      ach05:()=>c.regionsVisited && c.regionsVisited.size>=12,
+      ach06:()=>c.finalBossDefeated && p.resources.budget>=500,
+      ach07:()=>p.resources.stakeholder>=100,
+      ach08:()=>p.stats.quests>=8 && c.regionsVisited && c.regionsVisited.has('cloud_mountains'),
+      ach09:()=>c.bossDefeated && p.stats.damageTaken===0,
+      ach10:()=>p.stats.quests>=8,
+      ach11:()=>p.stats.quests>=15,
+      ach12:()=>p.inventory.length>=3 && has('rare'),
+      ach13:()=>p.resources.stakeholder>=80,
+      ach14:()=>c.monsterDefeated==='m01' || (c.combatEnded && p.stats.wins>=1),
+      ach15:()=>p.level>=10,
+      ach16:()=>p.resources.security>=80,
+      ach17:()=>c.regionsVisited && c.regionsVisited.has('data_forest') && p.stats.quests>=6,
+      ach18:()=>c.monsterDefeated==='m07',
+      ach19:()=>p.resources.techDebt<=0,
+      ach20:()=>c.regionsVisited && c.regionsVisited.has('compliance_swamp') && p.resources.security>=60,
+      ach21:()=>p.stats.quests>=8 && p.resources.budget>=1500,
+      ach22:()=>c.regionsVisited && c.regionsVisited.has('integration_bridge') && p.stats.quests>=5,
+      ach23:()=>c.finalBossDefeated,
+      ach24:()=>c.finalPhase>=1,
+      ach25:()=>c.finalPhase>=2,
+      ach26:()=>c.portalsUsed>=3,
+      ach27:()=>c.eventWon && p.position===25,
+      ach28:()=>c.monsterDefeated==='mb06',
+      ach29:()=>p.stats.wins>=3 && p.resources.security>=60,
+      ach30:()=>p.stats.damageBlocked>=10 || p.defenseBonus()>=10,
+      ach31:()=>c.identicalRollsStreak>=3,
+      ach32:()=>c.finalBossDefeated && c.restsUsed===0,
+      ach33:()=>p.resources.budget>=5000,
+      ach34:()=>c.finalBossDefeated && p.resources.budget<=0,
+      ach35:()=>p.inventory.length>=10,
+      ach36:()=>p.stats.quests>=25,
+      ach37:()=>p.stats.chaosSuffered>=10,
+      ach38:()=>c.eventWon && c.regionsVisited && c.regionsVisited.has('executive_palace'),
+      ach39:()=>p.stats.rolls>=20 && p.stats.lowRolls===0,
+      ach40:()=>c.finalBossDefeated && c.coopMode,
+      ach41:()=>c.finalBossDefeated,
+      ach42:()=>c.midBossesBeaten>=6,
+      ach43:()=>c.regionsVisited && c.regionsVisited.has('legacy_dungeon') && p.stats.quests>=7,
+      ach44:()=>p.inventory.filter(id=>{const a=CONTENT_ARTIFACTS.find(x=>x.id===id);return a&&(a.slot==='crystal'||(a.title||'').toLowerCase().includes('cloud'))}).length>=3,
+      ach45:()=>p.stats.quests>=5,
+      ach46:()=>p.resources.stakeholder>=50 && p.stats.turns>=30,
+      ach47:()=>c.monsterDefeated==='m15',
+      ach48:()=>p.stats.quests>=3 && p.resources.businessValue>=70,
+      ach49:()=>p.inventory.filter(id=>{const a=CONTENT_ARTIFACTS.find(x=>x.id===id);return a&&a.slot==='scroll'}).length>=5,
+      ach50:()=>c.finalBossDefeated && c.finalNoHeal,
+      ach51:()=>this.unlocked.size>=50
+    };
+    for(const a of CONTENT_ACHIEVEMENTS){
+      if(this.unlocked.has(a.id))continue;
+      const pred=preds[a.id]; if(!pred) continue;
+      try{ if(pred()) this.unlock(a.id,ui); }catch(e){}
+    }
+  }
+  reset(){ this.unlocked.clear(); this.save.saveAch([]) }
+}
+
+/* ============================================================
+   Board
+   ============================================================ */
+class Board{
+  constructor(def){ this.tiles=def.tiles.slice() }
+  size(){ return this.tiles.length }
+  tile(i){ return this.tiles[i % this.size()] }
+  moveFrom(from,steps){ return (from+steps) % this.size() }
+  regionOf(i){
+    const t=this.tile(i); if(!t)return null;
+    return CONTENT_REGIONS.find(r=>r.id===t.regionId) || null;
+  }
+}
+
+/* ============================================================
+   UI
+   ============================================================ */
+class UI{
+  constructor(audio){
+    this.audio=audio;
+    this.game=null;
+    this.modalCallback=null;
+    this.regionsVisited=new Set();
+    this.portalsUsed=0;
+    this.bossDefeated=false;
+    this.finalBossDefeated=false;
+  }
+  bind(game){ this.game=game }
+  show(screenId){
+    $$('.screen').forEach(s=>s.classList.remove('active'));
+    const el=$('#'+screenId); if(el)el.classList.add('active');
+  }
+  log(msg,kind='info'){
+    const wrap=$('#log'); if(!wrap)return;
+    const el=document.createElement('div'); el.className='log-item '+kind; el.textContent=msg;
+    wrap.insertBefore(el,wrap.firstChild);
+    while(wrap.children.length>60) wrap.removeChild(wrap.lastChild);
+  }
+  toast(msg,kind=''){
+    const wrap=$('#toasts'); if(!wrap)return;
+    const el=document.createElement('div'); el.className='toast '+kind; el.textContent=msg;
+    wrap.appendChild(el);
+    setTimeout(()=>el.remove(),3000);
+  }
+  renderDashboard(){
+    const p=this.game.player, d=$('#dashboard'); if(!d||!p)return;
+    const lvl=CONTENT_LEVELS[p.level-1]||{name:'Unknown'};
+    const hpPct=Math.round(p.hp/p.maxHp*100);
+    const xpPct=Math.round(p.xp/p.xpNext*100);
+    const chaosPct=p.chaos;
+    const cls=p.class;
+    const region=this.game.board.regionOf(p.position);
+    d.innerHTML=`
+      <div class="dash-h">${cls.icon||'⚔'} ${cls.name}</div>
+      <div class="stat-row"><span class="label">Level ${p.level}</span><span class="val">${lvl.name}</span></div>
+      <div class="dash-h">HP</div>
+      <div class="stat-row"><span class="label">${p.hp} / ${p.maxHp}</span><span class="val">${hpPct}%</span></div>
+      <div class="bar"><div class="bar-fill bar-hp" style="width:${hpPct}%"></div></div>
+      <div class="dash-h">XP</div>
+      <div class="stat-row"><span class="label">${p.xp} / ${p.xpNext}</span><span class="val">${xpPct}%</span></div>
+      <div class="bar"><div class="bar-fill bar-xp" style="width:${xpPct}%"></div></div>
+      <div class="dash-h">Chaos Meter</div>
+      <div class="stat-row"><span class="label">${chaosPct} / 100</span><span class="val">${chaosPct>=80?'⚠':chaosPct>=50?'●':'○'}</span></div>
+      <div class="bar chaos-meter"><div class="bar-fill bar-chaos" style="width:${chaosPct}%"></div></div>
+      <div class="dash-h">Resources</div>
+      <div class="stat-row"><span class="label">💰 Budget</span><span class="val">${p.resources.budget}</span></div>
+      <div class="stat-row"><span class="label">🛡 Security</span><span class="val">${p.resources.security}</span></div>
+      <div class="stat-row"><span class="label">🤝 Stakeholder</span><span class="val">${p.resources.stakeholder}</span></div>
+      <div class="stat-row"><span class="label">📐 Quality</span><span class="val">${p.resources.quality}</span></div>
+      <div class="stat-row"><span class="label">☁ Cloud</span><span class="val">${p.resources.cloudMaturity}</span></div>
+      <div class="stat-row"><span class="label">💼 Business Value</span><span class="val">${p.resources.businessValue}</span></div>
+      <div class="stat-row"><span class="label">💀 Tech Debt</span><span class="val">${p.resources.techDebt}</span></div>
+      <div class="dash-h">Locatie</div>
+      <div class="stat-row"><span class="label">Tile</span><span class="val">${p.position+1}/${this.game.board.size()}</span></div>
+      <div class="stat-row"><span class="label">Regio</span><span class="val" style="color:${region?region.color:'inherit'}">${region?region.name:'—'}</span></div>
+      <div class="dash-h">Attributen</div>
+      <div class="stat-row"><span class="label">Comm</span><span class="val">${p.attrs.communication}</span></div>
+      <div class="stat-row"><span class="label">Lead</span><span class="val">${p.attrs.leadership}</span></div>
+      <div class="stat-row"><span class="label">Arch</span><span class="val">${p.attrs.architecture}</span></div>
+      <div class="stat-row"><span class="label">Tech</span><span class="val">${p.attrs.technology}</span></div>
+      <div class="stat-row"><span class="label">Inn</span><span class="val">${p.attrs.innovation}</span></div>
+      <div class="stat-row"><span class="label">Sec</span><span class="val">${p.attrs.security}</span></div>
+      <div class="stat-row"><span class="label">Biz</span><span class="val">${p.attrs.businessKnowledge}</span></div>
+      <div class="dash-h">Inventaris (${p.inventory.length})</div>
+      <div class="chip-list">${p.inventory.slice(0,12).map(id=>{const a=CONTENT_ARTIFACTS.find(x=>x.id===id);return a?`<span class="chip artifact" title="${a.description}">${a.title}</span>`:''}).join('')}</div>
+      <div class="dash-h">Achievements (${this.game.ach.unlocked.size}/${CONTENT_ACHIEVEMENTS.length})</div>
+      <div class="chip-list">${Array.from(this.game.ach.unlocked).slice(0,10).map(id=>{const a=CONTENT_ACHIEVEMENTS.find(x=>x.id===id);return a?`<span class="chip achievement" title="${a.description}">${a.icon||'⭐'}</span>`:''}).join('')}</div>
+    `;
+  }
+  renderBoard(){
+    const wrap=$('#board'); if(!wrap)return;
+    const p=this.game.player;
+    wrap.innerHTML=this.game.board.tiles.map((t,i)=>{
+      const region=CONTENT_REGIONS.find(r=>r.id===t.regionId);
+      const isHere=p&&p.position===i;
+      const color=region?region.color:'#444';
+      return `<div class="tile type-${t.type} ${isHere?'player-here':''}" data-tile="${i}" style="border-top:2px solid ${color}">
+        <div class="tile-num">${i}</div>
+        <div class="tile-icon">${t.icon||region?.icon||'◆'}</div>
+        <div class="tile-label">${t.label||t.type}</div>
+        ${isHere?`<div class="pawn">${p.class.icon||'★'}</div>`:''}
+      </div>`;
+    }).join('');
+  }
+  renderTopbar(){
+    const dice=$('#dice'); if(dice) dice.textContent='?';
+    const info=$('#dice-info'); if(info) info.innerHTML=`Klik <b>Rol D20</b> om te bewegen.`;
+  }
+  modal(html,cb){
+    const mb=$('#modal-back'), m=$('#modal');
+    if(!mb||!m)return;
+    m.innerHTML=html;
+    mb.classList.add('active');
+    this.modalCallback=cb||null;
+    $$('.modal button[data-close]').forEach(b=>b.addEventListener('click',()=>this.closeModal()));
+  }
+  closeModal(){
+    const mb=$('#modal-back'); if(mb)mb.classList.remove('active');
+    if(this.modalCallback){ const cb=this.modalCallback; this.modalCallback=null; cb(); }
+  }
+  showCard(card,kind){
+    this.audio.cardFlip();
+    const eff=card.effect||{};
+    const effHtml=Object.entries(eff).filter(([,v])=>typeof v==='number'&&v!==0).map(([k,v])=>{
+      const cls=v>0?'effect-pos':'effect-neg'; return `<div class="${cls}">${k}: ${fmt(v)}</div>`;
+    }).join('');
+    let choicesHtml='';
+    if(card.choices && card.choices.length){
+      choicesHtml=`<div style="display:flex;flex-direction:column;gap:8px;margin-top:10px">`+
+        card.choices.map((c,i)=>{
+          const ce=c.effect||{}; const eH=Object.entries(ce).filter(([,v])=>typeof v==='number'&&v!==0).map(([k,v])=>`${k} ${fmt(v)}`).join(', ');
+          const cTitle=c.title||c.label||('Optie '+(i+1));
+          return `<button class="choice" data-choice="${i}"><div class="choice-title">${cTitle}</div><div class="choice-effect">${eH}</div></button>`;
+        }).join('')+`</div>`;
+    }
+    const kindLabel={quest:'⚔ Quest',chaos:'💥 Chaos',event:'📜 Event',artifact:'👑 Artifact'}[kind]||kind;
+    this.modal(`
+      <h2>${kindLabel}</h2>
+      <div class="cardface">
+        <h3>${card.title||card.name||''}</h3>
+        <div class="desc">${card.description||''}</div>
+        <div class="effects">${effHtml||'<span class="effect-neutral">Geen directe effecten</span>'}</div>
+      </div>
+      ${choicesHtml}
+      ${!card.choices||!card.choices.length?`<div class="actions"><button class="btn btn-gold" data-close>OK — pas effect toe</button></div>`:''}
+    `, ()=>{
+      if(!card.choices||!card.choices.length){
+        this.game.applyCardEffect(card,kind);
+      }
+    });
+    if(card.choices && card.choices.length){
+      $$('.modal .choice').forEach(btn=>btn.addEventListener('click',()=>{
+        const idx=parseInt(btn.dataset.choice,10);
+        const ch=card.choices[idx];
+        this.closeModal();
+        this.game.applyCardEffect({...card,effect:ch.effect||{}},kind);
+        this.log(`Keuze: ${ch.title||ch.label||('Optie '+(idx+1))}`,'magic');
+      }));
+    }
+  }
+  showArtifact(art){
+    this.audio.cardFlip();
+    const eff=art.passiveEffect||{};
+    const effHtml=Object.entries(eff).filter(([,v])=>v).map(([k,v])=>`<div class="effect-pos">${k}: ${fmt(v)}</div>`).join('');
+    const rarity=(art.rarity||'common');
+    this.modal(`
+      <h2>👑 Artifact gevonden!</h2>
+      <div class="cardface" style="border-color:var(--c-gold)">
+        <h3>${art.title} <span style="font-size:11px;color:var(--c-purple);text-transform:uppercase;margin-left:6px">${rarity}</span></h3>
+        <div class="desc">${art.description||''}</div>
+        <div class="effects">${effHtml||'<span class="effect-neutral">Cosmetisch</span>'}</div>
+        <div style="font-size:11px;color:var(--c-silver2);margin-top:6px">Slot: ${art.slot||'—'}</div>
+      </div>
+      <div class="actions">
+        <button class="btn btn-gold" data-close>Uitrusten &amp; opnemen</button>
+      </div>
+    `,()=>{
+      this.game.player.equip(art);
+      this.game.player.stats.artifacts++;
+      this.toast(`🎁 ${art.title} uitgerust`,'artifact');
+      this.log(`Artifact: ${art.title}`,'legendary');
+      this.game.afterAction();
+    });
+  }
+  renderCombat(combat){
+    const p=combat.player, m=combat.monster;
+    const pHp=Math.round(p.hp/p.maxHp*100);
+    const mHp=Math.round(m.hp/combat.monsterMaxHp*100);
+    const logHtml=combat.log.slice(-12).map(l=>`<div class="${l.kind}">${l.side==='player'?'▶ ':'◀ '}${l.msg}</div>`).join('');
+    const specialLbl=p.class.special||'Special';
+    const specialDisabled=p.specialCooldown>0?'disabled':'';
+    const specialLabel=p.specialCooldown>0?`${specialLbl} (${p.specialCooldown})`:specialLbl;
+    this.modal(`
+      <h2>⚔ Combat — Fase ${combat.phase}${m.phases?'/'+m.phases.length:''}</h2>
+      <div class="combat-arena">
+        <div class="combatant player-side">
+          <div class="cicon">${p.class.icon||'⚔'}</div>
+          <div class="cname">${p.class.name}</div>
+          <div class="cstats">HP ${p.hp}/${p.maxHp} (${pHp}%)</div>
+          <div class="bar"><div class="bar-fill bar-hp" style="width:${pHp}%"></div></div>
+          <div class="cstats" style="margin-top:4px">ATK ${p.attackBonus()} · DEF ${p.defenseBonus()}</div>
+        </div>
+        <div class="vs">VS</div>
+        <div class="combatant enemy-side">
+          <div class="cicon">${m.icon||'👾'}</div>
+          <div class="cname">${m.name}</div>
+          <div class="cstats">HP ${Math.max(0,m.hp)}/${combat.monsterMaxHp} (${Math.max(0,mHp)}%)</div>
+          <div class="bar"><div class="bar-fill bar-hp" style="width:${Math.max(0,mHp)}%"></div></div>
+          <div class="cstats" style="margin-top:4px">ATK ${m.attack} · DEF ${m.defense}</div>
+        </div>
+      </div>
+      <div class="combat-log">${logHtml||'<div>Combat gestart...</div>'}</div>
+      <div class="actions">
+        <button class="btn btn-gold" id="btn-attack">⚔ Aanval (D20)</button>
+        <button class="btn btn-purple" id="btn-special" ${specialDisabled}>✦ ${specialLabel}</button>
+        <button class="btn" id="btn-flee">🏃 Vlucht</button>
+      </div>
+    `);
+    $('#btn-attack')?.addEventListener('click',()=>combat.playerRoll());
+    $('#btn-special')?.addEventListener('click',()=>combat.useSpecial());
+    $('#btn-flee')?.addEventListener('click',()=>combat.flee());
+  }
+  onCombatEnd(combat){
+    const p=combat.player;
+    if(p.specialCooldown>0)p.specialCooldown--;
+    if(combat.result==='victory'){
+      this.log(`Overwinning! ${combat.monster.name} verslagen (+${combat.monster.xpReward||100} XP)`,'good');
+      this.toast(`🏆 ${combat.monster.name} verslagen!`);
+      const ctx={combatEnded:true};
+      if(combat.monster.tier==='boss'){ this.bossDefeated=true; ctx.bossDefeated=true }
+      if(combat.monster.tier==='final'){ this.finalBossDefeated=true; ctx.finalBossDefeated=true; this.game.win() }
+      this.game.ach.check(p,ctx,this);
+    } else if(combat.result==='flee'){
+      this.log('Ontsnapt uit gevecht','info');
+      p.stats.flees=(p.stats.flees||0)+1;
+    } else if(combat.result==='defeat'){
+      this.log('Verslagen in gevecht','bad');
+      this.game.gameOver('Verslagen door '+combat.monster.name);
+      return;
+    }
+    this.closeModal();
+    this.game.afterAction();
+  }
+  onLevelUp(lvl){
+    this.audio.levelUp();
+    const el=document.createElement('div');
+    el.className='levelup'; el.textContent=`LEVEL UP! ${lvl.name}`;
+    $('#screen-game').appendChild(el);
+    setTimeout(()=>el.remove(),2100);
+    this.log(`Level up: ${lvl.name}`,'legendary');
+    this.game.ach.check(this.game.player,{},this);
+  }
+  renderAchievements(rootId){
+    const root=$('#'+rootId); if(!root)return;
+    const unlocked=this.game?this.game.ach.unlocked:new Set(new SaveSystem().loadAch()||[]);
+    root.innerHTML=CONTENT_ACHIEVEMENTS.map(a=>{
+      const on=unlocked.has(a.id);
+      return `<div class="ach-card ${on?'unlocked':'locked'}">
+        <div class="icon">${a.icon||'⭐'}</div>
+        <div class="info"><b>${a.title}</b><span>${a.description||''}</span>
+        ${a.xpReward?`<div style="margin-top:2px;color:var(--c-cyan);font-size:11px;font-family:monospace">+${a.xpReward} XP</div>`:''}</div>
+      </div>`;
+    }).join('');
+    const prog=$('#ach-progress');
+    if(prog) prog.textContent=`${unlocked.size}/${CONTENT_ACHIEVEMENTS.length} ontgrendeld`;
+  }
+}
+
+/* ============================================================
+   Game — main state machine
+   ============================================================ */
+class Game{
+  constructor(){
+    this.save=new SaveSystem();
+    this.audio=new AudioEngine();
+    this.settings={sound:true,music:true,dark:true,animations:true};
+    const stored=this.save.loadSettings(); if(stored)Object.assign(this.settings,stored);
+    this.audio.setEnabled(this.settings.sound);
+    this.audio.setMusic(this.settings.music);
+    this.ach=new AchievementManager(this.save);
+    this.ui=new UI(this.audio);
+    this.ui.bind(this);
+    this.player=null;
+    this.board=new Board(CONTENT_BOARD);
+    this.decks={
+      quest:new Deck(CONTENT_QUESTS),
+      chaos:new Deck(CONTENT_CHAOS),
+      event:new Deck(CONTENT_EVENTS),
+      artifact:new Deck(CONTENT_ARTIFACTS)
+    };
+    this.rollAllowed=true;
+    this.lastRoll=null;
+    this.state='menu';
+  }
+  start(){
+    this.bindGlobal();
+    this.updateContinueBtn();
+    this.renderClassGrid();
+    this.renderSettings();
+    this.ui.renderAchievements('ach-grid');
+    this.audio.startMusic();
+  }
+  updateContinueBtn(){
+    const btn=$('#btn-continue'); if(!btn)return;
+    if(this.save.has()) btn.disabled=false; else btn.disabled=true;
+  }
+  bindGlobal(){
+    document.addEventListener('click',(e)=>{
+      const btn=e.target.closest('[data-action]'); if(!btn)return;
+      const act=btn.dataset.action;
+      this.audio.click();
+      switch(act){
+        case 'new-game': this.ui.show('screen-classselect'); this.renderClassGrid(); break;
+        case 'continue': this.continueGame(); break;
+        case 'tutorial': this.ui.show('screen-tutorial'); break;
+        case 'settings': this.renderSettings(); this.ui.show('screen-settings'); break;
+        case 'credits': this.ui.show('screen-credits'); break;
+        case 'achievements': this.ui.renderAchievements('ach-grid'); this.ui.show('screen-achievements'); break;
+        case 'back-start': this.ui.show('screen-start'); this.updateContinueBtn(); break;
+        case 'save-now': this.saveGame(); this.ui.toast('💾 Opgeslagen'); break;
+        case 'show-inventory': this.showInventory(); break;
+        case 'show-achievements-game': this.ui.renderAchievements('ach-grid'); this.ui.show('screen-achievements'); break;
+        case 'quit-to-menu': this.saveGame(); this.ui.show('screen-start'); this.updateContinueBtn(); break;
+        case 'restart': this.ui.show('screen-classselect'); this.renderClassGrid(); break;
+      }
+    });
+    $('#btn-roll')?.addEventListener('click',()=>this.rollAndMove());
+    $('#btn-end-turn')?.addEventListener('click',()=>this.endTurn());
+    $('#dice')?.addEventListener('click',()=>this.rollAndMove());
+    $('#btn-start-run')?.addEventListener('click',()=>this.startRun());
+    // First user click unlocks audio
+    document.addEventListener('click',()=>this.audio.ensure(),{once:true});
+  }
+  renderClassGrid(){
+    const grid=$('#class-grid'); if(!grid)return;
+    grid.innerHTML=CONTENT_CLASSES.map(c=>`
+      <div class="class-card" data-cls="${c.id}">
+        <div class="icon">${c.icon}</div>
+        <div class="name">${c.name}</div>
+        <div class="role">${c.role}</div>
+        <div class="desc">${c.description}</div>
+        <div class="attrs">
+          <span>Comm <b>${c.attrs.communication}</b></span>
+          <span>Lead <b>${c.attrs.leadership}</b></span>
+          <span>Arch <b>${c.attrs.architecture}</b></span>
+          <span>Tech <b>${c.attrs.technology}</b></span>
+          <span>Inn <b>${c.attrs.innovation}</b></span>
+          <span>Sec <b>${c.attrs.security}</b></span>
+          <span>Biz <b>${c.attrs.businessKnowledge}</b></span>
+          <span>HP <b>${c.hp}</b></span>
+        </div>
+        <div class="special">✦ ${c.special} — ${c.specialDesc||''}</div>
+      </div>
+    `).join('');
+    $$('.class-card').forEach(el=>el.addEventListener('click',()=>{
+      $$('.class-card').forEach(x=>x.classList.remove('selected'));
+      el.classList.add('selected');
+      const id=el.dataset.cls;
+      this.selectedClass=CONTENT_CLASSES.find(c=>c.id===id);
+      $('#btn-start-run').disabled=!this.selectedClass;
+    }));
+  }
+  startRun(){
+    if(!this.selectedClass)return;
+    this.save.clear();
+    this.player=new Player(this.selectedClass);
+    this.ui.regionsVisited=new Set([this.board.tile(0).regionId]);
+    this.ui.portalsUsed=0;
+    this.ui.bossDefeated=false;
+    this.ui.finalBossDefeated=false;
+    this.rollAllowed=true;
+    this.decks={
+      quest:new Deck(CONTENT_QUESTS),
+      chaos:new Deck(CONTENT_CHAOS),
+      event:new Deck(CONTENT_EVENTS),
+      artifact:new Deck(CONTENT_ARTIFACTS)
+    };
+    this.state='playing';
+    this.ui.show('screen-game');
+    this.ui.log('Avontuur begint. Rol de D20 om te beginnen.','magic');
+    this.ui.renderDashboard(); this.ui.renderBoard(); this.ui.renderTopbar();
+    this.saveGame();
+  }
+  continueGame(){
+    const data=this.save.load(); if(!data)return;
+    try{
+      const cls=CONTENT_CLASSES.find(c=>c.id===(data.player.class?.id)) || data.player.class;
+      const p=new Player(cls);
+      Object.assign(p,data.player);
+      p.class=cls;
+      this.player=p;
+      this.ui.regionsVisited=new Set(data.regionsVisited||[]);
+      this.ui.portalsUsed=data.portalsUsed||0;
+      this.ui.bossDefeated=data.bossDefeated||false;
+      this.ui.finalBossDefeated=data.finalBossDefeated||false;
+      this.state='playing';
+      this.ui.show('screen-game');
+      this.ui.renderDashboard(); this.ui.renderBoard(); this.ui.renderTopbar();
+      this.ui.log('Sessie hervat.','info');
+    }catch(e){
+      console.error(e);
+      this.ui.toast('Save corrupt — nieuw spel starten','bad');
+      this.ui.show('screen-classselect');
+    }
+  }
+  saveGame(){
+    if(!this.player)return;
+    this.save.save({
+      player:this.player,
+      regionsVisited:Array.from(this.ui.regionsVisited),
+      portalsUsed:this.ui.portalsUsed,
+      bossDefeated:this.ui.bossDefeated,
+      finalBossDefeated:this.ui.finalBossDefeated,
+      savedAt:now()
+    });
+  }
+  rollAndMove(){
+    if(!this.player || !this.rollAllowed || this.state!=='playing')return;
+    this.rollAllowed=false;
+    this.player.stats.rolls++;
+    this.player.stats.turns++;
+    const d=1+rand(20);
+    this.lastRoll=d;
+    this.audio.diceRoll();
+    const dice=$('#dice'); if(dice){ dice.classList.add('rolling'); setTimeout(()=>{dice.classList.remove('rolling');dice.textContent=d},600); }
+    const info=$('#dice-info'); if(info)info.innerHTML=`Rolled: <span class="last">${d}</span>`;
+    this.ui.log(`Rolled D20: ${d}`,'info');
+    // Movement: half of roll (or full for high rolls), min 1
+    const steps=Math.max(1,Math.floor(d/2)+ (d>=15?1:0));
+    setTimeout(()=>this.animateMove(steps),700);
+  }
+  animateMove(steps){
+    let remaining=steps;
+    const step=()=>{
+      if(remaining<=0){ this.onLandTile(); return; }
+      this.player.position=this.board.moveFrom(this.player.position,1);
+      const region=this.board.regionOf(this.player.position);
+      if(region) this.ui.regionsVisited.add(region.id);
+      this.ui.renderBoard(); this.ui.renderDashboard();
+      remaining--;
+      setTimeout(step,180);
+    };
+    step();
+  }
+  onLandTile(){
+    const t=this.board.tile(this.player.position);
+    const region=this.board.regionOf(this.player.position);
+    this.ui.log(`Landing op tile ${this.player.position} — ${t.label||t.type} (${region?region.name:'onbekend'})`,'info');
+    if(this.player.turnCount % 5 === 4){ // toggle day/night every 5 turns
+      this.player.dayNight = this.player.dayNight==='day'?'night':'day';
+      $('#screen-game').classList.toggle('night',this.player.dayNight==='night');
+    }
+    this.player.turnCount++;
+    this.player.stats.cardsDrawn++;
+    switch(t.type){
+      case 'start': this.ui.log('Start-tile — even ademen.','info'); this.afterAction(); break;
+      case 'quest': this.drawFromDeck('quest'); break;
+      case 'chaos': this.drawFromDeck('chaos'); break;
+      case 'event': this.drawFromDeck('event'); break;
+      case 'artifact': this.drawFromDeck('artifact'); break;
+      case 'combat': this.startCombat(); break;
+      case 'boss': this.startCombat(true); break;
+      case 'final': this.startCombat(true,true); break;
+      case 'portal': this.usePortal(); break;
+      case 'rest': this.rest(); break;
+      default: this.drawFromDeck('event');
+    }
+  }
+  drawFromDeck(kind){
+    const deck=this.decks[kind]; if(!deck){ this.afterAction(); return }
+    const card=deck.draw();
+    if(!card){ this.afterAction(); return }
+    if(kind==='artifact'){ this.ui.showArtifact(card); return }
+    this.ui.showCard(card,kind);
+  }
+  applyCardEffect(card,kind){
+    this.player.applyEffect(card.effect||{});
+    if(kind==='quest') this.player.stats.quests++;
+    if(kind==='chaos') this.player.stats.chaosSuffered++;
+    this.ui.log(`${card.title}: effect toegepast`,kind==='chaos'?'bad':'good');
+    this.afterAction();
+  }
+  startCombat(isBoss=false,isFinal=false){
+    let monster;
+    // If landing on tile 39 (Throne of Chaos), force the final boss
+    if(this.player.position===39 || isFinal){
+      monster=CONTENT_MONSTERS.find(m=>m.tier==='final');
+    } else if(isBoss){
+      const region=this.board.regionOf(this.player.position);
+      const regionBosses=CONTENT_MONSTERS.filter(m=>m.tier==='boss' && m.regionId===region?.id);
+      monster=pick(regionBosses.length?regionBosses:CONTENT_MONSTERS.filter(m=>m.tier==='boss'));
+    } else {
+      const region=this.board.regionOf(this.player.position);
+      const minions=CONTENT_MONSTERS.filter(m=>m.tier!=='final' && m.tier!=='boss' && m.regionId===region?.id);
+      monster=pick(minions.length?minions:CONTENT_MONSTERS.filter(m=>['minion','elite'].includes(m.tier)));
+    }
+    if(!monster){ this.ui.log('Geen monster gevonden — leeg tile','info'); this.afterAction(); return }
+    const combat=new Combat(this.player,monster,this.audio,this.ui);
+    this.player.stats.combats++;
+    this.ui.log(`Combat: ${monster.name}!`,'magic');
+    this.audio.bad();
+    this.ui.renderCombat(combat);
+  }
+  usePortal(){
+    // Teleporteer naar willekeurige portal-tile
+    const portals=this.board.tiles.map((t,i)=>({t,i})).filter(x=>x.t.type==='portal' && x.i!==this.player.position);
+    if(!portals.length){ this.ui.log('Portal inactief','info'); this.afterAction(); return }
+    const target=pick(portals);
+    this.player.position=target.i;
+    this.ui.portalsUsed++;
+    this.audio.sweep(200,1200,.6,'sine',.3);
+    this.ui.log(`Portal → tile ${target.i}`,'magic');
+    this.ui.renderBoard(); this.ui.renderDashboard();
+    setTimeout(()=>this.onLandTile(),400);
+  }
+  rest(){
+    const heal=Math.round(this.player.maxHp*.25);
+    this.player.hp=clamp(this.player.hp+heal,0,this.player.maxHp);
+    this.player.chaos=clamp(this.player.chaos-5,0,100);
+    this.audio.heal();
+    this.ui.log(`Rest tile — +${heal} HP, -5 chaos`,'good');
+    this.afterAction();
+  }
+  afterAction(){
+    if(!this.player) return;
+    if(this.player.hp<=0){ this.gameOver('HP nul — verslagen'); return }
+    if(this.player.chaos>=100){ this.gameOver('Chaos Meter op 100 — organisatie verloren'); return }
+    this.ui.renderDashboard(); this.ui.renderBoard();
+    this.ach.check(this.player,{
+      regionsVisited:this.ui.regionsVisited,
+      portalsUsed:this.ui.portalsUsed,
+      bossDefeated:this.ui.bossDefeated,
+      finalBossDefeated:this.ui.finalBossDefeated
+    },this.ui);
+    this.rollAllowed=true;
+    this.saveGame(); // autosave
+  }
+  endTurn(){
+    this.rollAllowed=true;
+    this.ui.log('Beurt beëindigd','info');
+    this.ui.renderDashboard();
+  }
+  showInventory(){
+    const p=this.player; if(!p)return;
+    const items=p.inventory.map(id=>{
+      const a=CONTENT_ARTIFACTS.find(x=>x.id===id); if(!a)return '';
+      const equipped=Object.values(p.equipped).includes(id);
+      const eff=Object.entries(a.passiveEffect||{}).filter(([,v])=>v).map(([k,v])=>`${k} ${fmt(v)}`).join(', ');
+      return `<div class="cardface"><h3>${a.title} ${equipped?'<span style="color:var(--c-green)">(uitgerust)</span>':''}</h3>
+        <div class="desc">${a.description}</div>
+        <div style="font-size:12px;color:var(--c-cyan);font-family:monospace">${eff}</div>
+        <div style="font-size:11px;color:var(--c-silver2);margin-top:4px">Rarity: ${a.rarity} · Slot: ${a.slot}</div>
+      </div>`;
+    }).join('');
+    this.ui.modal(`<h2>Inventaris (${p.inventory.length})</h2>${items||'<p style="text-align:center;color:var(--c-silver2)">Geen artifacts gevonden — vind ze door quests en combat!</p>'}<div class="actions"><button class="btn" data-close>Sluit</button></div>`);
+  }
+  win(){
+    this.audio.win();
+    this.state='won';
+    this.ui.log('🏆 The Chaos Architect verslagen! Je hebt gewonnen!','legendary');
+    setTimeout(()=>{
+      const p=this.player;
+      $('#go-title').textContent='🏆 OVERWINNING';
+      $('#go-reason').textContent='Je hebt The Chaos Architect verslagen. De organisatie is gered.';
+      $('#go-stats').innerHTML=this.statsHtml();
+      this.ui.show('screen-gameover');
+      this.save.clear();
+    },1200);
+  }
+  gameOver(reason){
+    this.audio.gameover();
+    this.state='over';
+    $('#go-title').textContent='☠ Game Over';
+    $('#go-reason').textContent=reason;
+    $('#go-stats').innerHTML=this.statsHtml();
+    this.ui.show('screen-gameover');
+    this.save.clear();
+  }
+  statsHtml(){
+    const p=this.player; if(!p)return '';
+    const cls=p.class;
+    const time=Math.round((now()-p.startTime)/1000);
+    return `<div class="settings-panel" style="text-align:left">
+      <div class="stat-row"><span class="label">Klasse</span><span class="val">${cls.name}</span></div>
+      <div class="stat-row"><span class="label">Level</span><span class="val">${p.level} — ${(CONTENT_LEVELS[p.level-1]||{}).name||''}</span></div>
+      <div class="stat-row"><span class="label">Beurten</span><span class="val">${p.stats.turns}</span></div>
+      <div class="stat-row"><span class="label">D20 rolls</span><span class="val">${p.stats.rolls}</span></div>
+      <div class="stat-row"><span class="label">Combats gewonnen</span><span class="val">${p.stats.wins}/${p.stats.combats}</span></div>
+      <div class="stat-row"><span class="label">Nat 20</span><span class="val">${p.stats.nat20}</span></div>
+      <div class="stat-row"><span class="label">Nat 1</span><span class="val">${p.stats.nat1}</span></div>
+      <div class="stat-row"><span class="label">Quests</span><span class="val">${p.stats.quests}</span></div>
+      <div class="stat-row"><span class="label">Artifacts</span><span class="val">${p.inventory.length}/${CONTENT_ARTIFACTS.length}</span></div>
+      <div class="stat-row"><span class="label">Achievements</span><span class="val">${this.ach.unlocked.size}/${CONTENT_ACHIEVEMENTS.length}</span></div>
+      <div class="stat-row"><span class="label">Schade uitgedeeld</span><span class="val">${p.stats.damageDealt}</span></div>
+      <div class="stat-row"><span class="label">Schade geleden</span><span class="val">${p.stats.damageTaken}</span></div>
+      <div class="stat-row"><span class="label">Speeltijd</span><span class="val">${Math.floor(time/60)}m ${time%60}s</span></div>
+      <div class="stat-row"><span class="label">Chaos Meter eind</span><span class="val">${p.chaos}</span></div>
+    </div>`;
+  }
+  renderSettings(){
+    const root=$('#settings-panel'); if(!root)return;
+    const s=this.settings;
+    const row=(id,label,val)=>`<div class="settings-row"><span class="label">${label}</span><div class="toggle ${val?'on':''}" data-setting="${id}"></div></div>`;
+    root.innerHTML=
+      row('sound','Geluid',s.sound)+
+      row('music','Muziek',s.music)+
+      row('dark','Donkere modus',s.dark)+
+      row('animations','Animaties',s.animations)+
+      `<div class="settings-row"><span class="label">Volume</span><input type="range" min="0" max="100" value="${Math.round(this.audio.volume*100)}" id="vol-slider" style="flex:1"></div>`+
+      `<div class="settings-row"><span class="label">Reset spel</span><button class="btn btn-danger btn-small" id="btn-reset">Alles wissen</button></div>`;
+    $$('.toggle[data-setting]').forEach(el=>el.addEventListener('click',()=>{
+      const key=el.dataset.setting; s[key]=!s[key]; el.classList.toggle('on',s[key]);
+      if(key==='sound') this.audio.setEnabled(s.sound);
+      if(key==='music') this.audio.setMusic(s.music);
+      if(key==='dark') document.body.classList.toggle('night', !s.dark && false); // dark is default
+      this.save.saveSettings(s);
+    }));
+    $('#vol-slider')?.addEventListener('input',(e)=>{
+      this.audio.volume=parseInt(e.target.value,10)/100;
+      this.save.saveSettings(this.settings);
+    });
+    $('#btn-reset')?.addEventListener('click',()=>{
+      if(confirm('Weet je zeker dat je alle voortgang, achievements en instellingen wilt wissen?')){
+        this.save.resetAll(); this.ach.reset();
+        this.ui.toast('🗑 Alles gereset','bad');
+        setTimeout(()=>location.reload(),800);
+      }
+    });
+  }
+}
+
+/* ---------- Boot ---------- */
+window.addEventListener('DOMContentLoaded',()=>{
+  window.__eq=new Game(); window.__eq.start();
+});
+</script>
+</body>
+</html>

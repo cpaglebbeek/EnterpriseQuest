@@ -1,0 +1,69 @@
+{
+  "minions": [
+    { "id": "m01", "name": "Legacy Dragon", "description": "Eeuwenoude draak die COBOL-vuur ademt en refactor-pogingen verpulvert.", "hp": 80, "attack": 18, "defense": 12, "xpReward": 120, "budgetReward": 200, "specialAbility": "Breath of Technical Debt: +2 debt per beurt", "regionId": "legacy_dungeon", "tier": "elite" },
+    { "id": "m02", "name": "Shadow IT Goblins", "description": "Zwerm ondergrondse goblins met eigen SaaS-abonnementen buiten CMDB.", "hp": 25, "attack": 6, "defense": 3, "xpReward": 30, "budgetReward": 40, "specialAbility": "Swarm: verschijnt in groep van 3", "regionId": "integration_bridge", "tier": "minion" },
+    { "id": "m03", "name": "Technical Debt Golem", "description": "Kolossale golem van spaghetti-code en TODO-comments.", "hp": 120, "attack": 15, "defense": 20, "xpReward": 150, "budgetReward": 220, "specialAbility": "Regenerate: +5 HP per beurt", "regionId": "legacy_dungeon", "tier": "elite" },
+    { "id": "m04", "name": "Vendor Hydra", "description": "Zevenkoppige hydra met licentie-modellen; hak er een af, twee groeien terug.", "hp": 100, "attack": 14, "defense": 10, "xpReward": 130, "budgetReward": 250, "specialAbility": "Multi-head: 2 aanvallen per beurt", "regionId": "vendor_market", "tier": "elite" },
+    { "id": "m05", "name": "Compliance Ghost", "description": "Spookachtige auditor die verschijnt bij ontbrekende documentatie.", "hp": 60, "attack": 12, "defense": 15, "xpReward": 90, "budgetReward": 100, "specialAbility": "Phase: 50% kans schade te ontwijken", "regionId": "compliance_swamp", "tier": "minion" },
+    { "id": "m06", "name": "Security Troll", "description": "Onder de brug van elk request wacht deze troll met een authenticatievraag.", "hp": 70, "attack": 13, "defense": 14, "xpReward": 85, "budgetReward": 110, "specialAbility": "Block: eerste aanval per gevecht mislukt", "regionId": "security_castle", "tier": "minion" },
+    { "id": "m07", "name": "Data Kraken", "description": "Enorme kraken met tentakels in elke datasilo van de organisatie.", "hp": 150, "attack": 17, "defense": 12, "xpReward": 180, "budgetReward": 260, "specialAbility": "Tentacle Grip: skip volgende beurt", "regionId": "data_forest", "tier": "elite" },
+    { "id": "m08", "name": "Zombie Server", "description": "Ongepatchte server die maar niet uit productie wil.", "hp": 40, "attack": 8, "defense": 6, "xpReward": 40, "budgetReward": 50, "specialAbility": "Undead: herrijst 1x met 10 HP", "regionId": "legacy_dungeon", "tier": "minion" },
+    { "id": "m09", "name": "Phishing Imp", "description": "Kleine duivel die zich voordoet als CEO in een mail.", "hp": 20, "attack": 10, "defense": 2, "xpReward": 25, "budgetReward": 30, "specialAbility": "Deceive: eerste worp krijgt -2", "regionId": "security_castle", "tier": "minion" },
+    { "id": "m10", "name": "API Slime", "description": "Slijmerig ongedocumenteerd endpoint dat overal doorheen sijpelt.", "hp": 30, "attack": 7, "defense": 5, "xpReward": 35, "budgetReward": 45, "specialAbility": "Split: bij 15 HP splitst in twee", "regionId": "integration_bridge", "tier": "minion" },
+    { "id": "m11", "name": "Bias Wraith", "description": "Schim uit een AI-model die vooroordelen in datasets voedt.", "hp": 55, "attack": 11, "defense": 9, "xpReward": 80, "budgetReward": 90, "specialAbility": "Amplify: schade neemt +1 per beurt toe", "regionId": "ai_temple", "tier": "minion" },
+    { "id": "m12", "name": "Cloud Cost Wyvern", "description": "Kleine draak die egress-bandbreedte opeet en de rekening bezorgt.", "hp": 65, "attack": 12, "defense": 8, "xpReward": 75, "budgetReward": 150, "specialAbility": "Bill Shock: -50 budget per beurt", "regionId": "cloud_mountains", "tier": "minion" },
+    { "id": "m13", "name": "Scope Creep Rat", "description": "Vermenigvuldigt zich terwijl niemand oplet.", "hp": 15, "attack": 5, "defense": 2, "xpReward": 20, "budgetReward": 25, "specialAbility": "Multiply: +1 rat per beurt", "regionId": "business_village", "tier": "minion" },
+    { "id": "m14", "name": "Consultancy Vampire", "description": "Zuigt uurtje-factuurtje het budget leeg.", "hp": 50, "attack": 10, "defense": 7, "xpReward": 65, "budgetReward": 120, "specialAbility": "Drain: -25 budget per aanval", "regionId": "vendor_market", "tier": "minion" },
+    { "id": "m15", "name": "Prompt Injection Djinn", "description": "Djinn die verborgen instructies in tokens fluistert.", "hp": 45, "attack": 14, "defense": 6, "xpReward": 85, "budgetReward": 100, "specialAbility": "Override: negeert defense 1x", "regionId": "ai_temple", "tier": "minion" }
+  ],
+  "midBosses": [
+    { "id": "mb01", "name": "Chaos CIO", "description": "CIO die strategie per kwartaal omgooit; regeert de Vendor Market.", "hp": 220, "attack": 22, "defense": 15, "xpReward": 400, "budgetReward": 600, "specialAbility": "Reorg: reset speler-buffs", "regionId": "vendor_market", "tier": "boss" },
+    { "id": "mb02", "name": "Shadow Board", "description": "Anonieme raad die parallelle beslissingen forceert in het Data Forest.", "hp": 240, "attack": 20, "defense": 18, "xpReward": 420, "budgetReward": 650, "specialAbility": "Veto: annuleert 1 speler-actie", "regionId": "data_forest", "tier": "boss" },
+    { "id": "mb03", "name": "Compliance Titan", "description": "Reus van regelgeving die AVG, DORA en NIS2 tegelijk zwaait.", "hp": 260, "attack": 19, "defense": 22, "xpReward": 450, "budgetReward": 700, "specialAbility": "Regulation Slam: schade + audit-token", "regionId": "compliance_swamp", "tier": "boss" },
+    { "id": "mb04", "name": "Cyber Lord", "description": "Duistere heerser over ransomware en zero-days in het Security Castle.", "hp": 250, "attack": 24, "defense": 16, "xpReward": 440, "budgetReward": 680, "specialAbility": "Ransom: kies verlies HP of budget", "regionId": "security_castle", "tier": "boss" },
+    { "id": "mb05", "name": "Technical Debt King", "description": "Gekroonde vorst op troon van dead code en workarounds.", "hp": 280, "attack": 21, "defense": 20, "xpReward": 460, "budgetReward": 720, "specialAbility": "Crown of Rework: +2 debt per beurt", "regionId": "legacy_dungeon", "tier": "boss" },
+    { "id": "mb06", "name": "Model Oracle", "description": "Extra mid-boss: orakel-LLM die hallucinaties tot doctrine verheft.", "hp": 230, "attack": 23, "defense": 14, "xpReward": 430, "budgetReward": 660, "specialAbility": "Hallucinate: random speler-status", "regionId": "ai_temple", "tier": "boss" }
+  ],
+  "finalBoss": {
+    "id": "final01",
+    "name": "The Chaos Architect",
+    "description": "De schaduwarchitect achter elk anti-pattern; heerser van de Digital Portal, verschijnt in drie kwaadaardige fases.",
+    "regionId": "digital_portal",
+    "tier": "final",
+    "phases": [
+      {
+        "phase": 1,
+        "name": "The Whiteboard Phase",
+        "description": "Bewapend met eindeloze whiteboards en PowerPoint-artefacten.",
+        "hp": 200,
+        "attack": 25,
+        "defense": 18,
+        "xpReward": 800,
+        "budgetReward": 1000,
+        "specialAbility": "Scope Explosion: +1 vijand per 3 beurten"
+      },
+      {
+        "phase": 2,
+        "name": "The Implementation Phase",
+        "description": "Verandert whiteboard-dromen in een chaos van microservices.",
+        "hp": 350,
+        "attack": 30,
+        "defense": 22,
+        "xpReward": 1200,
+        "budgetReward": 1500,
+        "specialAbility": "Cascading Failure: 3 aanvallen per beurt bij <50% HP"
+      },
+      {
+        "phase": 3,
+        "name": "The Chaos Ascendant",
+        "description": "Volledig ontketend; werkelijkheid en architectuur vallen samen in entropie.",
+        "hp": 500,
+        "attack": 38,
+        "defense": 28,
+        "xpReward": 2000,
+        "budgetReward": 2500,
+        "specialAbility": "Reality Rewrite: negeert alle artefacten 1x + roept 2 minions op"
+      }
+    ]
+  }
+}

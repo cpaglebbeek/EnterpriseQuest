@@ -1,0 +1,110 @@
+[
+  {
+    "id": "business_village",
+    "name": "Business Village",
+    "color": "#8FBC8F",
+    "icon": "🏘️",
+    "description": "Startpunt waar business capabilities en stakeholders wonen.",
+    "difficulty": 1,
+    "cardTypes": ["quest", "event"]
+  },
+  {
+    "id": "legacy_dungeon",
+    "name": "Legacy Dungeon",
+    "color": "#5C4033",
+    "icon": "🕸️",
+    "description": "Duistere kerker vol vergeten COBOL-systemen en technische schuld.",
+    "difficulty": 4,
+    "cardTypes": ["combat", "chaos", "artifact"]
+  },
+  {
+    "id": "cloud_mountains",
+    "name": "Cloud Mountains",
+    "color": "#87CEEB",
+    "icon": "☁️",
+    "description": "Hooggebergte van hyperscalers waar schaalbaarheid regeert.",
+    "difficulty": 3,
+    "cardTypes": ["quest", "event", "artifact"]
+  },
+  {
+    "id": "security_castle",
+    "name": "Security Castle",
+    "color": "#4B0082",
+    "icon": "🏰",
+    "description": "Versterkte burcht met firewalls, IAM en zero-trust wallen.",
+    "difficulty": 4,
+    "cardTypes": ["combat", "quest", "event"]
+  },
+  {
+    "id": "data_forest",
+    "name": "Data Forest",
+    "color": "#228B22",
+    "icon": "🌲",
+    "description": "Dicht woud van datastromen, lakes en warehouses.",
+    "difficulty": 3,
+    "cardTypes": ["quest", "chaos", "artifact"]
+  },
+  {
+    "id": "innovation_tower",
+    "name": "Innovation Tower",
+    "color": "#FFD700",
+    "icon": "🗼",
+    "description": "Torenhoge R&D-labs waar prototypes en experimenten schitteren.",
+    "difficulty": 2,
+    "cardTypes": ["event", "artifact", "quest"]
+  },
+  {
+    "id": "ai_temple",
+    "name": "AI Temple",
+    "color": "#DA70D6",
+    "icon": "🛕",
+    "description": "Heilige tempel van modellen, orakels en generatieve krachten.",
+    "difficulty": 5,
+    "cardTypes": ["quest", "chaos", "artifact", "combat"]
+  },
+  {
+    "id": "executive_palace",
+    "name": "Executive Palace",
+    "color": "#B22222",
+    "icon": "👑",
+    "description": "Marmerpaleis van C-suite waar strategie en budgetten worden bezworen.",
+    "difficulty": 4,
+    "cardTypes": ["event", "quest", "chaos"]
+  },
+  {
+    "id": "integration_bridge",
+    "name": "Integration Bridge",
+    "color": "#20B2AA",
+    "icon": "🌉",
+    "description": "Brug van APIs, ESB's en event buses tussen alle werelden.",
+    "difficulty": 3,
+    "cardTypes": ["quest", "event", "combat"]
+  },
+  {
+    "id": "compliance_swamp",
+    "name": "Compliance Swamp",
+    "color": "#556B2F",
+    "icon": "🐊",
+    "description": "Moeras vol GDPR-modder, audit-drijfzand en regelgeving-krokodillen.",
+    "difficulty": 4,
+    "cardTypes": ["chaos", "combat", "event"]
+  },
+  {
+    "id": "vendor_market",
+    "name": "Vendor Market",
+    "color": "#FF8C00",
+    "icon": "🏪",
+    "description": "Rumoerige bazaar van leveranciers, licenties en gouden kettingen.",
+    "difficulty": 2,
+    "cardTypes": ["event", "chaos", "artifact"]
+  },
+  {
+    "id": "digital_portal",
+    "name": "Digital Portal",
+    "color": "#000000",
+    "icon": "🌀",
+    "description": "De poort naar het eindspel — waar de Chaos Architect wacht.",
+    "difficulty": 5,
+    "cardTypes": ["combat", "chaos", "artifact"]
+  }
+]
