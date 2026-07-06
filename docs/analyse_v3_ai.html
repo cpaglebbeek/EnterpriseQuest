@@ -1,0 +1,1100 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>EnterpriseQuest v3 — Deep Dive Analyse (v0.2)</title>
+  <style>
+    /* Default styles provided by pandoc.
+    ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+    */
+    html {
+      color: #1a1a1a;
+      background-color: #fdfdfd;
+    }
+    body {
+      margin: 0 auto;
+      max-width: 36em;
+      padding-left: 50px;
+      padding-right: 50px;
+      padding-top: 50px;
+      padding-bottom: 50px;
+      hyphens: auto;
+      overflow-wrap: break-word;
+      text-rendering: optimizeLegibility;
+      font-kerning: normal;
+    }
+    @media (max-width: 600px) {
+      body {
+        font-size: 0.9em;
+        padding: 12px;
+      }
+      h1 {
+        font-size: 1.8em;
+      }
+    }
+    @media print {
+      html {
+        background-color: white;
+      }
+      body {
+        background-color: transparent;
+        color: black;
+        font-size: 12pt;
+      }
+      p, h2, h3 {
+        orphans: 3;
+        widows: 3;
+      }
+      h2, h3, h4 {
+        page-break-after: avoid;
+      }
+    }
+    p {
+      margin: 1em 0;
+    }
+    a {
+      color: #1a1a1a;
+    }
+    a:visited {
+      color: #1a1a1a;
+    }
+    img {
+      max-width: 100%;
+    }
+    svg {
+      height: auto;
+      max-width: 100%;
+    }
+    h1, h2, h3, h4, h5, h6 {
+      margin-top: 1.4em;
+    }
+    h5, h6 {
+      font-size: 1em;
+      font-style: italic;
+    }
+    h6 {
+      font-weight: normal;
+    }
+    ol, ul {
+      padding-left: 1.7em;
+      margin-top: 1em;
+    }
+    li > ol, li > ul {
+      margin-top: 0;
+    }
+    blockquote {
+      margin: 1em 0 1em 1.7em;
+      padding-left: 1em;
+      border-left: 2px solid #e6e6e6;
+      color: #606060;
+    }
+    code {
+      white-space: pre-wrap;
+      font-family: Menlo, Monaco, Consolas, 'Lucida Console', monospace;
+      font-size: 85%;
+      margin: 0;
+      hyphens: manual;
+    }
+    pre {
+      margin: 1em 0;
+      overflow: auto;
+    }
+    pre code {
+      padding: 0;
+      overflow: visible;
+      overflow-wrap: normal;
+    }
+    .sourceCode {
+     background-color: transparent;
+     overflow: visible;
+    }
+    hr {
+      border: none;
+      border-top: 1px solid #1a1a1a;
+      height: 1px;
+      margin: 1em 0;
+    }
+    table {
+      margin: 1em 0;
+      border-collapse: collapse;
+      width: 100%;
+      overflow-x: auto;
+      display: block;
+      font-variant-numeric: lining-nums tabular-nums;
+    }
+    table caption {
+      margin-bottom: 0.75em;
+    }
+    tbody {
+      margin-top: 0.5em;
+      border-top: 1px solid #1a1a1a;
+      border-bottom: 1px solid #1a1a1a;
+    }
+    th {
+      border-top: 1px solid #1a1a1a;
+      padding: 0.25em 0.5em 0.25em 0.5em;
+    }
+    td {
+      padding: 0.125em 0.5em 0.25em 0.5em;
+    }
+    header {
+      margin-bottom: 4em;
+      text-align: center;
+    }
+    #TOC li {
+      list-style: none;
+    }
+    #TOC ul {
+      padding-left: 1.3em;
+    }
+    #TOC > ul {
+      padding-left: 0;
+    }
+    #TOC a:not(:hover) {
+      text-decoration: none;
+    }
+    span.smallcaps{font-variant: small-caps;}
+    div.columns{display: flex; gap: min(4vw, 1.5em);}
+    div.column{flex: auto; overflow-x: auto;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    /* The extra [class] is a hack that increases specificity enough to
+       override a similar rule in reveal.js */
+    ul.task-list[class]{list-style: none;}
+    ul.task-list li input[type="checkbox"] {
+      font-size: inherit;
+      width: 0.8em;
+      margin: 0 0.8em 0.2em -1.6em;
+      vertical-align: middle;
+    }
+    .display.math{display: block; text-align: center; margin: 0.5rem auto;}
+  </style>
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">EnterpriseQuest v3 — Deep Dive Analyse (v0.2)</h1>
+</header>
+<h1
+id="enterprisequest-v3-deep-dive-analyse-train-your-dragon-agentic-ai-governance">EnterpriseQuest
+v3 — Deep Dive Analyse: Train Your Dragon (Agentic AI Governance)</h1>
+<p><strong>Auteur:</strong> Christian Glebbeek (iCt Horse)
+<strong>Datum:</strong> 2026-07-07 <strong>Scope:</strong> commerciële
+haalbaarheid van v3 (Train Your Dragon — Agentic AI Governance Edition)
+als <strong>workshop-tool + serious game + train-de-trainer
+product</strong>, in zowel digitale als analoge (Print &amp; Play) vorm.
+<strong>Positie:</strong> intern beslissingsstuk — vervolg op
+<code>analyse_deepdive.md</code> (v1+v2 digitaal) +
+<code>analyse_analoog.md</code> (v1+v2+v3 analoog). Focus hier:
+<strong>wat maakt v3 uniek en verkoopbaar in de exploderende AI
+Governance-markt?</strong></p>
+<hr />
+<h2 id="samenvatting-management">1 · Samenvatting (management)</h2>
+<p><strong>Uniek?</strong> <strong>Ja, extreem sterk.</strong> In
+tegenstelling tot v1 (fantasy-RPG in bekende EA-hoek) en v2
+(Dragon1-methodiek waar concurrenten indirect bestaan) is v3 in een
+<strong>latente-nul-concurrentie-markt</strong>: er is voor zover bekend
+<strong>geen enkel bordspel of interactief serious game specifiek voor
+Agentic AI Governance</strong>. Bestaande AI-Governance-training bestaat
+als:</p>
+<ul>
+<li>E-learning modules (Coursera, edX, IAPP, LinkedIn Learning)</li>
+<li>Consultancy-workshops (Deloitte, PwC, EY, Accenture)</li>
+<li>Certificerings-cursussen (ISO/IEC 42001 Lead Auditor, IAPP
+AIGP)</li>
+<li>Whitepapers en frameworks (NIST AI RMF, EU AI Act text, ISO
+42001)</li>
+</ul>
+<p><strong>Geen</strong> van deze biedt een <strong>speelbaar,
+teamgericht, kwesties-live-uitvechten-format</strong> waar teams Q1-Q4
+policy-vragen fysiek (Gouverneur-plaat) of digitaal (modal) moeten
+uitspreken. Dit is de kern-USP.</p>
+<p><strong>Vermarktbaar?</strong> <strong>Ja, hoger prijspunt dan v1/v2
+mogelijk.</strong> AI Governance is boardroom-onderwerp geworden na EU
+AI Act inwerkingtreding (1 augustus 2024) en verplichte compliance-fases
+(augustus 2025 general-purpose AI; augustus 2026 high-risk systems).
+CISO’s, DPO’s, AI Governance Officers en CTO’s hebben concreet
+<strong>budget</strong> dat begroot is voor
+“AI-Governance-implementatie”. Prijspunt-headroom: €5.000-25.000 per
+workshop-dag met team, €15.000-45.000 per train-de-trainer-traject,
+€25.000-75.000 per enterprise-licentie/jaar.</p>
+<p><strong>Positionering:</strong> <strong>niet</strong> als vervanger
+van certificering — juist als <strong>uitkomstgerichte
+simulatie</strong> die aanvult op ISO 42001 / IAPP AIGP / NIST AI RMF.
+“Je hebt de theorie geleerd — nu moet je ermee spelen om te ervaren wat
+drift, rogue agents en governance-locks in de praktijk doen.”</p>
+<p><strong>1 spel of meer?</strong> v3 staat <strong>op
+zichzelf</strong> — content-domein is fundamenteel anders dan v1/v2. De
+landingspagina toont ze naast elkaar, maar functioneel zijn het aparte
+producten. Advies: <strong>v3 als flagship-B2B-product</strong>
+positioneren; v1 als top-of-funnel (community + studenten); v2 als
+workshop-tool voor Dragon1-community.</p>
+<p><strong>Nieuwe partner-opties (t.o.v. eerdere analyses):</strong> -
+<strong>AI Impact Alliance</strong> — NL AI-ethiek-consortium -
+<strong>NL AI Coalitie (NL AIC)</strong> — publiek-privaat netwerk,
+distributiekanaal via bedrijfsleden - <strong>TNO AI Governance
+Lab</strong> — mogelijk academisch/onderzoeksbureau als
+validator/co-branding - <strong>Autoriteit Persoonsgegevens
+(AP)</strong> — educatief kanaal, doelgroep DPO’s - <strong>CISO
+Platform Nederland</strong> — bereikt &gt;2000 CISO’s in NL -
+<strong>VNG (Vereniging Nederlandse Gemeenten)</strong> — gemeenten
+moeten AI-governance opzetten, cursusmateriaal nodig</p>
+<p><strong>Gevaar:</strong> timing. EU AI Act-implementatie is nu
+(2025-2026) op piek van awareness. Als je in 2026 niet in de markt
+staat, verlies je een kansvenster van 12-18 maanden waarin adoptie
+gemakkelijk was. Later wordt de markt bezet door big-4 consultancy die
+simulatoren of e-learning ontwikkelen.</p>
+<hr />
+<h2 id="wat-is-v3">2 · Wat is v3</h2>
+<h3 id="v3-train-your-dragon-v0.3.0-turing-live">v3 · Train Your Dragon
+(v0.3.0-Turing, LIVE)</h3>
+<p><strong>Basis-thema:</strong> de architect verslaat de
+<strong>draak</strong> (AI drift + rogue agents + governance-gaten) door
+regie op <strong>determinisme vs stochasme</strong> + data-governance
+via de <strong>Gouverneur</strong>.</p>
+<p><strong>Digitale versie:</strong>
+<code>v3/EnterpriseQuest.html</code> - 8 rollen: AI Governance Officer /
+ML Engineer / Data Architect / Security &amp; Privacy Architect / Ethics
+Board Rep / MLOps Engineer / CTO / Prompt Engineer - 5×3 bord met 15
+AI-landscape locaties (Data Warehouse → Drift Dragon) - Gouverneur-modal
+met 4 policy-vragen (Q1-Q4) - 5 Governance-artefacten met cascade (AI
+Policy → Model Registry / Data Contracts → Guardrails / Audit Trail) -
+Drift Dragon 3-fase eindboss (Hallucination Wraith → Tool-Abuse Serpent
+→ Autonomous Dragon) - Rogue Agent tracker (3 skips in 5 beurten = rogue
+spawn) - 6 metrieken: Trust, Compliance, Determinisme, Data Sovereignty,
+Innovation, Drift - LocalStorage autosave, Web Audio, responsive - LIVE:
+https://icthorse.nl/EnterpriseQuest/v3/EnterpriseQuest.html</p>
+<p><strong>Analoge versie:</strong> <code>docs/analog_v3_ai.md</code> +
+PDF - Fysieke Gouverneur-plaat (A4 karton, 4 draaischijven) — team
+discussieert live - 5×3 bord (60×45 cm) - 25 opportunity + 25 threat +
+15 governance + 15 event + 30 achievement kaarten - 3-8 spelers, 90-120
+min - LIVE:
+https://icthorse.nl/EnterpriseQuest/docs/analog_v3_ai.pdf</p>
+<p><strong>Gouverneur-mechaniek</strong> (kern-innovatie): geïnspireerd
+door StaffKennisGerben procesarchitect Data Governance tab.
+<strong>Verzoeker → Gouverneur → Data</strong> flow met 4 policy-vragen:
+- Q1: Zakelijke reden? - Q2: Data-scope juist voor rol? - Q3: Retentie-
+en logging-plan? - Q4: Voldoet AVG/AI Act/DORA + intern beleid?</p>
+<p>4/4 bevestigd → toegang. Skippen mag — maar +5 drift-schade + 1 in
+rogue-teller. 3 skips in 5 beurten = rogue agent spawn.</p>
+<hr />
+<h2 id="uniekheidsanalyse">3 · Uniekheidsanalyse</h2>
+<h3 id="bestaand-landschap-ai-governance">3.1 · Bestaand landschap AI
+Governance</h3>
+<table>
+<colgroup>
+<col style="width: 25%" />
+<col style="width: 25%" />
+<col style="width: 25%" />
+<col style="width: 25%" />
+</colgroup>
+<thead>
+<tr>
+<th>Segment</th>
+<th>Voorbeelden</th>
+<th>Format</th>
+<th>Prijs</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>E-learning</strong></td>
+<td>Coursera “AI For Everyone” · edX “AI Governance” · IAPP AIGP
+self-study · LinkedIn Learning</td>
+<td>Video + quiz</td>
+<td>€0-€500/gebruiker</td>
+</tr>
+<tr>
+<td><strong>Certificering</strong></td>
+<td>ISO/IEC 42001 Lead Auditor · IAPP AIGP · CIPP/E · CIPM · Certified
+AI Governance Professional</td>
+<td>Examen + cursus</td>
+<td>€800-€3.500</td>
+</tr>
+<tr>
+<td><strong>Consultancy</strong></td>
+<td>Deloitte AI Impact Analysis · PwC AI Governance · EY AI Trust ·
+Accenture Responsible AI</td>
+<td>Advies-traject</td>
+<td>€25.000-€250.000</td>
+</tr>
+<tr>
+<td><strong>Frameworks</strong></td>
+<td>NIST AI RMF (Risk Management Framework) · ISO/IEC 42001 · EU AI Act
+· OECD AI Principles</td>
+<td>Document/richtlijn</td>
+<td>Gratis</td>
+</tr>
+<tr>
+<td><strong>Tools</strong></td>
+<td>IBM watsonx.governance · Credo AI · Fairly AI · Holistic AI ·
+Cranium</td>
+<td>SaaS-tool</td>
+<td>€500-€5.000/mnd</td>
+</tr>
+<tr>
+<td><strong>Workshops (klassikaal)</strong></td>
+<td>AI Impact Alliance · Delve Insights · AI4Belgium · Dutch AI
+Coalition</td>
+<td>Fysieke sessies</td>
+<td>€1.500-€5.000/dag</td>
+</tr>
+<tr>
+<td><strong>Serious games / bordspel-vorm</strong></td>
+<td><strong>(vrijwel niets)</strong> — enkele niche startups
+experimenteren</td>
+<td>n/a</td>
+<td>n/a</td>
+</tr>
+<tr>
+<td><strong>Simulaties / labs</strong></td>
+<td>AI Verify Foundation testing tools · MITRE ATLAS red-team
+framework</td>
+<td>Software + test-cases</td>
+<td>Gratis / betaald</td>
+</tr>
+</tbody>
+</table>
+<h3 id="uniekheid-v3-kern">3.2 · Uniekheid v3 — kern</h3>
+<p>Nul directe concurrenten voor gecombineerd <strong>speelbaar +
+AI-governance + Gouverneur-mechaniek</strong>. Dichtstbijzijnde
+referentie-punten:</p>
+<ol type="1">
+<li><strong>Backdoors &amp; Breaches</strong> (Black Hills,
+cyber-security kaartspel) — dichtstbij qua vorm, maar security niet
+AI-governance</li>
+<li><strong>NIST Risk Management Framework tabletop-oefeningen</strong>
+— bestaan als PDF-scenario’s, geen game</li>
+<li><strong>AI Verify Foundation testing tools</strong> — technische
+validatie, geen team-game</li>
+<li><strong>AI Ethics Card Deck</strong> (Digital Catapult, UK, gratis
+PnP) — 40 conversatie-kaarten, geen bord/spel-mechaniek</li>
+<li><strong>Deloitte “Trustworthy AI” workshop</strong> —
+advies-traject, geen zelfstandig speelbaar product</li>
+</ol>
+<p><strong>Unique Selling Points v3:</strong></p>
+<ol type="1">
+<li><strong>Enige serious game voor Agentic AI Governance</strong> (voor
+zover bekend, wereldwijd)</li>
+<li><strong>Gouverneur-mechaniek</strong> — live team-uitspraak op 4
+policy-vragen — dwingt reflectie en team-consensus (leermoment dat
+theorie niet levert)</li>
+<li><strong>Determinisme/Stochasme keuze per opportunity</strong> —
+beslissingskader voor elke AI-use-case-vraag (“regel-based of
+LLM?”)</li>
+<li><strong>Rogue Agent-mechaniek</strong> — visualiseert cumulatieve
+governance-schuld (3 skips in 5 beurten = ontsporing)</li>
+<li><strong>Drift Dragon 3-fase</strong> — sluit aan bij bekende
+AI-safety-taxonomie (hallucinatie → tool-abuse → autonoom rogue)</li>
+<li><strong>Beide vormen (digital + analog)</strong> — remote-teams via
+browser; boardroom-workshops via fysiek bord</li>
+<li><strong>Direct verhaal-links naar EU AI Act artikel 6/9, AVG, DORA,
+NIS2</strong> — audit-defensible</li>
+<li><strong>Nederlandstalig</strong> — enige NL-Governance-simulatie in
+productieklare vorm</li>
+<li><strong>Open source (AGPL-3.0)</strong> — organisatie kan self-host,
+forks maken voor branche-specifiek gebruik (banken, zorg, overheid)</li>
+</ol>
+<h3 id="markttiming-waarom-nu">3.3 · Markttiming — waarom nu</h3>
+<p><strong>Regelgevings-druk (EU AI Act timeline, na Digital Omnibus
+juni 2026):</strong></p>
+<ul>
+<li><strong>1 augustus 2024</strong>: EU AI Act inwerking getreden</li>
+<li><strong>2 februari 2025</strong>: verbod op onaanvaardbare AI (bijv.
+social scoring, real-time biometrie in publieke ruimte)</li>
+<li><strong>2 augustus 2025</strong>: general-purpose AI (GPAI)
+modellen: transparency + code of practice</li>
+<li><strong>2 december 2027</strong>: <strong>high-risk AI systems Annex
+III</strong> conformiteitseisen (recruiting, credit-scoring, education,
+law enforcement etc.) — deadline <strong>uitgesteld van augustus 2026
+naar december 2027</strong> door Digital Omnibus (Council 29 juni
+2026)</li>
+<li><strong>2 augustus 2028</strong>: high-risk Annex I
+(product-geïntegreerd: medical devices, radio equipment, lifts) —
+uitgesteld van augustus 2027</li>
+</ul>
+<p><strong>Business-implicatie</strong>: NL-organisaties met high-risk
+AI hebben ongeveer <strong>17-18 maanden</strong> (juli 2026 → december
+2027) om compliance-programma’s live te hebben. Boetes tot <strong>€35M
+of 7% wereldwijde omzet</strong> voor overtredingen. Het uitstel kan het
+gevoel van urgentie tijdelijk verlagen — maar organisaties die serieus
+zijn, gebruiken de extra tijd om <strong>grondiger</strong> te
+implementeren, niet om te wachten. Marketing-argument voor v3 wordt
+hierdoor “gebruik de extra 16 maanden om je governance-programma echt in
+te trainen”.</p>
+<p><strong>Trend-signaal:</strong> - Gartner’s Hype Cycle 2025-2026: “AI
+TRiSM” (Trust Risk Security Management) is nu op <strong>peak of
+expectations</strong> - <strong>AI Governance Officer</strong> is
+Gartner’s snelst groeiende rol-titel (2024→2025 +180% jobposts EU) -
+Nederlandse AP legt in 2026 boetes op voor AI-gerelateerde
+AVG-overtredingen - Corporate AI-Governance-budgetten zijn geëxplodeerd:
+gemiddeld <strong>1-3% van IT-budget</strong> in enterprises</p>
+<p><strong>Gevaar zijde:</strong> Big-4 (Deloitte, PwC, EY, Accenture)
+ontwikkelen simulatoren en labs — met de uitstel-deadline december 2027
+hebben zij nu meer tijd voor eigen launches (2027-Q1/Q2 realistischer).
+Voor iCt Horse betekent dit: <strong>het extra jaar is een kans om
+marktaandeel op te bouwen voor Big-4-concurrentie serieus
+wordt</strong>. Kies snel — nu = maximaal voordeel.</p>
+<h3 id="doelgroep-fit-matrix">3.4 · Doelgroep-fit-matrix</h3>
+<table>
+<colgroup>
+<col style="width: 25%" />
+<col style="width: 25%" />
+<col style="width: 25%" />
+<col style="width: 25%" />
+</colgroup>
+<thead>
+<tr>
+<th>Doelgroep</th>
+<th>Fit v3 digitaal</th>
+<th>Fit v3 analoog</th>
+<th>Waarom</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>AI Governance Officer</td>
+<td>★★★</td>
+<td>★★★</td>
+<td>Direct rolgebonden</td>
+</tr>
+<tr>
+<td>CISO</td>
+<td>★★★</td>
+<td>★★★</td>
+<td>AI in security-scope</td>
+</tr>
+<tr>
+<td>DPO / Privacy Officer</td>
+<td>★★★</td>
+<td>★★★</td>
+<td>AVG + AI Act overlap</td>
+</tr>
+<tr>
+<td>CTO</td>
+<td>★★</td>
+<td>★★★</td>
+<td>Strategisch boardroom</td>
+</tr>
+<tr>
+<td>ML/AI Engineering-teams</td>
+<td>★★★</td>
+<td>★★</td>
+<td>Praktisch relevant</td>
+</tr>
+<tr>
+<td>MLOps Engineer</td>
+<td>★★★</td>
+<td>★★</td>
+<td>Drift/rogue-realiteit</td>
+</tr>
+<tr>
+<td>Ethics Board / AI Ethics Committee</td>
+<td>★★★</td>
+<td>★★★</td>
+<td>Rol expliciet aanwezig</td>
+</tr>
+<tr>
+<td>Legal + Compliance</td>
+<td>★★</td>
+<td>★★★</td>
+<td>AVG/AI Act/DORA referenties</td>
+</tr>
+<tr>
+<td>Consultancy trainers (Deloitte, PwC, …)</td>
+<td>★★★</td>
+<td>★★★</td>
+<td>Train-de-trainer materiaal</td>
+</tr>
+<tr>
+<td>Universiteiten (AI-studies, EA-studies)</td>
+<td>★★★</td>
+<td>★★★</td>
+<td>Curriculum-verrijking</td>
+</tr>
+<tr>
+<td>HBO/MBO (IT-management)</td>
+<td>★★</td>
+<td>★★</td>
+<td>Simpelere varianten nodig</td>
+</tr>
+<tr>
+<td>Publieke sector (VNG, ministeries)</td>
+<td>★★</td>
+<td>★★★</td>
+<td>AI-strategie training-materiaal</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="vermarktbaarheid">4 · Vermarktbaarheid</h2>
+<h3 id="prijspositie-v3-t.o.v.-v1v2">4.1 · Prijspositie (v3 t.o.v.
+v1/v2)</h3>
+<table>
+<colgroup>
+<col style="width: 25%" />
+<col style="width: 25%" />
+<col style="width: 25%" />
+<col style="width: 25%" />
+</colgroup>
+<thead>
+<tr>
+<th>Product</th>
+<th>Prijs per gebruiker/dag</th>
+<th>Prijs per organisatie/jaar</th>
+<th>Prijs per workshop-sessie</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>v1 (fantasy) — funnel/community</td>
+<td>€0-25</td>
+<td>€0-500</td>
+<td>€0-500</td>
+</tr>
+<tr>
+<td>v2 (Dragon1) — workshop-tool</td>
+<td>€50-200</td>
+<td>€2.500-10.000</td>
+<td>€500-2.500</td>
+</tr>
+<tr>
+<td><strong>v3 (AI Governance) — flagship B2B</strong></td>
+<td><strong>€150-500</strong></td>
+<td><strong>€10.000-50.000</strong></td>
+<td><strong>€2.500-10.000</strong></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Rationale voor hoger v3-prijspunt:</strong> - Budget-eigenaar
+= AI Governance Officer / CISO (koopt in
+“AI-Governance-programma”-lijnen) - Compliance-argument = €35M
+boete-verzekering (kosten-baten sterk) - Onderscheidend product (nul
+directe concurrenten) - Boardroom-legitimiteit (fysieke Gouverneur-plaat
+als merch-artikel)</p>
+<h3 id="verdienmodellen">4.2 · Verdienmodellen</h3>
+<ol type="1">
+<li><strong>Enterprise SaaS-licentie</strong> — bedrijf koopt jaarlijkse
+licentie voor eigen team-gebruik → <strong>€10k-50k/jaar</strong></li>
+<li><strong>Workshop-tool per sessie</strong> — externe facilitator
+gebruikt v3 voor klant-sessie → <strong>€2,5k-10k/sessie</strong></li>
+<li><strong>Train-de-trainer certificering</strong> — trainer krijgt
+licentie + gids + certificering → <strong>€7,5k-15k eenmalig + €1k/jaar
+hercertificering</strong></li>
+<li><strong>Consulting cross-sell</strong> — v3 als top-of-funnel voor
+grotere AI-Governance-advies-opdrachten (€25k-200k+)</li>
+<li><strong>Corporate branded editie</strong> —
+bank/verzekeraar/zorgverlener koopt eigen editie voor teamdagen —
+100-500 dozen à <strong>€40-80 bulk</strong></li>
+<li><strong>Universiteits-curriculum-pakket</strong> — €200-500/set
+inclusief docentenhandleiding</li>
+<li><strong>AP/VNG/ministerie-programma</strong> —
+publieke-sector-editie met verplichte modules — <strong>€25k-100k
+eenmalig</strong></li>
+<li><strong>Sponsored version voor branche-federatie</strong> — VNO-NCW,
+NLdigital, Nederland AI — branche financiert, gratis voor leden →
+<strong>€50k-150k</strong></li>
+<li><strong>PoD-analog voor certificerings-instituten</strong> — IAPP /
+ISO / Fed-NL branded fysieke set → <strong>eenmalig licentie + royalty
+per set</strong></li>
+</ol>
+<h3 id="tamsamsom">4.3 · TAM/SAM/SOM</h3>
+<p><strong>TAM (globaal):</strong> AI Governance / trust markt (software
++ services) — geschat <strong>€25-40 miljard/jaar in 2026</strong>
+groeiend naar <strong>€100+ miljard in 2030</strong> (bron: Gartner,
+McKinsey market reports 2025-2026). Serious-game/simulation sub-niche
+daarvan: <strong>€200-500 miljoen/jaar</strong>.</p>
+<p><strong>TAM Nederland:</strong> NL
+AI-Governance-training/-tool-markt: <strong>~€150-250
+miljoen/jaar</strong> (schatting op basis van enterprise-IT-budgetten ×
+AI-share × Governance-share)</p>
+<p><strong>SAM Nederland:</strong> speelbaar/simulatie-based
+AI-Governance-training: <strong>~€8-15 miljoen/jaar</strong> — dit is
+een latente markt zonder concurrentie</p>
+<p><strong>SOM (jaar 1 realistisch):</strong> - Zelf-launch + PnP: 30-80
+licenties/organisatie = €300k-1,2M - + 1-2 branche-federaties (VNG of
+NLdigital): +€100k-300k - + 5-15 workshop-sessies via
+facilitator-netwerk: +€25k-100k - <strong>Totaal jaar 1 realistisch:
+€150k-500k</strong> (afhankelijk van sales-cyclus
+AI-Governance-Officers)</p>
+<p>Als je timing goed pakt (voor augustus 2026 in de markt):
+<strong>€500k-1,5M jaar 1 goed haalbaar</strong>.</p>
+<h3 id="kritische-succesfactoren">4.4 · Kritische succesfactoren</h3>
+<ol type="1">
+<li><strong>Endorsement door bekende AI-Governance-expert</strong> —
+bijv. via <a href="https://www.nldigital.nl/sig-ai/">SIG AI</a> of AI
+Impact Alliance. Zonder credibility van iemand met NL-naam blijft
+product marketing-orphan</li>
+<li><strong>Pilot bij 1 bekende NL-organisatie</strong> — bank,
+verzekeraar of gemeente met AI-Governance-programma → <strong>case
+study</strong> cruciaal voor sales</li>
+<li><strong>Facilitator-gids</strong> — voor v3 werkelijk noodzakelijk
+(Gouverneur-flow, debrief, rogue-scenario’s) — nog te schrijven —
+<strong>€8-15k budget</strong></li>
+<li><strong>EU AI Act-annotaties</strong> — elke
+opportunity/threat-kaart met concrete artikel-verwijzing (bijv. “AI Act
+art. 9 vereist risk management system”) → verhoogt
+audit-defensibiliteit</li>
+<li><strong>Multi-language</strong> — voor internationale schaal
+EN-editie (€8-15k vertaling + review + juridische check)</li>
+<li><strong>Publieke-sector-modus</strong> — VNG-editie met
+gemeenten-specifieke cases (BSN-data, WMO/WLZ AI, gemeente-diensten-AI)
+→ grootste single-segment-omzet</li>
+<li><strong>Server-side scoreboards + trainer-analytics</strong> — voor
+enterprise-adoptie noodzakelijk (nu single-player LocalStorage) →
+<strong>€20-40k dev</strong></li>
+<li><strong>Integratie met bestaande GRC-tools</strong> — RSA Archer,
+ServiceNow GRC, MetricStream — via SSO of API — voor
+enterprise-inbedding</li>
+</ol>
+<h3 id="vergelijking-met-aangrenzende-serious-game-successen">4.5 ·
+Vergelijking met aangrenzende serious-game-successen</h3>
+<table>
+<colgroup>
+<col style="width: 20%" />
+<col style="width: 20%" />
+<col style="width: 20%" />
+<col style="width: 20%" />
+<col style="width: 20%" />
+</colgroup>
+<thead>
+<tr>
+<th>Titel</th>
+<th>Doelgroep</th>
+<th>Model</th>
+<th>Waarom werkte het?</th>
+<th>v3-les</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Backdoors &amp; Breaches</strong> (Black Hills)</td>
+<td>Cyber-security teams</td>
+<td>Gratis PnP + retail</td>
+<td>Community-driven, small &amp; mighty</td>
+<td>v3 kan zelfde model: gratis PnP + retail</td>
+</tr>
+<tr>
+<td><strong>AI Ethics Card Deck</strong> (Digital Catapult, UK)</td>
+<td>AI-teams (gratis)</td>
+<td>Gratis PnP</td>
+<td>40 conversatie-kaarten, geen game — beperkt gebruik</td>
+<td>v3 kan beter: échte game, niet alleen kaartenset</td>
+</tr>
+<tr>
+<td><strong>Beer Distribution Game</strong> (MIT 1960)</td>
+<td>Supply chain training</td>
+<td>Classroom + online</td>
+<td>Klassieker, 60+ jaar in gebruik</td>
+<td>v3 kan analoog vast in curriculum landen</td>
+</tr>
+<tr>
+<td><strong>Kanban Pizza Game</strong> (agile42)</td>
+<td>Agile teams</td>
+<td>Gratis PnP + Creative Commons</td>
+<td>Trainer-tool, snel te leren</td>
+<td>v3 kan zelfde: facilitator-tool + community-uitbreiding</td>
+</tr>
+<tr>
+<td><strong>Backdoors &amp; Breaches</strong> cyber-tabletop</td>
+<td>CIS + security</td>
+<td>Card game + free PnP</td>
+<td>Doelgroep-fit + community-multiplier</td>
+<td>v3-fit voor CISO’s + AI Governance Officers</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Lessen:</strong> - Gratis PnP als voorportaal genereert
+bewustzijn en early-adoption - Community-content-support vroeg
+openzetten (custom scenario’s via GitHub) - Trainer-focus
+(facilitator-materiaal) is hogere-marge dan retail - Wachten tot
+regelgeving-implementatie-deadline (nu tot augustus 2026) genereert
+verkoop-druk</p>
+<hr />
+<h2 id="advies-hoe-vermarkten">5 · Advies: hoe vermarkten?</h2>
+<h3 id="optie-a-alleen-digitaal-huidige-situatie-live">Optie A · Alleen
+digitaal (huidige situatie: LIVE)</h3>
+<ul>
+<li><strong>Voor:</strong> nul-marketing-cost, kan gratis online
+staan</li>
+<li><strong>Tegen:</strong> geen directe omzet zonder pay-wall</li>
+<li><strong>Rol:</strong> funnel / awareness</li>
+</ul>
+<h3
+id="optie-b-digitaal-analoog-pnp-download-huidige-situatie-live">Optie B
+· Digitaal + analoog PnP-download (huidige situatie: LIVE)</h3>
+<ul>
+<li><strong>Voor:</strong> twee vormen voor twee doelgroepen (remote +
+fysiek)</li>
+<li><strong>Tegen:</strong> nog geen betaald element</li>
+<li><strong>Rol:</strong> community-uitrol, awareness-fase</li>
+</ul>
+<h3 id="optie-c-saas-licentie-enterprise">Optie C · SaaS-licentie
+enterprise</h3>
+<ul>
+<li><strong>Voor:</strong> voorspelbare omzet, hoog marge (~95%),
+schaalbaar</li>
+<li><strong>Tegen:</strong> vergt server-side scoreboards + SSO +
+analytics (€20-40k dev)</li>
+<li><strong>Rol:</strong> hoofd-verdienmodel voor enterprises</li>
+</ul>
+<h3 id="optie-d-workshop-tool-licensing">Optie D · Workshop-tool
+licensing</h3>
+<ul>
+<li><strong>Voor:</strong> hoog prijspunt (€2,5-10k/sessie), passief
+inkomen via facilitator-partners</li>
+<li><strong>Tegen:</strong> vereist facilitator-gids +
+eerste-klant-case</li>
+<li><strong>Rol:</strong> mid-market-verdienmodel</li>
+</ul>
+<h3 id="optie-e-train-de-trainer-certificering">Optie E ·
+Train-de-trainer certificering</h3>
+<ul>
+<li><strong>Voor:</strong> €7,5-15k per trainer, netwerk-effect</li>
+<li><strong>Tegen:</strong> logistiek + tijdsintensief</li>
+<li><strong>Rol:</strong> exclusiviteit + prijs-premium</li>
+</ul>
+<h3 id="optie-f-branche-federatie-sponsoring">Optie F ·
+Branche-federatie sponsoring</h3>
+<ul>
+<li><strong>Voor:</strong> bulk-adoptie via netwerk (VNG, NLdigital,
+Fed-NL, NL AIC), publieke funding mogelijk</li>
+<li><strong>Tegen:</strong> lange sales-cyclus (6-12 maanden)</li>
+<li><strong>Rol:</strong> stabiele bulk-omzet</li>
+</ul>
+<h3 id="optie-g-publiek-sector-editie-vng-gemeenten">Optie G ·
+Publiek-sector-editie (VNG-Gemeenten)</h3>
+<ul>
+<li><strong>Voor:</strong> gemeenten hebben verplicht AI-strategie,
+budget aanwezig, minimale competitie</li>
+<li><strong>Tegen:</strong> aanbesteding-formaliteit, langdurige
+inkoop</li>
+<li><strong>Rol:</strong> stabiel volumelijk, jaarlijkse licenties</li>
+</ul>
+<h3
+id="optie-h-partner-met-nl-ai-consultancy-ai-impact-alliance-delve-insights">Optie
+H · Partner met NL AI-consultancy (AI Impact Alliance / Delve
+Insights)</h3>
+<ul>
+<li><strong>Voor:</strong> validatie door NL-experts, distributie via
+bestaande klant-portefeuille</li>
+<li><strong>Tegen:</strong> revenue-share (60/40 or 50/50)</li>
+<li><strong>Rol:</strong> boost-adoptie fase 1-2</li>
+</ul>
+<p><strong>→ Aanbevolen combinatie:</strong></p>
+<ol type="1">
+<li><strong>Fase 0 (nu, LIVE):</strong> Optie A + B — digitale + analoge
+PnP-download live op icthorse.nl. <strong>Awareness fase</strong>.</li>
+<li><strong>Fase 1 (maanden 1-3):</strong> Optie H — 1 partner-gesprek
+met AI Impact Alliance of Delve Insights voor validatie + eerste
+pilot-klant. <strong>Endorsement fase</strong>.</li>
+<li><strong>Fase 2 (maanden 3-6):</strong> Optie D — eerste 3-5 betaalde
+workshops als facilitator. <strong>Cash-flow start</strong>.</li>
+<li><strong>Fase 3 (maanden 6-9):</strong> Optie E — train-de-trainer
+certificering openzetten voor 2-3 externe trainers.
+<strong>Multiplicator</strong>.</li>
+<li><strong>Fase 4 (maanden 9-12):</strong> Optie C — SaaS-licentie
+enterprise als server-side backend af is. <strong>Schaal</strong>.</li>
+<li><strong>Fase 5 (jaar 2):</strong> Optie F + G — VNG + NLdigital +
+branche-federaties. <strong>Volume</strong>.</li>
+</ol>
+<hr />
+<h2 id="twee-sporen-go-to-market">6 · Twee sporen — go-to-market</h2>
+<h3 id="spoor-a-partner-driven-via-nl-ai-consultancy">Spoor A:
+Partner-driven (via NL AI Consultancy)</h3>
+<p><strong>Partner-opties:</strong> - <strong>AI Impact
+Alliance</strong> — NL AI-ethiek-consortium, klant-portefeuille tech +
+publieke sector - <strong>Delve Insights</strong> — NL AI-consultancy,
+focus op AI-strategie - <strong>Nederlandse AI Coalitie (NL
+AIC)</strong> — publiek-privaat netwerk, distributie via 400+
+bedrijfsleden - <strong>TNO AI Governance Lab</strong> — mogelijk
+academisch/onderzoek co-branding - <strong>Erasmus Center for AI
+Governance</strong> — academische validering</p>
+<p><strong>Waarde-uitwisseling:</strong> - Wat partner biedt:
+klant-toegang, NL-naam, sales-team - Wat wij bieden: kant-en-klaar
+product, snelle time-to-market</p>
+<p><strong>Model:</strong> - Revenue-share 40/60 (partner/iCt) op
+licenties via partner-kanaal - Co-branding als “Powered by iCt Horse” of
+eigen brand met licentie</p>
+<h3 id="spoor-b-publieke-sector-track-vng-ministeries-ap">Spoor B:
+Publieke-sector-track (VNG / ministeries / AP)</h3>
+<p><strong>Doelgroep:</strong> - <strong>VNG</strong> — Vereniging
+Nederlandse Gemeenten (352 gemeenten) - <strong>Rijksdienst voor de
+Digitale Overheid</strong> (VNG + Rijk) - <strong>Autoriteit
+Persoonsgegevens (AP)</strong> — educatief kanaal, doelgroep DPO’s en
+organisaties - <strong>Ministerie van Binnenlandse Zaken</strong> —
+AI-in-de-publieke-sector-programma</p>
+<p><strong>Waarde:</strong> gemeenten hebben verplichte AI-strategie én
+AI-Governance-training-behoefte. VNG-editie kan door VNG worden
+gefinancierd als publiek-goed.</p>
+<p><strong>Model:</strong> - Custom-editie voor VNG (aangepaste cases
+voor gemeente-context) — eenmalig €50-100k development + jaarlijkse
+content-updates - Licentie per gemeente (bijv. €500-2.500/jaar voor
+gemeente-brede toegang) - Facilitator-training via VNG-netwerk</p>
+<h3
+id="spoor-c-direct-enterprise-sales-ciso-ai-governance-officer">Spoor C:
+Direct enterprise sales (CISO / AI Governance Officer)</h3>
+<p><strong>Doelgroep:</strong> grote NL-organisaties met AI-programma’s
+— banken (ING, Rabobank, ABN AMRO), verzekeraars (NN, Achmea, Aegon),
+zorgverleners (grote ziekenhuizen), retail (Bol, Ahold, Coolblue),
+telecom (KPN, VodafoneZiggo)</p>
+<p><strong>Sales-tactiek:</strong> - Direct outreach via LinkedIn naar
+AI Governance Officer / CISO / DPO - Referral-programma via CISO
+Platform Nederland - Content-marketing (whitepapers, webinars) op eigen
+kanaal</p>
+<p><strong>Prijspunt:</strong> €10-50k/organisatie/jaar SaaS-licentie,
+€25-75k enterprise-workshop-inzet</p>
+<h3 id="spoor-d-internationale-positioning">Spoor D: Internationale
+positioning</h3>
+<p><strong>Doelgroep:</strong> internationale AI-Governance-community -
+<strong>Europees</strong> — via EU AI Office (Brussel) contact leggen
+voor educatief materiaal - <strong>Wereldwijd</strong> — via ISO/IEC
+42001 Lead Auditor certificerings-instanties en IAPP-community</p>
+<p><strong>Voorwaarden:</strong> EN-editie klaar (€8-15k vertaling +
+review + juridische check op AI Act EN-terminologie)</p>
+<hr />
+<h2 id="advies-executie">7 · Advies executie</h2>
+<ol type="1">
+<li><strong>Deze week:</strong> endorsement-gesprek plannen — 2-3
+contact-opnamen (LinkedIn + mail) met bekende NL AI-Governance-namen
+(bijv. Sennay Ghebreab, Coen Van Gulijk, Marieke Van Erp, …). Vraag:
+“Wil je vroege access + feedback?”</li>
+<li><strong>Week +2-3:</strong> eerste pilot-organisatie vinden voor 1
+workshop-sessie (kan iCt Horse-relatie zijn, of via netwerk Peter/Mark).
+Doel: 1 gestest case-study</li>
+<li><strong>Maand 1-2:</strong> facilitator-gids schrijven
+(Gouverneur-flow, EU AI Act-annotaties per kaart, debrief-vragen).
+<strong>€8-15k budget</strong></li>
+<li><strong>Maand 2-3:</strong> eerste 3-5 workshops als betaalde
+facilitator. Prijs: €2,5-5k/sessie. Verzamelen: case-materiaal +
+testimonials</li>
+<li><strong>Maand 3-4:</strong> VNG-pilot voorstellen (via netwerk of
+directe outreach). 1 gemeente als lighthouse-klant</li>
+<li><strong>Maand 4-6:</strong> server-side backend uitbouwen
+(multi-user scoreboards, SSO, analytics). Enterprise-SaaS-launch
+voorbereiden</li>
+<li><strong>Maand 6-9:</strong> partner-deal met AI Impact Alliance of
+NL AIC. Officiële launch</li>
+<li><strong>Maand 9-12:</strong> internationale variant (EN-editie),
+aanwezigheid op AI-Governance-conferenties (IAPP Global Privacy Summit,
+ISO 42001-events)</li>
+</ol>
+<p><strong>Onmisbaar voor go-live:</strong> - Facilitator-gids (5-10
+pagina’s) — <strong>€8-15k</strong> - 1 case-study met bekend NL-bedrijf
+— <strong>€2-5k</strong> (of gratis via netwerk) - EU AI Act-annotaties
+per kaart — <strong>€3-5k juridische review</strong> - Landingspagina
+met sales-content — <strong>€2-3k</strong> - Aftermovie / demo-video
+(2-3 min) — <strong>€2-4k</strong> - Multi-user backend (voor SaaS) —
+<strong>€20-40k</strong></p>
+<p><strong>Totaal go-live budget (voor SaaS-launch):</strong>
+<strong>€40-75k</strong> <strong>Time-to-first-euro:</strong> ~2-3
+maanden (workshop-verkoop) <strong>Time-to-materiële-omzet:</strong>
+~6-9 maanden (SaaS + eerste partners)</p>
+<hr />
+<h2 id="financiële-projectie-jaar-1-indicatief">8 · Financiële projectie
+(jaar 1, indicatief)</h2>
+<table>
+<colgroup>
+<col style="width: 25%" />
+<col style="width: 25%" />
+<col style="width: 25%" />
+<col style="width: 25%" />
+</colgroup>
+<thead>
+<tr>
+<th>Scenario</th>
+<th>Volume</th>
+<th>Omzet</th>
+<th>Marge</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Alleen huidige LIVE-versie</strong> — organische
+adoptie</td>
+<td>0-500 downloads</td>
+<td>€0</td>
+<td>n/a</td>
+</tr>
+<tr>
+<td><strong>+ 5-10 workshops</strong> (facilitator = ik)</td>
+<td>5-10 workshops à €3k</td>
+<td>€15k-30k</td>
+<td>70%</td>
+</tr>
+<tr>
+<td><strong>+ 1 pilot enterprise-licentie</strong>
+(bank/verzekeraar)</td>
+<td>1 klant</td>
+<td>€15k-30k</td>
+<td>85%</td>
+</tr>
+<tr>
+<td><strong>+ NL AIC / AI Impact-partnerschap</strong></td>
+<td>5-10 klanten via partner</td>
+<td>+€30-100k</td>
+<td>45% (na share)</td>
+</tr>
+<tr>
+<td><strong>+ VNG-pilot</strong> (1 gemeente + regio-uitrol)</td>
+<td>5-10 gemeenten</td>
+<td>+€25-100k</td>
+<td>60%</td>
+</tr>
+<tr>
+<td><strong>+ Train-de-trainer voor 2-3 externe trainers</strong></td>
+<td>2-3 trainers</td>
+<td>+€15-45k</td>
+<td>90%</td>
+</tr>
+<tr>
+<td><strong>Realistisch totaal jaar 1</strong></td>
+<td></td>
+<td><strong>€100k-300k</strong></td>
+<td><strong>~60-70%</strong></td>
+</tr>
+<tr>
+<td><strong>Optimistisch (voor augustus 2026-deadline in
+markt)</strong></td>
+<td></td>
+<td><strong>€300k-800k</strong></td>
+<td><strong>~55-65%</strong></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Sensitiviteits-scenario’s:</strong> -
+<strong>Ondergrens</strong> (alleen huidig LIVE + 3-5 workshops):
+<strong>€10-20k jaar 1</strong> - <strong>Basis</strong> (workshops + 1
+partner + VNG-pilot): <strong>€100-200k jaar 1</strong> -
+<strong>Bovengrens</strong> (alles + case-study bij grote bank):
+<strong>€400-800k jaar 1</strong></p>
+<p><strong>Key driver:</strong> eerste 3 betaalde klanten voor
+case-material. Zonder testimonials blijft SaaS-verkoop moeizaam. Met 2-3
+testimonials versnelt sales-cyclus fors.</p>
+<hr />
+<h2 id="vergelijking-v3-versus-v1v2-als-vermarktbaar-product">9 ·
+Vergelijking v3 versus v1/v2 als vermarktbaar product</h2>
+<table>
+<colgroup>
+<col style="width: 25%" />
+<col style="width: 25%" />
+<col style="width: 25%" />
+<col style="width: 25%" />
+</colgroup>
+<thead>
+<tr>
+<th>Aspect</th>
+<th>v1 (Fantasy)</th>
+<th>v2 (Dragon1)</th>
+<th><strong>v3 (AI Governance)</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Doelgroep-scope</strong></td>
+<td>Klein (EA-nerds + studenten)</td>
+<td>Middel (Dragon1-community)</td>
+<td><strong>Groot (elke org met AI)</strong></td>
+</tr>
+<tr>
+<td><strong>Marktvolwassenheid</strong></td>
+<td>Latent (small niche)</td>
+<td>Latent (Dragon1-community)</td>
+<td><strong>Actief (regelgeving-druk)</strong></td>
+</tr>
+<tr>
+<td><strong>Prijspunt-headroom</strong></td>
+<td>Klein (€0-500)</td>
+<td>Middel (€500-5k)</td>
+<td><strong>Groot (€2,5k-50k)</strong></td>
+</tr>
+<tr>
+<td><strong>Concurrentie</strong></td>
+<td>Beperkt</td>
+<td>Beperkt</td>
+<td><strong>Vrijwel nihil</strong></td>
+</tr>
+<tr>
+<td><strong>Boardroom-legitimiteit</strong></td>
+<td>Laag</td>
+<td>Middel</td>
+<td><strong>Hoog</strong></td>
+</tr>
+<tr>
+<td><strong>Regelgeving-hefboom</strong></td>
+<td>Geen</td>
+<td>Geen</td>
+<td><strong>EU AI Act, AVG, DORA, NIS2</strong></td>
+</tr>
+<tr>
+<td><strong>Partner-opties</strong></td>
+<td>Weinig</td>
+<td>Dragon1 (via Mark Paauwe)</td>
+<td><strong>Meerdere (AI Impact, NL AIC, VNG, …)</strong></td>
+</tr>
+<tr>
+<td><strong>Timing-druk</strong></td>
+<td>Neutraal</td>
+<td>Neutraal</td>
+<td><strong>Hoog (aug 2026 EU AI Act deadline)</strong></td>
+</tr>
+<tr>
+<td><strong>Content-diepte-vereiste</strong></td>
+<td>Laag (fantasy vrijheid)</td>
+<td>Middel (Dragon1-getrouw)</td>
+<td><strong>Hoog (juridische correctheid)</strong></td>
+</tr>
+<tr>
+<td><strong>Marge-potentieel</strong></td>
+<td>Laag-middel</td>
+<td>Middel</td>
+<td><strong>Hoog</strong></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Conclusie:</strong> v3 is <strong>verreweg</strong> het meest
+vermarktbare product van de drie. v1 blijft
+top-of-funnel/community-tool. v2 blijft Dragon1-community-tool.
+<strong>v3 is flagship B2B</strong>.</p>
+<hr />
+<h2 id="openstaande-vragen">10 · Openstaande vragen</h2>
+<ol type="1">
+<li>Wie is de bekende NL-AI-Governance-naam die endorsement wil geven?
+Netwerk-verkenning nodig.</li>
+<li>Welke NL-organisatie is bereid tot pilot-workshop (gratis of tegen
+kostprijs) voor case-material?</li>
+<li>Kan AI Impact Alliance of NL AIC als eerste partner-gesprek worden
+ingericht?</li>
+<li>Is er contact-mogelijkheid met VNG rond AI-strategie voor
+gemeenten?</li>
+<li>Wat is de exacte EU AI Act artikel-mapping voor elke kaart?
+Juridische review nodig (€3-5k budget)</li>
+<li>Hoe positioneren t.o.v. ISO/IEC 42001 en IAPP AIGP? Aanvullend,
+niet-vervangend — hoe expliciet in marketing?</li>
+<li>Timing van EN-editie: nu al vertalen of eerst NL-market bewijzen (Q4
+2026)?</li>
+<li>Kan Autoriteit Persoonsgegevens als educatief kanaal fungeren voor
+DPO’s? Of zien zij ons als concurrent?</li>
+<li>Multi-user server-side backend: build zelf of open-source
+samenwerking (bijv. via NL AI Coalitie tech-werkgroep)?</li>
+<li>Corporate branded editie: wie is eerste ambassadeur-organisatie
+(financieel of niet-financieel gemotiveerd)?</li>
+</ol>
+<hr />
+<h2 id="bijlagen">Bijlagen</h2>
+<ul>
+<li><code>docs/analog_v3_ai.md</code> + <code>.pdf</code> — Print &amp;
+Play design v3</li>
+<li><code>v3/EnterpriseQuest.html</code> — digitale versie v3 LIVE</li>
+<li><code>docs/analyse_deepdive.md</code> — deep-dive digitale v1+v2
+(context)</li>
+<li><code>docs/analyse_analoog.md</code> — deep-dive analoge versies
+(context)</li>
+</ul>
+<p><em>Intern beslissingsstuk — niet doorsturen naar Mark, Peter, of
+externe partners zonder aanpassing per partner-doelgroep.</em></p>
+<p><strong>Datum eerste versie:</strong> 2026-07-07
+<strong>Auteur:</strong> Claude Opus 4.7 (1M context) namens Christian
+Glebbeek</p>
+</body>
+</html>

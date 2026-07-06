@@ -125,27 +125,26 @@ h1 {
 }
 .analog-card p { font-size: 12.5px; color: var(--muted); line-height: 1.5; margin: 6px 0 10px; }
 
-/* Analog animation placeholder */
-.anim-preview {
+/* Demo video preview */
+.video-preview {
   width: 100%;
-  height: 180px;
-  background: linear-gradient(160deg, #0d1330, #0a0f24);
-  border: 1px dashed var(--border);
+  aspect-ratio: 16/9;
+  background: #0a0f24;
+  border: 1px solid var(--border);
   border-radius: 8px;
   margin-bottom: 10px;
-  position: relative;
-  overflow: hidden;
+  display: block;
 }
-.anim-preview .label {
-  position: absolute;
-  bottom: 6px;
-  left: 8px;
-  font-size: 10px;
-  color: var(--dim);
-  background: rgba(0,0,0,0.4);
-  padding: 2px 6px;
-  border-radius: 4px;
-  z-index: 5;
+.video-preview:focus { outline: 2px solid var(--gold); }
+
+/* Digital-card demo video below card body */
+.card .demo-video {
+  width: 100%;
+  aspect-ratio: 16/9;
+  border-radius: 8px;
+  margin: 8px 0;
+  background: #0a0f24;
+  border: 1px solid rgba(245,197,66,0.2);
 }
 
 /* Animation v1: RPG - dice roll + card flip + monster */
@@ -368,44 +367,44 @@ footer a { color: var(--purple); text-decoration: none; }
   <!-- ===== Digital versions ===== -->
   <h2 class="section-title">▶ Digitale versies</h2>
   <div class="versions">
-    <a class="card" href="v1/EnterpriseQuest.html">
+    <div class="card">
       <span class="badge v1">v1 · Architect's Dungeon</span>
       <h2>Fantasy RPG</h2>
+      <video class="demo-video" src="videos/v1_digital_demo.mp4" muted loop autoplay playsinline preload="metadata"></video>
       <p>Klassieke tabletop-RPG-flavor. Vecht monsters, verzamel artifacts, versla The Chaos Architect in 3 fases.</p>
       <ul>
-        <li>6 architect-klassen</li>
-        <li>40 tiles over 12 fantasy-regio's</li>
+        <li>6 architect-klassen · 40 tiles · 12 regio's</li>
         <li>250 kaarten · D20 combat · 22 monsters</li>
         <li>10 levels · 51 achievements</li>
       </ul>
-      <div class="play">▶ Speel v1</div>
-    </a>
+      <a class="play" href="v1/EnterpriseQuest.html">▶ Speel v1</a>
+    </div>
 
-    <a class="card" href="v2/EnterpriseQuest.html">
+    <div class="card">
       <span class="badge v2">v2 · Dragon1 Journey</span>
       <h2>Workshop-simulatie</h2>
+      <video class="demo-video" src="videos/v2_digital_demo.mp4" muted loop autoplay playsinline preload="metadata"></video>
       <p>Professionele Dragon1-methodiek. Geen combat — lever architectuur-artefacten en presenteer aan de RvB.</p>
       <ul>
-        <li>8 rollen (EA/SA/BA/IA/SecA/CIO/IT-Mgr/Student)</li>
-        <li>4×4 bord van 16 organisatie-onderdelen</li>
+        <li>8 rollen · 4×4 bord · 16 organisatie-onderdelen</li>
         <li>110 kaarten · 15 artefacten met cascade</li>
         <li>Eindscore op 8 aspecten</li>
       </ul>
-      <div class="play">▶ Speel v2 · Dragon1</div>
-    </a>
+      <a class="play" href="v2/EnterpriseQuest.html">▶ Speel v2 · Dragon1</a>
+    </div>
 
-    <a class="card" href="v3/EnterpriseQuest.html">
+    <div class="card">
       <span class="badge v3">v3 · Train Your Dragon 🐉</span>
       <h2>Agentic AI Governance</h2>
+      <video class="demo-video" src="videos/v3_digital_demo.mp4" muted loop autoplay playsinline preload="metadata"></video>
       <p>De draak = AI drift + rogue agents. Voer regie op determinisme/stochasme, doe data-governance via de <b>Gouverneur</b>.</p>
       <ul>
-        <li>8 rollen (AIGO / ML Eng / Data Arch / SecA / Ethics / MLOps / CTO / PE)</li>
-        <li>5×3 bord van 15 AI-landscape locaties</li>
-        <li>Opportunity + Threat + Governance + Event kaarten</li>
+        <li>8 rollen · 5×3 bord van 15 AI-locaties</li>
+        <li>Opportunity + Threat + Governance kaarten</li>
         <li>Drift Dragon 3-fase eindboss</li>
       </ul>
-      <div class="play">▶ Speel v3 · Train Your Dragon</div>
-    </a>
+      <a class="play" href="v3/EnterpriseQuest.html">▶ Speel v3 · Train Your Dragon</a>
+    </div>
   </div>
 
   <!-- ===== Analog / Print & Play section ===== -->
@@ -419,16 +418,8 @@ footer a { color: var(--purple); text-decoration: none; }
   <div class="analog-grid">
     <!-- Analog v1 -->
     <div class="analog-card">
-      <div class="anim-preview">
-        <div class="anim-v1">
-          <div class="board-mini"><div class="pawn"></div></div>
-          <div class="d20">D20</div>
-          <div class="card-mini"></div>
-          <div class="monster">🐲</div>
-        </div>
-        <div class="label">Preview: D20 · pion beweegt · kaart flip · monster combat</div>
-      </div>
-      <div class="kind">v1 · Analog PnP</div>
+      <video class="video-preview" src="videos/v1_analog_demo.mp4" muted loop autoplay playsinline preload="metadata" controls></video>
+      <div class="kind">v1 · Analog PnP · 60s demo</div>
       <h3>Architect's Dungeon</h3>
       <p>Fantasy-RPG met 40-tile spiraal-bord, 250 kaarten, 22 monsters, D20 combat. 2-6 spelers, 90-150 min.</p>
       <div class="cta-row">
@@ -439,25 +430,8 @@ footer a { color: var(--purple); text-decoration: none; }
 
     <!-- Analog v2 -->
     <div class="analog-card">
-      <div class="anim-preview">
-        <div class="anim-v2">
-          <div class="grid-mini">
-            <div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div>
-            <div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div>
-            <div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div>
-            <div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div>
-          </div>
-          <div class="cascade">
-            <div class="artefact-mini">Vision</div>
-            <div class="artefact-mini">Strategy</div>
-            <div class="artefact-mini">Cap Map</div>
-            <div class="artefact-mini">Roadmap</div>
-            <div class="artefact-mini">Repository</div>
-          </div>
-        </div>
-        <div class="label">Preview: 4×4-bord · artefact-cascade stapelt</div>
-      </div>
-      <div class="kind">v2 · Analog PnP</div>
+      <video class="video-preview" src="videos/v2_analog_demo.mp4" muted loop autoplay playsinline preload="metadata" controls></video>
+      <div class="kind">v2 · Analog PnP · 60s demo</div>
       <h3>Dragon1 Architect's Journey</h3>
       <p>Dragon1-simulatie met 4×4 bord, 15 artefacten met cascade-vereisten, 8 rollen, RvB-eindpresentatie. 2-8 spelers, 90-120 min.</p>
       <div class="cta-row">
@@ -468,23 +442,8 @@ footer a { color: var(--purple); text-decoration: none; }
 
     <!-- Analog v3 -->
     <div class="analog-card">
-      <div class="anim-preview">
-        <div class="anim-v3">
-          <div class="requestor">👤</div>
-          <div class="arrow">→</div>
-          <div class="gouv">⚖</div>
-          <div class="checks">
-            <div class="check"></div>
-            <div class="check"></div>
-            <div class="check"></div>
-            <div class="check"></div>
-          </div>
-          <div class="arrow">→</div>
-          <div class="dragon">🐉</div>
-        </div>
-        <div class="label">Preview: Verzoeker → Gouverneur (4 Q's) → Draak verzwakt</div>
-      </div>
-      <div class="kind">v3 · Analog PnP</div>
+      <video class="video-preview" src="videos/v3_analog_demo.mp4" muted loop autoplay playsinline preload="metadata" controls></video>
+      <div class="kind">v3 · Analog PnP · 60s demo</div>
       <h3>Train Your Dragon</h3>
       <p>Agentic AI Governance met Gouverneur-plaat (4 policy-vragen), Drift Dragon 3-fase, rogue agents. 3-8 spelers, 90-120 min.</p>
       <div class="cta-row">
@@ -495,8 +454,7 @@ footer a { color: var(--purple); text-decoration: none; }
   </div>
 
   <p style="font-size: 12px; color: var(--dim); font-style: italic; margin-top: 10px;">
-    De 3 mini-animaties boven zijn CSS/SVG-placeholders die de kern-mechaniek visualiseren: bord + kaarten + tokens.
-    Echte video-demo's volgen in fase 2 (playtest-opnames).
+    De 6 demo-videos (3 digitaal + 3 analoog) tonen elk 60s met voorbeeld-beurten. Autoplay in loop, klik voor controls.
   </p>
 
   <!-- ===== Analyses & pitches ===== -->
@@ -511,6 +469,11 @@ footer a { color: var(--purple); text-decoration: none; }
       <span class="type pdf">PDF · intern</span>
       <h4>Deep Dive — analoge versies</h4>
       <p>Fysieke bordspel-markt, PnP, Kickstarter, workshop-tool</p>
+    </a>
+    <a class="doc-tile" href="docs/analyse_v3_ai.pdf">
+      <span class="type pdf">PDF · intern</span>
+      <h4>Deep Dive — v3 AI Governance</h4>
+      <p>Uniciteit + vermarktbaarheid Train Your Dragon; EU AI Act timing; flagship-B2B-positionering</p>
     </a>
     <a class="doc-tile" href="docs/pitch_mark_paauwe.pdf">
       <span class="type pdf">PDF · pitch</span>
