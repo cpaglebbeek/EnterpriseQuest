@@ -1,0 +1,17 @@
+file 'beat_00.png'
+duration 7.5
+file 'beat_01.png'
+duration 7.5
+file 'beat_02.png'
+duration 7.5
+file 'beat_03.png'
+duration 7.5
+file 'beat_04.png'
+duration 7.5
+file 'beat_05.png'
+duration 7.5
+file 'beat_06.png'
+duration 7.5
+file 'beat_07.png'
+duration 7.5
+file 'beat_07.png'
