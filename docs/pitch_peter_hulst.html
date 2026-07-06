@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>pitch_peter_hulst</title>
+  <style>
+    /* Default styles provided by pandoc.
+    ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+    */
+    html {
+      color: #1a1a1a;
+      background-color: #fdfdfd;
+    }
+    body {
+      margin: 0 auto;
+      max-width: 36em;
+      padding-left: 50px;
+      padding-right: 50px;
+      padding-top: 50px;
+      padding-bottom: 50px;
+      hyphens: auto;
+      overflow-wrap: break-word;
+      text-rendering: optimizeLegibility;
+      font-kerning: normal;
+    }
+    @media (max-width: 600px) {
+      body {
+        font-size: 0.9em;
+        padding: 12px;
+      }
+      h1 {
+        font-size: 1.8em;
+      }
+    }
+    @media print {
+      html {
+        background-color: white;
+      }
+      body {
+        background-color: transparent;
+        color: black;
+        font-size: 12pt;
+      }
+      p, h2, h3 {
+        orphans: 3;
+        widows: 3;
+      }
+      h2, h3, h4 {
+        page-break-after: avoid;
+      }
+    }
+    p {
+      margin: 1em 0;
+    }
+    a {
+      color: #1a1a1a;
+    }
+    a:visited {
+      color: #1a1a1a;
+    }
+    img {
+      max-width: 100%;
+    }
+    svg {
+      height: auto;
+      max-width: 100%;
+    }
+    h1, h2, h3, h4, h5, h6 {
+      margin-top: 1.4em;
+    }
+    h5, h6 {
+      font-size: 1em;
+      font-style: italic;
+    }
+    h6 {
+      font-weight: normal;
+    }
+    ol, ul {
+      padding-left: 1.7em;
+      margin-top: 1em;
+    }
+    li > ol, li > ul {
+      margin-top: 0;
+    }
+    blockquote {
+      margin: 1em 0 1em 1.7em;
+      padding-left: 1em;
+      border-left: 2px solid #e6e6e6;
+      color: #606060;
+    }
+    code {
+      white-space: pre-wrap;
+      font-family: Menlo, Monaco, Consolas, 'Lucida Console', monospace;
+      font-size: 85%;
+      margin: 0;
+      hyphens: manual;
+    }
+    pre {
+      margin: 1em 0;
+      overflow: auto;
+    }
+    pre code {
+      padding: 0;
+      overflow: visible;
+      overflow-wrap: normal;
+    }
+    .sourceCode {
+     background-color: transparent;
+     overflow: visible;
+    }
+    hr {
+      border: none;
+      border-top: 1px solid #1a1a1a;
+      height: 1px;
+      margin: 1em 0;
+    }
+    table {
+      margin: 1em 0;
+      border-collapse: collapse;
+      width: 100%;
+      overflow-x: auto;
+      display: block;
+      font-variant-numeric: lining-nums tabular-nums;
+    }
+    table caption {
+      margin-bottom: 0.75em;
+    }
+    tbody {
+      margin-top: 0.5em;
+      border-top: 1px solid #1a1a1a;
+      border-bottom: 1px solid #1a1a1a;
+    }
+    th {
+      border-top: 1px solid #1a1a1a;
+      padding: 0.25em 0.5em 0.25em 0.5em;
+    }
+    td {
+      padding: 0.125em 0.5em 0.25em 0.5em;
+    }
+    header {
+      margin-bottom: 4em;
+      text-align: center;
+    }
+    #TOC li {
+      list-style: none;
+    }
+    #TOC ul {
+      padding-left: 1.3em;
+    }
+    #TOC > ul {
+      padding-left: 0;
+    }
+    #TOC a:not(:hover) {
+      text-decoration: none;
+    }
+    span.smallcaps{font-variant: small-caps;}
+    div.columns{display: flex; gap: min(4vw, 1.5em);}
+    div.column{flex: auto; overflow-x: auto;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    /* The extra [class] is a hack that increases specificity enough to
+       override a similar rule in reveal.js */
+    ul.task-list[class]{list-style: none;}
+    ul.task-list li input[type="checkbox"] {
+      font-size: inherit;
+      width: 0.8em;
+      margin: 0 0.8em 0.2em -1.6em;
+      vertical-align: middle;
+    }
+    .display.math{display: block; text-align: center; margin: 0.5rem auto;}
+  </style>
+<style>
+body{font-family:-apple-system,"Segoe UI",Roboto,sans-serif;max-width:960px;margin:2em auto;padding:0 1.5em;color:#1a2359;line-height:1.6}
+h1{color:#8258e0;font-size:26px;border-bottom:2px solid #8258e0;padding-bottom:6px}
+h2{border-bottom:1px solid #ccc;padding-bottom:4px;color:#0b1235;margin-top:2em}
+h3{color:#5b39b8}
+code{background:#f4f4f8;padding:1px 4px;border-radius:3px;font-size:.9em}
+pre{background:#f4f4f8;padding:12px;border-radius:5px;overflow-x:auto;font-size:.85em}
+table{border-collapse:collapse;margin:1em 0;font-size:14px}
+th,td{border:1px solid #ccc;padding:6px 10px;text-align:left;vertical-align:top}
+th{background:#eef}
+a{color:#8258e0}
+blockquote{border-left:4px solid #8258e0;padding:10px 14px;color:#333;background:#f8f6ff;margin:1em 0}
+strong{color:#0b1235}
+@media print{ body{max-width:none;margin:1em}}
+</style></head>
+<body>
+<header id="title-block-header">
+<h1 class="title">pitch_peter_hulst</h1>
+</header>
+<h1 id="digitale-enterprise-simulatie--voorstel-voor-staff">Digitale
+Enterprise-simulatie — voorstel voor Staff</h1>
+<p><strong>Voor:</strong> Peter v/d Hulst — Staff <strong>Van:</strong>
+Christian Glebbeek — iCt Horse <strong>Datum:</strong> 2026-07-06
+<strong>Onderwerp:</strong> Voorstel — digitale workshop-simulatie voor
+Enterprise-onderdelen, mogelijk whitelabel voor Staff-portfolio</p>
+<h2 id="kern-in-één-regel">Kern in één regel</h2>
+<p>Ik heb een volledig werkende <strong>digitale serious-game</strong>
+gebouwd — browser-native, direct speelbaar op <a
+href="https://icthorse.nl/EnterpriseQuest/">https://icthorse.nl/EnterpriseQuest/</a>
+— die architecten, CIO's, IT-managers en studenten leert werken met de
+bouwstenen van een organisatie (business-domeinen, applicatie-landschap,
+data-platforms, SOC, project-portfolio, governance). Ik zie een concreet
+gezamenlijk product-spoor met Staff en zou graag onderzoeken of Staff
+daar een rol in wil spelen.</p>
+<h2 id="wat-het-is-in-normale-taal">Wat het is, in normale taal</h2>
+<p>Iemand kiest een rol (Enterprise Architect, Solution Architect,
+Business Architect, Information Architect, Security Architect, CIO,
+IT-Manager, of Student). Vervolgens beweegt hij over een 4×4 bord van
+<strong>16 organisatie-onderdelen</strong> — van Directiekamer en
+Strategiecentrum tot Business Domein, HR, Finance, Operations, Sales,
+Klantenservice, Applicatielandschap, Dataplatform, Integratielaag,
+Cloudplatform, Security Operations Center, Innovatielab, Project
+Portfolio en Governance Board.</p>
+<p>Op elke locatie krijgt hij te maken met:</p>
+<ul>
+<li><strong>40 missies</strong> — concrete architectuur-opdrachten die
+deliverables opleveren (bv. Vision Blueprint, Capability Map,
+Application Landscape, Governance Framework, Transformation
+Roadmap)</li>
+<li><strong>40 uitdagingen</strong> — realistische organisatie-problemen
+(Legacy-systeem onmisbaar, Ransomware, NIS2/DORA-deadline, Fusie in 6
+maanden, Shadow-IT ontdekt, Vendor kondigt EOL aan, Datalek, Talent
+vertrekt, R&amp;D-budget onder druk) — elke uitdaging heeft <strong>3-4
+keuze-opties</strong> die je in rollenspel moet afwegen</li>
+<li><strong>30 events</strong> — RFP, Architecture Review Board,
+hackathon, buy-vs-build, multi-cloud dilemma, Copilot-uitrol,
+GreenOps-metric</li>
+</ul>
+<p>Aan het einde presenteert de speler aan een virtuele Raad van
+Bestuur. Het spel genereert een <strong>evaluatierapport</strong> met
+scores op 8 aspecten (Samenhang, Strategie-uitlijning, Businesswaarde,
+Innovatie, Governance, Security, Digitale volwassenheid,
+Stakeholdertevredenheid) plus concrete verbeterpunten. Trainer kan dit
+rapport gebruiken als debrief-basis.</p>
+<h2 id="wat-het-technisch-is">Wat het technisch is</h2>
+<ul>
+<li>Één HTML-bestand (156 KB), speel offline door in browser te
+openen</li>
+<li>Geen installatie, geen registratie, geen dataverzameling buiten
+LocalStorage van de speler zelf</li>
+<li>Web Audio API voor geluid, autosave</li>
+<li>Responsive desktop / tablet / mobiel</li>
+<li>Content in JSON (missies / uitdagingen / events / artefacten /
+locaties / rollen / achievements) — <strong>nieuwe content zonder
+code-werk</strong> toe te voegen</li>
+<li>Open source op <a
+href="https://github.com/cpaglebbeek/EnterpriseQuest">https://github.com/cpaglebbeek/EnterpriseQuest</a>
+(AGPL-3.0)</li>
+</ul>
+<h2 id="waarom-staff">Waarom Staff</h2>
+<p>Staff heeft een sterke Nederlandse voetafdruk in
+kennis-professionalisering en werkveld-training (uit mijn ervaring met
+de StaffKennis-portfolio en de manier waarop Staff met opleiding,
+detachering en klant-organisaties werkt). Wat ik zie:</p>
+<ol type="1">
+<li><strong>Digitale training-formats</strong> groeien fors sneller dan
+klassikale trainingen</li>
+<li><strong>Hybride blended learning</strong> (video + simulatie +
+debrief) is de norm bij grotere organisaties</li>
+<li><strong>Facilitator-geleide serious games</strong> blijven
+waardevol, maar de fysieke-bordspel-vorm heeft schaal-limieten</li>
+<li><strong>Staff-klanten</strong> (grote
+uitzend-/detacherings-doelgroep, klant-organisaties in overheid, zorg,
+corporate) hebben behoefte aan actuele, herbruikbare workshop-tools</li>
+</ol>
+<p>Ik ken de exacte scope van <strong>jouw eigen
+proces-simulatie</strong> binnen Staff niet — dat is de eerste vraag ik
+heb: wat is die vandaag, wat mist er nog, en waar zou een aanvullend
+digitaal instrument passen. Op basis van openbaar zichtbare
+procesarchitectuur-simulaties in Nederland (De Processpecialisten,
+Passionned) zie ik dat die typisch procesketen-first zijn (BPMN, value
+stream, throughput). Wat ik heb gebouwd is architectuur-first
+(business-domeinen, capability, applicatielandschap, governance).
+<strong>Waarschijnlijk complementair, niet overlappend</strong> — maar
+dat wil ik graag met je verifiëren.</p>
+<h2 id="wat-ik-voorstel--samenwerkings-opties">Wat ik voorstel —
+samenwerkings-opties</h2>
+<p>Ik zie meerdere formats waarop Staff en iCt Horse dit gezamenlijk
+kunnen ontsluiten:</p>
+<h3 id="optie-a--whitelabel-voor-staff-portfolio">Optie A · Whitelabel
+voor Staff-portfolio</h3>
+<p>iCt Horse levert de engine en een architectuur-content-set. Staff
+verpakt onder eigen branding, integreert in bestaande opleidings- en
+klant-trajecten. Eenmalige integratie-fee €15k-25k + jaarlijkse
+content-updates €5k. Staff behoudt volledige klantrelatie, iCt Horse
+levert onderhoud en uitbreidingen.</p>
+<h3 id="optie-b--custom-development--proces-editie">Optie B ·
+Custom-development — proces-editie</h3>
+<p>Als jouw proces-simulatie behoefte heeft aan een digitale variant
+naast fysieke sessies, kan ik met dezelfde engine een
+<strong>proces-architectuur-editie</strong> bouwen — bord met
+proces-ketens ipv organisatie-onderdelen, kaarten met BPMN-uitdagingen,
+scoring op procesvolwassenheid en throughput. Development ~€25k-40k,
+exclusief voor Staff-portfolio.</p>
+<h3 id="optie-c--revenue-share-sales">Optie C · Revenue-share sales</h3>
+<p>Staff verkoopt vanuit bestaande klantportefeuille naar
+architectuur-relevante klanten. Revenue-split 60/40 Staff/iCt Horse per
+gesloten deal. iCt levert product, Staff levert sales +
+facilitation.</p>
+<h3 id="optie-d--content-partnership">Optie D · Content-partnership</h3>
+<p>Staff-experts leveren case-content (bijv. Staff-klanten anonimiseren,
+sector-specifieke uitdagingen). iCt Horse verwerkt in game.
+Content-royalty per verkocht licentie-jaar.</p>
+<p>Wat past het beste bij hoe Staff typisch werkt? Ik heb geen voorkeur
+A priori — dat kan verkennend gesprek zijn.</p>
+<h2 id="financieel-indicatief">Financieel indicatief</h2>
+<p>Ruwe jaar-1 projectie via Staff-partnership (Nederlandse markt):</p>
+<ul>
+<li>5-10 Staff-klanten die de workshop-tool inzetten: €25k-75k
+omzet</li>
+<li>Whitelabel-fee (indien Optie A): €15k-25k eenmalig</li>
+<li>Content-updates + support jaarlijks: €5k-10k</li>
+</ul>
+<p>Marges hangen af van gekozen model.</p>
+<h2 id="wat-ik-graag-zou-weten">Wat ik graag zou weten</h2>
+<ol type="1">
+<li><strong>Wat doet de Staff Proces-game vandaag?</strong> Doelgroep,
+format, prijspunt, digitale variant of niet? Waar liggen mogelijk
+overlap of complementariteit?</li>
+<li><strong>Werkt Staff met externe product-leveranciers?</strong> Zo
+ja, welke format-voorkeur (whitelabel / revenue-share /
+custom-development)?</li>
+<li><strong>Wie is bij Staff verantwoordelijk voor productontwikkeling
+en kennis-portfolio?</strong> Ben jij de juiste ingang, of is er ook een
+productmanager die ik moet betrekken?</li>
+<li><strong>Is er interesse in een 30-min demo?</strong> Ik toon het
+live en we bespreken vervolg.</li>
+</ol>
+<h2 id="praktisch">Praktisch</h2>
+<ul>
+<li><strong>Test het nu:</strong> <a
+href="https://icthorse.nl/EnterpriseQuest/">https://icthorse.nl/EnterpriseQuest/</a>
+(multi-editie launcher; kies de "Serious Workshop-simulatie"
+variant)</li>
+<li><strong>Directe link:</strong> <a
+href="https://icthorse.nl/EnterpriseQuest/v2/EnterpriseQuest.html">https://icthorse.nl/EnterpriseQuest/v2/EnterpriseQuest.html</a></li>
+<li><strong>Open source / code:</strong> <a
+href="https://github.com/cpaglebbeek/EnterpriseQuest">https://github.com/cpaglebbeek/EnterpriseQuest</a></li>
+<li><strong>Speeltijd voor smaakproef:</strong> ~5 minuten om een korte
+workshop-run te maken en het evaluatierapport te zien</li>
+</ul>
+<h2 id="volgende-stap">Volgende stap</h2>
+<p>Als je interesse voelt: laat me een <strong>datum voor 30 min
+video-call</strong> komende 2 weken. Ik doe eerst 10 min live-play zodat
+je zelf de flow ervaart, dan 20 min zakelijk. Als je nu al twijfelt
+tussen "misschien" en "nee": speel het gerust eerst zelf 15 minuten en
+laat me kort weten wat je vindt. Ook een "nee" is waardevol — dan weet
+ik dat.</p>
+<p>Ik zie hier reële kans op iets goeds. Ik hoor graag of Staff daar een
+rol in wil.</p>
+<p>Met vriendelijke groet,</p>
+<p><strong>Christian Glebbeek</strong> iCt Horse — Connecting the dots
+<a href="mailto:cglebbeek@gmail.com">cglebbeek@gmail.com</a> <a
+href="https://icthorse.nl">https://icthorse.nl</a> · <a
+href="https://github.com/cpaglebbeek">https://github.com/cpaglebbeek</a></p>
+<hr />
+<p><em>Bijlage: de game zelf, LIVE op <a
+href="https://icthorse.nl/EnterpriseQuest/v2/EnterpriseQuest.html">https://icthorse.nl/EnterpriseQuest/v2/EnterpriseQuest.html</a></em></p>
+</body>
+</html>

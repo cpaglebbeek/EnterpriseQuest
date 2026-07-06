@@ -1,0 +1,714 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>analyse_deepdive</title>
+  <style>
+    /* Default styles provided by pandoc.
+    ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+    */
+    html {
+      color: #1a1a1a;
+      background-color: #fdfdfd;
+    }
+    body {
+      margin: 0 auto;
+      max-width: 36em;
+      padding-left: 50px;
+      padding-right: 50px;
+      padding-top: 50px;
+      padding-bottom: 50px;
+      hyphens: auto;
+      overflow-wrap: break-word;
+      text-rendering: optimizeLegibility;
+      font-kerning: normal;
+    }
+    @media (max-width: 600px) {
+      body {
+        font-size: 0.9em;
+        padding: 12px;
+      }
+      h1 {
+        font-size: 1.8em;
+      }
+    }
+    @media print {
+      html {
+        background-color: white;
+      }
+      body {
+        background-color: transparent;
+        color: black;
+        font-size: 12pt;
+      }
+      p, h2, h3 {
+        orphans: 3;
+        widows: 3;
+      }
+      h2, h3, h4 {
+        page-break-after: avoid;
+      }
+    }
+    p {
+      margin: 1em 0;
+    }
+    a {
+      color: #1a1a1a;
+    }
+    a:visited {
+      color: #1a1a1a;
+    }
+    img {
+      max-width: 100%;
+    }
+    svg {
+      height: auto;
+      max-width: 100%;
+    }
+    h1, h2, h3, h4, h5, h6 {
+      margin-top: 1.4em;
+    }
+    h5, h6 {
+      font-size: 1em;
+      font-style: italic;
+    }
+    h6 {
+      font-weight: normal;
+    }
+    ol, ul {
+      padding-left: 1.7em;
+      margin-top: 1em;
+    }
+    li > ol, li > ul {
+      margin-top: 0;
+    }
+    blockquote {
+      margin: 1em 0 1em 1.7em;
+      padding-left: 1em;
+      border-left: 2px solid #e6e6e6;
+      color: #606060;
+    }
+    code {
+      white-space: pre-wrap;
+      font-family: Menlo, Monaco, Consolas, 'Lucida Console', monospace;
+      font-size: 85%;
+      margin: 0;
+      hyphens: manual;
+    }
+    pre {
+      margin: 1em 0;
+      overflow: auto;
+    }
+    pre code {
+      padding: 0;
+      overflow: visible;
+      overflow-wrap: normal;
+    }
+    .sourceCode {
+     background-color: transparent;
+     overflow: visible;
+    }
+    hr {
+      border: none;
+      border-top: 1px solid #1a1a1a;
+      height: 1px;
+      margin: 1em 0;
+    }
+    table {
+      margin: 1em 0;
+      border-collapse: collapse;
+      width: 100%;
+      overflow-x: auto;
+      display: block;
+      font-variant-numeric: lining-nums tabular-nums;
+    }
+    table caption {
+      margin-bottom: 0.75em;
+    }
+    tbody {
+      margin-top: 0.5em;
+      border-top: 1px solid #1a1a1a;
+      border-bottom: 1px solid #1a1a1a;
+    }
+    th {
+      border-top: 1px solid #1a1a1a;
+      padding: 0.25em 0.5em 0.25em 0.5em;
+    }
+    td {
+      padding: 0.125em 0.5em 0.25em 0.5em;
+    }
+    header {
+      margin-bottom: 4em;
+      text-align: center;
+    }
+    #TOC li {
+      list-style: none;
+    }
+    #TOC ul {
+      padding-left: 1.3em;
+    }
+    #TOC > ul {
+      padding-left: 0;
+    }
+    #TOC a:not(:hover) {
+      text-decoration: none;
+    }
+    span.smallcaps{font-variant: small-caps;}
+    div.columns{display: flex; gap: min(4vw, 1.5em);}
+    div.column{flex: auto; overflow-x: auto;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    /* The extra [class] is a hack that increases specificity enough to
+       override a similar rule in reveal.js */
+    ul.task-list[class]{list-style: none;}
+    ul.task-list li input[type="checkbox"] {
+      font-size: inherit;
+      width: 0.8em;
+      margin: 0 0.8em 0.2em -1.6em;
+      vertical-align: middle;
+    }
+    .display.math{display: block; text-align: center; margin: 0.5rem auto;}
+  </style>
+<style>
+body{font-family:-apple-system,"Segoe UI",Roboto,sans-serif;max-width:960px;margin:2em auto;padding:0 1.5em;color:#1a2359;line-height:1.6}
+h1{color:#8258e0;font-size:26px;border-bottom:2px solid #8258e0;padding-bottom:6px}
+h2{border-bottom:1px solid #ccc;padding-bottom:4px;color:#0b1235;margin-top:2em}
+h3{color:#5b39b8}
+code{background:#f4f4f8;padding:1px 4px;border-radius:3px;font-size:.9em}
+pre{background:#f4f4f8;padding:12px;border-radius:5px;overflow-x:auto;font-size:.85em}
+table{border-collapse:collapse;margin:1em 0;font-size:14px}
+th,td{border:1px solid #ccc;padding:6px 10px;text-align:left;vertical-align:top}
+th{background:#eef}
+a{color:#8258e0}
+blockquote{border-left:4px solid #8258e0;padding:10px 14px;color:#333;background:#f8f6ff;margin:1em 0}
+strong{color:#0b1235}
+@media print{ body{max-width:none;margin:1em}}
+</style></head>
+<body>
+<header id="title-block-header">
+<h1 class="title">analyse_deepdive</h1>
+</header>
+<h1 id="enterprise-quest--deep-dive-analyse-intern">Enterprise Quest —
+Deep Dive Analyse (intern)</h1>
+<p><strong>Auteur:</strong> Christian Glebbeek (iCt Horse)
+<strong>Datum:</strong> 2026-07-06 <strong>Scope:</strong> commerciële
+haalbaarheid van EnterpriseQuest v1 (fantasy) + v2 (Dragon1) als
+<strong>serious game + train-de-trainer product</strong>, met twee
+mogelijke go-to-market-partners: <strong>Mark Paauwe (Dragon1)</strong>
+en <strong>Peter v/d Hulst (Staff)</strong>. <strong>Positie:</strong>
+dit document is intern beslissingsstuk — bevat kruisverwijzingen tussen
+beide sporen. De losse pitches per partner (zie bijlagen) bevatten dat
+niet.</p>
+<h2 id="1--samenvatting-management">1 · Samenvatting (management)</h2>
+<p><strong>Uniek?</strong> Ja, redelijk. Er zijn digitale serious games
+rond procesarchitectuur en projectmanagement (Nederland: De
+Processpecialisten, Passionned, LEGO Serious Play-facilitators;
+internationaal: Kanbanzine, Prosci-simulaties). Er is echter géén
+breed-uitgerold digitaal single-file bordspel dat expliciet
+<strong>Enterprise Architecture volgens een specifieke methode
+(Dragon1)</strong> in de kern zet. De combinatie <strong>"speelbaar in
+browser · geen installatie · methode-getrouw ·
+train-de-trainer-optie"</strong> vult een gat dat traditionele
+klassikale trainingen niet dekken.</p>
+<p><strong>Vermarktbaar?</strong> Voorwaardelijk ja, mits verpakt als
+<strong>workshop-tool + certificering</strong> en niet als losse
+app-verkoop. De EA-trainingsmarkt is klein maar hoogwaardig (uurtarieven
+€120-250 voor trainers). Prijspunt: €2.500-5.000 per organisatie per
+jaar SaaS-licentie, of €7.500-15.000 train-de-trainer-traject per
+instructeur.</p>
+<p><strong>1 spel, 2, of meerdere?</strong> Antwoord: <strong>twee
+sporen naast elkaar</strong>, mogelijk 3 op termijn:</p>
+<ul>
+<li><strong>v1 (fantasy)</strong> — bekendheid, community, gamification
+voor juniors/studenten, gratis funnel</li>
+<li><strong>v2 (Dragon1)</strong> — professioneel, betaalde
+workshop-tool, senior-doelgroep</li>
+<li><strong>v3 (proces-editie)</strong> — óptioneel, alleen als
+Staff/Peter partner-relatie geformaliseerd wordt</li>
+</ul>
+<p><strong>Advies partners:</strong></p>
+<ul>
+<li><strong>Mark Paauwe (Dragon1)</strong> — natuurlijke fit. v2 IS
+Dragon1. Voorstel: gezamenlijke launch als "officiële Dragon1-gamified
+workshop-tool", train-de-trainer voor Dragon1-community,
+licentie/royalty-model. <strong>Risico:</strong> bestaande €6k
+licentie-discussie moet eerst zijn opgelost.</li>
+<li><strong>Peter v/d Hulst (Staff)</strong> — niet-natuurlijke fit voor
+v2 (Dragon1 vs procesarchitectuur), wél voor eventuele v3
+(proces-editie). Voorstel: white-label proces-editie voor
+Staff/StaffKennis-portfolio, geen Dragon1-verwijzing.
+<strong>Risico:</strong> overlap met interne Staff-proces-game (details
+onbekend — moet Peter vragen).</li>
+</ul>
+<p><strong>Gevaar:</strong> Mark en Peter zijn potentieel concurrenten
+in EA/BPM-consulting-markt. Aparte gesprekken, aparte pitches, geen
+kruisreferenties. Dit document blijft intern.</p>
+<h2 id="2--wat-hebben-we">2 · Wat hebben we</h2>
+<h3 id="v1--architects-dungeon-v001-zachman-live">v1 · Architect's
+Dungeon (v0.0.1-Zachman, LIVE)</h3>
+<ul>
+<li>Fantasy-RPG-flavor over EA/TOGAF/cloud/security/data/AI</li>
+<li>6 klassen, 40 tiles / 12 regio's, 250 kaarten, 22 monsters, 51
+achievements</li>
+<li>D20 combat, Web Audio, LocalStorage, responsive</li>
+<li>175 KB single-file HTML, geen dependencies</li>
+<li>LIVE: <a
+href="https://icthorse.nl/EnterpriseQuest/v1/EnterpriseQuest.html">https://icthorse.nl/EnterpriseQuest/v1/EnterpriseQuest.html</a></li>
+<li>GitHub PUBLIC AGPL-3.0</li>
+</ul>
+<h3 id="v2--dragon1-architects-journey-v020-paauwe-live">v2 · Dragon1
+Architect's Journey (v0.2.0-Paauwe, LIVE)</h3>
+<ul>
+<li>Professionele Dragon1-workshop-simulatie</li>
+<li>8 rollen (EA/SA/BA/IA/SecA/CIO/IT-Mgr/Student), 16
+organisatie-onderdelen (4×4 bord)</li>
+<li>40 missies + 40 uitdagingen + 30 events + 15 Dragon1-artefacten (met
+cascade-vereisten: Vision Blueprint → Strategy Map → Capability Map →
+BRM → Application Landscape → …)</li>
+<li><strong>Geen combat.</strong> Winnen door presentatie aan Raad van
+Bestuur → eindscore op 8 aspecten (Samenhang / Strategie-uitlijning /
+Businesswaarde / Innovatie / Governance / Security / Digitale
+volwassenheid / Stakeholdertevredenheid) + verbeterpunten</li>
+<li>12 dashboard-metrieken</li>
+<li>156 KB single-file HTML</li>
+<li>LIVE: <a
+href="https://icthorse.nl/EnterpriseQuest/v2/EnterpriseQuest.html">https://icthorse.nl/EnterpriseQuest/v2/EnterpriseQuest.html</a></li>
+</ul>
+<h3 id="gedeelde-technische-fundering">Gedeelde technische
+fundering</h3>
+<ul>
+<li>Web Audio API voor geluid (geen assets)</li>
+<li>LocalStorage save/load + autosave</li>
+<li>Responsive (desktop / tablet / mobiel)</li>
+<li>Openbaar op GitHub (AGPL-3.0), free-tier hosting via Hostinger</li>
+<li>Multi-editie-launcher op <a
+href="https://icthorse.nl/EnterpriseQuest/">https://icthorse.nl/EnterpriseQuest/</a></li>
+</ul>
+<h2 id="3--uniekheidsanalyse">3 · Uniekheidsanalyse</h2>
+<h3 id="31-bestaand-landschap">3.1 Bestaand landschap</h3>
+<table>
+<thead>
+<tr>
+<th>Segment</th>
+<th>Voorbeelden NL</th>
+<th>Voorbeelden internationaal</th>
+<th>Format</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Klassikale EA-training</strong></td>
+<td>Bosman/Novius, InfoSupport, Xebia, Ordina</td>
+<td>Open Group TOGAF, Gartner EA cursus</td>
+<td>Fysiek + PDF-cases</td>
+</tr>
+<tr>
+<td><strong>BPM / Proces simulaties</strong></td>
+<td>De Processpecialisten, Passionned Group</td>
+<td>Prosci, Kanbanzine</td>
+<td>Fysieke bordspellen + facilitator</td>
+</tr>
+<tr>
+<td><strong>E-learning EA</strong></td>
+<td>Sirius EA, Global Knowledge</td>
+<td>Coursera, edX, Pluralsight</td>
+<td>Video + quiz</td>
+</tr>
+<tr>
+<td><strong>Serious games (breder)</strong></td>
+<td>LEGO Serious Play, Play14</td>
+<td>Beer Distribution Game, Fifth Discipline</td>
+<td>Fysiek + workshop</td>
+</tr>
+<tr>
+<td><strong>Digitale bordspellen browser</strong></td>
+<td>(zeer beperkt in NL EA-segment)</td>
+<td>Board Game Arena varianten</td>
+<td>Web-based</td>
+</tr>
+</tbody>
+</table>
+<h3 id="32-uniekheid-eq-v1">3.2 Uniekheid EQ v1</h3>
+<ul>
+<li><strong>Fantasy-flavor bovenop EA-content:</strong> creatieve funnel
+voor juniors/studenten die TOGAF-materie afschrikwekkend vinden</li>
+<li><strong>Volledig gratis, browser-based, geen installatie:</strong>
+lage adoption-drempel</li>
+<li><strong>250 kaarten met echte EA-terminologie:</strong> herkenbaar
+voor doelgroep</li>
+<li><strong>Risico:</strong> RPG-verpakking wordt door senior EA's als
+"onprofessioneel" gezien → beperkt bruikbaar in
+enterprise-workshops</li>
+</ul>
+<p><strong>Unique-Selling-Points:</strong></p>
+<ol type="1">
+<li>Enige browser-native EA-gamification met Dutch-native content</li>
+<li>Geen registratie, geen dataverzameling → laagdrempelig</li>
+<li>Open-source (AGPL-3.0) → community-uitbreidbaar</li>
+</ol>
+<h3 id="33-uniekheid-eq-v2">3.3 Uniekheid EQ v2</h3>
+<ul>
+<li><strong>Methode-getrouw Dragon1:</strong> artefact-cascade (Vision →
+Strategy → Capability → BRM → Application Landscape → …) volgens
+Paauwe's Dragon1 EA-framework</li>
+<li><strong>Serious game, geen fantasy:</strong> past in professionele
+workshop-context (CIO's, boardroom-oefeningen, opleidingen)</li>
+<li><strong>Eindrapport op 8 aspecten:</strong> direct bruikbaar als
+reflectie-instrument in trainings-context</li>
+<li><strong>8 rollen:</strong> rollenspel dimensie (CIO vs EA vs Student
+ervaart dezelfde case verschillend)</li>
+</ul>
+<p><strong>Unique-Selling-Points:</strong></p>
+<ol type="1">
+<li><strong>Enige</strong> digitale Dragon1-gecertifieerde
+workshop-simulatie in de markt (naar mijn weten, wacht op
+Paauwe-verificatie)</li>
+<li>Herbruikbaar in klaslokaal én asynchroon zelfstudie</li>
+<li>Uitbreidbaar met eigen missies/uitdagingen
+(JSON-content-schema)</li>
+<li>Modulair per organisatie-type: profit / non-profit / overheid / zorg
+via andere content-set</li>
+</ol>
+<h3
+id="34-vergelijking-met-staff-portfolio-op-basis-van-openbare-nederlandse-proces-simulatie-markt">3.4
+Vergelijking met Staff-portfolio (op basis van openbare Nederlandse
+proces-simulatie-markt)</h3>
+<p>Publieke bronnen tonen dat Nederlandse procesarchitectuur-simulaties
+(bv. Processpecialisten, Passionned) typisch werken met:</p>
+<ul>
+<li>Fysieke of hybride bordspellen</li>
+<li>Focus op procesketens, bottlenecks, klant-perspectief</li>
+<li>Facilitator-geleide sessies (typisch 4-8 uur)</li>
+<li>Prijspunt €1.000-3.000 per sessie voor 8-16 deelnemers</li>
+</ul>
+<p>Wat de exacte "Proces-game van Staff" doet — de aan Peter v/d Hulst
+gekoppelde variant — is uit openbare bronnen niet vindbaar.
+<strong>Vraag aan Peter:</strong> hoe wordt dat product exact verpakt?
+Is er digitale versie? Wat is content-scope (BPM / Six Sigma /
+procesarchitectuur / value stream mapping)?</p>
+<p><strong>Voorlopige inschatting overlap EQ v2 ↔︎ Staff
+Proces-game:</strong></p>
+<ul>
+<li><strong>Waarschijnlijk beperkt</strong> — EQ v2 is
+EA-methodiek-first (Dragon1: capability, vision, roadmap,
+applicatielandschap), Staff-proces-game is (aangenomen)
+procesketen-first (BPMN, value stream, throughput)</li>
+<li><strong>Mogelijke overlap:</strong> rollen (business owner /
+proces-eigenaar), scoring-mechaniek, workshop-format</li>
+<li><strong>Complementair vermarktbaar:</strong> dezelfde klant,
+verschillende agendapunten (proces-inrichting vs.
+architectuur-governance)</li>
+</ul>
+<h2 id="4--vermarktbaarheid">4 · Vermarktbaarheid</h2>
+<h3 id="41-doelgroepen">4.1 Doelgroepen</h3>
+<table>
+<thead>
+<tr>
+<th>Doelgroep</th>
+<th>v1</th>
+<th>v2</th>
+<th>Prijsbereidheid</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Studenten EA (HAN, Nyenrode, Open Universiteit)</td>
+<td>★★★</td>
+<td>★★</td>
+<td>€0-25/gebruiker</td>
+</tr>
+<tr>
+<td>Junior architecten (0-3 jr ervaring)</td>
+<td>★★★</td>
+<td>★★</td>
+<td>€50-100/gebruiker</td>
+</tr>
+<tr>
+<td>Senior architecten / CIO's</td>
+<td>★</td>
+<td>★★★</td>
+<td>€150-300/gebruiker</td>
+</tr>
+<tr>
+<td>Consultancy-firma's (interne training)</td>
+<td>★</td>
+<td>★★★</td>
+<td>€2.500-5.000/jaar</td>
+</tr>
+<tr>
+<td>Dragon1-community / partners</td>
+<td>—</td>
+<td>★★★</td>
+<td>€5.000-15.000/train-de-trainer</td>
+</tr>
+<tr>
+<td>Enterprise-klanten (interne workshops)</td>
+<td>—</td>
+<td>★★★</td>
+<td>€5.000-25.000/deployment</td>
+</tr>
+<tr>
+<td>Uitzend/detacheringsbureaus (Staff, Ordina, Xebia)</td>
+<td>★</td>
+<td>★★★</td>
+<td>€5.000-15.000 whitelabel</td>
+</tr>
+</tbody>
+</table>
+<h3 id="42-verdienmodellen">4.2 Verdienmodellen</h3>
+<ol type="1">
+<li><strong>Freemium</strong> — v1 gratis, v2 licentie (€150/jaar per
+gebruiker, €2.500-5.000 per organisatie)</li>
+<li><strong>Workshop-tool licensing</strong> — €300-500 per sessie voor
+gecertificeerde trainer</li>
+<li><strong>Train-de-trainer certificering</strong> — €7.500-15.000 per
+instructeur, jaarlijkse hercertificering €500-1.000</li>
+<li><strong>White-label</strong> — €10.000-25.000 eenmalig + jaarlijkse
+content-updates €2.500-5.000</li>
+<li><strong>Consulting-cross-sell</strong> — game als top-of-funnel voor
+grotere EA-advies-opdrachten (€25.000-100.000+)</li>
+<li><strong>Content-marketplace</strong> — externe experts publiceren
+eigen missie-sets (revenue-share 70/30)</li>
+</ol>
+<h3 id="43-tamsamsom-nederland">4.3 TAM/SAM/SOM Nederland</h3>
+<ul>
+<li><strong>TAM (Total Addressable Market)</strong> — Nederlandse
+EA-training/-workshop-markt: ~€25-40M/jaar (geschat op basis van
+EA-training bureaus × trainer-tarieven)</li>
+<li><strong>SAM (Serviceable)</strong> — digitale/blended EA-simulaties:
+~€3-5M/jaar</li>
+<li><strong>SOM (year-1 realistisch)</strong> — €50k-150k met 1
+productmatige launch + 1 partnerkanaal</li>
+</ul>
+<h3 id="44-kritische-succesfactoren">4.4 Kritische succesfactoren</h3>
+<ol type="1">
+<li><strong>Content-diepte</strong> — 250 kaarten (v1) en 110 kaarten
+(v2) is genoeg voor 1-2 sessies. Voor recurring gebruik nodig: 3-5×
+uitbreiding (procedureel gegenereerd of content-marketplace)</li>
+<li><strong>Facilitator-gids</strong> — trainer moet weten hoe hij
+post-game debrief doet. Ontbreekt nu volledig; is separate deliverable
+van €5-15k</li>
+<li><strong>Certificerings-framework</strong> — Dragon1 heeft
+methode-eigenaar (Paauwe). Zonder Paauwe's blessing kan v2 niet als
+"Dragon1 gecertifieerd" verkocht worden</li>
+<li><strong>Multi-organisatie ondersteuning</strong> — server-side
+scoreboards, cross-sessie-analytics — nog niet aanwezig. Bijkomend
+€15-30k ontwikkelwerk</li>
+<li><strong>Content-lokalisatie</strong> — nu 100% NL. Voor
+internationale markt EN-editie (€3-8k vertaalwerk + content-check)</li>
+</ol>
+<h2 id="5--advies-1-spel-of-meerdere">5 · Advies: 1 spel of
+meerdere?</h2>
+<h3 id="optie-a--één-product-eq-v2-alleen">Optie A · Één product (EQ v2
+alleen)</h3>
+<ul>
+<li><strong>Voor:</strong> simpelste verhaal, focus op professionele
+markt</li>
+<li><strong>Tegen:</strong> verlies je de gamification-funnel (v1) en de
+studenten-doelgroep</li>
+</ul>
+<h3
+id="optie-b--twee-producten-naast-elkaar-v1--v2--huidige-situatie">Optie
+B · Twee producten naast elkaar (v1 + v2) <strong>← huidige
+situatie</strong></h3>
+<ul>
+<li><strong>Voor:</strong> funnel-strategie werkt (v1 gratis → v2
+betaald), 2 doelgroepen bediend</li>
+<li><strong>Tegen:</strong> onderhoudslast dubbel,
+content-fragmentatie</li>
+<li><strong>Advies:</strong> deze houden, mits duidelijke
+funnel-strategie geformaliseerd</li>
+</ul>
+<h3 id="optie-c--drie-producten-v1--v2--proces-editie-v3">Optie C · Drie
+producten (v1 + v2 + proces-editie v3)</h3>
+<ul>
+<li><strong>Voor:</strong> dekt Dragon1 (EA) én proces-architectuur; kan
+met Staff/Peter als partner</li>
+<li><strong>Tegen:</strong> vergt aparte content-lijn (~€15-30k dev),
+extra positionering</li>
+<li><strong>Advies:</strong> alleen als Staff-partner-relatie
+geformaliseerd is</li>
+</ul>
+<h3 id="optie-d--modulair-per-organisatie-type">Optie D · Modulair per
+organisatie-type</h3>
+<ul>
+<li><strong>Voor:</strong> hoge relevantie per klantsegment (bank vs
+zorg vs overheid vs retail)</li>
+<li><strong>Tegen:</strong> content-explosion,
+marketing-fragmentatie</li>
+<li><strong>Advies:</strong> dit is een fase 2-optie (na 5+ paying
+klanten), niet nu</li>
+</ul>
+<p><strong>→ Aanbeveling: Optie B (2 sporen) nu, Optie C (v3
+procesarchitectuur) alleen als Peter-samenwerking materieel
+wordt.</strong></p>
+<h2 id="6--twee-sporen--go-to-market">6 · Twee sporen —
+go-to-market</h2>
+<h3 id="spoor-mark-paauwe-dragon1">Spoor Mark Paauwe (Dragon1)</h3>
+<p><strong>Waarde-uitwisseling:</strong></p>
+<ul>
+<li><strong>Wat Mark biedt:</strong> Dragon1-methodiek-blessing,
+community-toegang (Dragon1-partners, licentie-nemers), positionering als
+"officieel Dragon1"</li>
+<li><strong>Wat wij bieden:</strong> de eerste digitale
+Dragon1-workshop-simulatie, opgeleverd, LIVE, deelbaar met
+community</li>
+<li><strong>Model-voorstellen:</strong>
+<ol type="1">
+<li>Royalty-per-licentie (Dragon1 krijgt 15-25% van SaaS-omzet)</li>
+<li>Co-branded certificering (train-de-trainer traject 50/50)</li>
+<li>Whitelabel via Dragon1.com (Dragon1 verkoopt, iCt Horse levert;
+revenue-share 60/40 Dragon1/iCt)</li>
+</ol></li>
+<li><strong>Randvoorwaarden:</strong> bestaande licentie-discussie (€6k)
+eerst opgelost; expliciete methode-eigenaar-verantwoording in game</li>
+</ul>
+<p><strong>Risico's:</strong></p>
+<ul>
+<li>Mark ziet EQ v2 als afgeleid werk van Dragon1 → licentie-claim</li>
+<li>Mark bouwt zelf een variant → onze investering verloren</li>
+<li>Dragon1-adoptie in NL blijft niche → schaal beperkt</li>
+</ul>
+<p><strong>Mitigatie:</strong></p>
+<ul>
+<li>Contract vooraf, exclusiviteit voor EQ v2 als officiële
+Dragon1-serious-game</li>
+<li>Wederzijdse non-compete over serious-game-format 2-3 jaar</li>
+<li>IP: engine blijft van iCt Horse (AGPL-3.0 dekt), content-set kan met
+Dragon1 gedeeld worden</li>
+</ul>
+<h3 id="spoor-peter-vd-hulst-staff">Spoor Peter v/d Hulst (Staff)</h3>
+<p><strong>Waarde-uitwisseling:</strong></p>
+<ul>
+<li><strong>Wat Peter/Staff biedt:</strong> verkoop-kanaal binnen
+bestaande klantportefeuille, bestaande facilitators, Staff-branding</li>
+<li><strong>Wat wij bieden:</strong> digitale variant naast fysieke
+Staff Proces-game; techniek + engine; snelle marktintroductie</li>
+<li><strong>Model-voorstellen:</strong>
+<ol type="1">
+<li>Whitelabel v3 procesarchitectuur-editie voor Staff-portfolio
+(eenmalig €15-25k + €5k/jaar content-onderhoud)</li>
+<li>Revenue-share op verkopen via Staff-kanaal (Staff 60% / iCt Horse
+40%)</li>
+<li>Custom-development contract voor Staff-specifieke
+content-varianten</li>
+</ol></li>
+<li><strong>Randvoorwaarden:</strong> Peter's Proces-game specificaties
+verkrijgen; overlap-analyse doen voor je positioneert; <strong>GEEN
+mention van Dragon1</strong> (positionering-conflict binnen
+Staff-doelgroep)</li>
+</ul>
+<p><strong>Risico's:</strong></p>
+<ul>
+<li>Overlap met Staff Proces-game groter dan gedacht → conflict</li>
+<li>Peter ziet ons als leverancier ipv partner → lage marges</li>
+<li>Staff verwacht IP-overdracht → engine kwijt</li>
+</ul>
+<p><strong>Mitigatie:</strong></p>
+<ul>
+<li>Duidelijke scope-scheiding (proces-KETEN vs
+proces-ARCHITECTUUR)</li>
+<li>Engine IP nooit overdragen — alleen content-varianten</li>
+<li>Vaste licentie ipv per-sessie (voorspelbare omzet)</li>
+</ul>
+<h2 id="7--advies-executie">7 · Advies executie</h2>
+<ol type="1">
+<li><strong>Deze week:</strong> verstuur pitch aan Mark Paauwe eerst
+(mail apart, PDF-attachment, geen mention van Peter/Staff)</li>
+<li><strong>Week +1:</strong> ontvang reactie Mark → indien positief:
+contract-onderhandeling; indien "nee": alleen Staff-spoor uitwerken</li>
+<li><strong>Week +1 parallel:</strong> verstuur pitch aan Peter v/d
+Hulst (mail apart, PDF-attachment, geen mention van Dragon1)</li>
+<li><strong>Week +2:</strong> eerste demo-sessie plannen (30 min
+live-play) met partij die eerst positief reageert</li>
+<li><strong>Week +3-4:</strong> contract-fase — vast prijspunt,
+ondersteuningsniveau, IP-clausule</li>
+<li><strong>Maand 2:</strong> eerste betaalde workshop-cyclus (5-10
+deelnemers) als POC</li>
+<li><strong>Maand 3-6:</strong> schaal, content-uitbreiding, mogelijk v3
+(Staff spoor)</li>
+</ol>
+<p><strong>Onmisbaar voor go-live:</strong></p>
+<ul>
+<li>Facilitator-gids (5-10 pagina's per editie) — nog te schrijven —
+~€5-10k budget</li>
+<li>Aftermovie / promo-video (2-3 min) — via Plaud+Screen-recording —
+~€1-2k</li>
+<li>Sales-pagina op icthorse.nl — bestaat nog niet — ~€2-3k / 8-16 uur
+werk</li>
+</ul>
+<p><strong>Geen deal-breakers, wel gaten:</strong></p>
+<ul>
+<li>Multi-user server-side scoreboard</li>
+<li>SSO / SAML voor enterprise-integraties</li>
+<li>Analytics-dashboard voor trainer (sessies, deelnemers, scores)</li>
+</ul>
+<h2 id="8--financiële-projectie-jaar-1-indicatief">8 · Financiële
+projectie (jaar 1, indicatief)</h2>
+<table>
+<thead>
+<tr>
+<th>Scenario</th>
+<th>Klanten</th>
+<th>Omzet</th>
+<th>Marge</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Zonder partner</strong> — organische verkoop</td>
+<td>2-5</td>
+<td>€5k-25k</td>
+<td>60%</td>
+</tr>
+<tr>
+<td><strong>Met Dragon1 (Paauwe)</strong> — co-branded launch</td>
+<td>8-15</td>
+<td>€40k-120k</td>
+<td>45% (na royalty)</td>
+</tr>
+<tr>
+<td><strong>Met Staff (Peter)</strong> — whitelabel v3</td>
+<td>5-10 (Staff-klanten)</td>
+<td>€25k-75k</td>
+<td>40% (na revenue-share)</td>
+</tr>
+<tr>
+<td><strong>Beide partners</strong></td>
+<td>15-25</td>
+<td>€70k-200k</td>
+<td>40-45%</td>
+</tr>
+</tbody>
+</table>
+<p>Sensitiviteit: elke -50% aanname op klantvolume → -50% omzet.
+Kritische factor is <strong>eerste 3 betaalde klanten</strong> — daarna
+is schaal proces-gedreven.</p>
+<h2 id="9--openstaande-vragen">9 · Openstaande vragen</h2>
+<ol type="1">
+<li>Is Mark Paauwe bereid tot co-branded / royalty-model, of blijft hij
+bij lump-sum licentie-eis?</li>
+<li>Wat is de exacte scope, content-diepte en digitalisering-graad van
+de Staff Proces-game? (vraag rechtstreeks aan Peter, of via
+netwerk)</li>
+<li>Zijn er contractuele beperkingen op mijn kant (bijv.
+Staff-samenwerking, andere klanten) die exclusiviteit met een van beide
+partners in de weg staan?</li>
+<li>Is v3 (procesarchitectuur-editie) technisch schaalbaar met huidige
+content-schema, of vergt het engine-aanpassingen?</li>
+<li>Wat is de openstaande €6k Dragon1-licentie-situatie (uit
+<code>project_dragon1_samenwerking.md</code>) — vóór of nà nieuwe pitch
+aankaarten?</li>
+</ol>
+<h2 id="bijlagen">Bijlagen</h2>
+<ul>
+<li><code>pitch_mark_paauwe.md</code> (aparte pitch — bevat GEEN mention
+van Staff)</li>
+<li><code>pitch_peter_hulst.md</code> (aparte pitch — bevat GEEN mention
+van Dragon1)</li>
+</ul>
+<p><em>Intern beslissingsstuk — niet doorsturen naar Mark of
+Peter.</em></p>
+</body>
+</html>

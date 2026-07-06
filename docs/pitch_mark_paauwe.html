@@ -1,0 +1,457 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>pitch_mark_paauwe</title>
+  <style>
+    /* Default styles provided by pandoc.
+    ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+    */
+    html {
+      color: #1a1a1a;
+      background-color: #fdfdfd;
+    }
+    body {
+      margin: 0 auto;
+      max-width: 36em;
+      padding-left: 50px;
+      padding-right: 50px;
+      padding-top: 50px;
+      padding-bottom: 50px;
+      hyphens: auto;
+      overflow-wrap: break-word;
+      text-rendering: optimizeLegibility;
+      font-kerning: normal;
+    }
+    @media (max-width: 600px) {
+      body {
+        font-size: 0.9em;
+        padding: 12px;
+      }
+      h1 {
+        font-size: 1.8em;
+      }
+    }
+    @media print {
+      html {
+        background-color: white;
+      }
+      body {
+        background-color: transparent;
+        color: black;
+        font-size: 12pt;
+      }
+      p, h2, h3 {
+        orphans: 3;
+        widows: 3;
+      }
+      h2, h3, h4 {
+        page-break-after: avoid;
+      }
+    }
+    p {
+      margin: 1em 0;
+    }
+    a {
+      color: #1a1a1a;
+    }
+    a:visited {
+      color: #1a1a1a;
+    }
+    img {
+      max-width: 100%;
+    }
+    svg {
+      height: auto;
+      max-width: 100%;
+    }
+    h1, h2, h3, h4, h5, h6 {
+      margin-top: 1.4em;
+    }
+    h5, h6 {
+      font-size: 1em;
+      font-style: italic;
+    }
+    h6 {
+      font-weight: normal;
+    }
+    ol, ul {
+      padding-left: 1.7em;
+      margin-top: 1em;
+    }
+    li > ol, li > ul {
+      margin-top: 0;
+    }
+    blockquote {
+      margin: 1em 0 1em 1.7em;
+      padding-left: 1em;
+      border-left: 2px solid #e6e6e6;
+      color: #606060;
+    }
+    code {
+      white-space: pre-wrap;
+      font-family: Menlo, Monaco, Consolas, 'Lucida Console', monospace;
+      font-size: 85%;
+      margin: 0;
+      hyphens: manual;
+    }
+    pre {
+      margin: 1em 0;
+      overflow: auto;
+    }
+    pre code {
+      padding: 0;
+      overflow: visible;
+      overflow-wrap: normal;
+    }
+    .sourceCode {
+     background-color: transparent;
+     overflow: visible;
+    }
+    hr {
+      border: none;
+      border-top: 1px solid #1a1a1a;
+      height: 1px;
+      margin: 1em 0;
+    }
+    table {
+      margin: 1em 0;
+      border-collapse: collapse;
+      width: 100%;
+      overflow-x: auto;
+      display: block;
+      font-variant-numeric: lining-nums tabular-nums;
+    }
+    table caption {
+      margin-bottom: 0.75em;
+    }
+    tbody {
+      margin-top: 0.5em;
+      border-top: 1px solid #1a1a1a;
+      border-bottom: 1px solid #1a1a1a;
+    }
+    th {
+      border-top: 1px solid #1a1a1a;
+      padding: 0.25em 0.5em 0.25em 0.5em;
+    }
+    td {
+      padding: 0.125em 0.5em 0.25em 0.5em;
+    }
+    header {
+      margin-bottom: 4em;
+      text-align: center;
+    }
+    #TOC li {
+      list-style: none;
+    }
+    #TOC ul {
+      padding-left: 1.3em;
+    }
+    #TOC > ul {
+      padding-left: 0;
+    }
+    #TOC a:not(:hover) {
+      text-decoration: none;
+    }
+    span.smallcaps{font-variant: small-caps;}
+    div.columns{display: flex; gap: min(4vw, 1.5em);}
+    div.column{flex: auto; overflow-x: auto;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    /* The extra [class] is a hack that increases specificity enough to
+       override a similar rule in reveal.js */
+    ul.task-list[class]{list-style: none;}
+    ul.task-list li input[type="checkbox"] {
+      font-size: inherit;
+      width: 0.8em;
+      margin: 0 0.8em 0.2em -1.6em;
+      vertical-align: middle;
+    }
+    .display.math{display: block; text-align: center; margin: 0.5rem auto;}
+  </style>
+<style>
+body{font-family:-apple-system,"Segoe UI",Roboto,sans-serif;max-width:960px;margin:2em auto;padding:0 1.5em;color:#1a2359;line-height:1.6}
+h1{color:#8258e0;font-size:26px;border-bottom:2px solid #8258e0;padding-bottom:6px}
+h2{border-bottom:1px solid #ccc;padding-bottom:4px;color:#0b1235;margin-top:2em}
+h3{color:#5b39b8}
+code{background:#f4f4f8;padding:1px 4px;border-radius:3px;font-size:.9em}
+pre{background:#f4f4f8;padding:12px;border-radius:5px;overflow-x:auto;font-size:.85em}
+table{border-collapse:collapse;margin:1em 0;font-size:14px}
+th,td{border:1px solid #ccc;padding:6px 10px;text-align:left;vertical-align:top}
+th{background:#eef}
+a{color:#8258e0}
+blockquote{border-left:4px solid #8258e0;padding:10px 14px;color:#333;background:#f8f6ff;margin:1em 0}
+strong{color:#0b1235}
+@media print{ body{max-width:none;margin:1em}}
+</style></head>
+<body>
+<header id="title-block-header">
+<h1 class="title">pitch_mark_paauwe</h1>
+</header>
+<h1 id="enterprise-quest--dragon1-architects-journey">Enterprise Quest —
+Dragon1 Architect's Journey</h1>
+<p><strong>Voor:</strong> Mark Paauwe — grondlegger Dragon1,
+methode-eigenaar <strong>Van:</strong> Christian Glebbeek — iCt Horse
+<strong>Datum:</strong> 2026-07-06 <strong>Onderwerp:</strong> Voorstel
+— Dragon1-gecertificeerde digitale workshop-simulatie +
+train-de-trainer</p>
+<h2 id="kern-in-één-regel">Kern in één regel</h2>
+<p>Ik heb een volledig werkende digitale
+<strong>Dragon1-workshop-simulatie</strong> gebouwd — browser-native,
+methode-getrouw, direct speelbaar op <a
+href="https://icthorse.nl/EnterpriseQuest/v2/">https://icthorse.nl/EnterpriseQuest/v2/</a>
+— en ik wil dit graag samen met jou als <strong>officieel
+Dragon1-product</strong> in de markt zetten, met licentie- of
+royalty-model naar keuze.</p>
+<h2 id="waarom-nu-waarom-dragon1">Waarom nu, waarom Dragon1</h2>
+<p>Enterprise Architecture wordt in Nederland grotendeels onderwezen met
+<strong>klassikale slides en PDF-cases</strong>. De praktijk-simulaties
+die er zijn (LEGO Serious Play, procesbordspellen, Beer Distribution
+Game) raken <strong>de business-kant of het proces-perspectief</strong>,
+maar er is <strong>geen digitale simulatie die expliciet Dragon1's
+artefact-cascade</strong> — Vision Blueprint → Strategy Map → Capability
+Map → Business Reference Model → Application Landscape — als leerlijn
+hanteert.</p>
+<p>Dat gat heb ik ingevuld met <strong>Enterprise Quest: Dragon1
+Architect's Journey (v0.2.0-Paauwe)</strong>. De codenaam Paauwe is niet
+toevallig — het spel is expliciet Dragon1-first ontworpen.</p>
+<h2 id="wat-de-spelbouw-doet-concreet">Wat de spelbouw doet,
+concreet</h2>
+<p>Speler kiest een van <strong>8 rollen</strong> (Enterprise / Solution
+/ Business / Information / Security Architect, CIO, IT-Manager, Student
+EA), start in een organisatie met een 4×4 bord van <strong>16
+organisatie-onderdelen</strong> (Directiekamer, Strategiecentrum,
+Business Domein, HR, Finance, Operations, Sales, Klantenservice,
+Applicatielandschap, Dataplatform, Integratielaag, Cloudplatform, SOC,
+Innovatielab, Project Portfolio, Governance Board).</p>
+<p>Hij/zij trekt:</p>
+<ul>
+<li><strong>40 Dragon1-missies</strong> — elk levert een
+Dragon1-artefact op (of raakt eraan)</li>
+<li><strong>40 uitdagingen</strong> — realistische organisatie-problemen
+(Legacy, ShadowIT, NIS2, DORA, EU AI Act, Ransomware, Fusie, Vendor
+Lock-in, …), elk met 3-4 keuze-opties die je in rollenspel moet
+afwegen</li>
+<li><strong>30 events</strong> — waarvan 28 met branching-keuzes (RFP,
+ARB, buy-vs-build, hackathon, multi-cloud dilemma, …)</li>
+</ul>
+<p><strong>15 Dragon1-artefacten</strong> vormen de scoringskern:</p>
+<table>
+<thead>
+<tr>
+<th>#</th>
+<th>Artefact</th>
+<th>Vereist</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>A001</td>
+<td>Vision Blueprint</td>
+<td>—</td>
+</tr>
+<tr>
+<td>A002</td>
+<td>Strategy Map</td>
+<td>—</td>
+</tr>
+<tr>
+<td>A003</td>
+<td>Capability Map</td>
+<td>Strategy Map</td>
+</tr>
+<tr>
+<td>A004</td>
+<td>Architecture Principles</td>
+<td>—</td>
+</tr>
+<tr>
+<td>A005</td>
+<td>Business Reference Model</td>
+<td>Capability Map</td>
+</tr>
+<tr>
+<td>A006</td>
+<td>Application Landscape</td>
+<td>—</td>
+</tr>
+<tr>
+<td>A007</td>
+<td>Information Model</td>
+<td>—</td>
+</tr>
+<tr>
+<td>A008</td>
+<td>Technology Blueprint</td>
+<td>Application Landscape</td>
+</tr>
+<tr>
+<td>A009</td>
+<td>Governance Framework</td>
+<td>Architecture Principles</td>
+</tr>
+<tr>
+<td>A010</td>
+<td>Transformation Roadmap</td>
+<td>—</td>
+</tr>
+<tr>
+<td>A011</td>
+<td>Portfolio Dashboard</td>
+<td>Transformation Roadmap</td>
+</tr>
+<tr>
+<td>A012</td>
+<td>Architecture Repository</td>
+<td>Governance Framework</td>
+</tr>
+<tr>
+<td>A013</td>
+<td>Enterprise Vision Poster</td>
+<td>Vision Blueprint</td>
+</tr>
+<tr>
+<td>A014</td>
+<td>Solution Overview</td>
+<td>Application Landscape</td>
+</tr>
+<tr>
+<td>A015</td>
+<td>Value Stream Map</td>
+<td>—</td>
+</tr>
+</tbody>
+</table>
+<p>De <strong>cascade-vereisten</strong> dwingen speler in
+Dragon1-volgorde te werken.</p>
+<h2 id="eindspel-presentatie-aan-raad-van-bestuur">Eindspel: presentatie
+aan Raad van Bestuur</h2>
+<p>Speler beslist zelf wanneer hij "af" is en presenteert aan een
+virtuele Raad. Het spel genereert een <strong>evaluatierapport op 8
+aspecten</strong>:</p>
+<ol type="1">
+<li>Samenhang (cascade-integriteit van artefacten)</li>
+<li>Strategie-uitlijning</li>
+<li>Businesswaarde</li>
+<li>Innovatie</li>
+<li>Governance</li>
+<li>Security</li>
+<li>Digitale volwassenheid</li>
+<li>Stakeholdertevredenheid</li>
+</ol>
+<p>Elk aspect krijgt een score 0-100 met letter-grade A-E, plus concrete
+verbeterpunten. Dit is direct bruikbaar als reflectie-instrument in een
+trainings-context — trainer kan het rapport gebruiken als
+debrief-basis.</p>
+<h2 id="wat-het-spel-technisch-is">Wat het spel technisch is</h2>
+<ul>
+<li><strong>Één HTML-bestand</strong> (156 KB), speel offline door in
+browser te openen</li>
+<li><strong>Geen installatie, geen registratie, geen
+dataverzameling</strong> buiten LocalStorage</li>
+<li><strong>Web Audio API</strong> voor geluid (geen assets), autosave
+via LocalStorage</li>
+<li><strong>Responsive</strong> desktop / tablet / mobiel</li>
+<li><strong>Open source (AGPL-3.0)</strong> op <a
+href="https://github.com/cpaglebbeek/EnterpriseQuest">https://github.com/cpaglebbeek/EnterpriseQuest</a></li>
+<li><strong>Content-schema</strong> in JSON — nieuwe
+missies/uitdagingen/artefacten kunnen zonder code-werk toegevoegd
+worden</li>
+</ul>
+<h2 id="wat-ik-nu-voorstel--samenwerking">Wat ik nu voorstel —
+samenwerking</h2>
+<p>Ik wil dit niet solo neerzetten. Dragon1 is jouw methode. Dat
+betekent:</p>
+<ol type="1">
+<li><strong>Jouw blessing als methode-eigenaar</strong> — expliciete
+positionering "Dragon1-approved / officieel
+Dragon1-gamification-instrument"</li>
+<li><strong>Gezamenlijke launch</strong> — via Dragon1.com én
+icthorse.nl, met co-branding</li>
+<li><strong>Train-de-trainer-traject</strong> — instructeurs uit de
+Dragon1-community leren de simulatie te faciliteren (post-sessie
+debrief, aanvullende cases). Certificering + jaarlijkse
+hercertificering</li>
+<li><strong>Model-opties</strong> — kies wat past bij Dragon1:
+<ul>
+<li><strong>Optie A · Royalty-per-licentie:</strong> Dragon1 krijgt
+15-25% van SaaS-licentie-omzet (verkopen via icthorse.nl, jij ontvangt
+kwartaal-afrekening)</li>
+<li><strong>Optie B · Co-branded certificering:</strong>
+train-de-trainer trajecten 50/50 revenue-split</li>
+<li><strong>Optie C · Whitelabel via Dragon1.com:</strong> Dragon1
+verkoopt, iCt Horse levert engine + content-updates. Revenue-share 60/40
+Dragon1/iCt</li>
+</ul></li>
+</ol>
+<h2 id="waarom-voor-jou-aantrekkelijk">Waarom voor jou
+aantrekkelijk</h2>
+<ul>
+<li><strong>Verbreding Dragon1-adoptie</strong> naar studenten en
+juniors — instroom-versterking van je community</li>
+<li><strong>Modern gamification-format</strong> — differentiator ten
+opzichte van klassikale trainingen en TOGAF-cursussen</li>
+<li><strong>Snelle time-to-market</strong> — het spel is al gebouwd,
+LIVE, direct demo-baar</li>
+<li><strong>Passieve inkomstenstroom</strong> via royalty of
+whitelabel-model</li>
+<li><strong>Positionering:</strong> "Dragon1 is niet alleen methodiek,
+maar ook ervaring" — verhaal voor conferenties, boardroom-pitches</li>
+<li><strong>Toegang tot Nederlandse EA-opleidingsmarkt</strong> die wij
+samen kunnen ontsluiten</li>
+</ul>
+<h2 id="wat-ik-van-jou-vraag">Wat ik van jou vraag</h2>
+<ul>
+<li><strong>30 minuten demo-sessie</strong> — ik toon het live, jij
+ervaart zelf de flow</li>
+<li><strong>Feedback op Dragon1-getrouwheid</strong> — welke
+artefact-details / methodologische aanscherpingen moeten door voordat we
+"Dragon1-approved" mogen zeggen</li>
+<li><strong>Beslissing</strong> — Optie A / B / C samenwerking, of eigen
+alternatief voorstel</li>
+</ul>
+<h2 id="financieel-indicatief">Financieel indicatief</h2>
+<p>Ruwe jaar-1 projectie (Nederlandse markt, zonder internationale
+schaal):</p>
+<ul>
+<li>8-15 organisaties/consultancies als workshop-tool licentie:
+€40k-120k omzet</li>
+<li>Train-de-trainer-trajecten voor 5-10 instructeurs uit
+Dragon1-community: €35k-75k omzet</li>
+<li>Marge na jouw royalty/split: ~45% aan iCt-kant, ~25-35% aan
+Dragon1-kant</li>
+</ul>
+<p>Sensitiviteit: eerste 3 betaalde klanten zijn de kritische horde —
+daarna is groei proces-gedreven.</p>
+<h2 id="praktisch">Praktisch</h2>
+<ul>
+<li><strong>Test het nu:</strong> <a
+href="https://icthorse.nl/EnterpriseQuest/v2/">https://icthorse.nl/EnterpriseQuest/v2/</a>
+(30 sec om Enterprise Architect te kiezen, 5 min voor een korte run +
+presentatie)</li>
+<li><strong>Code / open source:</strong> <a
+href="https://github.com/cpaglebbeek/EnterpriseQuest">https://github.com/cpaglebbeek/EnterpriseQuest</a></li>
+<li><strong>v1</strong> (fantasy-editie, voor studenten/awareness)
+draait naast v2, kan onderdeel worden van gezamenlijke funnel: <a
+href="https://icthorse.nl/EnterpriseQuest/">https://icthorse.nl/EnterpriseQuest/</a></li>
+</ul>
+<h2 id="volgende-stap">Volgende stap</h2>
+<p>Als je hier iets in ziet: laat me een <strong>datum voor 30 min
+video-call</strong> komende 2 weken. Dan doen we eerst 15 min live-play
+en 15 min zakelijk. Als je "misschien" denkt: speel het eerst zelf 15
+minuten en laat me kort weten wat je vindt. Als het "nee" is: dan is dit
+signaal ook waardevol.</p>
+<p>Ik ben overtuigd dat Dragon1 met dit format een substantiële
+adoption-boost kan krijgen, en dat wij samen sneller marktaandeel pakken
+dan afzonderlijk.</p>
+<p>Groet,</p>
+<p><strong>Christian Glebbeek</strong> iCt Horse — Connecting the dots
+<a href="mailto:cglebbeek@gmail.com">cglebbeek@gmail.com</a> <a
+href="https://icthorse.nl">https://icthorse.nl</a> · <a
+href="https://github.com/cpaglebbeek">https://github.com/cpaglebbeek</a></p>
+<hr />
+<p><em>Bijlage: de game zelf, LIVE op <a
+href="https://icthorse.nl/EnterpriseQuest/v2/EnterpriseQuest.html">https://icthorse.nl/EnterpriseQuest/v2/EnterpriseQuest.html</a></em></p>
+</body>
+</html>
