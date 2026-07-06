@@ -1,0 +1,536 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Enterprise Quest — Kies versie</title>
+<style>
+:root {
+  --bg1: #070c22;
+  --bg2: #0b1235;
+  --card-bg1: #131a44;
+  --card-bg2: #0b1235;
+  --border: #2b3572;
+  --gold: #f5c542;
+  --gold-dark: #d4a017;
+  --purple: #8258e0;
+  --teal: #43d5f5;
+  --orange: #ff8c42;
+  --danger: #ef476f;
+  --success: #06d6a0;
+  --text: #f0f3ff;
+  --muted: #a4acc9;
+  --dim: #8f97ad;
+}
+* { box-sizing: border-box; }
+body {
+  font-family: -apple-system, 'Segoe UI', Roboto, sans-serif;
+  background: linear-gradient(135deg, var(--bg1), var(--bg2));
+  color: var(--text);
+  margin: 0;
+  padding: 40px 20px;
+  min-height: 100vh;
+}
+.wrapper { max-width: 1200px; margin: 0 auto; text-align: center; }
+h1 {
+  background: linear-gradient(180deg, var(--gold), var(--gold-dark));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  font-size: 52px;
+  font-weight: 800;
+  margin: 0 0 8px;
+}
+.sub { color: var(--purple); letter-spacing: 0.1em; text-transform: uppercase; font-size: 14px; margin-bottom: 30px; font-style: italic; }
+.intro { max-width: 720px; color: var(--muted); line-height: 1.6; margin: 0 auto 50px; }
+.section-title {
+  color: var(--gold);
+  font-size: 22px;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  margin: 40px 0 20px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid rgba(245, 197, 66, 0.2);
+  text-align: left;
+}
+
+/* Digital versions */
+.versions {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+  margin-bottom: 30px;
+}
+.card {
+  background: linear-gradient(160deg, var(--card-bg1), var(--card-bg2));
+  border: 2px solid var(--border);
+  border-radius: 14px;
+  padding: 22px;
+  text-decoration: none;
+  color: inherit;
+  transition: 0.2s;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  text-align: left;
+}
+.card:hover { transform: translateY(-3px); border-color: var(--gold); box-shadow: 0 0 24px rgba(245, 197, 66, 0.35); }
+.card h2 { margin: 0; color: var(--gold); font-size: 20px; }
+.card .badge {
+  align-self: flex-start;
+  padding: 3px 10px;
+  border-radius: 12px;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  margin-bottom: 4px;
+}
+.badge.v1 { background: linear-gradient(90deg, #8a5cf5, #6c3fd9); color: #fff; }
+.badge.v2 { background: linear-gradient(90deg, #20a89a, #43d5f5); color: #052a2a; }
+.badge.v3 { background: linear-gradient(90deg, var(--orange), var(--gold)); color: #1a1200; }
+.card p { color: var(--muted); line-height: 1.55; margin: 6px 0; font-size: 13.5px; }
+.card ul { color: #c9d1e5; font-size: 12.5px; padding-left: 18px; line-height: 1.65; margin: 6px 0; }
+.card .play {
+  margin-top: auto;
+  padding: 10px 16px;
+  background: linear-gradient(180deg, var(--gold), var(--gold-dark));
+  color: #1a1200;
+  border-radius: 8px;
+  font-weight: 700;
+  text-align: center;
+}
+
+/* Analog PnP section */
+.analog-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+  margin-bottom: 20px;
+}
+.analog-card {
+  background: rgba(19, 26, 68, 0.5);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 16px;
+  text-align: left;
+}
+.analog-card h3 { color: var(--teal); font-size: 16px; margin: 0 0 6px; }
+.analog-card .kind {
+  font-size: 11px;
+  color: var(--dim);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  margin-bottom: 8px;
+}
+.analog-card p { font-size: 12.5px; color: var(--muted); line-height: 1.5; margin: 6px 0 10px; }
+
+/* Analog animation placeholder */
+.anim-preview {
+  width: 100%;
+  height: 180px;
+  background: linear-gradient(160deg, #0d1330, #0a0f24);
+  border: 1px dashed var(--border);
+  border-radius: 8px;
+  margin-bottom: 10px;
+  position: relative;
+  overflow: hidden;
+}
+.anim-preview .label {
+  position: absolute;
+  bottom: 6px;
+  left: 8px;
+  font-size: 10px;
+  color: var(--dim);
+  background: rgba(0,0,0,0.4);
+  padding: 2px 6px;
+  border-radius: 4px;
+  z-index: 5;
+}
+
+/* Animation v1: RPG - dice roll + card flip + monster */
+.anim-v1 {
+  display: flex; align-items: center; justify-content: center; gap: 12px; height: 100%;
+}
+.anim-v1 .board-mini {
+  width: 60px; height: 60px;
+  background: repeating-linear-gradient(45deg, #1a2244, #1a2244 10px, #12193a 10px, #12193a 20px);
+  border-radius: 6px; position: relative; border: 1px solid var(--purple);
+}
+.anim-v1 .pawn {
+  position: absolute; width: 12px; height: 12px; background: var(--gold); border-radius: 50%;
+  top: 24px; left: 24px;
+  animation: v1-pawn 4s infinite;
+}
+@keyframes v1-pawn {
+  0%, 20% { top: 4px; left: 4px; }
+  40% { top: 4px; left: 44px; }
+  60% { top: 24px; left: 44px; }
+  80%, 100% { top: 44px; left: 44px; }
+}
+.anim-v1 .d20 {
+  width: 26px; height: 26px;
+  background: linear-gradient(145deg, var(--orange), var(--danger));
+  clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
+  color: white; font-size: 12px; font-weight: 700;
+  display: flex; align-items: center; justify-content: center;
+  animation: v1-dice 3s infinite;
+}
+@keyframes v1-dice {
+  0%, 100% { transform: rotate(0deg); }
+  50% { transform: rotate(360deg); }
+}
+.anim-v1 .card-mini {
+  width: 34px; height: 48px;
+  background: linear-gradient(160deg, #2a1e4a, #1a1230);
+  border: 1px solid var(--purple);
+  border-radius: 4px;
+  transform-style: preserve-3d;
+  animation: v1-flip 3.5s infinite;
+}
+@keyframes v1-flip {
+  0%, 30% { transform: rotateY(0deg); }
+  50%, 100% { transform: rotateY(180deg); }
+}
+.anim-v1 .monster {
+  font-size: 30px;
+  animation: v1-monster 2s infinite;
+}
+@keyframes v1-monster {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.15); filter: hue-rotate(30deg); }
+}
+
+/* Animation v2: Dragon1 - cascade artifact stack */
+.anim-v2 {
+  display: flex; align-items: center; justify-content: center; height: 100%; position: relative;
+}
+.anim-v2 .grid-mini {
+  display: grid; grid-template-columns: repeat(4, 12px); gap: 3px;
+  padding: 8px; background: rgba(67, 213, 245, 0.05); border-radius: 6px;
+  border: 1px solid var(--teal);
+}
+.anim-v2 .cell {
+  width: 12px; height: 12px; background: var(--teal); opacity: 0.15;
+  border-radius: 2px;
+  animation: v2-cell 4s infinite;
+}
+.anim-v2 .cell:nth-child(1) { animation-delay: 0s; }
+.anim-v2 .cell:nth-child(6) { animation-delay: 0.4s; }
+.anim-v2 .cell:nth-child(11) { animation-delay: 0.8s; }
+.anim-v2 .cell:nth-child(16) { animation-delay: 1.2s; }
+@keyframes v2-cell {
+  0%, 40%, 100% { opacity: 0.15; }
+  50%, 70% { opacity: 1; box-shadow: 0 0 8px var(--teal); }
+}
+.anim-v2 .cascade {
+  margin-left: 20px; display: flex; flex-direction: column; gap: 3px;
+}
+.anim-v2 .artefact-mini {
+  width: 40px; height: 12px; background: var(--gold); opacity: 0;
+  border-radius: 2px; font-size: 8px; color: #1a1200; text-align: center; line-height: 12px; font-weight: 700;
+  animation: v2-stack 5s infinite;
+}
+.anim-v2 .artefact-mini:nth-child(1) { animation-delay: 0.3s; }
+.anim-v2 .artefact-mini:nth-child(2) { animation-delay: 1.1s; }
+.anim-v2 .artefact-mini:nth-child(3) { animation-delay: 1.9s; }
+.anim-v2 .artefact-mini:nth-child(4) { animation-delay: 2.7s; }
+.anim-v2 .artefact-mini:nth-child(5) { animation-delay: 3.5s; }
+@keyframes v2-stack {
+  0%, 20% { opacity: 0; transform: translateX(-20px); }
+  30%, 90% { opacity: 1; transform: translateX(0); }
+  100% { opacity: 0; }
+}
+
+/* Animation v3: AI Governance - Gouverneur checks + drift dragon */
+.anim-v3 {
+  display: flex; align-items: center; justify-content: center; height: 100%; gap: 8px; position: relative;
+}
+.anim-v3 .requestor { font-size: 22px; animation: v3-requestor 3s infinite; }
+@keyframes v3-requestor {
+  0%, 100% { transform: translateX(0); }
+  50% { transform: translateX(30px); }
+}
+.anim-v3 .arrow { color: var(--orange); font-size: 14px; opacity: 0.7; }
+.anim-v3 .gouv {
+  width: 40px; height: 40px;
+  background: linear-gradient(145deg, var(--gold), var(--gold-dark));
+  border-radius: 50%; display: flex; align-items: center; justify-content: center;
+  font-size: 20px; color: #1a1200;
+  animation: v3-gouv 3s infinite;
+  box-shadow: 0 0 12px rgba(245, 197, 66, 0.5);
+}
+@keyframes v3-gouv {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.15) rotate(15deg); }
+}
+.anim-v3 .checks {
+  display: flex; flex-direction: column; gap: 4px; margin: 0 6px;
+}
+.anim-v3 .check {
+  width: 26px; height: 8px; background: rgba(255,255,255,0.05);
+  border-radius: 2px; position: relative;
+}
+.anim-v3 .check::after {
+  content: ''; position: absolute; left: 0; top: 0; height: 100%; background: var(--success);
+  border-radius: 2px; width: 0;
+  animation: v3-check 4s infinite;
+}
+.anim-v3 .check:nth-child(1)::after { animation-delay: 0.5s; }
+.anim-v3 .check:nth-child(2)::after { animation-delay: 1.0s; }
+.anim-v3 .check:nth-child(3)::after { animation-delay: 1.5s; }
+.anim-v3 .check:nth-child(4)::after { animation-delay: 2.0s; }
+@keyframes v3-check {
+  0%, 10% { width: 0; }
+  20%, 90% { width: 100%; }
+  100% { width: 100%; opacity: 0.3; }
+}
+.anim-v3 .dragon { font-size: 30px; animation: v3-dragon 4s infinite; }
+@keyframes v3-dragon {
+  0%, 60% { transform: scale(1); filter: hue-rotate(0deg); }
+  70%, 100% { transform: scale(0.7); filter: hue-rotate(180deg) brightness(0.5); }
+}
+
+/* CTA section */
+.cta-row { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 8px; }
+.cta-btn {
+  padding: 6px 12px;
+  background: rgba(67, 213, 245, 0.1);
+  border: 1px solid var(--teal);
+  color: var(--teal);
+  border-radius: 6px;
+  font-size: 12px;
+  text-decoration: none;
+  transition: 0.15s;
+}
+.cta-btn:hover { background: var(--teal); color: #052a2a; }
+.cta-btn.primary { background: var(--teal); color: #052a2a; font-weight: 700; }
+
+/* Docs section */
+.docs-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 12px;
+  margin-bottom: 20px;
+}
+.doc-tile {
+  background: rgba(19, 26, 68, 0.4);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 12px;
+  text-decoration: none;
+  color: inherit;
+  transition: 0.15s;
+  text-align: left;
+}
+.doc-tile:hover { border-color: var(--gold); background: rgba(245, 197, 66, 0.05); }
+.doc-tile h4 { margin: 0 0 4px; font-size: 13px; color: var(--gold); }
+.doc-tile p { margin: 0; font-size: 11px; color: var(--muted); line-height: 1.4; }
+.doc-tile .type {
+  display: inline-block;
+  font-size: 9px;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  padding: 1px 6px;
+  border-radius: 3px;
+  background: var(--purple);
+  color: white;
+  margin-bottom: 4px;
+}
+.doc-tile .type.md { background: var(--teal); color: #052a2a; }
+.doc-tile .type.pdf { background: var(--danger); color: white; }
+
+footer {
+  margin-top: 50px;
+  color: var(--dim);
+  font-size: 12px;
+  padding-top: 20px;
+  border-top: 1px solid rgba(255,255,255,0.05);
+}
+footer a { color: var(--purple); text-decoration: none; }
+
+@media (max-width: 900px) {
+  .versions, .analog-grid { grid-template-columns: 1fr; }
+  h1 { font-size: 36px; }
+}
+</style>
+</head>
+<body>
+<div class="wrapper">
+  <h1>Enterprise Quest</h1>
+  <div class="sub">Kies je editie</div>
+  <p class="intro">
+    Drie volledig standalone HTML5-bordspellen rondom Enterprise Architecture en AI-Governance.
+    Speel offline in je browser — geen installatie, geen dependencies. Alle drie beschikbaar
+    als <b>Print &amp; Play</b> voor fysieke workshop-inzet.
+  </p>
+
+  <!-- ===== Digital versions ===== -->
+  <h2 class="section-title">▶ Digitale versies</h2>
+  <div class="versions">
+    <a class="card" href="v1/EnterpriseQuest.html">
+      <span class="badge v1">v1 · Architect's Dungeon</span>
+      <h2>Fantasy RPG</h2>
+      <p>Klassieke tabletop-RPG-flavor. Vecht monsters, verzamel artifacts, versla The Chaos Architect in 3 fases.</p>
+      <ul>
+        <li>6 architect-klassen</li>
+        <li>40 tiles over 12 fantasy-regio's</li>
+        <li>250 kaarten · D20 combat · 22 monsters</li>
+        <li>10 levels · 51 achievements</li>
+      </ul>
+      <div class="play">▶ Speel v1</div>
+    </a>
+
+    <a class="card" href="v2/EnterpriseQuest.html">
+      <span class="badge v2">v2 · Dragon1 Journey</span>
+      <h2>Workshop-simulatie</h2>
+      <p>Professionele Dragon1-methodiek. Geen combat — lever architectuur-artefacten en presenteer aan de RvB.</p>
+      <ul>
+        <li>8 rollen (EA/SA/BA/IA/SecA/CIO/IT-Mgr/Student)</li>
+        <li>4×4 bord van 16 organisatie-onderdelen</li>
+        <li>110 kaarten · 15 artefacten met cascade</li>
+        <li>Eindscore op 8 aspecten</li>
+      </ul>
+      <div class="play">▶ Speel v2 · Dragon1</div>
+    </a>
+
+    <a class="card" href="v3/EnterpriseQuest.html">
+      <span class="badge v3">v3 · Train Your Dragon 🐉</span>
+      <h2>Agentic AI Governance</h2>
+      <p>De draak = AI drift + rogue agents. Voer regie op determinisme/stochasme, doe data-governance via de <b>Gouverneur</b>.</p>
+      <ul>
+        <li>8 rollen (AIGO / ML Eng / Data Arch / SecA / Ethics / MLOps / CTO / PE)</li>
+        <li>5×3 bord van 15 AI-landscape locaties</li>
+        <li>Opportunity + Threat + Governance + Event kaarten</li>
+        <li>Drift Dragon 3-fase eindboss</li>
+      </ul>
+      <div class="play">▶ Speel v3 · Train Your Dragon</div>
+    </a>
+  </div>
+
+  <!-- ===== Analog / Print & Play section ===== -->
+  <h2 class="section-title">📦 Print &amp; Play — fysieke bordspel-versies</h2>
+  <p class="intro" style="margin-bottom: 25px;">
+    Elke digitale editie heeft een volledig uitgewerkte <b>analoge</b> tegenhanger als bordspel + kaartspel.
+    Print zelf uit of laat drukken via The Game Crafter / MakePlayingCards. Ideaal voor workshop-facilitators
+    en corporate trainingen.
+  </p>
+
+  <div class="analog-grid">
+    <!-- Analog v1 -->
+    <div class="analog-card">
+      <div class="anim-preview">
+        <div class="anim-v1">
+          <div class="board-mini"><div class="pawn"></div></div>
+          <div class="d20">D20</div>
+          <div class="card-mini"></div>
+          <div class="monster">🐲</div>
+        </div>
+        <div class="label">Preview: D20 · pion beweegt · kaart flip · monster combat</div>
+      </div>
+      <div class="kind">v1 · Analog PnP</div>
+      <h3>Architect's Dungeon</h3>
+      <p>Fantasy-RPG met 40-tile spiraal-bord, 250 kaarten, 22 monsters, D20 combat. 2-6 spelers, 90-150 min.</p>
+      <div class="cta-row">
+        <a class="cta-btn primary" href="docs/analog_v1_rpg.pdf">📄 PnP PDF</a>
+        <a class="cta-btn" href="docs/analog_v1_rpg.md">MD-versie</a>
+      </div>
+    </div>
+
+    <!-- Analog v2 -->
+    <div class="analog-card">
+      <div class="anim-preview">
+        <div class="anim-v2">
+          <div class="grid-mini">
+            <div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div>
+            <div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div>
+            <div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div>
+            <div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div>
+          </div>
+          <div class="cascade">
+            <div class="artefact-mini">Vision</div>
+            <div class="artefact-mini">Strategy</div>
+            <div class="artefact-mini">Cap Map</div>
+            <div class="artefact-mini">Roadmap</div>
+            <div class="artefact-mini">Repository</div>
+          </div>
+        </div>
+        <div class="label">Preview: 4×4-bord · artefact-cascade stapelt</div>
+      </div>
+      <div class="kind">v2 · Analog PnP</div>
+      <h3>Dragon1 Architect's Journey</h3>
+      <p>Dragon1-simulatie met 4×4 bord, 15 artefacten met cascade-vereisten, 8 rollen, RvB-eindpresentatie. 2-8 spelers, 90-120 min.</p>
+      <div class="cta-row">
+        <a class="cta-btn primary" href="docs/analog_v2_dragon1.pdf">📄 PnP PDF</a>
+        <a class="cta-btn" href="docs/analog_v2_dragon1.md">MD-versie</a>
+      </div>
+    </div>
+
+    <!-- Analog v3 -->
+    <div class="analog-card">
+      <div class="anim-preview">
+        <div class="anim-v3">
+          <div class="requestor">👤</div>
+          <div class="arrow">→</div>
+          <div class="gouv">⚖</div>
+          <div class="checks">
+            <div class="check"></div>
+            <div class="check"></div>
+            <div class="check"></div>
+            <div class="check"></div>
+          </div>
+          <div class="arrow">→</div>
+          <div class="dragon">🐉</div>
+        </div>
+        <div class="label">Preview: Verzoeker → Gouverneur (4 Q's) → Draak verzwakt</div>
+      </div>
+      <div class="kind">v3 · Analog PnP</div>
+      <h3>Train Your Dragon</h3>
+      <p>Agentic AI Governance met Gouverneur-plaat (4 policy-vragen), Drift Dragon 3-fase, rogue agents. 3-8 spelers, 90-120 min.</p>
+      <div class="cta-row">
+        <a class="cta-btn primary" href="docs/analog_v3_ai.pdf">📄 PnP PDF</a>
+        <a class="cta-btn" href="docs/analog_v3_ai.md">MD-versie</a>
+      </div>
+    </div>
+  </div>
+
+  <p style="font-size: 12px; color: var(--dim); font-style: italic; margin-top: 10px;">
+    De 3 mini-animaties boven zijn CSS/SVG-placeholders die de kern-mechaniek visualiseren: bord + kaarten + tokens.
+    Echte video-demo's volgen in fase 2 (playtest-opnames).
+  </p>
+
+  <!-- ===== Analyses & pitches ===== -->
+  <h2 class="section-title">📚 Analyses &amp; pitches</h2>
+  <div class="docs-grid">
+    <a class="doc-tile" href="docs/analyse_deepdive.pdf">
+      <span class="type pdf">PDF · intern</span>
+      <h4>Deep Dive — digitale versies</h4>
+      <p>Uniciteit + vermarktbaarheid v1 + v2 digitaal; 2 sporen strategie</p>
+    </a>
+    <a class="doc-tile" href="docs/analyse_analoog.pdf">
+      <span class="type pdf">PDF · intern</span>
+      <h4>Deep Dive — analoge versies</h4>
+      <p>Fysieke bordspel-markt, PnP, Kickstarter, workshop-tool</p>
+    </a>
+    <a class="doc-tile" href="docs/pitch_mark_paauwe.pdf">
+      <span class="type pdf">PDF · pitch</span>
+      <h4>Pitch Mark Paauwe (Dragon1)</h4>
+      <p>Co-productie Dragon1-editie · train-de-trainer · royalty</p>
+    </a>
+    <a class="doc-tile" href="docs/pitch_peter_hulst.pdf">
+      <span class="type pdf">PDF · pitch</span>
+      <h4>Pitch Peter v/d Hulst (Staff)</h4>
+      <p>White-label procesarchitectuur-editie · Staff-portfolio</p>
+    </a>
+  </div>
+
+  <footer>
+    <p>iCt Horse · <a href="https://github.com/cpaglebbeek/EnterpriseQuest">github.com/cpaglebbeek/EnterpriseQuest</a> · AGPL-3.0</p>
+    <p style="margin-top: 8px;">
+      v0.0.1-Zachman (v1) · v0.2.0-Paauwe (v2) · v0.3.0-Turing (v3)
+      · Analog: analog_v1_rpg + analog_v2_dragon1 + analog_v3_ai
+    </p>
+  </footer>
+</div>
+</body>
+</html>

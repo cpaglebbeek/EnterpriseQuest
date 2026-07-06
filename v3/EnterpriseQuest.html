@@ -1,0 +1,965 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Train Your Dragon — EnterpriseQuest v3</title>
+<style>
+:root {
+  --bg1: #0a0e1c;
+  --bg2: #141830;
+  --accent: #ff8c42;
+  --accent2: #ffb56b;
+  --gold: #ffd166;
+  --purple: #8a5cf5;
+  --teal: #43d5f5;
+  --danger: #ef476f;
+  --success: #06d6a0;
+  --text: #f0f3ff;
+  --muted: #a4acc9;
+  --card: #1a1f3a;
+  --card-hover: #232a4a;
+}
+* { box-sizing: border-box; }
+body {
+  font-family: -apple-system, 'Segoe UI', Roboto, sans-serif;
+  background: linear-gradient(135deg, var(--bg1), var(--bg2));
+  color: var(--text);
+  margin: 0;
+  min-height: 100vh;
+  padding: 20px;
+}
+header {
+  text-align: center;
+  padding: 20px 0 30px;
+  border-bottom: 1px solid rgba(255, 140, 66, 0.2);
+  margin-bottom: 30px;
+}
+h1 {
+  background: linear-gradient(90deg, var(--accent), var(--gold));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  font-size: 42px;
+  margin: 0;
+}
+.tagline {
+  color: var(--muted);
+  font-style: italic;
+  margin-top: 6px;
+}
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+.screen { display: none; }
+.screen.active { display: block; }
+
+/* Start screen */
+.intro-card {
+  background: var(--card);
+  border: 1px solid rgba(255, 140, 66, 0.3);
+  border-radius: 14px;
+  padding: 30px;
+  margin-bottom: 20px;
+}
+.intro-card h2 {
+  color: var(--accent);
+  margin-top: 0;
+}
+.intro-card p, .intro-card li { line-height: 1.6; color: var(--muted); }
+.intro-card ul { padding-left: 20px; }
+.roles-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 12px;
+  margin: 20px 0;
+}
+.role-option {
+  background: var(--card-hover);
+  border: 2px solid transparent;
+  border-radius: 10px;
+  padding: 14px;
+  cursor: pointer;
+  transition: 0.2s;
+  text-align: center;
+}
+.role-option:hover { border-color: var(--gold); transform: translateY(-2px); }
+.role-option.selected { border-color: var(--accent); background: rgba(255, 140, 66, 0.15); }
+.role-option .icon { font-size: 30px; }
+.role-option .name { font-weight: 700; color: var(--gold); margin-top: 4px; }
+.role-option .sub { font-size: 12px; color: var(--muted); }
+button.primary {
+  background: linear-gradient(90deg, var(--accent), var(--gold));
+  color: #1a1200;
+  border: none;
+  padding: 14px 28px;
+  border-radius: 10px;
+  font-weight: 700;
+  cursor: pointer;
+  font-size: 16px;
+  transition: 0.2s;
+}
+button.primary:hover { transform: scale(1.03); }
+button.secondary {
+  background: var(--card-hover);
+  color: var(--text);
+  border: 1px solid var(--muted);
+  padding: 10px 20px;
+  border-radius: 8px;
+  cursor: pointer;
+  margin: 5px;
+}
+button.danger { background: var(--danger); color: white; border: none; padding: 8px 16px; border-radius: 6px; cursor: pointer; }
+button:disabled { opacity: 0.4; cursor: not-allowed; }
+
+/* Game screen layout */
+.game-layout {
+  display: grid;
+  grid-template-columns: 1fr 320px;
+  gap: 20px;
+}
+@media (max-width: 900px) {
+  .game-layout { grid-template-columns: 1fr; }
+}
+.main-panel { min-width: 0; }
+.side-panel { display: flex; flex-direction: column; gap: 15px; }
+.panel {
+  background: var(--card);
+  border: 1px solid rgba(138, 92, 245, 0.2);
+  border-radius: 12px;
+  padding: 18px;
+}
+.panel h3 { margin: 0 0 12px; color: var(--gold); font-size: 15px; text-transform: uppercase; letter-spacing: 0.08em; }
+.metric-row { display: flex; justify-content: space-between; padding: 6px 0; border-bottom: 1px dashed rgba(255,255,255,0.05); font-size: 13px; }
+.metric-row:last-child { border: none; }
+.metric-value { font-weight: 700; color: var(--gold); }
+.metric-value.danger { color: var(--danger); }
+.metric-value.good { color: var(--success); }
+.metric-bar {
+  background: rgba(255,255,255,0.06);
+  border-radius: 4px;
+  height: 6px;
+  overflow: hidden;
+  margin: 3px 0 8px;
+}
+.metric-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--accent), var(--gold));
+  transition: width 0.5s;
+}
+.metric-fill.danger { background: linear-gradient(90deg, var(--danger), #ff6b8b); }
+.metric-fill.good { background: linear-gradient(90deg, var(--success), var(--teal)); }
+
+/* Board grid */
+.board {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 8px;
+  margin-bottom: 15px;
+}
+.tile {
+  aspect-ratio: 1;
+  background: var(--card-hover);
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 8px;
+  padding: 6px;
+  font-size: 11px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  position: relative;
+  overflow: hidden;
+}
+.tile.player { border: 2px solid var(--accent); box-shadow: 0 0 12px rgba(255,140,66,0.4); }
+.tile.dragon { background: linear-gradient(135deg, #4a1c1c, #7a2a2a); border-color: var(--danger); }
+.tile .icon { font-size: 20px; text-align: center; }
+.tile .label { color: var(--muted); font-size: 10px; text-align: center; line-height: 1.2; }
+.tile .marker { position: absolute; top: 2px; right: 2px; font-size: 16px; }
+
+/* Cards */
+.card-display {
+  background: linear-gradient(160deg, #1e1a3a, #12102a);
+  border: 2px solid var(--purple);
+  border-radius: 12px;
+  padding: 18px;
+  margin-bottom: 15px;
+  min-height: 200px;
+}
+.card-title { color: var(--gold); font-size: 18px; font-weight: 700; margin-bottom: 6px; }
+.card-type { display: inline-block; padding: 3px 10px; border-radius: 12px; font-size: 11px; text-transform: uppercase; letter-spacing: 0.08em; font-weight: 700; margin-bottom: 10px; }
+.card-type.opportunity { background: var(--success); color: #052a1c; }
+.card-type.threat { background: var(--danger); color: white; }
+.card-type.governance { background: var(--teal); color: #052a2a; }
+.card-type.event { background: var(--purple); color: white; }
+.card-desc { color: var(--muted); line-height: 1.5; margin-bottom: 15px; }
+.card-choices { display: flex; flex-direction: column; gap: 8px; }
+.card-choice {
+  background: var(--card-hover);
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 6px;
+  padding: 12px;
+  cursor: pointer;
+  transition: 0.15s;
+}
+.card-choice:hover { border-color: var(--gold); background: rgba(255,209,102,0.08); }
+.card-choice.disabled { opacity: 0.4; cursor: not-allowed; }
+.choice-label { color: var(--text); font-weight: 500; }
+.choice-effect { font-size: 12px; color: var(--muted); margin-top: 4px; }
+.choice-cost { color: var(--danger); font-size: 12px; }
+.choice-gain { color: var(--success); font-size: 12px; }
+
+/* Gouverneur modal */
+.gouverneur-modal {
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: rgba(0,0,0,0.85);
+  display: none;
+  align-items: center;
+  justify-content: center;
+  z-index: 100;
+  padding: 20px;
+}
+.gouverneur-modal.active { display: flex; }
+.gouverneur-panel {
+  background: linear-gradient(160deg, #2a1e3a, #1a1428);
+  border: 3px solid var(--gold);
+  border-radius: 16px;
+  padding: 28px;
+  max-width: 550px;
+  width: 100%;
+  box-shadow: 0 0 40px rgba(255,209,102,0.3);
+}
+.gouverneur-panel h2 { color: var(--gold); margin: 0 0 8px; display: flex; align-items: center; gap: 10px; }
+.gouverneur-panel .glyph { font-size: 32px; }
+.gouverneur-panel .subtitle { color: var(--muted); font-size: 13px; margin-bottom: 20px; }
+.gouv-question { background: rgba(255,209,102,0.08); border-left: 3px solid var(--gold); padding: 12px; margin: 10px 0; border-radius: 4px; }
+.gouv-question label { display: block; color: var(--text); font-size: 14px; margin-bottom: 6px; cursor: pointer; }
+.gouv-question input { margin-right: 8px; }
+.gouv-result { padding: 16px; border-radius: 8px; margin-top: 16px; font-weight: 600; text-align: center; }
+.gouv-result.pass { background: rgba(6,214,160,0.15); color: var(--success); border: 1px solid var(--success); }
+.gouv-result.fail { background: rgba(239,71,111,0.15); color: var(--danger); border: 1px solid var(--danger); }
+
+/* Log */
+.log { max-height: 200px; overflow-y: auto; font-size: 12px; color: var(--muted); }
+.log-entry { padding: 4px 0; border-bottom: 1px solid rgba(255,255,255,0.03); }
+.log-entry .ts { color: var(--purple); }
+.log-entry.important { color: var(--gold); font-weight: 600; }
+.log-entry.danger { color: var(--danger); }
+
+/* Actions */
+.action-bar { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 15px; }
+
+/* Endgame */
+.result-card {
+  background: linear-gradient(160deg, var(--card), var(--card-hover));
+  border: 2px solid var(--gold);
+  border-radius: 14px;
+  padding: 30px;
+  text-align: center;
+  margin: 20px 0;
+}
+.result-card h2 { color: var(--gold); font-size: 32px; margin: 0 0 10px; }
+.score-display { font-size: 60px; font-weight: 900; color: var(--accent); margin: 20px 0; }
+.aspect-scores { display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; margin: 20px 0; text-align: left; }
+.aspect-row { display: flex; justify-content: space-between; padding: 8px 12px; background: rgba(255,255,255,0.03); border-radius: 6px; }
+
+@media (max-width: 600px) {
+  .board { grid-template-columns: repeat(3, 1fr); }
+  h1 { font-size: 28px; }
+  .roles-grid { grid-template-columns: repeat(2, 1fr); }
+}
+</style>
+</head>
+<body>
+<div class="container">
+
+<header>
+  <h1>🐉 Train Your Dragon</h1>
+  <div class="tagline">EnterpriseQuest v3 — Agentic AI Governance Edition · v0.3.0-Turing</div>
+</header>
+
+<!-- START SCREEN -->
+<div id="screen-start" class="screen active">
+  <div class="intro-card">
+    <h2>De draak is losgebroken</h2>
+    <p>
+      Jouw organisatie zet <b>Agentic AI</b> in. Autonome agents nemen beslissingen, roepen tools aan,
+      schrijven code, en handelen namens medewerkers. Maar de <b>draak</b> loert:
+    </p>
+    <ul>
+      <li><b>Model drift</b> — antwoorden verschuiven stilletjes van waarheid naar hallucinatie</li>
+      <li><b>Data drift</b> — inputs verschuiven, patronen breken</li>
+      <li><b>Rogue agents</b> — autonome flows die niemand meer overziet</li>
+      <li><b>Governance-gaten</b> — data-toegang zonder controle</li>
+    </ul>
+    <p>
+      Jij bent architect. Je taak: <b>regie op determinisme en stochasme</b> voeren, met
+      <b>data-governance via de Gouverneur</b>. Versla de draak in 3 fases voor beurt 15
+      voorbij is — anders neemt de AI-drift het over.
+    </p>
+    <p><b>Kern-mechaniek:</b></p>
+    <ul>
+      <li>Elke beurt komen agent-verzoeken binnen (opportunity/threat cards)</li>
+      <li>Kies: <b>deterministisch</b> (regel-based, veilig maar traag), <b>stochastisch</b> (LLM, snel maar risico), of <b>hybride</b></li>
+      <li>Bij data-toegang: <b>Vraag de Gouverneur</b> (4 policy-vragen) — skip = drift-punten</li>
+      <li>Beheer Trust · Compliance · Determinisme · Data Sovereignty · Innovation-metrieken</li>
+      <li>Bouw <b>Governance-artefacten</b> (AI Policy, Model Registry, Data Contracts, Guardrails, Audit Log)</li>
+    </ul>
+  </div>
+
+  <div class="intro-card">
+    <h2>Kies je rol</h2>
+    <div class="roles-grid" id="roles-grid"></div>
+    <button class="primary" onclick="startGame()" id="start-btn" disabled>▶ Start missie</button>
+  </div>
+</div>
+
+<!-- GAME SCREEN -->
+<div id="screen-game" class="screen">
+  <div class="game-layout">
+    <div class="main-panel">
+      <div class="panel">
+        <h3>Bord — Enterprise AI Landscape (5×3)</h3>
+        <div class="board" id="board"></div>
+        <div style="font-size: 12px; color: var(--muted);">
+          <b>Locaties:</b> Data Warehouse · Model Registry · Agent Runtime · Governance Board · Ethics Committee ·
+          Monitoring · Vendor API · Training Sandbox · Prompt Library · Feedback Loop · Escalation Desk · Compliance ·
+          Human-in-the-loop · Audit Trail · <b class="danger" style="color:var(--danger)">Drift Dragon</b>
+        </div>
+      </div>
+
+      <div class="panel" id="card-panel">
+        <h3>Actie deze beurt</h3>
+        <div id="card-display" class="card-display"></div>
+        <div class="action-bar">
+          <button class="secondary" onclick="drawCard()">🎴 Trek nieuwe kaart</button>
+          <button class="secondary" onclick="rollMove()">🎲 Beweeg (D6)</button>
+          <button class="secondary" onclick="endTurn()">➡ Beurt afronden</button>
+        </div>
+      </div>
+
+      <div class="panel">
+        <h3>Log</h3>
+        <div class="log" id="log"></div>
+      </div>
+    </div>
+
+    <div class="side-panel">
+      <div class="panel">
+        <h3>Missie-status</h3>
+        <div class="metric-row"><span>Beurt</span><span class="metric-value" id="turn-display">1 / 15</span></div>
+        <div class="metric-row"><span>Rol</span><span class="metric-value" id="role-display">—</span></div>
+        <div class="metric-row"><span>Draak-fase</span><span class="metric-value danger" id="dragon-phase">Slapend</span></div>
+      </div>
+
+      <div class="panel">
+        <h3>Metrieken</h3>
+        <div>
+          <div>Trust <span style="float:right" id="v-trust">50</span></div>
+          <div class="metric-bar"><div class="metric-fill good" id="f-trust" style="width:50%"></div></div>
+          <div>Compliance <span style="float:right" id="v-compliance">50</span></div>
+          <div class="metric-bar"><div class="metric-fill good" id="f-compliance" style="width:50%"></div></div>
+          <div>Determinisme <span style="float:right" id="v-determinisme">40</span></div>
+          <div class="metric-bar"><div class="metric-fill" id="f-determinisme" style="width:40%"></div></div>
+          <div>Data Sovereignty <span style="float:right" id="v-data">50</span></div>
+          <div class="metric-bar"><div class="metric-fill good" id="f-data" style="width:50%"></div></div>
+          <div>Innovation <span style="float:right" id="v-innovation">30</span></div>
+          <div class="metric-bar"><div class="metric-fill" id="f-innovation" style="width:30%"></div></div>
+          <div>Drift-schade <span style="float:right" id="v-drift">0</span></div>
+          <div class="metric-bar"><div class="metric-fill danger" id="f-drift" style="width:0%"></div></div>
+        </div>
+      </div>
+
+      <div class="panel">
+        <h3>Governance-artefacten</h3>
+        <div id="artefact-list" style="font-size:12px; color: var(--muted);">Nog geen artefacten gebouwd</div>
+      </div>
+
+      <div class="panel">
+        <h3>Rogue Agent Tracker</h3>
+        <div id="rogue-tracker" style="font-size: 12px; color: var(--muted);">
+          <div>Actieve rogue agents: <span id="rogue-count" class="metric-value danger">0</span></div>
+          <div style="margin-top:6px; font-size: 11px;">Verschijnt wanneer je 3× Gouverneur skipt binnen 5 beurten.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- END SCREEN -->
+<div id="screen-end" class="screen">
+  <div class="result-card">
+    <h2 id="end-title">Sessie afgerond</h2>
+    <div class="score-display" id="end-score">—</div>
+    <p id="end-verdict" style="color: var(--muted); line-height: 1.6;"></p>
+    <h3 style="color: var(--gold); margin-top: 24px;">Aspect-scores</h3>
+    <div class="aspect-scores" id="end-aspects"></div>
+    <h3 style="color: var(--gold);">Verbeterpunten</h3>
+    <ul id="end-improvements" style="text-align:left; color: var(--muted); line-height: 1.7;"></ul>
+    <button class="primary" onclick="location.reload()">🔄 Nieuwe sessie</button>
+  </div>
+</div>
+
+<!-- GOUVERNEUR MODAL -->
+<div class="gouverneur-modal" id="gouverneur-modal">
+  <div class="gouverneur-panel">
+    <h2><span class="glyph">⚖</span> Vraag de Gouverneur</h2>
+    <div class="subtitle">Verzoeker → Gouverneur → Data. De Gouverneur toetst 4 policy-vragen voordat data-toegang wordt verleend.</div>
+    <div id="gouv-context" style="color: var(--muted); margin-bottom: 16px; padding: 10px; background: rgba(255,255,255,0.03); border-radius: 6px;"></div>
+    <div class="gouv-question">
+      <label><input type="checkbox" id="gq1"> <b>Q1</b> — Heeft de verzoeker een geldige zakelijke reden?</label>
+    </div>
+    <div class="gouv-question">
+      <label><input type="checkbox" id="gq2"> <b>Q2</b> — Is deze data-categorie toegestaan voor deze rol/scope?</label>
+    </div>
+    <div class="gouv-question">
+      <label><input type="checkbox" id="gq3"> <b>Q3</b> — Is er een geldig retentie- en logging-plan?</label>
+    </div>
+    <div class="gouv-question">
+      <label><input type="checkbox" id="gq4"> <b>Q4</b> — Voldoet extern (AVG/AI Act/DORA) én intern (data-classificatie)?</label>
+    </div>
+    <div id="gouv-result"></div>
+    <div style="display:flex; gap:10px; margin-top: 16px;">
+      <button class="primary" onclick="submitGouverneur()">⚖ Uitspraak</button>
+      <button class="secondary" onclick="skipGouverneur()">⚠ Skip (drift +2)</button>
+    </div>
+  </div>
+</div>
+
+</div>
+
+<script>
+// ================ DATA ================
+const ROLES = [
+  { id: 'aigo', name: 'AI Governance Officer', icon: '🏛️', bonus: { compliance: 15, determinisme: 5, trust: 5 } },
+  { id: 'ml', name: 'ML Engineer', icon: '🧠', bonus: { innovation: 15, determinisme: -5, trust: 5 } },
+  { id: 'da', name: 'Data Architect', icon: '🗄️', bonus: { data: 15, determinisme: 5, compliance: 5 } },
+  { id: 'sec', name: 'Security & Privacy Architect', icon: '🛡️', bonus: { compliance: 10, data: 10, trust: 5 } },
+  { id: 'eth', name: 'Ethics Board Rep', icon: '⚖️', bonus: { trust: 15, compliance: 8, innovation: -3 } },
+  { id: 'mlops', name: 'MLOps Engineer', icon: '⚙️', bonus: { determinisme: 10, innovation: 8, trust: 3 } },
+  { id: 'cto', name: 'CTO', icon: '🎛️', bonus: { innovation: 12, trust: 8, compliance: 5 } },
+  { id: 'pe', name: 'Prompt Engineer', icon: '📝', bonus: { innovation: 12, determinisme: -8, trust: 4 } },
+];
+
+const LOCATIONS = [
+  '📊 Data Warehouse',   '🗂️ Model Registry',   '🤖 Agent Runtime',
+  '🏛️ Governance Board', '⚖️ Ethics Committee', '📡 Monitoring',
+  '🌐 Vendor API',       '🧪 Training Sandbox', '📝 Prompt Library',
+  '🔁 Feedback Loop',    '📞 Escalation Desk',  '📋 Compliance',
+  '👤 Human-in-the-loop','📜 Audit Trail',      '🐉 Drift Dragon'
+];
+
+const OPPORTUNITY_CARDS = [
+  { title: 'Nieuwe RAG-toepassing voor helpdesk', desc: 'Business vraagt: laat AI klantvragen beantwoorden met interne kennisbank. Snel of grondig?', choices: [
+    { label: 'Deploy zonder guardrails (LLM-native)', effect: { innovation: 15, drift: 8, trust: -5 } },
+    { label: 'Deploy met retrieval-guardrails + evaluatie', effect: { innovation: 10, determinisme: 5, trust: 5, budget: -50 }, needsGouv: true },
+    { label: 'Pilot in sandbox, geen prod-data', effect: { innovation: 5, trust: 3, budget: -20 } }
+  ]},
+  { title: 'Autonome coding-agent voor tickets', desc: 'Dev-team wil GitHub-copilot-agent die zelfstandig PRs opent. Vertrouwen we het?', choices: [
+    { label: 'Volle autonomie — mergen zonder review', effect: { innovation: 20, drift: 12, compliance: -10 } },
+    { label: 'Auto-PR + verplichte human review', effect: { innovation: 10, determinisme: 5, trust: 5 } },
+    { label: 'Alleen suggesties, geen commits', effect: { innovation: 3, determinisme: 8 } }
+  ]},
+  { title: 'Klantsegmentatie via embedding-clustering', desc: 'Marketing wil AI-segmenten. PII-data in embeddings?', choices: [
+    { label: 'Deploy op ruwe klantdata', effect: { innovation: 12, compliance: -15, drift: 5 } },
+    { label: 'Anonimiseer eerst, dan embedden', effect: { innovation: 8, compliance: 5, data: 5 }, needsGouv: true },
+    { label: 'Alleen op gepseudonimiseerde aggregaten', effect: { innovation: 3, compliance: 10, data: 8 } }
+  ]},
+  { title: 'AI-tool selecteert sollicitanten', desc: 'HR wil geautomatiseerde CV-triage. AI Act zegt: high-risk.', choices: [
+    { label: 'Full-auto zonder Human-in-the-loop', effect: { innovation: 10, compliance: -25, trust: -10, drift: 8 } },
+    { label: 'Human-in-the-loop + bias-audit', effect: { innovation: 5, compliance: 10, trust: 8, budget: -80 }, needsGouv: true },
+    { label: 'AI adviseert, mens beslist (geen scoring)', effect: { compliance: 5, trust: 5 } }
+  ]},
+  { title: 'GenAI content voor externe communicatie', desc: 'Marketing wil AI-teksten publiceren. Reputation-risico bij hallucinaties.', choices: [
+    { label: 'Publiceer direct, geen review', effect: { innovation: 15, trust: -10, drift: 6 } },
+    { label: 'AI schrijft, mens reviewt + factcheck', effect: { innovation: 8, trust: 5, determinisme: 3 } },
+    { label: 'Alleen sjablonen, geen open generatie', effect: { innovation: 2, determinisme: 8 } }
+  ]}
+];
+
+const THREAT_CARDS = [
+  { title: '🐉 Model drift gedetecteerd', desc: 'De AI hallucineert 12% meer dan vorige maand. Klanten klagen over verkeerde adviezen.', choices: [
+    { label: 'Rollback naar vorige model-versie', effect: { drift: -8, trust: 3, innovation: -5, budget: -30 } },
+    { label: 'Fine-tune met nieuwe data', effect: { drift: -4, innovation: 5, budget: -60 } },
+    { label: 'Add guardrails, verhoog thresholds', effect: { drift: -6, determinisme: 5 }, needsGouv: true },
+    { label: 'Negeer — nog geen incident', effect: { drift: 5, trust: -5 } }
+  ]},
+  { title: '🐉 Prompt injection uit externe bron', desc: 'Website-crawler brengt kwaadaardige prompts naar je RAG-pipeline.', choices: [
+    { label: 'Input-sanitization + guardrails', effect: { compliance: 5, determinisme: 6, budget: -40 } },
+    { label: 'Block externe bronnen tijdelijk', effect: { compliance: 3, innovation: -8 } },
+    { label: 'Retrain zonder externe context', effect: { compliance: 4, drift: -3, budget: -80 } }
+  ]},
+  { title: '🐉 Rogue agent — autonoom actie ondernomen', desc: 'AI-agent heeft zelfstandig €5k besteld aan cloud-resources. Niemand wist ervan.', choices: [
+    { label: 'Direct budget-cap + rollback', effect: { drift: -5, compliance: 8, budget: -100, trust: -5 } },
+    { label: 'Onderzoek + circuit-breaker toevoegen', effect: { drift: -8, determinisme: 8, trust: 3 }, needsGouv: true },
+    { label: 'Vraag Gouverneur — was dit rechtmatig?', effect: { compliance: 12, trust: 8 }, needsGouv: true }
+  ]},
+  { title: '🐉 Data-leak via vector-database', desc: 'PII gevonden in publiek embedding-space. Journalist heeft vraag.', choices: [
+    { label: 'Volledig re-embed zonder PII', effect: { compliance: 10, data: 10, budget: -150 } },
+    { label: 'Vector-scrub + juridische mitigatie', effect: { compliance: 5, data: 5, trust: -3, budget: -80 } },
+    { label: 'Publiek statement + audit', effect: { trust: 3, compliance: 3 } }
+  ]},
+  { title: '🐉 AVG-inspectie aangekondigd', desc: 'AP wil je AI Act artikel 6/9-classificatie zien. Heb je die?', choices: [
+    { label: 'Toon Model Registry + Audit Log', effect: { compliance: 12, trust: 5 }, requires: 'model_registry' },
+    { label: 'Verzamel bewijs, vraag uitstel', effect: { compliance: 3, trust: -5, budget: -40 } },
+    { label: 'Improviseer, hoop op het beste', effect: { compliance: -10, trust: -15 } }
+  ]}
+];
+
+const GOVERNANCE_CARDS = [
+  { title: 'Bouw AI Policy Framework', desc: 'Formaliseer principes: transparantie, verklaarbaarheid, human-in-the-loop, bias-mitigatie.', choices: [
+    { label: 'Volledige policy schrijven', effect: { compliance: 15, determinisme: 5, budget: -80, artefact: 'ai_policy' } },
+    { label: 'Light-versie: kernprincipes', effect: { compliance: 8, budget: -30, artefact: 'ai_policy_light' } }
+  ]},
+  { title: 'Deploy Model Registry', desc: 'Centrale catalog met versies, evaluaties, eigenaren, risico-classificatie.', choices: [
+    { label: 'Full registry met MLflow + review-flow', effect: { determinisme: 12, compliance: 8, budget: -100, artefact: 'model_registry' } },
+    { label: 'Spreadsheet + git-versionering', effect: { determinisme: 5, artefact: 'model_registry_light' } }
+  ]},
+  { title: 'Data Contracts tussen teams', desc: 'Producer-consumer contracten met schema, SLA, retentie, ownership.', choices: [
+    { label: 'Contract-first architectuur', effect: { data: 15, determinisme: 8, budget: -60, artefact: 'data_contracts' } },
+    { label: 'Enkel voor kritieke domains', effect: { data: 8, artefact: 'data_contracts_partial' } }
+  ]},
+  { title: 'Guardrails-laag inbouwen', desc: 'Prompt-templates, output-filters, tool-restrictions, rate-limits, circuit-breakers.', choices: [
+    { label: 'Systematische guardrails-mesh', effect: { determinisme: 15, drift: -5, budget: -70, artefact: 'guardrails' } },
+    { label: 'Alleen top-3 kritieke flows', effect: { determinisme: 6, drift: -2, artefact: 'guardrails_partial' } }
+  ]},
+  { title: 'Audit Trail + Escalation Desk', desc: 'Elke AI-actie loggen, escalatie-proces bij afwijkingen, human review.', choices: [
+    { label: 'Immutable audit-log + escalation SLA', effect: { compliance: 10, trust: 8, budget: -50, artefact: 'audit_trail' } },
+    { label: 'Cloud-log service, self-service dashboards', effect: { compliance: 5, trust: 3, artefact: 'audit_trail_light' } }
+  ]}
+];
+
+const EVENT_CARDS = [
+  { title: 'EU AI Act interne review', desc: 'Legal wil weten of high-risk systems geclassificeerd zijn.', effect: { compliance: -5 }, note: 'Model Registry helpt bij afwenden' },
+  { title: 'Board vraagt "AI ROI"-cijfer', desc: 'CEO wil bewijs van waarde. Innovation + trust worden gemeten.', effect: { innovation: 5, trust: 3 } },
+  { title: 'Media-artikel over "AI hallucination scandal"', desc: 'Reputatierisico. Metrieken hangen af van je huidige drift.', effect: { trust: -8 } },
+  { title: 'Vendor kondigt breaking change aan', desc: 'API-migratie nodig binnen 30 dagen.', effect: { innovation: -5, budget: -60 } },
+  { title: 'Ethics-committee formuleert nieuwe richtlijn', desc: 'Extra review voor gen-AI met klantcontact.', effect: { compliance: 5, innovation: -3 } }
+];
+
+const DRAGON_PHASES = [
+  { name: 'Hallucination Wraith', desc: 'De draak begint met hallucinaties: subtiele fouten die vertrouwen ondermijnen. Trust-schade: −2/beurt.', threshold: 30, driftPerTurn: 2 },
+  { name: 'Tool-Abuse Serpent', desc: 'Rogue agents gebruiken tools op onbedoelde manieren. Compliance-schade: −3/beurt.', threshold: 60, driftPerTurn: 3 },
+  { name: 'Autonomous Dragon', desc: 'De draak handelt volledig autonoom. Alle metrieken −2 per beurt tenzij artefacten aanwezig.', threshold: 100, driftPerTurn: 5 }
+];
+
+// ================ STATE ================
+const state = {
+  role: null,
+  turn: 1,
+  maxTurns: 15,
+  playerPos: 0,
+  dragonPos: 14,
+  metrics: { trust: 50, compliance: 50, determinisme: 40, data: 50, innovation: 30, drift: 0, budget: 500 },
+  artefacts: new Set(),
+  rogueAgents: 0,
+  gouverneurSkips: [],
+  currentCard: null,
+  currentChoice: null,
+  log: [],
+  dragonPhase: 0
+};
+
+// ================ INIT ================
+function initRoles() {
+  const grid = document.getElementById('roles-grid');
+  ROLES.forEach(r => {
+    const div = document.createElement('div');
+    div.className = 'role-option';
+    div.dataset.role = r.id;
+    div.innerHTML = `<div class="icon">${r.icon}</div><div class="name">${r.name}</div>`;
+    div.onclick = () => selectRole(r.id);
+    grid.appendChild(div);
+  });
+}
+function selectRole(id) {
+  document.querySelectorAll('.role-option').forEach(el => el.classList.toggle('selected', el.dataset.role === id));
+  state.role = ROLES.find(r => r.id === id);
+  document.getElementById('start-btn').disabled = false;
+}
+function startGame() {
+  if (!state.role) return;
+  Object.keys(state.role.bonus).forEach(k => {
+    if (state.metrics[k] !== undefined) state.metrics[k] = Math.max(0, Math.min(100, state.metrics[k] + state.role.bonus[k]));
+  });
+  document.getElementById('screen-start').classList.remove('active');
+  document.getElementById('screen-game').classList.add('active');
+  document.getElementById('role-display').textContent = state.role.icon + ' ' + state.role.name;
+  initBoard();
+  logMsg('Missie gestart als ' + state.role.name, 'important');
+  drawCard();
+  updateUI();
+  saveState();
+}
+
+// ================ BOARD ================
+function initBoard() {
+  const board = document.getElementById('board');
+  board.innerHTML = '';
+  LOCATIONS.forEach((loc, i) => {
+    const tile = document.createElement('div');
+    tile.className = 'tile';
+    if (i === 14) tile.classList.add('dragon');
+    tile.id = 'tile-' + i;
+    const parts = loc.split(' ');
+    const icon = parts[0];
+    const label = parts.slice(1).join(' ');
+    tile.innerHTML = `<div class="icon">${icon}</div><div class="label">${label}</div>`;
+    board.appendChild(tile);
+  });
+  updateBoard();
+}
+function updateBoard() {
+  document.querySelectorAll('.tile').forEach(t => t.classList.remove('player'));
+  const playerTile = document.getElementById('tile-' + state.playerPos);
+  if (playerTile) {
+    playerTile.classList.add('player');
+    let marker = playerTile.querySelector('.marker');
+    if (!marker) {
+      marker = document.createElement('div');
+      marker.className = 'marker';
+      playerTile.appendChild(marker);
+    }
+    marker.textContent = state.role.icon;
+  }
+}
+
+// ================ CARDS ================
+function pickCard() {
+  const driftFactor = state.metrics.drift;
+  let deck;
+  const roll = Math.random();
+  if (driftFactor > 50 && roll < 0.5) deck = THREAT_CARDS;
+  else if (roll < 0.35) deck = THREAT_CARDS;
+  else if (roll < 0.55) deck = OPPORTUNITY_CARDS;
+  else if (roll < 0.8) deck = GOVERNANCE_CARDS;
+  else deck = EVENT_CARDS;
+  return { deck, card: deck[Math.floor(Math.random() * deck.length)] };
+}
+
+function drawCard() {
+  const { deck, card } = pickCard();
+  state.currentCard = card;
+  const isThreat = deck === THREAT_CARDS;
+  const isOpp = deck === OPPORTUNITY_CARDS;
+  const isGov = deck === GOVERNANCE_CARDS;
+  const typeLabel = isThreat ? 'threat' : isOpp ? 'opportunity' : isGov ? 'governance' : 'event';
+
+  const display = document.getElementById('card-display');
+  let html = `<div class="card-type ${typeLabel}">${typeLabel}</div>
+    <div class="card-title">${card.title}</div>
+    <div class="card-desc">${card.desc}</div>`;
+  if (card.choices) {
+    html += '<div class="card-choices">';
+    card.choices.forEach((ch, i) => {
+      const requiresMet = !ch.requires || state.artefacts.has(ch.requires);
+      const effectStr = renderEffect(ch.effect);
+      const needsGouvMark = ch.needsGouv ? ' <span style="color:var(--gold)">⚖ Gouverneur</span>' : '';
+      const reqMark = ch.requires && !requiresMet ? ` <span style="color:var(--danger)">(vereist: ${ch.requires})</span>` : '';
+      html += `<div class="card-choice ${requiresMet ? '' : 'disabled'}" onclick="${requiresMet ? `selectChoice(${i})` : ''}">
+        <div class="choice-label">${ch.label}${needsGouvMark}${reqMark}</div>
+        <div class="choice-effect">${effectStr}</div>
+      </div>`;
+    });
+    html += '</div>';
+  } else {
+    // event auto-apply
+    html += '<button class="primary" onclick="applyEvent()">Bevestig gebeurtenis</button>';
+  }
+  display.innerHTML = html;
+}
+
+function renderEffect(eff) {
+  const parts = [];
+  Object.entries(eff).forEach(([k, v]) => {
+    if (k === 'artefact') return;
+    const sign = v > 0 ? '+' : '';
+    const color = v > 0 ? (k === 'drift' ? 'var(--danger)' : 'var(--success)') : (k === 'drift' ? 'var(--success)' : 'var(--danger)');
+    parts.push(`<span style="color:${color}">${sign}${v} ${k}</span>`);
+  });
+  return parts.join(' · ');
+}
+
+function selectChoice(idx) {
+  state.currentChoice = state.currentCard.choices[idx];
+  if (state.currentChoice.needsGouv) {
+    openGouverneur();
+  } else {
+    applyChoice(true);
+  }
+}
+
+function applyChoice(gouvPassed) {
+  const ch = state.currentChoice;
+  if (!ch) return;
+  const eff = { ...ch.effect };
+  // if gouv skipped, add drift
+  if (ch.needsGouv && !gouvPassed) {
+    eff.drift = (eff.drift || 0) + 5;
+    logMsg('Gouverneur geskipt — drift +5', 'danger');
+    state.gouverneurSkips.push(state.turn);
+  }
+  Object.entries(eff).forEach(([k, v]) => {
+    if (k === 'artefact') {
+      state.artefacts.add(v);
+      logMsg('Artefact opgeleverd: ' + v.replace(/_/g, ' '), 'important');
+    } else if (k === 'budget') {
+      state.metrics.budget = Math.max(0, state.metrics.budget + v);
+    } else if (state.metrics[k] !== undefined) {
+      state.metrics[k] = Math.max(0, Math.min(100, state.metrics[k] + v));
+    }
+  });
+  logMsg('Actie: ' + ch.label);
+  checkRogueAgents();
+  updateUI();
+  state.currentCard = null;
+  state.currentChoice = null;
+  document.getElementById('card-display').innerHTML = '<div style="text-align:center; color: var(--muted); padding: 40px 0;">Trek een nieuwe kaart of eindig beurt</div>';
+  saveState();
+}
+
+function applyEvent() {
+  if (!state.currentCard || !state.currentCard.effect) return;
+  Object.entries(state.currentCard.effect).forEach(([k, v]) => {
+    if (state.metrics[k] !== undefined) state.metrics[k] = Math.max(0, Math.min(100, state.metrics[k] + v));
+  });
+  logMsg('Event: ' + state.currentCard.title);
+  if (state.currentCard.note) logMsg(state.currentCard.note);
+  state.currentCard = null;
+  updateUI();
+  document.getElementById('card-display').innerHTML = '<div style="text-align:center; color: var(--muted); padding: 40px 0;">Trek een nieuwe kaart of eindig beurt</div>';
+  saveState();
+}
+
+// ================ GOUVERNEUR ================
+function openGouverneur() {
+  document.getElementById('gouv-context').textContent =
+    'Actie: "' + state.currentChoice.label + '" — data-toegang gevraagd.';
+  [1,2,3,4].forEach(i => document.getElementById('gq'+i).checked = false);
+  document.getElementById('gouv-result').innerHTML = '';
+  document.getElementById('gouverneur-modal').classList.add('active');
+}
+
+function submitGouverneur() {
+  const answers = [1,2,3,4].map(i => document.getElementById('gq'+i).checked);
+  const passed = answers.every(a => a);
+  const resultDiv = document.getElementById('gouv-result');
+  if (passed) {
+    resultDiv.innerHTML = '<div class="gouv-result pass">✓ Toegang verleend — 4/4 policy-vragen bevestigd</div>';
+    setTimeout(() => {
+      document.getElementById('gouverneur-modal').classList.remove('active');
+      applyChoice(true);
+      state.metrics.compliance = Math.min(100, state.metrics.compliance + 3);
+      state.metrics.data = Math.min(100, state.metrics.data + 3);
+      logMsg('Gouverneur akkoord — compliance/data-sovereignty +3', 'important');
+    }, 1200);
+  } else {
+    resultDiv.innerHTML = '<div class="gouv-result fail">✗ Beleidsschending — heroverweeg of vraag mandaat</div>';
+    setTimeout(() => { resultDiv.innerHTML = ''; }, 2500);
+  }
+}
+
+function skipGouverneur() {
+  document.getElementById('gouverneur-modal').classList.remove('active');
+  applyChoice(false);
+}
+
+// ================ ROGUE AGENTS ================
+function checkRogueAgents() {
+  // clean up old skips (older than 5 turns)
+  state.gouverneurSkips = state.gouverneurSkips.filter(t => state.turn - t < 5);
+  if (state.gouverneurSkips.length >= 3) {
+    state.rogueAgents++;
+    state.gouverneurSkips = [];
+    logMsg('⚠ Rogue Agent ontstaan — autonoom actief zonder governance', 'danger');
+  }
+}
+
+// ================ TURN ================
+function rollMove() {
+  const d = Math.floor(Math.random() * 6) + 1;
+  const newPos = Math.min(14, state.playerPos + d);
+  state.playerPos = newPos;
+  logMsg('Rol D6=' + d + ' → ' + LOCATIONS[newPos]);
+  updateBoard();
+  if (newPos === 14) triggerDragonEncounter();
+  saveState();
+}
+
+function triggerDragonEncounter() {
+  logMsg('⚠ Je bereikt de Drift Dragon (fase ' + (state.dragonPhase + 1) + ')', 'danger');
+  const artefactCount = state.artefacts.size;
+  const readiness = state.metrics.trust + state.metrics.compliance + state.metrics.determinisme + state.metrics.data;
+  const requiredReadiness = 200 + state.dragonPhase * 40;
+  if (readiness < requiredReadiness || artefactCount < state.dragonPhase + 1) {
+    logMsg('Onvoldoende governance-fundering (readiness ' + readiness + '/' + requiredReadiness + ', artefacten ' + artefactCount + '). Draak overleeft.', 'danger');
+    state.metrics.drift = Math.min(100, state.metrics.drift + 15);
+  } else {
+    logMsg('Draak-fase ' + (state.dragonPhase + 1) + ' verslagen! ' + DRAGON_PHASES[state.dragonPhase].name, 'important');
+    state.dragonPhase++;
+    state.metrics.trust = Math.min(100, state.metrics.trust + 8);
+    state.metrics.drift = Math.max(0, state.metrics.drift - 15);
+    if (state.dragonPhase >= 3) {
+      logMsg('🏆 Alle 3 draak-fases verslagen — Autonomous Dragon is getemd!', 'important');
+      setTimeout(endGame, 800);
+      return;
+    }
+  }
+  state.playerPos = 0;
+  updateBoard();
+}
+
+function endTurn() {
+  // rogue agents damage
+  if (state.rogueAgents > 0) {
+    const dmg = state.rogueAgents * 3;
+    state.metrics.compliance = Math.max(0, state.metrics.compliance - dmg);
+    state.metrics.trust = Math.max(0, state.metrics.trust - dmg);
+    logMsg('Rogue agents veroorzaken schade: −' + dmg + ' compliance/trust', 'danger');
+  }
+  // dragon drift damage per phase
+  const phaseIdx = state.metrics.drift > 60 ? 2 : state.metrics.drift > 30 ? 1 : 0;
+  const dragonDmg = DRAGON_PHASES[phaseIdx].driftPerTurn;
+  state.metrics.drift = Math.min(100, state.metrics.drift + dragonDmg);
+  logMsg('Draak (' + DRAGON_PHASES[phaseIdx].name + ') veroorzaakt drift +' + dragonDmg, 'danger');
+
+  state.turn++;
+  updateUI();
+  saveState();
+  if (state.turn > state.maxTurns || state.metrics.drift >= 100) {
+    endGame();
+    return;
+  }
+  logMsg('--- Beurt ' + state.turn + ' ---', 'important');
+  drawCard();
+}
+
+// ================ UI ================
+function updateUI() {
+  document.getElementById('turn-display').textContent = state.turn + ' / ' + state.maxTurns;
+  const phaseIdx = state.metrics.drift > 60 ? 2 : state.metrics.drift > 30 ? 1 : 0;
+  document.getElementById('dragon-phase').textContent = DRAGON_PHASES[phaseIdx].name;
+  ['trust','compliance','determinisme','data','innovation','drift'].forEach(m => {
+    const v = state.metrics[m];
+    document.getElementById('v-' + m).textContent = v;
+    document.getElementById('f-' + m).style.width = v + '%';
+  });
+  document.getElementById('rogue-count').textContent = state.rogueAgents;
+  const arts = Array.from(state.artefacts);
+  document.getElementById('artefact-list').innerHTML = arts.length
+    ? arts.map(a => '<div>✓ ' + a.replace(/_/g, ' ') + '</div>').join('')
+    : 'Nog geen artefacten gebouwd';
+}
+
+function logMsg(msg, cls) {
+  state.log.unshift({ t: state.turn, msg, cls: cls || '' });
+  const log = document.getElementById('log');
+  log.innerHTML = state.log.slice(0, 25).map(e =>
+    `<div class="log-entry ${e.cls}"><span class="ts">[b${e.t}]</span> ${e.msg}</div>`
+  ).join('');
+}
+
+// ================ ENDGAME ================
+function endGame() {
+  const aspects = calculateFinalScore();
+  document.getElementById('screen-game').classList.remove('active');
+  document.getElementById('screen-end').classList.add('active');
+
+  const total = aspects.reduce((s, a) => s + a.weighted, 0);
+  document.getElementById('end-score').textContent = Math.round(total) + '/100';
+
+  const verdict = getVerdict(total, state.dragonPhase);
+  document.getElementById('end-title').textContent = verdict.title;
+  document.getElementById('end-verdict').textContent = verdict.text;
+
+  document.getElementById('end-aspects').innerHTML = aspects.map(a =>
+    `<div class="aspect-row"><span>${a.name}</span><span class="metric-value">${Math.round(a.raw)} (weging ${a.weight}%)</span></div>`
+  ).join('');
+
+  document.getElementById('end-improvements').innerHTML = getImprovements(aspects).map(i => `<li>${i}</li>`).join('');
+}
+
+function calculateFinalScore() {
+  const m = state.metrics;
+  const artBonus = state.artefacts.size * 3;
+  const dragonBonus = state.dragonPhase * 8;
+  const rogueP = state.rogueAgents * 5;
+  return [
+    { name: 'Trust & Reputatie', raw: m.trust + dragonBonus - rogueP, weight: 15 },
+    { name: 'Compliance & AI Act', raw: m.compliance + artBonus - rogueP, weight: 20 },
+    { name: 'Determinisme-regie', raw: m.determinisme + artBonus, weight: 15 },
+    { name: 'Data Sovereignty', raw: m.data + artBonus, weight: 15 },
+    { name: 'Innovation-tempo', raw: m.innovation, weight: 10 },
+    { name: 'Draak-suppressie', raw: Math.max(0, 100 - m.drift) + dragonBonus, weight: 15 },
+    { name: 'Governance-artefacten', raw: state.artefacts.size * 20, weight: 10 }
+  ].map(a => ({ ...a, raw: Math.max(0, Math.min(100, a.raw)), weighted: Math.max(0, Math.min(100, a.raw)) * (a.weight / 100) }));
+}
+
+function getVerdict(score, dragonPhase) {
+  if (dragonPhase >= 3 && score >= 75) return { title: '🏆 De Draak is Getemd', text: 'Uitzonderlijke uitvoering: alle 3 draak-fases verslagen én governance-fundering intact. AI werkt onder controle voor de organisatie.' };
+  if (dragonPhase >= 3) return { title: '⚔ Draak verslagen, maar tegen prijs', text: 'Je hebt de Autonomous Dragon getemd, maar governance-schulden zijn hoog. Aanbevolen: post-mortem + herstel-programma.' };
+  if (score >= 75) return { title: '✓ Sterke governance-basis', text: 'De draak leeft nog maar is beheersbaar. Metrieken sterk, artefacten aanwezig. Vervolg-programma nodig om finale-boss aan te vallen.' };
+  if (score >= 55) return { title: '△ Voldoende, maar risico blijft', text: 'AI werkt, maar de draak drift verder. Focus op zwakste aspecten voor volgende ronde.' };
+  return { title: '✗ AI-drift heeft overgenomen', text: 'Onvoldoende governance. Rogue agents en drift zijn niet meer beheersbaar. Escalatie naar RvB én formeel programma nodig.' };
+}
+
+function getImprovements(aspects) {
+  return aspects.filter(a => a.raw < 60).map(a => `${a.name} was ${Math.round(a.raw)}/100 — versterk in vervolgprogramma`);
+}
+
+// ================ SAVE ================
+function saveState() {
+  try {
+    localStorage.setItem('tyd_v3_state', JSON.stringify({
+      role: state.role, turn: state.turn, playerPos: state.playerPos,
+      metrics: state.metrics, artefacts: Array.from(state.artefacts),
+      rogueAgents: state.rogueAgents, gouverneurSkips: state.gouverneurSkips,
+      log: state.log, dragonPhase: state.dragonPhase
+    }));
+  } catch (e) {}
+}
+
+function loadState() {
+  try {
+    const raw = localStorage.getItem('tyd_v3_state');
+    if (!raw) return false;
+    const s = JSON.parse(raw);
+    if (!s.role) return false;
+    Object.assign(state, s);
+    state.artefacts = new Set(s.artefacts || []);
+    document.getElementById('screen-start').classList.remove('active');
+    document.getElementById('screen-game').classList.add('active');
+    document.getElementById('role-display').textContent = state.role.icon + ' ' + state.role.name;
+    initBoard();
+    updateUI();
+    document.getElementById('card-display').innerHTML = '<div style="text-align:center; color: var(--muted); padding: 40px 0;">Trek een kaart om verder te gaan</div>';
+    return true;
+  } catch (e) { return false; }
+}
+
+// ================ AUDIO (subtle tones) ================
+let audioCtx = null;
+function playTone(freq, duration = 0.1) {
+  try {
+    if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+    const osc = audioCtx.createOscillator();
+    const gain = audioCtx.createGain();
+    osc.type = 'sine';
+    osc.frequency.value = freq;
+    gain.gain.setValueAtTime(0.05, audioCtx.currentTime);
+    gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + duration);
+    osc.connect(gain).connect(audioCtx.destination);
+    osc.start();
+    osc.stop(audioCtx.currentTime + duration);
+  } catch (e) {}
+}
+
+// ================ BOOT ================
+initRoles();
+if (loadState()) {
+  logMsg('Sessie hersteld uit save', 'important');
+}
+</script>
+</body>
+</html>

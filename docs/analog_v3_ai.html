@@ -1,0 +1,1094 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>EnterpriseQuest v3 — Analoog PnP Train Your Dragon</title>
+  <style>
+    /* Default styles provided by pandoc.
+    ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+    */
+    html {
+      color: #1a1a1a;
+      background-color: #fdfdfd;
+    }
+    body {
+      margin: 0 auto;
+      max-width: 36em;
+      padding-left: 50px;
+      padding-right: 50px;
+      padding-top: 50px;
+      padding-bottom: 50px;
+      hyphens: auto;
+      overflow-wrap: break-word;
+      text-rendering: optimizeLegibility;
+      font-kerning: normal;
+    }
+    @media (max-width: 600px) {
+      body {
+        font-size: 0.9em;
+        padding: 12px;
+      }
+      h1 {
+        font-size: 1.8em;
+      }
+    }
+    @media print {
+      html {
+        background-color: white;
+      }
+      body {
+        background-color: transparent;
+        color: black;
+        font-size: 12pt;
+      }
+      p, h2, h3 {
+        orphans: 3;
+        widows: 3;
+      }
+      h2, h3, h4 {
+        page-break-after: avoid;
+      }
+    }
+    p {
+      margin: 1em 0;
+    }
+    a {
+      color: #1a1a1a;
+    }
+    a:visited {
+      color: #1a1a1a;
+    }
+    img {
+      max-width: 100%;
+    }
+    svg {
+      height: auto;
+      max-width: 100%;
+    }
+    h1, h2, h3, h4, h5, h6 {
+      margin-top: 1.4em;
+    }
+    h5, h6 {
+      font-size: 1em;
+      font-style: italic;
+    }
+    h6 {
+      font-weight: normal;
+    }
+    ol, ul {
+      padding-left: 1.7em;
+      margin-top: 1em;
+    }
+    li > ol, li > ul {
+      margin-top: 0;
+    }
+    blockquote {
+      margin: 1em 0 1em 1.7em;
+      padding-left: 1em;
+      border-left: 2px solid #e6e6e6;
+      color: #606060;
+    }
+    code {
+      white-space: pre-wrap;
+      font-family: Menlo, Monaco, Consolas, 'Lucida Console', monospace;
+      font-size: 85%;
+      margin: 0;
+      hyphens: manual;
+    }
+    pre {
+      margin: 1em 0;
+      overflow: auto;
+    }
+    pre code {
+      padding: 0;
+      overflow: visible;
+      overflow-wrap: normal;
+    }
+    .sourceCode {
+     background-color: transparent;
+     overflow: visible;
+    }
+    hr {
+      border: none;
+      border-top: 1px solid #1a1a1a;
+      height: 1px;
+      margin: 1em 0;
+    }
+    table {
+      margin: 1em 0;
+      border-collapse: collapse;
+      width: 100%;
+      overflow-x: auto;
+      display: block;
+      font-variant-numeric: lining-nums tabular-nums;
+    }
+    table caption {
+      margin-bottom: 0.75em;
+    }
+    tbody {
+      margin-top: 0.5em;
+      border-top: 1px solid #1a1a1a;
+      border-bottom: 1px solid #1a1a1a;
+    }
+    th {
+      border-top: 1px solid #1a1a1a;
+      padding: 0.25em 0.5em 0.25em 0.5em;
+    }
+    td {
+      padding: 0.125em 0.5em 0.25em 0.5em;
+    }
+    header {
+      margin-bottom: 4em;
+      text-align: center;
+    }
+    #TOC li {
+      list-style: none;
+    }
+    #TOC ul {
+      padding-left: 1.3em;
+    }
+    #TOC > ul {
+      padding-left: 0;
+    }
+    #TOC a:not(:hover) {
+      text-decoration: none;
+    }
+    span.smallcaps{font-variant: small-caps;}
+    div.columns{display: flex; gap: min(4vw, 1.5em);}
+    div.column{flex: auto; overflow-x: auto;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    /* The extra [class] is a hack that increases specificity enough to
+       override a similar rule in reveal.js */
+    ul.task-list[class]{list-style: none;}
+    ul.task-list li input[type="checkbox"] {
+      font-size: inherit;
+      width: 0.8em;
+      margin: 0 0.8em 0.2em -1.6em;
+      vertical-align: middle;
+    }
+    .display.math{display: block; text-align: center; margin: 0.5rem auto;}
+  </style>
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">EnterpriseQuest v3 — Analoog PnP Train Your
+Dragon</h1>
+</header>
+<h1
+id="enterprisequest-v3-analoge-print-play-uitwerking">EnterpriseQuest v3
+— Analoge Print &amp; Play uitwerking</h1>
+<h2 id="train-your-dragon-agentic-ai-governance-edition">Train Your
+Dragon (Agentic AI Governance Edition)</h2>
+<p><strong>Basis:</strong> digitale versie
+<code>v3/EnterpriseQuest.html</code> (v0.3.0-Turing)
+<strong>Vorm:</strong> fysiek bordspel + kaartspel + tokens +
+Gouverneur-plaat + policy-checklist <strong>Doelgroep:</strong> 3-8
+spelers, 90-120 minuten, workshop-context voor AI-Governance /
+Data-officer / CTO / CISO / architect-teams <strong>Setting:</strong> de
+organisatie zet Agentic AI in. Autonome agents dreigen te ontsporen —
+model drift, data drift, rogue agents. Jullie taak: <strong>regie op
+determinisme en stochasme + governance op data</strong> via de
+<strong>Gouverneur</strong>-mechaniek. Versla de Drift Dragon in 3 fases
+voor beurt 15 om is.</p>
+<hr />
+<h2 id="ontwerpprincipes-bij-vertaling-digitaal-analoog">1.
+Ontwerpprincipes bij vertaling digitaal → analoog</h2>
+<table>
+<colgroup>
+<col style="width: 33%" />
+<col style="width: 33%" />
+<col style="width: 33%" />
+</colgroup>
+<thead>
+<tr>
+<th>Digitaal element</th>
+<th>Analoge oplossing</th>
+<th>Reden</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Gouverneur-modal (4 policy-vragen)</td>
+<td>Fysieke <strong>Gouverneur-plaat</strong> (A4-vel met 4
+checkbox-kaarten)</td>
+<td>Kern-mechaniek fysiek zichtbaar: dwingt reflectie</td>
+</tr>
+<tr>
+<td>5×3 bord grid</td>
+<td>5×3 tegel-layout op A2-bord</td>
+<td>1:1 overgenomen</td>
+</tr>
+<tr>
+<td>Rogue Agent tracker (na 3 skips in 5 beurten)</td>
+<td>Zwart tokens-pot met “rogue”-marker + counter-schijf</td>
+<td>Zichtbare gedeelde schuld</td>
+</tr>
+<tr>
+<td>Metrieken (Trust / Compliance / Determinisme / Data / Innovation /
+Drift)</td>
+<td>6 tracks op gedeeld dashboard-vel (A3) met markers</td>
+<td>Team-single-source-of-truth</td>
+</tr>
+<tr>
+<td>Draak-fases (Hallucination Wraith / Tool-Abuse Serpent / Autonomous
+Dragon)</td>
+<td>3 monster-kaartjes + fase-schijf</td>
+<td>Progressieve dreiging zichtbaar</td>
+</tr>
+<tr>
+<td>D6-movement</td>
+<td>1× D6 per speler</td>
+<td>Rechtstreeks overneembaar</td>
+</tr>
+<tr>
+<td>Governance-artefacten (AI Policy / Model Registry / Data Contracts /
+Guardrails / Audit Trail)</td>
+<td>5 artefact-kaarten met required-tabs</td>
+<td>Cascade zichtbaar op tafel</td>
+</tr>
+<tr>
+<td>LocalStorage save</td>
+<td>Team-notitieboekje</td>
+<td>Verdiepende debrief-input</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Grondregel:</strong> de <strong>Gouverneur</strong> is het
+hart van het spel. Elke keer dat spelers data-toegang willen (bij een
+keuze op een kaart), moeten ze de Gouverneur-vragen live aan tafel
+bespreken. Skippen mag — maar levert drift-schuld op.</p>
+<hr />
+<h2 id="componentenlijst">2. Componentenlijst</h2>
+<h3 id="bord-1">2.1 Bord (1×)</h3>
+<ul>
+<li><strong>Formaat:</strong> 60 × 45 cm gevouwen (2 helften)</li>
+<li><strong>Layout:</strong> 5 kolommen × 3 rijen = 15 tegels</li>
+<li>Elke tegel toont: icoon, locatie-naam, primary AI-concept</li>
+<li><strong>Startpunt</strong> linksbovenin (tile 0: Data
+Warehouse)</li>
+<li><strong>Drift Dragon</strong> rechtsonderin (tile 14) — 3-fase-slot
+voor draak-kaartjes</li>
+</ul>
+<p><strong>Locaties:</strong></p>
+<table>
+<thead>
+<tr>
+<th>#</th>
+<th>Icoon</th>
+<th>Locatie</th>
+<th>Primary Concept</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0</td>
+<td>📊</td>
+<td>Data Warehouse</td>
+<td>Data Estate</td>
+</tr>
+<tr>
+<td>1</td>
+<td>🗂️</td>
+<td>Model Registry</td>
+<td>Model Governance</td>
+</tr>
+<tr>
+<td>2</td>
+<td>🤖</td>
+<td>Agent Runtime</td>
+<td>Autonomous Execution</td>
+</tr>
+<tr>
+<td>3</td>
+<td>🏛️</td>
+<td>Governance Board</td>
+<td>AI Policy</td>
+</tr>
+<tr>
+<td>4</td>
+<td>⚖️</td>
+<td>Ethics Committee</td>
+<td>Ethical Review</td>
+</tr>
+<tr>
+<td>5</td>
+<td>📡</td>
+<td>Monitoring</td>
+<td>Observability</td>
+</tr>
+<tr>
+<td>6</td>
+<td>🌐</td>
+<td>Vendor API</td>
+<td>External Dependency</td>
+</tr>
+<tr>
+<td>7</td>
+<td>🧪</td>
+<td>Training Sandbox</td>
+<td>Safe Experimentation</td>
+</tr>
+<tr>
+<td>8</td>
+<td>📝</td>
+<td>Prompt Library</td>
+<td>Prompt Governance</td>
+</tr>
+<tr>
+<td>9</td>
+<td>🔁</td>
+<td>Feedback Loop</td>
+<td>Continuous Learning</td>
+</tr>
+<tr>
+<td>10</td>
+<td>📞</td>
+<td>Escalation Desk</td>
+<td>Human Escalation</td>
+</tr>
+<tr>
+<td>11</td>
+<td>📋</td>
+<td>Compliance</td>
+<td>AI Act / AVG / DORA</td>
+</tr>
+<tr>
+<td>12</td>
+<td>👤</td>
+<td>Human-in-the-loop</td>
+<td>Approval Gate</td>
+</tr>
+<tr>
+<td>13</td>
+<td>📜</td>
+<td>Audit Trail</td>
+<td>Immutable Log</td>
+</tr>
+<tr>
+<td>14</td>
+<td>🐉</td>
+<td><strong>Drift Dragon</strong></td>
+<td>Eindboss (3 fases)</td>
+</tr>
+</tbody>
+</table>
+<h3 id="rollen-tableaus-8-één-per-rol">2.2 Rollen-tableau’s (8×, één per
+rol)</h3>
+<table>
+<colgroup>
+<col style="width: 25%" />
+<col style="width: 25%" />
+<col style="width: 25%" />
+<col style="width: 25%" />
+</colgroup>
+<thead>
+<tr>
+<th>Rol</th>
+<th>Icoon</th>
+<th>Start-bonus</th>
+<th>Special Ability</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>AI Governance Officer</td>
+<td>🏛️</td>
+<td>+15 Compliance, +5 Determinisme, +5 Trust</td>
+<td><em>Policy Sweep</em> — 1×: alle spelers krijgen +5 Compliance</td>
+</tr>
+<tr>
+<td>ML Engineer</td>
+<td>🧠</td>
+<td>+15 Innovation, −5 Determinisme, +5 Trust</td>
+<td><em>Rapid Experiment</em> — 1×: 2 acties in 1 beurt in Training
+Sandbox</td>
+</tr>
+<tr>
+<td>Data Architect</td>
+<td>🗄️</td>
+<td>+15 Data Sovereignty, +5 Determinisme, +5 Compliance</td>
+<td><em>Data Lineage</em> — 1×: onthul alle actieve data-flows, +8
+Data</td>
+</tr>
+<tr>
+<td>Security &amp; Privacy Architect</td>
+<td>🛡️</td>
+<td>+10 Compliance, +10 Data, +5 Trust</td>
+<td><em>Threat Model</em> — 1×: verlaag drift-schade dat beurt met
+50%</td>
+</tr>
+<tr>
+<td>Ethics Board Rep</td>
+<td>⚖️</td>
+<td>+15 Trust, +8 Compliance, −3 Innovation</td>
+<td><em>Ethics Veto</em> — 1×: annuleer 1 speler-keuze en trek nieuwe
+kaart</td>
+</tr>
+<tr>
+<td>MLOps Engineer</td>
+<td>⚙️</td>
+<td>+10 Determinisme, +8 Innovation, +3 Trust</td>
+<td><em>Rollback</em> — 1×: draai laatste 2 beurten aan drift-schade
+terug</td>
+</tr>
+<tr>
+<td>CTO</td>
+<td>🎛️</td>
+<td>+12 Innovation, +8 Trust, +5 Compliance</td>
+<td><em>Executive Mandate</em> — 1×: budget +€200, artefact-goedkeuring
+1 beurt sneller</td>
+</tr>
+<tr>
+<td>Prompt Engineer</td>
+<td>📝</td>
+<td>+12 Innovation, −8 Determinisme, +4 Trust</td>
+<td><em>Prompt Refactor</em> — 1×: eenmalig hallucinatie-risico van 1
+model met 50% verlagen</td>
+</tr>
+</tbody>
+</table>
+<h3 id="gouverneur-plaat-kern-artefact">2.3 Gouverneur-plaat
+(kern-artefact)</h3>
+<ul>
+<li><strong>Formaat:</strong> A4 karton, permanent op tafel</li>
+<li>Bevat 4 policy-vragen (Q1-Q4):
+<ul>
+<li><strong>Q1</strong> — Heeft de verzoeker een geldige zakelijke
+reden?</li>
+<li><strong>Q2</strong> — Is deze data-categorie toegestaan voor deze
+rol/scope?</li>
+<li><strong>Q3</strong> — Is er een geldig retentie- en
+logging-plan?</li>
+<li><strong>Q4</strong> — Voldoet extern (AVG/AI Act/DORA) én intern
+(data-classificatie)?</li>
+</ul></li>
+<li><strong>4 draaischijven</strong> (Bevestigd / Onduidelijk) — team
+moet 4/4 bevestigen voor “toegang verleend”</li>
+<li><strong>Vlag “Gouverneur passed”</strong> — token op je rol-tableau
+leggen bij succes</li>
+<li><strong>Rogue-teller</strong> — telt gouverneur-skips per
+5-beurten-venster; 3 skips = rogue agent verschijnt</li>
+</ul>
+<h3 id="kaartdecks">2.4 Kaartdecks</h3>
+<table>
+<colgroup>
+<col style="width: 25%" />
+<col style="width: 25%" />
+<col style="width: 25%" />
+<col style="width: 25%" />
+</colgroup>
+<thead>
+<tr>
+<th>Deck</th>
+<th>Aantal</th>
+<th>Achterkant</th>
+<th>Doel</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Opportunity</strong></td>
+<td>25</td>
+<td>groen</td>
+<td>AI-use-cases waar je regie moet voeren (kies deterministisch /
+stochastisch / hybride)</td>
+</tr>
+<tr>
+<td><strong>Threat</strong></td>
+<td>25</td>
+<td>rood</td>
+<td>Drift-incidenten, prompt injection, rogue agent, data-leaks</td>
+</tr>
+<tr>
+<td><strong>Governance</strong></td>
+<td>15</td>
+<td>goud</td>
+<td>Bouw artefacten (AI Policy / Model Registry / Data Contracts /
+Guardrails / Audit Trail)</td>
+</tr>
+<tr>
+<td><strong>Event</strong></td>
+<td>15</td>
+<td>blauw</td>
+<td>Externe druk (AVG-inspectie, media, board-vraag, vendor-change)</td>
+</tr>
+<tr>
+<td><strong>Achievement</strong></td>
+<td>30</td>
+<td>zilver</td>
+<td>Milestones</td>
+</tr>
+</tbody>
+</table>
+<p>Kaartformaat: Euro-poker (63×88 mm — Cartamundi standard).</p>
+<h3 id="artefact-cascade-5-kaarten-met-required-tabs">2.5
+Artefact-cascade (5 kaarten, met required-tabs)</h3>
+<pre><code>A001 AI Policy Framework  (fundament — geen vereisten)
+  ├── A002 Model Registry     (vereist A001)
+  │      └── A004 Guardrails-laag  (vereist A002)
+  ├── A003 Data Contracts     (vereist A001)
+  │      └── A005 Audit Trail     (vereist A003)
+  └── (A004 en A005 zijn de &quot;governance-locks&quot;)</code></pre>
+<p>Kaart-anatomie (voorbeeld):</p>
+<pre><code>┌─────────────────────────────────┐
+│ A002 · Model Registry           │
+│─────────────────────────────────│
+│ Vereist: A001 AI Policy         │
+│─────────────────────────────────│
+│ Centrale catalog met versies,   │
+│ evaluaties, eigenaren, risico-  │
+│ classificatie.                  │
+│─────────────────────────────────│
+│ PASSIVE (zolang gebouwd):       │
+│ +12 Determinisme                │
+│ +8 Compliance                   │
+│ Vereist voor &quot;AVG-inspectie&quot;    │
+│ verdediging.                    │
+└─────────────────────────────────┘</code></pre>
+<h3 id="dashboard-vel-a3-gedeeld">2.6 Dashboard-vel (A3, gedeeld)</h3>
+<p>7 tracks in horizontale balken:</p>
+<pre><code>1. Trust               [0 ─── 100]  start: 50
+2. Compliance          [0 ─── 100]  start: 50
+3. Determinisme        [0 ─── 100]  start: 40
+4. Data Sovereignty    [0 ─── 100]  start: 50
+5. Innovation          [0 ─── 100]  start: 30
+6. Drift-schade        [0 ─── 100]  start: 0   (hoger = slechter)
+7. Budget €            (€500 startkapitaal, teller schuift)
+
+Beurten-teller: 1 / 15
+Drift-fase-indicator (Slapend → Hallucinerend → Tool-Abuse → Autonomous)</code></pre>
+<h3 id="monster-kaartjes-3-fases-van-the-drift-dragon">2.7
+Monster-kaartjes (3 fases van The Drift Dragon)</h3>
+<p><strong>Fase 1: Hallucination Wraith</strong> (activeert bij drift ≥
+30) - HP: 100 - Beurt-schade: Trust −2 - Verslagen vereist: 2+
+artefacten + Trust+Compliance+Determinisme+Data ≥ 200</p>
+<p><strong>Fase 2: Tool-Abuse Serpent</strong> (activeert bij drift ≥
+60) - HP: 150 - Beurt-schade: Compliance −3 - Verslagen vereist: 3+
+artefacten + som ≥ 240</p>
+<p><strong>Fase 3: Autonomous Dragon</strong> (activeert bij drift ≥ 100
+= game-over trigger) - HP: 200 - Beurt-schade: alle metrieken −2 -
+Verslagen vereist: alle 5 artefacten + som ≥ 280</p>
+<h3 id="tokens">2.8 Tokens</h3>
+<table>
+<colgroup>
+<col style="width: 25%" />
+<col style="width: 25%" />
+<col style="width: 25%" />
+<col style="width: 25%" />
+</colgroup>
+<thead>
+<tr>
+<th>Token</th>
+<th>Aantal</th>
+<th>Kleur</th>
+<th>Gebruik</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Rol-pion</td>
+<td>8</td>
+<td>8 unieke kleuren</td>
+<td>Locatie-marker per speler</td>
+</tr>
+<tr>
+<td>Metric-marker</td>
+<td>7 (gedeeld)</td>
+<td>zwart</td>
+<td>Track-positie dashboard</td>
+</tr>
+<tr>
+<td>Beurten-token</td>
+<td>1</td>
+<td>wit</td>
+<td>Beurten-teller (1-15)</td>
+</tr>
+<tr>
+<td>Gouverneur “passed”-token</td>
+<td>20</td>
+<td>goud</td>
+<td>Bij elke succesvolle toets</td>
+</tr>
+<tr>
+<td>Rogue-agent-token</td>
+<td>10</td>
+<td>zwart met rood oog</td>
+<td>Verschijnt bij 3 skips in 5-beurten-venster</td>
+</tr>
+<tr>
+<td>Artefact-status-token</td>
+<td>3 kleuren</td>
+<td>groen/geel/rood</td>
+<td>in-uitvoering / opgeleverd / afgekeurd</td>
+</tr>
+<tr>
+<td>Budget-fiches €</td>
+<td>40</td>
+<td>goud</td>
+<td>Waardes 50/100</td>
+</tr>
+<tr>
+<td>Achievement-kaart-stack</td>
+<td>30</td>
+<td>zilver</td>
+<td>Milestone-tracking</td>
+</tr>
+</tbody>
+</table>
+<h3 id="dobbelsteen">2.9 Dobbelsteen</h3>
+<ul>
+<li><strong>1× D6</strong> per speler (movement)</li>
+<li><strong>1× D8</strong> voor facilitator (event-randomizers)</li>
+</ul>
+<h3 id="facilitator-map">2.10 Facilitator-map</h3>
+<ul>
+<li>Regelboek (dit document)</li>
+<li>AI-Governance-basis-kaart (AVG / AI Act / DORA / NIS2
+samenvatting)</li>
+<li>Gouverneur-uitspraak-flow (beslissingsboom)</li>
+<li>Rogue-agent-incident-scenario’s</li>
+<li>Debrief-vragen-lijst</li>
+</ul>
+<hr />
+<h2 id="setup">3. Setup</h2>
+<h3 id="bord-neerleggen">3.1 Bord neerleggen</h3>
+<ul>
+<li>5×3 grid platleggen. Elke tegel toont icoon + naam.</li>
+<li>Drift Dragon-locatie (tile 14) markeren met 3-fase-slot.</li>
+<li>Cascade-veld voor 5 artefact-kaarten links van bord.</li>
+<li>Dashboard-vel rechts van bord, alle markers op startpositie.</li>
+</ul>
+<h3 id="gouverneur-plaat-neerleggen">3.2 Gouverneur-plaat
+neerleggen</h3>
+<p>Centraal op tafel. Iedereen kan er bij. 4 draaischijven op
+“Onduidelijk”.</p>
+<h3 id="rol-keuze-start-bonussen">3.3 Rol-keuze + start-bonussen</h3>
+<p>Elke speler kiest rol-tableau. Startbonussen worden toegepast op
+gedeelde dashboard. Standaardwaarden voor onbeïnvloede metrieken: 20
+(van 100). Budget €500.</p>
+<h3 id="deck-shuffling">3.4 Deck-shuffling</h3>
+<p>Alle 5 decks apart shuffelen. Leg open naast bord.</p>
+<h3 id="rol-pionnen">3.5 Rol-pionnen</h3>
+<p>Alle spelers starten op tile 0 (Data Warehouse).</p>
+<hr />
+<h2 id="speelverloop">4. Speelverloop</h2>
+<h3 id="ronde-structuur">4.1 Ronde-structuur</h3>
+<p>Per ronde (= 1 beurt van elke speler):</p>
+<ol type="1">
+<li><strong>Facilitator opent</strong> met: “Het is beurt X van 15. De
+draak is in fase [Y].”</li>
+<li><strong>Elke speler op tafel-volgorde:</strong>
+<ul>
+<li>Rol D6, beweeg op bord (maximaal 6 tegels, geen diagonaal)</li>
+<li>Trek 1 kaart uit een van de 4 decks (keuze speler op basis van
+locatie-context)</li>
+<li>Voer actie uit (§4.2)</li>
+<li>Update dashboard-metrieken</li>
+</ul></li>
+<li><strong>Facilitator trekt Event-kaart</strong> aan einde van ronde
+en past effect toe</li>
+<li><strong>Draak veroorzaakt drift-schade</strong> op basis van huidige
+fase</li>
+<li><strong>Rogue Agent-check</strong> — als 3+ skips in laatste 5
+beurten: spawn 1 rogue agent</li>
+<li><strong>Beurt-teller +1</strong></li>
+</ol>
+<h3 id="kaart-acties">4.2 Kaart-acties</h3>
+<h4 id="opportunity-kaart-groen">Opportunity-kaart (groen)</h4>
+<p>Beschrijft AI-use-case. Speler kiest 1 van 3 antwoorden: 1.
+<strong>Deterministisch</strong> — regel-based, veilig, lager
+innovation-effect 2. <strong>Stochastisch</strong> — LLM-native, hoog
+innovation, hoog drift-risico 3. <strong>Hybride</strong> — beste
+balans, hoogste budget-kosten</p>
+<p>Sommige keuzes hebben <strong>⚖ Gouverneur-icoon</strong> — dan MOET
+je Gouverneur-check doen voordat je effect toepast. Als je skipt: +5
+drift-schade.</p>
+<h4 id="threat-kaart-rood">Threat-kaart (rood)</h4>
+<p>Beschrijft incident (drift, injection, rogue agent, data-leak). 3-4
+mitigation-opties. Sommige vereisen artefact als voorwaarde.</p>
+<h4 id="governance-kaart-goud">Governance-kaart (goud)</h4>
+<p>Kans om artefact te bouwen. Kies: - <strong>Full-versie</strong> —
+hoog effect, hoge budget-kosten - <strong>Light-versie</strong> — matig
+effect, lager budget</p>
+<p><strong>Cascade-check:</strong> alleen artefacten neerleggen waarvan
+vereisten op cascade-veld liggen.</p>
+<h4 id="event-kaart-blauw">Event-kaart (blauw)</h4>
+<p>Automatisch effect (facilitator leest voor, past toe). Kan positief
+of negatief zijn.</p>
+<h3 id="gouverneur-flow-kern-mechaniek">4.3 Gouverneur-flow
+(kern-mechaniek)</h3>
+<p>Bij een keuze met ⚖-icoon:</p>
+<ol type="1">
+<li>Facilitator leest de 4 Q’s voor.</li>
+<li>Team bespreekt live: “Ja, we hebben zakelijke reden? Ja/nee?”</li>
+<li>Team draait 4 schijven op “Bevestigd” of laat op “Onduidelijk”
+staan.</li>
+<li><strong>4/4 bevestigd</strong> → toegang verleend, +3 Compliance +3
+Data-sovereignty</li>
+<li><strong>&lt;4 bevestigd</strong> → toegang geweigerd. Speler kiest:
+alternatieve mitigation of overslaan actie.</li>
+<li><strong>Skip Gouverneur</strong> → +5 drift-schade, +1 in
+rogue-teller</li>
+</ol>
+<p><strong>Facilitator-taak:</strong> neutraal moderator. Niet zelf
+antwoorden — team moet zelf onderbouwen.</p>
+<h3 id="rogue-agent-mechaniek">4.4 Rogue Agent-mechaniek</h3>
+<ul>
+<li>Rogue-teller houdt gouverneur-skips bij per 5-beurten-venster</li>
+<li>Bij 3 skips: spawn 1 Rogue Agent-token op willekeurige locatie</li>
+<li>Elke rogue veroorzaakt bij einde beurt: −3 Compliance, −3 Trust</li>
+<li>Verwijderen: 1 beurt lang op zelfde locatie staan + Governance-kaart
+spelen</li>
+</ul>
+<h3 id="draak-encounter-op-tile-14">4.5 Draak-encounter (op tile
+14)</h3>
+<p>Wanneer een speler tile 14 bereikt: - Facilitator toont
+draak-fase-kaart (huidige fase) - Berekent “readiness” = Trust +
+Compliance + Determinisme + Data - Vergelijkt met vereiste (200 fase 1,
+240 fase 2, 280 fase 3) - Ook: aantal artefacten moet ≥ (fase-index + 1)
+- <strong>Voldoende</strong> → draak-fase verslagen, drift −15, Trust
++8, ga naar tile 0 - <strong>Onvoldoende</strong> → drift +15, ga naar
+tile 0 - 3 fases verslagen = winst</p>
+<hr />
+<h2 id="winstconditie-en-scoring">5. Winstconditie en scoring</h2>
+<h3 id="eindsignaal">5.1 Eindsignaal</h3>
+<ul>
+<li><strong>Winst:</strong> alle 3 draak-fases verslagen voor beurt
+15</li>
+<li><strong>Verlies:</strong> drift ≥ 100 (Autonomous Dragon breekt
+door)</li>
+<li><strong>Neutraal:</strong> beurt 15 om zonder draak volledig
+verslagen — score bepaalt uitkomst</li>
+</ul>
+<h3 id="rvb-eindpresentatie-facilitator-flow">5.2 RvB-eindpresentatie
+(facilitator-flow)</h3>
+<p>Facilitator berekent 7-aspect gewogen score:</p>
+<table>
+<thead>
+<tr>
+<th>Aspect</th>
+<th>Weging</th>
+<th>Berekening</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Trust &amp; Reputatie</td>
+<td>15%</td>
+<td>Trust + 8×fases_verslagen − 5×rogues</td>
+</tr>
+<tr>
+<td>Compliance &amp; AI Act</td>
+<td>20%</td>
+<td>Compliance + 3×artefacten − 5×rogues</td>
+</tr>
+<tr>
+<td>Determinisme-regie</td>
+<td>15%</td>
+<td>Determinisme + 3×artefacten</td>
+</tr>
+<tr>
+<td>Data Sovereignty</td>
+<td>15%</td>
+<td>Data + 3×artefacten</td>
+</tr>
+<tr>
+<td>Innovation-tempo</td>
+<td>10%</td>
+<td>Innovation</td>
+</tr>
+<tr>
+<td>Draak-suppressie</td>
+<td>15%</td>
+<td>(100 − Drift) + 8×fases_verslagen</td>
+</tr>
+<tr>
+<td>Governance-artefacten</td>
+<td>10%</td>
+<td>20 × aantal artefacten</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Totaal-score = gewogen som (max 100)</strong></p>
+<h3 id="cijfer-uitkomst">5.3 Cijfer-uitkomst</h3>
+<table>
+<colgroup>
+<col style="width: 33%" />
+<col style="width: 33%" />
+<col style="width: 33%" />
+</colgroup>
+<thead>
+<tr>
+<th>Score + status</th>
+<th>Predicaat</th>
+<th>Verhaal-template</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Alle 3 fases + score ≥ 75</td>
+<td>🏆 <strong>De Draak is Getemd</strong></td>
+<td>“Uitzonderlijke uitvoering. AI werkt onder controle. RvB-akkoord
+voor volgende fase.”</td>
+</tr>
+<tr>
+<td>Alle 3 fases + score 50-74</td>
+<td>⚔ <strong>Draak verslagen, tegen prijs</strong></td>
+<td>“Governance-schulden hoog. Post-mortem + herstelprogramma
+aanbevolen.”</td>
+</tr>
+<tr>
+<td>1-2 fases + score ≥ 75</td>
+<td>✓ <strong>Sterke governance-basis</strong></td>
+<td>“Draak leeft, maar beheersbaar. Vervolg-programma nodig.”</td>
+</tr>
+<tr>
+<td>1-2 fases + score 55-74</td>
+<td>△ <strong>Voldoende, risico blijft</strong></td>
+<td>“AI werkt, maar drift verder. Focus op zwakke aspecten.”</td>
+</tr>
+<tr>
+<td>&lt; 55 óf drift = 100</td>
+<td>✗ <strong>AI-drift heeft overgenomen</strong></td>
+<td>“Onvoldoende governance. Rogue agents en drift zijn niet meer
+beheersbaar. Formeel programma nodig.”</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="achievements-voorbeelden">6. Achievements (voorbeelden)</h2>
+<p>30 achievements verdeeld over:</p>
+<ul>
+<li><strong>Gouverneur-mastery</strong> (bv “Doe 5 volledig geslaagde
+Gouverneur-checks”)</li>
+<li><strong>Artefact-completion</strong> (bv “Bouw alle 5
+governance-artefacten”)</li>
+<li><strong>Rol-specifiek</strong> (bv “Als CTO: Executive Mandate 2×
+effectief inzetten”)</li>
+<li><strong>Draak-slayer</strong> (bv “Versla Hallucination Wraith in ≤
+5 beurten”)</li>
+<li><strong>Team-samenwerking</strong> (bv “0 rogue agents actief bij
+eindbeurt”)</li>
+</ul>
+<hr />
+<h2 id="print-play-checklist">7. Print &amp; Play checklist</h2>
+<ul class="task-list">
+<li><label><input type="checkbox" />Bord met 5×3-grid + cascade-veld +
+drift-dragon-slot (A2, 4× A4-tegels)</label></li>
+<li><label><input type="checkbox" />Gouverneur-plaat (A4 karton, 4
+draaischijven)</label></li>
+<li><label><input type="checkbox" />25 opportunity-kaarten</label></li>
+<li><label><input type="checkbox" />25 threat-kaarten</label></li>
+<li><label><input type="checkbox" />15 governance-kaarten</label></li>
+<li><label><input type="checkbox" />15 event-kaarten</label></li>
+<li><label><input type="checkbox" />30 achievement-kaarten</label></li>
+<li><label><input type="checkbox" />5 artefact-kaarten (met
+required-tabs)</label></li>
+<li><label><input type="checkbox" />3 draak-fase-kaartjes</label></li>
+<li><label><input type="checkbox" />8 rollen-tableau’s (A4)</label></li>
+<li><label><input type="checkbox" />1 gedeelde dashboard-vel
+(A3)</label></li>
+<li><label><input type="checkbox" />1 D6 per speler + 1 D8 voor
+facilitator</label></li>
+<li><label><input type="checkbox" />Tokens: rol-pionnen, metric-markers,
+Gouverneur-passed, rogue, budget</label></li>
+<li><label><input type="checkbox" />Facilitator-map (regels, AVG/AI Act
+samenvatting, Gouverneur-flow, debrief)</label></li>
+</ul>
+<p><strong>Kostenraming:</strong> - Zelf-print A4: <strong>€40</strong>
+(thuis) - Copyshop (250g karton + laminated Gouverneur-plaat):
+<strong>€100</strong> - Print-on-demand (The Game Crafter of MPC):
+<strong>€70-90</strong></p>
+<hr />
+<h2 id="verschillen-digitaal-analoog">8. Verschillen digitaal ↔︎
+analoog</h2>
+<table>
+<colgroup>
+<col style="width: 33%" />
+<col style="width: 33%" />
+<col style="width: 33%" />
+</colgroup>
+<thead>
+<tr>
+<th>Aspect</th>
+<th>Digitaal (HTML5)</th>
+<th>Analoog (bordspel)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Speeltijd</td>
+<td>30-60 min</td>
+<td>90-120 min</td>
+</tr>
+<tr>
+<td>Speleraantal</td>
+<td>1 speler kiest 1 rol</td>
+<td>3-8 spelers</td>
+</tr>
+<tr>
+<td>Gouverneur</td>
+<td>Modal met 4 checkboxes</td>
+<td>Fysieke plaat + team-discussie (KERN-VERSCHIL)</td>
+</tr>
+<tr>
+<td>Rogue agents</td>
+<td>Auto-berekend</td>
+<td>Zichtbare tokens op bord</td>
+</tr>
+<tr>
+<td>Draak-fases</td>
+<td>Auto-progressie op drift</td>
+<td>Zichtbare 3-fase-kaartjes</td>
+</tr>
+<tr>
+<td>Debrief</td>
+<td>Auto-verdict-scherm</td>
+<td>Facilitator vertelt vanuit template + team-discussie</td>
+</tr>
+<tr>
+<td>Autosave</td>
+<td>LocalStorage</td>
+<td>Foto per ronde</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="facilitator-tips-voor-workshop-gebruik">9. Facilitator-tips voor
+workshop-gebruik</h2>
+<ul>
+<li><strong>Sessie-lengte:</strong> 3 uur (10 min intro, 100-110 min
+spel, 40 min debrief — belangrijkste onderdeel!)</li>
+<li><strong>Debrief-vragen:</strong>
+<ol type="1">
+<li>Bij welke Gouverneur-vraag hadden jullie de meeste discussie?
+Waarom?</li>
+<li>Welke rogue agent-momenten herken je uit je eigen organisatie?</li>
+<li>Welke draak-fase was jullie huidige AI-Governance-status?</li>
+<li>Welk artefact zou je morgen willen starten?</li>
+</ol></li>
+<li><strong>Varianten:</strong>
+<ul>
+<li><strong>“Regulator-modus”</strong> — start met Compliance = 30,
+drift = 20, forceer governance-first</li>
+<li><strong>“Startup-modus”</strong> — start met Innovation = 60,
+Compliance = 20, focus op snel bouwen</li>
+<li><strong>“Enterprise-modus”</strong> — 20 beurten in plaats van 15,
+12 artefacten in plaats van 5</li>
+</ul></li>
+</ul>
+<hr />
+<h2 id="bijzondere-waardepropositie">10. Bijzondere
+waardepropositie</h2>
+<p>Waar v1 (fantasy) en v2 (Dragon1) gaan over <strong>statische
+EA-governance</strong>, gaat v3 over de <strong>nieuwe
+realiteit</strong> van Agentic AI: onvoorspelbare autonome flows, drift,
+rogue agents. De Gouverneur-mechaniek dwingt teams om
+<strong>live</strong>, aan tafel, met elkaar de 4 policy-vragen te
+bespreken — precies wat in echte AI-Governance-programma’s
+ontbreekt.</p>
+<p><strong>Kern-inzicht:</strong> stochastische AI is niet fout;
+onbeheerst stochastische AI is fout. Regie op determinisme vs stochasme
++ data-governance vs Gouverneur zijn de instrumenten. Bordspel maakt dit
+tastbaar.</p>
+<hr />
+<h2 id="verantwoording-ontwerp-keuzes">11. Verantwoording
+ontwerp-keuzes</h2>
+<table>
+<colgroup>
+<col style="width: 33%" />
+<col style="width: 33%" />
+<col style="width: 33%" />
+</colgroup>
+<thead>
+<tr>
+<th>Keuze</th>
+<th>Alternatief</th>
+<th>Argumentatie</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Gouverneur-plaat centraal</td>
+<td>Kaartje per gouverneur-moment</td>
+<td>Kern-leermoment vergt permanent zichtbaar object op tafel</td>
+</tr>
+<tr>
+<td>15 beurten</td>
+<td>20 beurten</td>
+<td>AI-Governance-programma’s hebben typisch kwartaal-cyclus; 15 =
+quarterly review</td>
+</tr>
+<tr>
+<td>3 draak-fases</td>
+<td>5 draak-fases</td>
+<td>Metaforische match: hallucinatie → tool-abuse → autonoom = bekende
+AI-safety-taxonomie</td>
+</tr>
+<tr>
+<td>Rogue-teller per 5-beurten-venster</td>
+<td>Absolute counter</td>
+<td>Recency-effect: fout gedrag mag correcteerd, maar aanhoudend
+niet</td>
+</tr>
+<tr>
+<td>D6 movement (niet D20)</td>
+<td>D20 (zoals v1)</td>
+<td>Serious workshop-context past bij eenvoudige D6, RPG-feel niet
+gewenst</td>
+</tr>
+<tr>
+<td>5 artefacten (niet 15)</td>
+<td>10-15 artefacten (zoals v2)</td>
+<td>AI-Governance-kern kent typisch 5 pijlers: Policy, Registry,
+Contracts, Guardrails, Audit</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="openstaande-vragen-bij-playtest">12. Openstaande vragen bij
+playtest</h2>
+<ul>
+<li><strong>Gouverneur-lengte:</strong> hoeveel tijd kost een
+Gouverneur-check aan tafel? Als &gt;3 min: te lang</li>
+<li><strong>Rogue-mechaniek:</strong> is 3 skips per 5 beurten de juiste
+threshold? Overweeg 2 per 4</li>
+<li><strong>Draak-fase-progressie:</strong> verschijnt Hallucination
+Wraith te vroeg (drift 30 = beurt 2-3)?</li>
+<li><strong>Team-consensus bij Gouverneur:</strong> wat als team 3-3
+verdeeld is? Vetorecht bij facilitator?</li>
+<li><strong>Metrieken-mix:</strong> 6 metrieken tegelijk bijhouden — te
+veel voor sommige rollen?</li>
+</ul>
+<hr />
+<h2 id="bijlagen">Bijlagen</h2>
+<ul>
+<li><strong>Opportunity 25</strong> — zie
+<code>v3/content/opportunities.json</code> (te maken tijdens
+playtest-cyclus)</li>
+<li><strong>Threat 25</strong> — zie
+<code>v3/content/threats.json</code> (idem)</li>
+<li><strong>Governance 15</strong> — zie
+<code>v3/content/governance.json</code> (idem)</li>
+<li><strong>Event 15</strong> — zie <code>v3/content/events.json</code>
+(idem)</li>
+<li><strong>Achievement 30</strong> — zie
+<code>v3/content/achievements.json</code> (idem)</li>
+<li><strong>Rollen 8</strong> — zie <code>v3/content/roles.json</code>
+(in <code>v3/EnterpriseQuest.html</code> embedded)</li>
+<li><strong>Artefacten 5</strong> — zie
+<code>v3/content/artefacts.json</code> (idem)</li>
+</ul>
+<hr />
+<p><strong>Versie doc:</strong> analog_v3_ai v0.1 <strong>Gebaseerd op
+digitale versie:</strong> v0.3.0-Turing <strong>Auteur:</strong> Claude
+Opus 4.7 (1M context) namens Christian Glebbeek
+<strong>Licentie:</strong> AGPL-3.0 (matches repo)
+<strong>Codenaam-thema:</strong> AI-pioniers (Turing → Norvig → Hinton →
+LeCun → Ng → Karpathy → Bengio) <strong>Inspiratie voor
+Gouverneur-mechaniek:</strong> StaffKennisGerben procesarchitect Data
+Governance tab (Verzoeker → Gouverneur → Data flow)</p>
+</body>
+</html>

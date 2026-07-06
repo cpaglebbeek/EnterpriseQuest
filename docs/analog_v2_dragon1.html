@@ -1,0 +1,1264 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>EnterpriseQuest v2 — Analoog PnP Dragon1</title>
+  <style>
+    /* Default styles provided by pandoc.
+    ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+    */
+    html {
+      color: #1a1a1a;
+      background-color: #fdfdfd;
+    }
+    body {
+      margin: 0 auto;
+      max-width: 36em;
+      padding-left: 50px;
+      padding-right: 50px;
+      padding-top: 50px;
+      padding-bottom: 50px;
+      hyphens: auto;
+      overflow-wrap: break-word;
+      text-rendering: optimizeLegibility;
+      font-kerning: normal;
+    }
+    @media (max-width: 600px) {
+      body {
+        font-size: 0.9em;
+        padding: 12px;
+      }
+      h1 {
+        font-size: 1.8em;
+      }
+    }
+    @media print {
+      html {
+        background-color: white;
+      }
+      body {
+        background-color: transparent;
+        color: black;
+        font-size: 12pt;
+      }
+      p, h2, h3 {
+        orphans: 3;
+        widows: 3;
+      }
+      h2, h3, h4 {
+        page-break-after: avoid;
+      }
+    }
+    p {
+      margin: 1em 0;
+    }
+    a {
+      color: #1a1a1a;
+    }
+    a:visited {
+      color: #1a1a1a;
+    }
+    img {
+      max-width: 100%;
+    }
+    svg {
+      height: auto;
+      max-width: 100%;
+    }
+    h1, h2, h3, h4, h5, h6 {
+      margin-top: 1.4em;
+    }
+    h5, h6 {
+      font-size: 1em;
+      font-style: italic;
+    }
+    h6 {
+      font-weight: normal;
+    }
+    ol, ul {
+      padding-left: 1.7em;
+      margin-top: 1em;
+    }
+    li > ol, li > ul {
+      margin-top: 0;
+    }
+    blockquote {
+      margin: 1em 0 1em 1.7em;
+      padding-left: 1em;
+      border-left: 2px solid #e6e6e6;
+      color: #606060;
+    }
+    code {
+      white-space: pre-wrap;
+      font-family: Menlo, Monaco, Consolas, 'Lucida Console', monospace;
+      font-size: 85%;
+      margin: 0;
+      hyphens: manual;
+    }
+    pre {
+      margin: 1em 0;
+      overflow: auto;
+    }
+    pre code {
+      padding: 0;
+      overflow: visible;
+      overflow-wrap: normal;
+    }
+    .sourceCode {
+     background-color: transparent;
+     overflow: visible;
+    }
+    hr {
+      border: none;
+      border-top: 1px solid #1a1a1a;
+      height: 1px;
+      margin: 1em 0;
+    }
+    table {
+      margin: 1em 0;
+      border-collapse: collapse;
+      width: 100%;
+      overflow-x: auto;
+      display: block;
+      font-variant-numeric: lining-nums tabular-nums;
+    }
+    table caption {
+      margin-bottom: 0.75em;
+    }
+    tbody {
+      margin-top: 0.5em;
+      border-top: 1px solid #1a1a1a;
+      border-bottom: 1px solid #1a1a1a;
+    }
+    th {
+      border-top: 1px solid #1a1a1a;
+      padding: 0.25em 0.5em 0.25em 0.5em;
+    }
+    td {
+      padding: 0.125em 0.5em 0.25em 0.5em;
+    }
+    header {
+      margin-bottom: 4em;
+      text-align: center;
+    }
+    #TOC li {
+      list-style: none;
+    }
+    #TOC ul {
+      padding-left: 1.3em;
+    }
+    #TOC > ul {
+      padding-left: 0;
+    }
+    #TOC a:not(:hover) {
+      text-decoration: none;
+    }
+    span.smallcaps{font-variant: small-caps;}
+    div.columns{display: flex; gap: min(4vw, 1.5em);}
+    div.column{flex: auto; overflow-x: auto;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    /* The extra [class] is a hack that increases specificity enough to
+       override a similar rule in reveal.js */
+    ul.task-list[class]{list-style: none;}
+    ul.task-list li input[type="checkbox"] {
+      font-size: inherit;
+      width: 0.8em;
+      margin: 0 0.8em 0.2em -1.6em;
+      vertical-align: middle;
+    }
+    .display.math{display: block; text-align: center; margin: 0.5rem auto;}
+  </style>
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">EnterpriseQuest v2 — Analoog PnP Dragon1</h1>
+</header>
+<h1
+id="enterprisequest-v2-analoge-print-play-uitwerking-dragon1">EnterpriseQuest
+v2 — Analoge Print &amp; Play uitwerking (Dragon1)</h1>
+<p><strong>Basis:</strong> digitale versie
+<code>v2/EnterpriseQuest.html</code> (v0.2.0-Paauwe)
+<strong>Vorm:</strong> fysiek bordspel + kaartspel + tokens +
+dashboard-vellen <strong>Doelgroep:</strong> 2-8 spelers (1 rol per
+speler), 90-120 minuten, 18+ (workshop-context / EA-training)
+<strong>Setting:</strong> de architect(en) moeten een organisatie
+<strong>toekomstbestendig</strong> maken volgens de
+<strong>Dragon1-methodiek</strong> en dat aan de RvB presenteren. Geen
+combat, geen HP, wel budget/stakeholder-druk en verplichte
+artefact-cascade.</p>
+<hr />
+<h2 id="ontwerpprincipes-bij-vertaling-digitaal-analoog">1.
+Ontwerpprincipes bij vertaling digitaal → analoog</h2>
+<table>
+<colgroup>
+<col style="width: 33%" />
+<col style="width: 33%" />
+<col style="width: 33%" />
+</colgroup>
+<thead>
+<tr>
+<th>Digitaal element</th>
+<th>Analoge oplossing</th>
+<th>Reden</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>4×4 organisatie-grid</td>
+<td>Bord met 16 locatie-tegels in 4×4-raster</td>
+<td>Direct 1:1 overneembaar</td>
+</tr>
+<tr>
+<td>8 rollen met 9-attributen</td>
+<td>Rollen-tableau’s (A4) met 9 attribuut-tracks</td>
+<td>Vergelijkbaar met Pandemic-rollenkaart</td>
+</tr>
+<tr>
+<td>15 artefacten met required-cascade</td>
+<td>Kaarten met vereist-icoon; leg fysiek op elkaar</td>
+<td>Zichtbare dependency-graph op tafel</td>
+</tr>
+<tr>
+<td>40 missies + 40 uitdagingen + 30 events</td>
+<td>3 aparte decks (M/U/E) van totaal 110 kaarten</td>
+<td>Digitale versie kent zelfde split</td>
+</tr>
+<tr>
+<td>12 dashboard-metrieken</td>
+<td>Dashboard-vel (A3) met 12 tracks + tokens</td>
+<td>Team-dashboard = single source of truth</td>
+</tr>
+<tr>
+<td>Cascade <code>required: ["A001"]</code></td>
+<td>Kartonnen tab-icoon aan onderkant nieuwe kaart</td>
+<td>Fysiek zichtbaar: welke voorloper vereist</td>
+</tr>
+<tr>
+<td>8-aspect eindscore</td>
+<td>Score-vel met 8 gaskaartjes (0-10 draaischijven)</td>
+<td>Puur cijfermatig — geen speech acteren</td>
+</tr>
+<tr>
+<td>RvB-presentatie eindgame</td>
+<td>Facilitator schrijft “RvB-verhaal” op basis van score</td>
+<td>Geeft workshop-context serieuze afsluiter</td>
+</tr>
+<tr>
+<td>LocalStorage autosave</td>
+<td>Foto van dashboard-vel per ronde</td>
+<td>Traceerbaar herstart-punt</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Grondregel:</strong> deze versie is een <strong>serieuze
+management-simulatie</strong> — geen fantasy-flavour, geen
+dobbelsteen-luck. Uitkomsten hangen af van keuzes en volgorde. D6 wordt
+alleen gebruikt voor event-randomizers.</p>
+<hr />
+<h2 id="componentenlijst">2. Componentenlijst</h2>
+<h3 id="bord-1">2.1 Bord (1×)</h3>
+<ul>
+<li><strong>Formaat:</strong> 60 × 60 cm, 4×4-raster van 16
+locatie-tegels</li>
+<li>Elke tegel toont:
+<ul>
+<li>Icoon + naam</li>
+<li>Primary Dragon1-concept (bv “Business Function”, “Value
+Stream”)</li>
+<li>Locatie-kleur (donkerblauw voor bestuur, groen voor business, geel
+voor finance, etc.)</li>
+</ul></li>
+<li><strong>Centraal Dragon1-cascade-veld</strong> (5 vakken onder
+bord): Vision → Principles → Business → Applicatie → Technology</li>
+<li><strong>Metric-dashboard-strip</strong> rechts van bord (12
+metrieken)</li>
+</ul>
+<h3 id="locatie-tegels-16-één-per-organisatie-onderdeel">2.2
+Locatie-tegels (16×, één per organisatie-onderdeel)</h3>
+<table>
+<thead>
+<tr>
+<th>#</th>
+<th>Locatie</th>
+<th>Primary Concept</th>
+<th>Kleur (hex)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>Directiekamer</td>
+<td>Strategie</td>
+<td>#1B2A49</td>
+</tr>
+<tr>
+<td>2</td>
+<td>Strategiecentrum</td>
+<td>Strategy Map</td>
+<td>#2E4A7B</td>
+</tr>
+<tr>
+<td>3</td>
+<td>Business Domein</td>
+<td>Business Function</td>
+<td>#4B3F72</td>
+</tr>
+<tr>
+<td>4</td>
+<td>HR</td>
+<td>Actor &amp; Role Model</td>
+<td>#7A5C3E</td>
+</tr>
+<tr>
+<td>5</td>
+<td>Finance</td>
+<td>Business Value &amp; Cost Model</td>
+<td>#C9A227</td>
+</tr>
+<tr>
+<td>6</td>
+<td>Operations</td>
+<td>Business Process</td>
+<td>#37535E</td>
+</tr>
+<tr>
+<td>7</td>
+<td>Sales</td>
+<td>Value Stream</td>
+<td>#8C1C40</td>
+</tr>
+<tr>
+<td>8</td>
+<td>Klantenservice</td>
+<td>Customer Journey</td>
+<td>#B76E39</td>
+</tr>
+<tr>
+<td>9</td>
+<td>Applicatielandschap</td>
+<td>Applicatie-portfolio</td>
+<td>#274060</td>
+</tr>
+<tr>
+<td>10</td>
+<td>Dataplatform</td>
+<td>Information Architecture</td>
+<td>#3E6680</td>
+</tr>
+<tr>
+<td>11</td>
+<td>Integratielaag</td>
+<td>Integration Architecture</td>
+<td>#5B7B7A</td>
+</tr>
+<tr>
+<td>12</td>
+<td>Cloudplatform</td>
+<td>Technology Platform</td>
+<td>#4A6FA5</td>
+</tr>
+<tr>
+<td>13</td>
+<td>Security Operations Center</td>
+<td>Security Architecture</td>
+<td>#2C2C54</td>
+</tr>
+<tr>
+<td>14</td>
+<td>Innovatielab</td>
+<td>Innovation Portfolio</td>
+<td>#6A0DAD</td>
+</tr>
+<tr>
+<td>15</td>
+<td>Project Portfolio</td>
+<td>Portfolio Management</td>
+<td>#8E7C42</td>
+</tr>
+<tr>
+<td>16</td>
+<td>Governance Board</td>
+<td>Architecture Governance</td>
+<td>#4B4B4B</td>
+</tr>
+</tbody>
+</table>
+<h3 id="rollen-tableaus-8-één-per-rol">2.3 Rollen-tableau’s (8×, één per
+rol)</h3>
+<table>
+<colgroup>
+<col style="width: 25%" />
+<col style="width: 25%" />
+<col style="width: 25%" />
+<col style="width: 25%" />
+</colgroup>
+<thead>
+<tr>
+<th>Rol</th>
+<th>Icoon</th>
+<th>Kern-attribuut(en)</th>
+<th>Special Ability</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Enterprise Architect</td>
+<td>🏛️</td>
+<td>Strategie 9, Governance 8</td>
+<td><em>Big Picture</em> — 1×: toon samenhang alle locaties, +15
+stakeholder bij strategisch artefact</td>
+</tr>
+<tr>
+<td>Solution Architect</td>
+<td>🧩</td>
+<td>Tech 9, Innovation 7</td>
+<td><em>Blueprint Sprint</em> — 1×: lever Solution Overview met 2×
+digitalMaturity-bonus</td>
+</tr>
+<tr>
+<td>Business Architect</td>
+<td>🏢</td>
+<td>Business 10, Communicatie 9</td>
+<td><em>Value Stream Insight</em> — 1×: onthul knelpunt in
+business-locatie, +10 businessValue bij VSM</td>
+</tr>
+<tr>
+<td>Information Architect</td>
+<td>🗄️</td>
+<td>Data 10, Governance 8</td>
+<td><em>Data Lineage</em> — 1×: toon data-keten tussen locaties, +50%
+effectiviteit Information Model</td>
+</tr>
+<tr>
+<td>Security Architect</td>
+<td>🛡️</td>
+<td>Security 10, Governance 9</td>
+<td><em>Threat Shield</em> — 1×: verlaag security-incident-impact naar
+nul, +8 security dat beurt</td>
+</tr>
+<tr>
+<td>CIO</td>
+<td>🎛️</td>
+<td>Strategie 10, Leiderschap 10</td>
+<td><em>Executive Mandate</em> — 1×: +20 budget-per-beurt + versnel
+artefact-goedkeuring 1 beurt</td>
+</tr>
+<tr>
+<td>IT-Manager</td>
+<td>💼</td>
+<td>Leiderschap 9, Governance 8</td>
+<td><em>Delivery Push</em> — 1×: lever project uit Portfolio 1 beurt
+eerder + 6 businessValue</td>
+</tr>
+<tr>
+<td>Student EA</td>
+<td>🎓</td>
+<td>Innovation 8</td>
+<td><em>Fresh Perspective</em> — 2× XP op elk artefact + 1×
+architectuur-quiz voor +10 op alle attributen</td>
+</tr>
+</tbody>
+</table>
+<p>Op tableau ook zichtbaar: <strong>start-bonussen</strong> en
+<strong>9 attribuut-tracks</strong> (waardes 1-10).</p>
+<h3 id="kaartdecks">2.4 Kaartdecks</h3>
+<table>
+<colgroup>
+<col style="width: 25%" />
+<col style="width: 25%" />
+<col style="width: 25%" />
+<col style="width: 25%" />
+</colgroup>
+<thead>
+<tr>
+<th>Deck</th>
+<th>Aantal</th>
+<th>Achterkant</th>
+<th>Doel</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Artefact</strong></td>
+<td>15</td>
+<td>goud</td>
+<td>Dragon1-artefacten (12 verplicht + 3 extra) — met
+<strong>required-tabs</strong></td>
+</tr>
+<tr>
+<td><strong>Mission</strong></td>
+<td>40</td>
+<td>groen</td>
+<td>Modelleer een artefact op een locatie</td>
+</tr>
+<tr>
+<td><strong>Challenge</strong></td>
+<td>40</td>
+<td>rood</td>
+<td>Multiple-choice dilemma’s (soms met required-artefact als voorwaarde
+voor beste keuze)</td>
+</tr>
+<tr>
+<td><strong>Event</strong></td>
+<td>30</td>
+<td>blauw</td>
+<td>Externe gebeurtenissen (28 met branching)</td>
+</tr>
+<tr>
+<td><strong>Achievement</strong></td>
+<td>47</td>
+<td>zilver</td>
+<td>Milestone-kaarten</td>
+</tr>
+</tbody>
+</table>
+<p>Kaartformaat: Euro-poker (63×88 mm).</p>
+<h3 id="dashboard-vel-a3-gedeeld-gemeenschappelijk-voor-team">2.5
+Dashboard-vel (A3 gedeeld, gemeenschappelijk voor team)</h3>
+<p>12 metric-tracks in horizontale balken:</p>
+<pre><code>1.  Business Value            [0 ─────────── 100]
+2.  Stakeholder Confidence    [0 ─────────── 100]
+3.  Governance                [0 ─────────── 100]
+4.  Digital Maturity          [0 ─────────── 100]
+5.  Innovation                [0 ─────────── 100]
+6.  Security                  [0 ─────────── 100]
+7.  Technical Debt            [0 ─────────── 100] (hoger = slechter)
+8.  Budget (€1000-startkapitaal, teller schuift)
+9.  Budget-per-beurt (max ~50)
+10. Beurten-teller (max 20 beurten)
+11. XP-team-totaal
+12. Chaos-teller (externe druk, 0-40)</code></pre>
+<p>Elke rol legt gekleurde marker op elke track — verplaatsingen bij
+missie/challenge/event.</p>
+<h3 id="artefact-cascade-veld">2.6 Artefact-cascade-veld</h3>
+<p>Onder bord ligt de <strong>cascade-graph</strong>:</p>
+<pre><code>                    A001 Vision Blueprint
+                    /       |          \
+              A002 Strategy A004 Principles A013 Vision Poster
+              /       \                |
+        A003 Cap.Map   A010 Roadmap   A009 Governance
+       /   |    \        /             |
+   A005 A006 A015    A008 Tech      A012 Repository
+    |    |   |         |
+   A007 A014 A011      |</code></pre>
+<p>Kaarten worden fysiek op elkaar gelegd in dependency-volgorde: pas
+als voorloper op tafel ligt, mag opvolger uitgespeeld worden. Dit is
+<strong>de kern-mechaniek</strong> van v2.</p>
+<h3 id="tokens">2.7 Tokens</h3>
+<table>
+<colgroup>
+<col style="width: 33%" />
+<col style="width: 33%" />
+<col style="width: 33%" />
+</colgroup>
+<thead>
+<tr>
+<th>Token</th>
+<th>Kleur</th>
+<th>Doel</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Rol-pion (8×)</td>
+<td>8 unieke kleuren</td>
+<td>Locatie-marker per speler</td>
+</tr>
+<tr>
+<td>Metric-marker (12×, gedeeld)</td>
+<td>zwart</td>
+<td>Track-position dashboard</td>
+</tr>
+<tr>
+<td>Beurten-token</td>
+<td>wit</td>
+<td>Beurten-teller</td>
+</tr>
+<tr>
+<td>Artefact-status-token</td>
+<td>3 kleuren</td>
+<td>in-uitvoering / opgeleverd / afgekeurd</td>
+</tr>
+<tr>
+<td>Achievement-kaart-stack</td>
+<td>zilver</td>
+<td>Behaalde achievements per team</td>
+</tr>
+<tr>
+<td>RvB-verhaal-kaart</td>
+<td>rood</td>
+<td>Alleen 1× aan einde van spel</td>
+</tr>
+</tbody>
+</table>
+<h3 id="dobbelsteen">2.8 Dobbelsteen</h3>
+<ul>
+<li><strong>1× D6</strong> (alleen voor event-randomizers)</li>
+</ul>
+<h3 id="facilitator-map">2.9 Facilitator-map</h3>
+<ul>
+<li>Regelboek (dit document)</li>
+<li>Dragon1-methodiek-samenvatting (2× A5)</li>
+<li>Score-berekening-vel (8-aspect eindscore)</li>
+<li>RvB-presentatie-template (A4)</li>
+</ul>
+<hr />
+<h2 id="setup">3. Setup</h2>
+<h3 id="bord-neerleggen">3.1 Bord neerleggen</h3>
+<ul>
+<li>4×4 grid platleggen; positioneer volgens onderstaande matrix (rijen
+= business-lagen):</li>
+</ul>
+<table>
+<colgroup>
+<col style="width: 20%" />
+<col style="width: 20%" />
+<col style="width: 20%" />
+<col style="width: 20%" />
+<col style="width: 20%" />
+</colgroup>
+<thead>
+<tr>
+<th></th>
+<th>Kolom A</th>
+<th>Kolom B</th>
+<th>Kolom C</th>
+<th>Kolom D</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Rij 1 (Bestuur)</td>
+<td>Directiekamer</td>
+<td>Strategiecentrum</td>
+<td>Governance Board</td>
+<td>Finance</td>
+</tr>
+<tr>
+<td>Rij 2 (Business)</td>
+<td>Business Domein</td>
+<td>Operations</td>
+<td>Sales</td>
+<td>Klantenservice</td>
+</tr>
+<tr>
+<td>Rij 3 (Informatie / IT)</td>
+<td>Applicatielandschap</td>
+<td>Dataplatform</td>
+<td>Integratielaag</td>
+<td>Cloudplatform</td>
+</tr>
+<tr>
+<td>Rij 4 (Innovatie / Ops)</td>
+<td>HR</td>
+<td>Innovatielab</td>
+<td>Project Portfolio</td>
+<td>Security Operations Center</td>
+</tr>
+</tbody>
+</table>
+<p>Elke tegel toont zijn primary Dragon1-concept.</p>
+<h3 id="cascade-veld-en-decks">3.2 Cascade-veld en decks</h3>
+<ul>
+<li>Leg cascade-veld onder bord met 5 lege slots (Vision / Principles /
+Business / Applicatie / Technology)</li>
+<li>Leg alle 15 artefact-kaarten <strong>omgekeerd naast bord</strong>
+(spelers mogen kaartnamen zien, maar niet gebruiken zonder
+voorloper)</li>
+<li>Shuffle Mission, Challenge, Event, Achievement decks apart</li>
+</ul>
+<h3 id="rol-keuze-en-start-metrieken">3.3 Rol-keuze en
+start-metrieken</h3>
+<p>Elke speler kiest een rol-tableau. Start-metrieken worden opgeteld op
+gedeeld dashboard:</p>
+<table>
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
+<thead>
+<tr>
+<th>Rol</th>
+<th>Start-bonus</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>EA</td>
+<td>+10 BusinessValue, +8 StakeholderConfidence, +5 Governance</td>
+</tr>
+<tr>
+<td>SA</td>
+<td>+6 BusinessValue, +8 DigitalMaturity, +4 StakeholderConfidence</td>
+</tr>
+<tr>
+<td>BA</td>
+<td>+12 BusinessValue, +6 StakeholderConfidence, +3 Governance</td>
+</tr>
+<tr>
+<td>IA</td>
+<td>+10 DigitalMaturity, +6 Governance, +3 BusinessValue</td>
+</tr>
+<tr>
+<td>SecA</td>
+<td>+15 Security, +6 Governance, +3 StakeholderConfidence</td>
+</tr>
+<tr>
+<td>CIO</td>
+<td>+8 BusinessValue, +12 StakeholderConfidence, +6 Governance</td>
+</tr>
+<tr>
+<td>IT-Mgr</td>
+<td>+8 Governance, +6 DigitalMaturity, +5 Budget-per-beurt</td>
+</tr>
+<tr>
+<td>Student EA</td>
+<td>+10 Innovation, +3 StakeholderConfidence, +2 BusinessValue</td>
+</tr>
+</tbody>
+</table>
+<p>Basis-startwaarden voor alle metrieken die niet in start-bonus staan:
+<strong>20</strong> (van 100). Startbudget: <strong>€1000</strong>.
+Startbeurt: <strong>1 van 20</strong>.</p>
+<h3 id="bord-startpositie">3.4 Bord-startpositie</h3>
+<p>Alle rol-pionnen op <strong>Directiekamer</strong> (locatie 1). Elke
+rol krijgt “Enterprise Vision”-mission-briefing van facilitator.</p>
+<hr />
+<h2 id="speelverloop">4. Speelverloop</h2>
+<h3 id="ronde-structuur">4.1 Ronde-structuur</h3>
+<p>Per ronde (= 1 beurt van elke speler):</p>
+<ol type="1">
+<li><strong>Facilitator opent</strong> met datum + beurt-teller (“Beurt
+3/20 — het is september, Q3-review nadert”)</li>
+<li><strong>Elke speler op tafel-volgorde:</strong>
+<ul>
+<li>Beweeg pion max 2 tegels (orthogonaal, geen diagonaal)</li>
+<li>Speel <strong>één actie-type</strong> (§4.2)</li>
+<li>Update dashboard-metrieken</li>
+</ul></li>
+<li><strong>Facilitator trekt Event-kaart</strong> aan einde van ronde
+en past effect toe</li>
+<li><strong>Beurt-teller +1</strong></li>
+<li><strong>Facilitator meldt</strong> cumulatieve metric-verandering +
+Dragon1-cascade-status</li>
+</ol>
+<h3 id="acties-per-beurt-kies-1">4.2 Acties per beurt (kies 1)</h3>
+<table>
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
+<thead>
+<tr>
+<th>Actie</th>
+<th>Verloop</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>A. Modelleer artefact</strong></td>
+<td>Trek een Mission-kaart die aan je locatie hangt; controleer of
+vereist voorlopig artefact op cascade-veld ligt; leg de Mission af + leg
+bijbehorende artefact-kaart op cascade-veld; update metrieken</td>
+</tr>
+<tr>
+<td><strong>B. Reageer op Challenge</strong></td>
+<td>Trek Challenge-kaart, kies één van 3-4 opties (sommige vereisen
+artefact); apply effect</td>
+</tr>
+<tr>
+<td><strong>C. Facilitator-actie</strong></td>
+<td>Vraag facilitator om extra Event-kaart voor het team; kost 1
+stakeholder-token</td>
+</tr>
+<tr>
+<td><strong>D. Special Ability</strong></td>
+<td>Speel je rol-special (1× per spel); zie §2.3</td>
+</tr>
+<tr>
+<td><strong>E. Diplomatie</strong></td>
+<td>Overleg met andere speler over ruilen van special-ability-timing;
+ability blijft echter uniek per rol</td>
+</tr>
+<tr>
+<td><strong>F. Overslaan</strong></td>
+<td>Skip beurt (verlies 5 stakeholder-confidence door passiviteit)</td>
+</tr>
+</tbody>
+</table>
+<h3 id="cascade-check-bij-artefact-modelleren">4.3 Cascade-check bij
+artefact-modelleren</h3>
+<p>Wanneer een speler een artefact wil neerleggen (via Mission of
+Special Ability), controleer:</p>
+<pre><code>Kaart X vereist: [A001]           → moet A001 op cascade-veld liggen? Ja/Nee
+Kaart X vereist: [A002, A006]     → beide vereist? Ja/Nee</code></pre>
+<p>Als vereisten niet aanwezig: - Mission blijft in de hand van speler;
+volgende beurt opnieuw proberen - Alternatief: speler mag Mission
+opgeven → −10 stakeholder-confidence</p>
+<h3 id="kaart-anatomie">4.4 Kaart-anatomie</h3>
+<p><strong>Voorbeeld Mission-kaart:</strong></p>
+<pre><code>┌─────────────────────────────────┐
+│ M001 · Ontwikkel Enterprise     │
+│         Vision voor directie    │
+│─────────────────────────────────│
+│ Faciliteer directie-sessie en   │
+│ leg de Enterprise Vision vast   │
+│ als eerste ankerpunt.           │
+│─────────────────────────────────│
+│ Levert artefact: A001 Vision    │
+│ Locatie: Directiekamer          │
+│ Difficulty: 3                   │
+│─────────────────────────────────│
+│ EFFECT:                         │
+│ +250 XP · −€100                 │
+│ +25 BusinessValue               │
+│ +30 StakeholderConfidence       │
+│ +10 Governance · +15 Innovation │
+│ +10 DigitalMaturity             │
+└─────────────────────────────────┘</code></pre>
+<p><strong>Voorbeeld Artefact-kaart:</strong></p>
+<pre><code>┌─────────────────────────────────┐
+│ A007 · Information Model        │
+│─────────────────────────────────│
+│ Vereist: A005 (Business Ref)    │
+│ Categorie: Informatie           │
+│─────────────────────────────────│
+│ Gestructureerd model van        │
+│ kernbegrippen, entiteiten en    │
+│ relaties.                       │
+│─────────────────────────────────│
+│ PASSIVE (zolang gemodelleerd):  │
+│ +6 DigitalMaturity              │
+│ +4 Governance                   │
+│ +3 BusinessValue                │
+└─────────────────────────────────┘</code></pre>
+<p><strong>Voorbeeld Challenge-kaart:</strong></p>
+<pre><code>┌─────────────────────────────────┐
+│ CH001 · Legacy mainframe        │
+│         onmisbaar               │
+│─────────────────────────────────│
+│ COBOL-mainframe uit 1987 draait │
+│ nog kernprocessen. Leverancier  │
+│ stopt met support.              │
+│─────────────────────────────────│
+│ Locatie: IT-Operations          │
+│ Severity: 5                     │
+│ Directe impact:                 │
+│  +25 TechnicalDebt              │
+│  −10 Innovation                 │
+│  −15 DigitalMaturity            │
+│─────────────────────────────────│
+│ KIES ÉÉN:                       │
+│ A) Strangler-pattern modernisatie│
+│    → −€400 · −20 TechDebt       │
+│    +20 DigitalMaturity · +200 XP│
+│    ⚠️ Vereist: Transformation   │
+│         Roadmap-artefact        │
+│ B) Externe COBOL-experts        │
+│    → −€250 · +5 TechDebt · +100 XP│
+│ C) Big-bang vervanging          │
+│    → −€700 · −30 TechDebt       │
+│    −15 Stakeholder · +250 XP    │
+│ D) Documenteer en freeze        │
+│    → +10 TechDebt · +10 Gov ·   │
+│      +75 XP                     │
+└─────────────────────────────────┘</code></pre>
+<p><strong>Voorbeeld Event-kaart:</strong></p>
+<pre><code>┌─────────────────────────────────┐
+│ E014 · Grote klant vraagt AI    │
+│         propositie              │
+│─────────────────────────────────│
+│ Kies wie het initiatief neemt:  │
+│ A) BA + Innovatielab           │
+│    → +8 Innovation · +6 BizValue│
+│ B) IA + Data Platform          │
+│    → +6 DigitalMaturity        │
+│    → +4 Governance             │
+│ C) Wacht op AI-strategie       │
+│    → −5 Stakeholder             │
+└─────────────────────────────────┘</code></pre>
+<hr />
+<h2 id="cascade-mechanica-kern-mechaniek">5. Cascade-mechanica
+(kern-mechaniek)</h2>
+<p>De Dragon1-methodiek eist een <strong>strikte volgorde</strong> van
+artefacten. Deze wordt in het spel bewaakt door de
+<strong>required-tab</strong> onderop elke kaart.</p>
+<h3 id="cascade-graaf">5.1 Cascade-graaf</h3>
+<pre><code>     Layer 0 (Fundament)
+     ┌────────────────────┐
+     │ A001 Vision Bp     │
+     └────────┬───────────┘
+              │
+     Layer 1 (Kader)
+   ┌──────────┼──────────┐
+   │          │          │
+   ▼          ▼          ▼
+  A002       A004       A013
+  Strategy   Arch       Vision
+  Map        Principles Poster
+   │          │
+   ▼          │
+   │          ▼
+  A003 ──────┴─── A009 Governance
+  Cap Map
+   ├── A005 ─── A007 Info Model
+   ├── A015 (Value Stream)
+   └── A010 Roadmap ── A011 Portfolio
+              └── ─── A006 App Landscape
+                     ├── A008 Tech Blueprint
+                     └── A014 Solution Overview
+
+     Layer x (Governance-lock)
+      A012 Repository (vereist A004 + A009)</code></pre>
+<p>Volledig cascade-schema staat groter op facilitator-map (A3).</p>
+<h3 id="speeltactiek">5.2 Speeltactiek</h3>
+<ul>
+<li>Vroeg spel: focus Vision + Principles (voorwaarden voor alle latere
+lagen)</li>
+<li>Midden spel: Capability Map + Application Landscape (nodig voor
+Roadmap)</li>
+<li>Laat spel: Portfolio Dashboard + Architecture Repository
+(governance-locks + XP-multipliers)</li>
+<li>Missen van kern-artefact = geen RvB-presentatie mogelijk =
+verlies</li>
+</ul>
+<hr />
+<h2 id="winstconditie-en-scoring">6. Winstconditie en scoring</h2>
+<h3 id="eindsignaal">6.1 Eindsignaal</h3>
+<p>Het spel eindigt op <strong>beurt 20</strong>. Of eerder als: - Alle
+15 artefacten gemodelleerd → <strong>vroege triomf</strong> (score +50)
+- Budget &lt; €0 → <strong>noodscenario</strong> — RvB-presentatie mag
+nog wél, maar met −20 penalty - TechnicalDebt &gt; 80 én
+StakeholderConfidence &lt; 30 → <strong>automatisch verlies</strong>
+(organisatie in crisis)</p>
+<h3 id="rvb-eindpresentatie-facilitator-flow">6.2 RvB-eindpresentatie
+(facilitator-flow)</h3>
+<p>Facilitator draait 8-aspect score-schijf en berekent:</p>
+<table>
+<colgroup>
+<col style="width: 33%" />
+<col style="width: 33%" />
+<col style="width: 33%" />
+</colgroup>
+<thead>
+<tr>
+<th>Aspect</th>
+<th>Weging</th>
+<th>Berekening</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Strategische Richting</td>
+<td>15%</td>
+<td>(BusinessValue + StakeholderConfidence) / 2</td>
+</tr>
+<tr>
+<td>Business-fit</td>
+<td>15%</td>
+<td>BusinessValue</td>
+</tr>
+<tr>
+<td>Informatie-integriteit</td>
+<td>10%</td>
+<td>DigitalMaturity</td>
+</tr>
+<tr>
+<td>Applicatie-portfolio</td>
+<td>10%</td>
+<td>DigitalMaturity − TechnicalDebt/2</td>
+</tr>
+<tr>
+<td>Technologie-fundament</td>
+<td>10%</td>
+<td>DigitalMaturity + Security/2</td>
+</tr>
+<tr>
+<td>Security &amp; Compliance</td>
+<td>10%</td>
+<td>Security</td>
+</tr>
+<tr>
+<td>Innovatie &amp; Groei</td>
+<td>10%</td>
+<td>Innovation</td>
+</tr>
+<tr>
+<td>Governance</td>
+<td>20%</td>
+<td>Governance</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Totaal-score = gewogen som (max 100)</strong>.</p>
+<h3 id="cijfer-uitkomst">6.3 Cijfer-uitkomst</h3>
+<table>
+<colgroup>
+<col style="width: 33%" />
+<col style="width: 33%" />
+<col style="width: 33%" />
+</colgroup>
+<thead>
+<tr>
+<th>Score</th>
+<th>Predicaat</th>
+<th>Verbeterpunten</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>90-100</td>
+<td><strong>Uitzonderlijk</strong> — RvB is enthousiast,
+transformation-fund uitgebreid</td>
+<td>Enkele feinschliff-punten</td>
+</tr>
+<tr>
+<td>75-89</td>
+<td><strong>Goed</strong> — RvB tekent voor volgende fase</td>
+<td>2-3 verbeterpunten in Debrief</td>
+</tr>
+<tr>
+<td>60-74</td>
+<td><strong>Voldoende</strong> — RvB akkoord, mits verbeterpunten</td>
+<td>4-5 verbeterpunten</td>
+</tr>
+<tr>
+<td>45-59</td>
+<td><strong>Onvoldoende</strong> — RvB vraagt heroverweging</td>
+<td>6+ verbeterpunten</td>
+</tr>
+<tr>
+<td>0-44</td>
+<td><strong>Ontoereikend</strong> — RvB stopt programma</td>
+<td>Volledige heroverweging</td>
+</tr>
+</tbody>
+</table>
+<p>Facilitator vertelt vanuit RvB-perspectief het uitkomst-verhaal (5
+min speech-template als bijlage).</p>
+<h3 id="bonus-verbeterpunten-lijst">6.4 Bonus: verbeterpunten-lijst</h3>
+<p>Elk aspect waarin &lt; 60 gescoord: schrijf op
+<strong>verbeterpunten-kaart</strong> en overhandig aan team als
+vervolg-huiswerk.</p>
+<hr />
+<h2 id="achievements">7. Achievements</h2>
+<p>47 achievements verdeeld over categorieën:</p>
+<ul>
+<li><strong>Cascade-completion</strong> (bv “Sluit A001 → A010 in ≤ 8
+beurten”)</li>
+<li><strong>Metric-max</strong> (bv “Bereik Governance = 100”)</li>
+<li><strong>Rol-specifiek</strong> (bv “Als CIO: gebruik Executive
+Mandate 3× effectief”)</li>
+<li><strong>Team-samenwerking</strong> (bv “Presenteer alle 15
+artefacten voor beurt 15”)</li>
+</ul>
+<p>Analoge implementatie: 47 achievement-kaarten liggen naast bord.
+Facilitator markeert vervulling per team.</p>
+<hr />
+<h2 id="print-play-checklist">8. Print &amp; Play checklist</h2>
+<ul class="task-list">
+<li><label><input type="checkbox" />Bord met 4×4-grid + cascade-veld (A2
+met 4× A4-tegels of gestikt)</label></li>
+<li><label><input type="checkbox" />15 artefact-kaarten (met
+required-tabs onderkant)</label></li>
+<li><label><input type="checkbox" />40 mission-kaarten</label></li>
+<li><label><input type="checkbox" />40 challenge-kaarten</label></li>
+<li><label><input type="checkbox" />30 event-kaarten</label></li>
+<li><label><input type="checkbox" />47 achievement-kaarten</label></li>
+<li><label><input type="checkbox" />8 rollen-tableau’s (A4)</label></li>
+<li><label><input type="checkbox" />1 gedeelde dashboard-vel
+(A3)</label></li>
+<li><label><input type="checkbox" />1 D6</label></li>
+<li><label><input type="checkbox" />Tokens: rol-pionnen (8×),
+metric-markers (12×), status-tokens, beurten-token</label></li>
+<li><label><input type="checkbox" />Facilitator-map: regelboek,
+Dragon1-samenvatting, RvB-template</label></li>
+<li><label><input type="checkbox" />Optioneel: Wallet-card met alle 15
+artefact-vereisten voor snelle referentie</label></li>
+</ul>
+<p>Kostenraming: - Zelf-print A4 kleur: <strong>€35</strong> (thuis) -
+Copyshop (bord op 250 g karton): <strong>€90</strong> - Print-on-demand:
+<strong>€65-80</strong> per doos (incl. dashboards laminated)</p>
+<hr />
+<h2 id="verschillen-digitaal-analoog">9. Verschillen digitaal ↔︎
+analoog</h2>
+<table>
+<colgroup>
+<col style="width: 33%" />
+<col style="width: 33%" />
+<col style="width: 33%" />
+</colgroup>
+<thead>
+<tr>
+<th>Aspect</th>
+<th>Digitaal (HTML5)</th>
+<th>Analoog (bordspel)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Speeltijd</td>
+<td>45-75 min</td>
+<td>90-120 min</td>
+</tr>
+<tr>
+<td>Speleraantal</td>
+<td>1 speler kiest 1 rol</td>
+<td>2-8 spelers (1 rol per speler)</td>
+</tr>
+<tr>
+<td>Cascade-check</td>
+<td>JavaScript logica</td>
+<td>Fysieke kaart-tab moet zichtbaar zijn</td>
+</tr>
+<tr>
+<td>Random events</td>
+<td>JavaScript RNG</td>
+<td>D6 + kaart-tabellen</td>
+</tr>
+<tr>
+<td>Dashboard</td>
+<td>Live UI</td>
+<td>A3-vel + fysieke tokens</td>
+</tr>
+<tr>
+<td>RvB-presentatie</td>
+<td>Modal met tekst-gen</td>
+<td>Facilitator vertelt vanuit template</td>
+</tr>
+<tr>
+<td>Autosave</td>
+<td>LocalStorage</td>
+<td>Foto per ronde</td>
+</tr>
+<tr>
+<td>Dragon1-kennis</td>
+<td>Tooltips</td>
+<td>Facilitator-Dragon1-samenvatting bijgevoegd</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="facilitator-tips-voor-workshop-gebruik">10. Facilitator-tips
+voor workshop-gebruik</h2>
+<ul>
+<li><strong>Sessie-lengte:</strong> 3 uur totaal (10 min intro, 90-100
+min spel, 30 min debrief)</li>
+<li><strong>Team-samenstelling:</strong> ideaal 4-6 spelers; mix van
+business en IT rollen</li>
+<li><strong>Reflectie-vragen debrief:</strong>
+<ol type="1">
+<li>Welke artefact-cascade heb je gemist en waarom?</li>
+<li>Wanneer wilde je Vision Poster (A013) vroeger inzetten om
+stakeholders te betrekken?</li>
+<li>Kwam je in de knel bij Missing A004 → A009 → A012
+(governance-lock)?</li>
+<li>Vertaalt dit naar jullie eigen organisatie? Waar staan jullie op
+Governance/DigitalMaturity?</li>
+</ol></li>
+<li><strong>Varianten:</strong>
+<ul>
+<li>“Junior-modus” — alleen 8 kern-artefacten (skip A011, A013, A014,
+A015 + extra’s)</li>
+<li>“Governance-Focus” — start met TechnicalDebt = 60; forceer
+governance-first strategie</li>
+<li>“Startup-modus” — 15 beurten in plaats van 20; nadruk op snel Vision
++ Application Landscape</li>
+</ul></li>
+</ul>
+<hr />
+<h2 id="verantwoording-ontwerp-keuzes">11. Verantwoording
+ontwerp-keuzes</h2>
+<table>
+<colgroup>
+<col style="width: 33%" />
+<col style="width: 33%" />
+<col style="width: 33%" />
+</colgroup>
+<thead>
+<tr>
+<th>Keuze</th>
+<th>Alternatief</th>
+<th>Argumentatie</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>4×4-grid (16 locaties)</td>
+<td>5×5 met 25 locaties</td>
+<td>Digitale versie kent 16 locaties; behoud 1:1 mapping</td>
+</tr>
+<tr>
+<td>Fysieke cascade-veld</td>
+<td>Kaartjes-stack in hand</td>
+<td>Zichtbaarheid = kern-leermoment (Dragon1 vereist expliciete
+voorloper-check)</td>
+</tr>
+<tr>
+<td>Gedeeld dashboard</td>
+<td>Individuele dashboards</td>
+<td>Team-samenwerking centraal; niet iedereen jaagt eigen KPI</td>
+</tr>
+<tr>
+<td>Rol-specials 1× per spel</td>
+<td>1× per fase (per 5 beurten)</td>
+<td>Digitale versie: 1× totaal — houd 1:1</td>
+</tr>
+<tr>
+<td>20 beurten harde deadline</td>
+<td>Open eind bij consensus</td>
+<td>Simuleert Q1-Q4 kwartaal-druk uit realistische EA-praktijk</td>
+</tr>
+<tr>
+<td>8-aspect eindscore vs single score</td>
+<td>Enkelvoudig totaalcijfer</td>
+<td>8-aspect = Dragon1-doctrine; matches digitale versie</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="openstaande-vragen-bij-playtest">12. Openstaande vragen bij
+playtest</h2>
+<ul>
+<li><strong>Cascade-blokkade:</strong> wat als team pas op beurt 3 A001
+kan neerleggen? → alle latere kaarten gestrand</li>
+<li><strong>Challenge-severity 5</strong>: kan ook artefacten neerslaan?
+→ in analoge versie: nee (te straf)</li>
+<li><strong>CIO Executive Mandate</strong>: overpowered? →misschien
+beperken tot +15 budget-per-beurt in plaats van +20</li>
+<li><strong>Facilitator-load</strong>: kan facilitator écht 3 uur
+volhouden met event-trekken en scoring bijhouden? Overweeg
+co-facilitator bij 6+ spelers</li>
+<li><strong>Print-kwaliteit rol-tableaus</strong>: 9 attribuut-tracks op
+A4 leesbaar? Overweeg alternatief 3×3-matrix layout</li>
+</ul>
+<hr />
+<h2 id="bijlagen-kaartuitgifte-overzichten">Bijlagen
+(kaartuitgifte-overzichten)</h2>
+<ul>
+<li><strong>Artefact 15</strong> — zie
+<code>v2/content/artefacts.json</code> (met required-cascade)</li>
+<li><strong>Mission 40</strong> — zie
+<code>v2/content/missions.json</code></li>
+<li><strong>Challenge 40</strong> — zie
+<code>v2/content/challenges.json</code></li>
+<li><strong>Event 30</strong> — zie <code>v2/content/events.json</code>
+(28 met branching)</li>
+<li><strong>Achievement 47</strong> — zie
+<code>v2/content/achievements.json</code></li>
+<li><strong>Rollen 8</strong> — zie
+<code>v2/content/roles.json</code></li>
+<li><strong>Locaties 16</strong> — zie
+<code>v2/content/locations.json</code></li>
+</ul>
+<hr />
+<p><strong>Versie doc:</strong> analog_v2_dragon1 v0.1 <strong>Gebaseerd
+op digitale versie:</strong> v0.2.0-Paauwe (commit <code>7af45ec</code>)
+<strong>Auteur:</strong> Claude Opus 4.7 (1M context) namens Christian
+Glebbeek <strong>Licentie:</strong> AGPL-3.0 (matches repo)
+<strong>Dragon1-methodiek:</strong> met dank aan Mark Paauwe
+(Dragon1-grondlegger)</p>
+</body>
+</html>
