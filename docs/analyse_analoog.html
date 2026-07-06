@@ -1,0 +1,1087 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>EnterpriseQuest — Analyse Analoge Versies (v0.2)</title>
+  <style>
+    /* Default styles provided by pandoc.
+    ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+    */
+    html {
+      color: #1a1a1a;
+      background-color: #fdfdfd;
+    }
+    body {
+      margin: 0 auto;
+      max-width: 36em;
+      padding-left: 50px;
+      padding-right: 50px;
+      padding-top: 50px;
+      padding-bottom: 50px;
+      hyphens: auto;
+      overflow-wrap: break-word;
+      text-rendering: optimizeLegibility;
+      font-kerning: normal;
+    }
+    @media (max-width: 600px) {
+      body {
+        font-size: 0.9em;
+        padding: 12px;
+      }
+      h1 {
+        font-size: 1.8em;
+      }
+    }
+    @media print {
+      html {
+        background-color: white;
+      }
+      body {
+        background-color: transparent;
+        color: black;
+        font-size: 12pt;
+      }
+      p, h2, h3 {
+        orphans: 3;
+        widows: 3;
+      }
+      h2, h3, h4 {
+        page-break-after: avoid;
+      }
+    }
+    p {
+      margin: 1em 0;
+    }
+    a {
+      color: #1a1a1a;
+    }
+    a:visited {
+      color: #1a1a1a;
+    }
+    img {
+      max-width: 100%;
+    }
+    svg {
+      height: auto;
+      max-width: 100%;
+    }
+    h1, h2, h3, h4, h5, h6 {
+      margin-top: 1.4em;
+    }
+    h5, h6 {
+      font-size: 1em;
+      font-style: italic;
+    }
+    h6 {
+      font-weight: normal;
+    }
+    ol, ul {
+      padding-left: 1.7em;
+      margin-top: 1em;
+    }
+    li > ol, li > ul {
+      margin-top: 0;
+    }
+    blockquote {
+      margin: 1em 0 1em 1.7em;
+      padding-left: 1em;
+      border-left: 2px solid #e6e6e6;
+      color: #606060;
+    }
+    code {
+      white-space: pre-wrap;
+      font-family: Menlo, Monaco, Consolas, 'Lucida Console', monospace;
+      font-size: 85%;
+      margin: 0;
+      hyphens: manual;
+    }
+    pre {
+      margin: 1em 0;
+      overflow: auto;
+    }
+    pre code {
+      padding: 0;
+      overflow: visible;
+      overflow-wrap: normal;
+    }
+    .sourceCode {
+     background-color: transparent;
+     overflow: visible;
+    }
+    hr {
+      border: none;
+      border-top: 1px solid #1a1a1a;
+      height: 1px;
+      margin: 1em 0;
+    }
+    table {
+      margin: 1em 0;
+      border-collapse: collapse;
+      width: 100%;
+      overflow-x: auto;
+      display: block;
+      font-variant-numeric: lining-nums tabular-nums;
+    }
+    table caption {
+      margin-bottom: 0.75em;
+    }
+    tbody {
+      margin-top: 0.5em;
+      border-top: 1px solid #1a1a1a;
+      border-bottom: 1px solid #1a1a1a;
+    }
+    th {
+      border-top: 1px solid #1a1a1a;
+      padding: 0.25em 0.5em 0.25em 0.5em;
+    }
+    td {
+      padding: 0.125em 0.5em 0.25em 0.5em;
+    }
+    header {
+      margin-bottom: 4em;
+      text-align: center;
+    }
+    #TOC li {
+      list-style: none;
+    }
+    #TOC ul {
+      padding-left: 1.3em;
+    }
+    #TOC > ul {
+      padding-left: 0;
+    }
+    #TOC a:not(:hover) {
+      text-decoration: none;
+    }
+    span.smallcaps{font-variant: small-caps;}
+    div.columns{display: flex; gap: min(4vw, 1.5em);}
+    div.column{flex: auto; overflow-x: auto;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    /* The extra [class] is a hack that increases specificity enough to
+       override a similar rule in reveal.js */
+    ul.task-list[class]{list-style: none;}
+    ul.task-list li input[type="checkbox"] {
+      font-size: inherit;
+      width: 0.8em;
+      margin: 0 0.8em 0.2em -1.6em;
+      vertical-align: middle;
+    }
+    .display.math{display: block; text-align: center; margin: 0.5rem auto;}
+  </style>
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">EnterpriseQuest — Analyse Analoge Versies (v0.2)</h1>
+</header>
+<h1
+id="enterprise-quest-deep-dive-analyse-analoge-versies-intern">Enterprise
+Quest — Deep Dive Analyse: Analoge Versies (intern)</h1>
+<p><strong>Auteur:</strong> Christian Glebbeek (iCt Horse)
+<strong>Datum:</strong> 2026-07-07 <strong>Scope:</strong> commerciële
+haalbaarheid van <strong>analoge Print &amp; Play
+bordspel-uitwerkingen</strong> van EnterpriseQuest v1 (fantasy-RPG) + v2
+(Dragon1) als <strong>fysiek serious game + workshop-product</strong>,
+apart van (én in combinatie met) de digitale versies.
+<strong>Position:</strong> intern beslissingsstuk — vervolg op
+<code>analyse_deepdive.md</code> (dat de digitale versies analyseerde).
+Focus hier: <strong>wat verandert er als je het spel op tafel legt in
+plaats van in de browser?</strong></p>
+<hr />
+<h2 id="samenvatting-management">1 · Samenvatting (management)</h2>
+<p><strong>Uniek?</strong> Ja, sterker dan bij de digitale versies. In
+de wereld van serious-game-bordspellen bestaan er varianten voor
+<strong>agile/scrum, kanban, procesarchitectuur, cyber-security,
+projectmanagement</strong> — maar <strong>niet voor Enterprise
+Architecture volgens een specifieke methode (Dragon1)</strong>. De
+analoge EQ v2 is daarmee — voor zover bekend — de eerste fysieke
+Dragon1-workshop-tool ter wereld. EQ v1 (fantasy-RPG) heeft méér
+concurrenten in de “tech-humor board game”-hoek (bv. <em>The
+Manager</em>, <em>Kanban Pizza Game</em>, <em>Scrumble</em>) maar geen
+enkele daarvan combineert <strong>RPG-mechanica + volledige
+EA-content-set</strong>.</p>
+<p><strong>Vermarktbaar?</strong> Ja, maar via een fundamenteel ander
+verdienmodel dan de digitale versies. Fysieke bordspellen worden
+<strong>niet per gebruiker-licentie</strong> verkocht; ze worden
+verkocht als: 1. <strong>Fysiek eindproduct</strong> — €40-120 per doos
+(via Bol.com, boardgamestore.nl, Kickstarter/Gamefound) 2.
+<strong>Facilitator-tool</strong> — €500-2.500 per sessie (inhouse
+workshop, incl. facilitator) 3. <strong>Train-de-trainer
+certificering</strong> met de fysieke set als bijgevoegd materiaal —
+€5.000-15.000 per instructeur 4. <strong>Corporate gift /
+conferentie-uitgifte</strong> — 50-500 dozen voor branded events —
+€30-80 per doos in bulk</p>
+<p><strong>Belangrijk verschil t.o.v. digitaal:</strong> een fysiek spel
+wordt <strong>onthouden</strong> (op de plank in de werkkamer,
+jaarlijkse team-day, herhaald gebruik). Digitale versies hebben veel
+hogere adoptie-friction. Fysiek is duurder om te distribueren, maar
+levert een hogere gepercipieerde waarde-per-verkoop op.</p>
+<p><strong>1 spel of meerdere in de analoge lijn?</strong> Antwoord:
+<strong>beide fysieke edities uitbrengen (v1 én v2)</strong>, met
+dezelfde funnel-logica als bij digitaal — maar met <strong>omgekeerde
+prijsposities</strong>: - <strong>v1 fysiek</strong> — €50-70 retail,
+mainstream tech-enthousiast, mogelijk retail - <strong>v2
+fysiek</strong> — €90-150 workshop-edition, alleen via iCt Horse of
+Dragon1-kanaal, gebundeld met facilitator-gids</p>
+<p><strong>Advies partners:</strong> - <strong>Mark Paauwe
+(Dragon1)</strong> — fysieke EQ v2 is een véél sterker gesprek dan de
+digitale versie. Bordspel = tastbaar, boardroom-legitimiteit, tijdens
+Dragon1-events uit te delen. Voorstel: co-productie fysieke
+Dragon1-editie. - <strong>Peter v/d Hulst (Staff)</strong> — fysieke
+workshop-tool past bij Staff’s traditie van
+klassikale-training-materiaal. Overweging: white-label
+procesarchitectuur-editie (v3-analoog). - <strong>Nieuwe optie:</strong>
+<strong>Kickstarter/Gamefound crowdfunding</strong> voor v1
+(fantasy-RPG-editie) — bereikt board-gamer-community rechtstreeks,
+valideert markt zonder partner nodig.</p>
+<p><strong>Gevaar:</strong> productie- en logistiek-risico. Fysieke
+productie = MOQ’s (minimum order quantities), voorraadrisico,
+retourbeleid, verzendkosten. Anders dan digitaal, dat
+marginaal-nul-kosten is.</p>
+<hr />
+<h2 id="wat-hebben-we-in-de-analoge-lijn">2 · Wat hebben we in de
+analoge lijn</h2>
+<h3 id="analog-v1-architects-dungeon-pnp-editie">2.1 · Analog v1 ·
+Architect’s Dungeon PnP-editie</h3>
+<p>Gebaseerd op <code>docs/analog_v1_rpg.md</code>:</p>
+<ul>
+<li><strong>Vorm:</strong> bord (40 tiles, 12 regio’s) + 250 kaarten
+(100 Quest / 50 Chaos / 50 Artifact / 50 Event) + 22 monster-kaarten + 6
+klassen-tableau’s + tokens + D20’s</li>
+<li><strong>Speelbaarheid:</strong> 1-6 spelers, 90-150 min</li>
+<li><strong>Doelgroep:</strong> tech-enthousiast, junior architecten,
+EA-studenten, workshop-facilitators</li>
+<li><strong>Print-on-demand kostenraming:</strong> €45-90 per doos (via
+The Game Crafter of MakePlayingCards)</li>
+<li><strong>Zelf-print kosten (PnP):</strong> €25-30 thuis, €80
+copyshop</li>
+<li><strong>Kleinschalige oplage (100 stuks):</strong> €25-32 per doos
+via BoardGameLab/MPC</li>
+<li><strong>Status:</strong> design-document compleet, playtest nog niet
+uitgevoerd</li>
+</ul>
+<h3 id="analog-v2-dragon1-architects-journey-pnp-editie">2.2 · Analog v2
+· Dragon1 Architect’s Journey PnP-editie</h3>
+<p>Gebaseerd op <code>docs/analog_v2_dragon1.md</code>:</p>
+<ul>
+<li><strong>Vorm:</strong> 4×4 bord (16 organisatie-locaties) + 15
+artefact-kaarten (met cascade-tabs) + 40 missions + 40 challenges + 30
+events + 47 achievements + 8 rollen-tableau’s + gedeeld dashboard (A3) +
+tokens + 1 D6</li>
+<li><strong>Speelbaarheid:</strong> 2-8 spelers, 90-120 min,
+workshop-context</li>
+<li><strong>Doelgroep:</strong> senior EA’s, CIO’s, consultancy-firma’s,
+Dragon1-community, EA-cursussen (HAN, Nyenrode, Open Universiteit)</li>
+<li><strong>Print-on-demand kostenraming:</strong> €65-80 per doos</li>
+<li><strong>Zelf-print kosten (PnP):</strong> €35 thuis, €90
+copyshop</li>
+<li><strong>Kern-innovatie:</strong> fysieke Dragon1-cascade zichtbaar
+op tafel (leermoment ipv abstracte software-check)</li>
+<li><strong>Status:</strong> design-document compleet, playtest nog niet
+uitgevoerd</li>
+</ul>
+<h3 id="gedeelde-productie-kenmerken">2.3 · Gedeelde
+productie-kenmerken</h3>
+<ul>
+<li><strong>Formaat:</strong> Euro-poker kaarten (63×88 mm —
+Cartamundi/industry standard)</li>
+<li><strong>Bord:</strong> 60×60 cm gevouwen (2 helften)</li>
+<li><strong>Doos:</strong> standaard board-game-doos (30×30×7 cm, past
+in retail-schappen)</li>
+<li><strong>Componenten:</strong> kaarten laminated of in Ultra Pro
+sleeves; kartonnen tableau’s + tokens (kunststof of hout)</li>
+<li><strong>PnP-versie:</strong> direct downloadbaar als PDF (met
+snijlijnen)</li>
+<li><strong>Print-on-demand:</strong> via The Game Crafter (bestaande
+wereldleider PoD board games sinds 2009 met &gt;380.000 gebruikers en
+&gt;300.000 titels; bron: thegamecrafter.com/BoardGameGeek),
+MakePlayingCards, BoardGameLab</li>
+</ul>
+<hr />
+<h2 id="uniekheidsanalyse-analoge-markt">3 · Uniekheidsanalyse — analoge
+markt</h2>
+<h3 id="bestaand-landschap-fysieke-serious-games-techeabpm">3.1 ·
+Bestaand landschap fysieke serious games (tech/EA/BPM)</h3>
+<table>
+<colgroup>
+<col style="width: 25%" />
+<col style="width: 25%" />
+<col style="width: 25%" />
+<col style="width: 25%" />
+</colgroup>
+<thead>
+<tr>
+<th>Segment</th>
+<th>Bekende titels</th>
+<th>Prijs</th>
+<th>Format</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Agile/Scrum</strong></td>
+<td><em>Kanban Pizza Game</em>, <em>Ball Point Game</em>,
+<em>Scrumble</em></td>
+<td>€30-60 (of gratis PnP)</td>
+<td>Kartonnen bord + kaartjes</td>
+</tr>
+<tr>
+<td><strong>Procesarchitectuur / BPM</strong></td>
+<td>Passionned BPM-simulaties, De Processpecialisten’ proces-game</td>
+<td>€500-1.500 per set (facilitator-inclusief)</td>
+<td>Fysiek bordspel + workshop</td>
+</tr>
+<tr>
+<td><strong>Cyber-security</strong></td>
+<td><em>Backdoors &amp; Breaches</em> (Black Hills), <em>Riskio</em>,
+<em>[d0x3d!]</em></td>
+<td>€25-100</td>
+<td>Kaartspel + soms bord</td>
+</tr>
+<tr>
+<td><strong>Projectmanagement</strong></td>
+<td><em>The Manager</em>, <em>Project Manager Simulation</em>,
+PMBOK-simulaties</td>
+<td>€40-200</td>
+<td>Kaartspel + scenario-boek</td>
+</tr>
+<tr>
+<td><strong>Enterprise Architecture</strong></td>
+<td><strong>(vrijwel niets bekends)</strong> — TOGAF/ArchiMate zijn
+certificerings-cursussen, geen games</td>
+<td>n/a</td>
+<td>n/a</td>
+</tr>
+<tr>
+<td><strong>Business-strategie klassiek</strong></td>
+<td><em>Beer Distribution Game</em> (MIT Sloan, Jay W. Forrester, 1960),
+<em>The Fresh Connection</em> (Inchainge/Involvation), <em>Buckminster
+Fuller World Game</em></td>
+<td>€50-500+</td>
+<td>Fysiek bord + facilitator</td>
+</tr>
+<tr>
+<td><strong>RPG-tech-crossover</strong></td>
+<td><em>Bureaucracy</em> (Avalon Hill, 1981, satire), <em>Red Tape
+Game</em>, diverse office-humor kaartspellen</td>
+<td>€30-80</td>
+<td>Kaartspel/hybride</td>
+</tr>
+</tbody>
+</table>
+<h3 id="uniekheid-analog-eq-v1">3.2 · Uniekheid analog EQ v1</h3>
+<p><strong>Wat maakt het anders dan concurrenten in het
+fantasy/tech-humor segment:</strong></p>
+<ol type="1">
+<li><strong>RPG-mechanica (D20, klassen, XP-progressie) + volledige
+EA-content-set</strong> — nergens anders gezien. RPG-spellen met
+tech-humor bestaan (Bureaucracy: The Board Game), maar behandelen EA
+niet inhoudelijk</li>
+<li><strong>250 kaarten met echte EA-terminologie</strong> — TOGAF ADM,
+ArchiMate, Zero Trust, GDPR, NIS2, MLOps, Kubernetes — direct herkenbaar
+voor doelgroep</li>
+<li><strong>Chaos Architect als 3-fase eindboss</strong> — creatief
+metaforisch: de “witte-bord-fase” → “implementatie-chaos” →
+“chaos-ascendant” — herkenbaar EA-verhaal</li>
+<li><strong>Nederlandstalig</strong> — enige Nederlandse RPG-bordspel
+over enterprise IT</li>
+</ol>
+<p><strong>Unique Selling Points (analog v1):</strong> - Enige
+Nederlandse EA-gamification-bordspel op RPG-basis - Directe fysieke
+overname van bekende D&amp;D-conventies (D20, klassen, kaarten) → lage
+leerdrempel voor RPG-geïnteresseerde tech-community - Print &amp; Play
+beschikbaar → geen productierisico voor early-adopters - Open-source
+content (AGPL-3.0) → community-uitbreiding mogelijk (nieuwe klassen,
+monsters, artifacten)</p>
+<p><strong>Risico’s:</strong> - RPG-verpakking kan door senior EA’s als
+“onprofessioneel” gezien worden — beperkte inzet in enterprise-workshops
+- Fysieke productie MOQ’s onbekend, valideren nodig - Concurrentie
+<em>Backdoors &amp; Breaches</em> (cyber-security kaartspel) heeft al
+€25-50 prijspunt bezet in aangrenzende markt</p>
+<h3 id="uniekheid-analog-eq-v2">3.3 · Uniekheid analog EQ v2</h3>
+<p><strong>Wat maakt het onvergelijkelijk:</strong></p>
+<ol type="1">
+<li><strong>Enige fysieke bordspel-implementatie van de
+Dragon1-methodiek</strong> (voor zover bekend — check bij Mark
+Paauwe)</li>
+<li><strong>Fysieke artefact-cascade</strong> — kaarten met
+required-tabs die op tafel worden gestapeld → <strong>zichtbaar
+leermoment</strong> dat je in software niet even sterk krijgt</li>
+<li><strong>8 rollen simultaan spelen</strong> — bevordert
+cross-perspectief-inzicht (BA vs SecA vs CIO vs Student EA) op dezelfde
+case, iets wat digitale single-player nooit oplevert</li>
+<li><strong>Facilitator-geleide RvB-eindpresentatie</strong> —
+professioneel workshop-format, vertaalbaar naar boardroom-oefening</li>
+<li><strong>Gedeeld A3-dashboard</strong> — team op één
+single-source-of-truth → sluit aan bij hedendaagse teamwork-trends
+(Miro/Mural analogieën in fysiek)</li>
+</ol>
+<p><strong>Unique Selling Points (analog v2):</strong> - Enige
+Dragon1-workshop-tool die je op tafel kunt leggen (analog + tastbaar) -
+Direct bruikbaar in EA-cursussen op universitaire/HBO-niveau (HAN,
+Nyenrode, Open Universiteit, Universiteit van Amsterdam) - Sluit aan bij
+Dragon1-doctrine (Mark Paauwe erkent 4 ‘ways’: way of thinking / working
+/ representing / supporting — bordspel = alle 4 tegelijk) - Herbruikbaar
+in klaslokaal én bij inhouse workshops → hoge
+herbruikbaarheids-waarde</p>
+<p><strong>Risico’s:</strong> - Zonder Paauwe’s blessing kan v2 niet als
+“officieel Dragon1” verkocht worden - Complexer dan v1 → langere
+onboarding-tijd voor facilitator - Prijspunt hoger (€90-150) → smallere
+markt</p>
+<h3 id="bijzondere-waardepropositie-fysiek-versus-digitaal">3.4 ·
+Bijzondere waardepropositie: fysiek versus digitaal</h3>
+<p>Kern-inzicht: fysieke bordspellen worden waardevoller in de
+post-2023-context (Zoom-moeheid, hybride werk, offline-focus,
+digital-detox trend). CIO’s/EA’s zoeken workshop-formats die
+<strong>teams tastbaar samen doen</strong> — niet nog een Miro-board of
+nog een Zoom-call.</p>
+<p><strong>Waarom fysiek EQ v2 in 2026 kan werken:</strong></p>
+<table>
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
+<thead>
+<tr>
+<th>Trend</th>
+<th>Fysiek voordeel</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Zoom-moeheid</strong></td>
+<td>Fysieke bordspel-sessie = mensen weg van scherm</td>
+</tr>
+<tr>
+<td><strong>Team-building post-COVID</strong></td>
+<td>Boardroom-oefening + spel = herstellend voor cultuur</td>
+</tr>
+<tr>
+<td><strong>Digital-detox</strong></td>
+<td>Kaarten shuffelen, dobbelen, tokens verschuiven = zintuiglijk</td>
+</tr>
+<tr>
+<td><strong>In-person meetings terug</strong></td>
+<td>Board-room-tafel = eenvoudige set-up (bord + kaarten)</td>
+</tr>
+<tr>
+<td><strong>AI-vermoeidheid</strong></td>
+<td>Fysiek = geen chatbot, wel echte deliberatie</td>
+</tr>
+<tr>
+<td><strong>Boardroom-legitimiteit</strong></td>
+<td>Card-game op tafel = professioneler dan iPad-app</td>
+</tr>
+</tbody>
+</table>
+<p>Bordspel-sector groeit gestaag (BoardGameGeek Kickstarter-cijfers,
+Gamefound-launches, Essen Spiel bezoekersgroei) — serious games
+sub-niche groeit sneller dan mainstream board games (bron: SeriousGames
+Interactive market reports).</p>
+<hr />
+<h2 id="vermarktbaarheid-analoge-productlijnen">4 · Vermarktbaarheid —
+analoge productlijnen</h2>
+<h3 id="doelgroepen-analog">4.1 · Doelgroepen (analog)</h3>
+<table>
+<colgroup>
+<col style="width: 25%" />
+<col style="width: 25%" />
+<col style="width: 25%" />
+<col style="width: 25%" />
+</colgroup>
+<thead>
+<tr>
+<th>Doelgroep</th>
+<th>v1 fysiek</th>
+<th>v2 fysiek</th>
+<th>Prijsbereidheid per doos</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Tech-enthousiast / boardgamer-community</td>
+<td>★★★</td>
+<td>★</td>
+<td>€40-70</td>
+</tr>
+<tr>
+<td>Studenten EA (HAN, Nyenrode, Open Universiteit, UvA)</td>
+<td>★★★</td>
+<td>★★</td>
+<td>€30-50 (bulk-korting via cursus)</td>
+</tr>
+<tr>
+<td>Junior architecten (persoonlijke aankoop)</td>
+<td>★★</td>
+<td>★★</td>
+<td>€50-80</td>
+</tr>
+<tr>
+<td>Senior architecten / CIO’s</td>
+<td>★</td>
+<td>★★★</td>
+<td>€90-150</td>
+</tr>
+<tr>
+<td>Consultancy-firma’s (interne trainingsmiddel)</td>
+<td>★★</td>
+<td>★★★</td>
+<td>€150-300 per set, 5-10 sets per firma</td>
+</tr>
+<tr>
+<td>Universiteiten / HBO-cursusleiders</td>
+<td>★</td>
+<td>★★★</td>
+<td>€200-400 per set (curriculum-inclusief)</td>
+</tr>
+<tr>
+<td>Dragon1-community-events</td>
+<td>—</td>
+<td>★★★</td>
+<td>Kadobox (gratis/subsidie)</td>
+</tr>
+<tr>
+<td>Retail (Bol, boardgamestore.nl)</td>
+<td>★★</td>
+<td>★</td>
+<td>€40-70 retail-consumer</td>
+</tr>
+<tr>
+<td>Kickstarter/Gamefound-backers</td>
+<td>★★★</td>
+<td>★★</td>
+<td>€50-100 (early-bird)</td>
+</tr>
+<tr>
+<td>Corporate-gift (bank/verzekeraar/consulting)</td>
+<td>★</td>
+<td>★★★</td>
+<td>€50-80 per doos bulk</td>
+</tr>
+</tbody>
+</table>
+<h3 id="verdienmodellen-analog">4.2 · Verdienmodellen (analog)</h3>
+<ol type="1">
+<li><strong>Print &amp; Play PDF-verkoop</strong> — €5-15 per download
+(via itch.io, gumroad, iCt Horse-shop). Marginaal nul-kosten. Voor
+<strong>early revenue en validatie</strong></li>
+<li><strong>Print-on-demand fysiek</strong> — via The Game Crafter
+(auteur zet €0-15 marge op basis-productiekosten). Geen eigen voorraad.
+Marge lager, drempel voor koper hoger (verzending +25%)</li>
+<li><strong>Kleinschalige eigen productie</strong> (100-500 stuks) — MOQ
+€2.500-15.000, marge 60-70% op retail-prijs. Vergt
+voor-financiering</li>
+<li><strong>Kickstarter/Gamefound crowdfunding</strong> — validatie +
+voor-financiering in één. Fantasy-editie geschikter dan Dragon1-editie
+voor deze route</li>
+<li><strong>Retail-distributie</strong> — via boardgamestore.nl,
+Bol.com, 999 Games. Marges 30-45% (retail neemt 40-55%)</li>
+<li><strong>Workshop-tool licensing (fysiek incl.)</strong> —
+facilitator koopt licentie (€500-1.500 per sessie) inclusief spel +
+gids</li>
+<li><strong>Train-de-trainer</strong> — trainer krijgt spel + gids +
+certificering — €7.500-15.000 per instructeur</li>
+<li><strong>Corporate gift / branded editie</strong> —
+banks/consultancy/verzekeraars kopen 50-500 dozen met eigen logo —
+€30-80 per doos bulk</li>
+<li><strong>Universitair curriculum-pakket</strong> — €200-400 per set
+inclusief docentenhandleiding, jaarlijkse update</li>
+</ol>
+<h3 id="tamsamsom-nederland-analog">4.3 · TAM/SAM/SOM Nederland
+(analog)</h3>
+<ul>
+<li><strong>TAM</strong> — Nederlandse markt fysieke
+serious-game/workshop-materialen (EA/BPM/PM samen): ~€8-15M/jaar
+(geschat op basis van bekende BPM-simulatie-tarieven × sessie-volumes +
+universitair curriculum-materiaal)</li>
+<li><strong>SAM</strong> — fysieke EA-simulaties (specifiek
+Dragon1/TOGAF/ArchiMate): <strong>niet-bestaande markt vandaag</strong>
+— geschatte latent SAM: €500k-2M/jaar</li>
+<li><strong>SOM</strong> (jaar 1) — realistisch met 1 launch + PnP + 1
+partner:
+<ul>
+<li>Zelf-launch v1 fysiek: 100-300 stuks × €60 = €6k-18k</li>
+<li>Kickstarter v1 (met €10k crowdfunding-goal): 200-600 backers =
+€10k-40k</li>
+<li>Workshops v2 (5-15 sessies à €1.500): €7,5k-22,5k</li>
+<li><strong>Totaal jaar 1 zonder partner: €20k-80k</strong></li>
+<li><strong>Met Dragon1-partner en curriculum-deals:
+€50k-180k</strong></li>
+</ul></li>
+</ul>
+<h3 id="kritische-succesfactoren-analog">4.4 · Kritische succesfactoren
+(analog)</h3>
+<ol type="1">
+<li><strong>Playtest</strong> — je hebt minimaal 5-8 playtest-sessies
+nodig met echte EA/CIO’s. Zonder valideren is retail-launch riskant.
+<strong>Kosten: €0 (eigen tijd) tot €5k (facilitator-huur)</strong></li>
+<li><strong>Facilitator-gids</strong> — voor v2 vitaal
+(workshop-context); voor v1 optioneel (self-service). <strong>Kosten:
+€5-10k voor 2 gidsen</strong></li>
+<li><strong>Doos + productie-artwork</strong> — professioneel design
+nodig voor retail/Kickstarter. <strong>Kosten: €2k-5k grafisch design +
+fotografie</strong></li>
+<li><strong>Distributie-kanaal</strong> — Kickstarter (self-service),
+retail (via 999 Games of import), of directe verkoop (icthorse.nl/shop
+bouwen). <strong>Kosten: €3k-8k voor shop +
+payments-integratie</strong></li>
+<li><strong>Voorraad-financiering</strong> — bij eigen productie €5k-15k
+initieel; met Kickstarter voorgefinancierd</li>
+<li><strong>Retail-relatie</strong> — 999 Games, boardgamestore.nl of
+Bol.com verkopers-account nodig. Boardgamestore accepteert doorgaans
+nieuwe uitgevers na sample-test; 999 Games heeft strengere selectie</li>
+<li><strong>Localisation</strong> — NL-only versus EN — voor
+internationale markt EN-editie nodig (€3-8k vertaling + review)</li>
+<li><strong>BoardGameGeek-listing</strong> — voor
+community-zichtbaarheid essentieel. Gratis, vergt kwaliteit-check</li>
+</ol>
+<h3 id="vergelijking-analog-eq-met-bekende-pnp-successen">4.5 ·
+Vergelijking analog EQ met bekende PnP-successen</h3>
+<table>
+<colgroup>
+<col style="width: 25%" />
+<col style="width: 25%" />
+<col style="width: 25%" />
+<col style="width: 25%" />
+</colgroup>
+<thead>
+<tr>
+<th>Titel</th>
+<th>Type</th>
+<th>Prijs</th>
+<th>Waarom werkte het?</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>The Manager</strong> (D. Rothwein, PnP)</td>
+<td>Free download → zelf print</td>
+<td>Gratis</td>
+<td>Community-driven, developer-humor</td>
+</tr>
+<tr>
+<td><strong>Backdoors &amp; Breaches</strong> (Black Hills)</td>
+<td>PnP + retail box</td>
+<td>Gratis PnP / $30 retail</td>
+<td>Cyber-community, klein &amp; krachtig</td>
+</tr>
+<tr>
+<td><strong>Kanban Pizza Game</strong> (agile42)</td>
+<td>PnP alleen</td>
+<td>Gratis</td>
+<td>Trainer-tool, snel te leren</td>
+</tr>
+<tr>
+<td><strong>Cards Against Humanity</strong></td>
+<td>Retail + PnP</td>
+<td>$25 / gratis PnP</td>
+<td>Viraal, controverse</td>
+</tr>
+<tr>
+<td><strong>Wingspan</strong> (Stonemaier)</td>
+<td>Alleen retail</td>
+<td>€60</td>
+<td>Beauty + strategy + educative</td>
+</tr>
+<tr>
+<td><strong>Terraforming Mars</strong> (FryxGames)</td>
+<td>Retail + expansions</td>
+<td>€50-80</td>
+<td>Hardcore strategy fans</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Lessen voor EQ analog:</strong> 1. <strong>Gratis PnP als
+voorportaal</strong> genereert bewustzijn en early-adoption (Backdoors
+&amp; Breaches-model) 2. <strong>Retail-editie na PnP-validatie</strong>
+— als PnP &gt;1000 downloads bereikt, retail-versie rechtvaardigen 3.
+<strong>Community-content-support</strong> vroeg openzetten (custom
+missies, custom monsters via GitHub) 4. <strong>Facilitator-track
+parallel</strong> — training-tool licenties zijn hogere-marge dan
+retail</p>
+<hr />
+<h2 id="advies-hoe-vermarkt-je-de-analoge-lijn">5 · Advies: hoe vermarkt
+je de analoge lijn?</h2>
+<h3 id="optie-a-alleen-pnp-gratis-pdf">Optie A · Alleen PnP (gratis
+PDF)</h3>
+<ul>
+<li><strong>Voor:</strong> Nul-risico, brede reach, ideaal voor
+validatie</li>
+<li><strong>Tegen:</strong> Geen directe omzet, moeilijk professioneel
+te positioneren</li>
+<li><strong>Rol in geheel:</strong> funnel/awareness
+(top-of-funnel)</li>
+</ul>
+<h3 id="optie-b-pnp-print-on-demand-game-craftermpc">Optie B · PnP +
+Print-on-Demand (Game Crafter/MPC)</h3>
+<ul>
+<li><strong>Voor:</strong> Fysiek beschikbaar zonder
+voorraad-risico</li>
+<li><strong>Tegen:</strong> Prijspunt hoog (€80-120 door PoD-marge),
+langere levertijd</li>
+<li><strong>Rol in geheel:</strong> enthousiast-hobbyisten-markt,
+cadeau-verkoop</li>
+</ul>
+<h3 id="optie-c-eigen-kleinschalige-oplage-100-500-stuks">Optie C ·
+Eigen kleinschalige oplage (100-500 stuks)</h3>
+<ul>
+<li><strong>Voor:</strong> Voorraad-marge, professionele retail-prijs
+(€50-70), professionele doos</li>
+<li><strong>Tegen:</strong> Vereist voor-financiering, MOQ-risico,
+voorraad-management</li>
+<li><strong>Rol in geheel:</strong> eerste 500 stuks voor workshops +
+gerichte verkoop, marge 60-70%</li>
+</ul>
+<h3 id="optie-d-kickstartergamefound-v1-fantasy-editie">Optie D ·
+Kickstarter/Gamefound (v1 fantasy-editie)</h3>
+<ul>
+<li><strong>Voor:</strong> Validatie + voor-financiering + community in
+één; ideal voor RPG-fantasy-doelgroep</li>
+<li><strong>Tegen:</strong> Vergt marketing-inspanning vooraf (video,
+artwork, campagne 30 dagen), fulfillment achteraf</li>
+<li><strong>Rol in geheel:</strong> launch-moment voor v1,
+marktvalidatie zonder eigen risico</li>
+</ul>
+<h3 id="optie-e-dragon1-branded-partner-editie-v2-met-mark-paauwe">Optie
+E · Dragon1-branded partner-editie (v2, met Mark Paauwe)</h3>
+<ul>
+<li><strong>Voor:</strong> Dragon1-community afzet-kanaal, gedeelde
+marketing, methodiek-legitimatie</li>
+<li><strong>Tegen:</strong> Vergt goede partner-deal, mogelijk
+royalty-model (15-25%)</li>
+<li><strong>Rol in geheel:</strong> flagship-workshop-product,
+high-margin B2B</li>
+</ul>
+<h3 id="optie-f-curriculum-pakket-via-hbouniversiteit">Optie F ·
+Curriculum-pakket via HBO/universiteit</h3>
+<ul>
+<li><strong>Voor:</strong> Voorspelbare bulk-inkomsten, jaarlijkse
+licentie</li>
+<li><strong>Tegen:</strong> Lange sales-cyclus (6-12 maanden voor eerste
+cursus-adoptie), curriculum-committee bureaucratie</li>
+<li><strong>Rol in geheel:</strong> stabiele achtergrond-omzet,
+prestige</li>
+</ul>
+<p><strong>→ Aanbevolen combinatie:</strong></p>
+<ol type="1">
+<li><strong>Fase 1 (maanden 1-3):</strong> Optie A (gratis PnP) — zowel
+v1 als v2 downloadbaar via icthorse.nl. <strong>Validatie</strong></li>
+<li><strong>Fase 2 (maanden 3-6):</strong> Optie B (PoD via Game
+Crafter) — voor hobbyisten die niet zelf willen printen. <strong>Eerste
+omzet</strong></li>
+<li><strong>Fase 3 (maanden 4-8):</strong> Optie E (Dragon1 partner v2)
+— als Mark Paauwe akkoord — parallel-track. <strong>B2B
+workshop-omzet</strong></li>
+<li><strong>Fase 4 (maanden 6-9):</strong> Optie D (Kickstarter v1
+fantasy) — mits fase 1 en 2 positieve signalen geven. <strong>Retail
+launch</strong></li>
+<li><strong>Fase 5 (maanden 9-12):</strong> Optie F (curriculum-deal) —
+begin met 1 pilot HBO/uni. <strong>Stabiele omzet</strong></li>
+<li><strong>Fase 6 (jaar 2):</strong> Optie C (kleinschalige eigen
+oplage) — als schaal en klantenkennis dat rechtvaardigen</li>
+</ol>
+<hr />
+<h2 id="twee-sporen-go-to-market-analog">6 · Twee sporen — go-to-market
+analog</h2>
+<h3 id="spoor-mark-paauwe-dragon1">Spoor Mark Paauwe (Dragon1)</h3>
+<p><strong>Waarde-uitwisseling (fysiek versterkt):</strong> - Wat Mark
+biedt: methodiek-blessing, community-toegang, Dragon1-events (product
+uitgedeeld op conferentie) - Wat wij bieden: eerste fysieke
+Dragon1-workshop-set ooit, tastbaar merch-artikel voor
+Dragon1-community, uitbreiding boekverkoop (Paauwe’s “Dragon1
+Fundamentals” boek + het spel als workshop-companion) -
+Model-voorstellen: 1. Co-productie fysieke Dragon1-editie — Dragon1
+subsidieert 50% van eerste oplage (200 stuks), krijgt 50% inventaris
+voor eigen community 2. Royalty per verkocht spel (15-20% van retail) 3.
+Bundeling met Paauwe’s boek “Dragon1 Fundamentals” (ISBN 9789490873004)
+— cross-promotion 4. Dragon1-training + spel gebundeld — trainer krijgt
+fysieke set bij certificering</p>
+<p><strong>Fysiek als “boardroom-legitimiteit”-argument:</strong> -
+CIO’s die niet mee-doen aan digitale workshop-simulaties, doen wel mee
+aan fysieke sessies - Fysieke set kan op de plank in Paauwe’s kantoor
+staan — visueel merken-anker</p>
+<p><strong>Risico’s:</strong> - Paauwe wil eigen productie doen (verlies
+aan iCt-controle) - Retail-prijs conflict tussen Dragon1-editie (€150
+workshop-editie) en publieke retail (€70) - MOQ eerste productie €5-10k
+— wie financiert?</p>
+<h3 id="spoor-peter-vd-hulst-staff">Spoor Peter v/d Hulst (Staff)</h3>
+<p><strong>Waarde-uitwisseling (fysiek versterkt):</strong> - Wat
+Peter/Staff biedt: bestaande trainings-set voor procesarchitectuur;
+kanalen voor levering; klant-portefeuille - Wat wij bieden:
+kant-en-klare fysieke set voor procesarchitectuur-workshop (v3-analoog,
+aangepast content-set) - Model-voorstellen: 1. White-label proces-editie
+(Staff-branding + Staff-content) — €15k-25k eenmalige ontwikkeling +
+€5k/jaar content-updates 2. Fysieke Staff-editie als geschenk bij
+Staff-training — 50-200 dozen op maat gedrukt — €30-50 per doos bulk 3.
+Revenue-share bij verkoop via Staff-kanaal (Staff 60% / iCt Horse
+40%)</p>
+<p><strong>Risico’s:</strong> - Peter’s bestaande proces-game is óók
+fysiek — mogelijk kannibalisme - Staff-training verwacht IP-overdracht
+(engine + content) - Eventuele conflict met Dragon1-versie in dezelfde
+markt</p>
+<p><strong>Mitigatie:</strong> - Overlap-analyse als eerste stap (vraag
+Peter naar Staff Proces-game specificaties) - Aparte content-set
+(procesarchitectuur — value stream, BPMN — versus EA-Dragon1) -
+Engine-IP nooit overdragen</p>
+<h3 id="nieuwe-spoor-kickstartergamefound-onafhankelijk">Nieuwe spoor:
+<strong>Kickstarter/Gamefound-onafhankelijk</strong></h3>
+<p><strong>Fysieke Kickstarter-campagne v1
+(fantasy-RPG-editie):</strong> - <strong>Doelgroep:</strong>
+RPG/D&amp;D-community + tech-hobbyisten - <strong>Goal:</strong>
+€10k-15k (conservatief, gedekt eerste MOQ 200 stuks) - <strong>Stretch
+goals:</strong> extra content-uitbreidingen, deluxe-editie met houten
+tokens, EN-editie - <strong>Timeline:</strong> 3-6 maanden voorbereiding
++ 30 dagen campagne + 6-12 maanden fulfillment -
+<strong>Kosten:</strong> €3-8k marketing + fees + fulfillment-partner -
+<strong>Waarom voor v1 en niet v2:</strong> RPG-fantasy =
+boardgamer-taal, Dragon1 is te niche voor mass crowdfunding</p>
+<p><strong>Voordeel:</strong> geen partner nodig, directe validatie of
+markt bestaat.</p>
+<hr />
+<h2 id="advies-executie-analog">7 · Advies executie (analog)</h2>
+<ol type="1">
+<li><strong>Deze week:</strong> playtest sessie organiseren met 3-5
+EA-collega’s (v2 fysiek) + tech-vriendengroep (v1 fysiek). Gebruik
+zelfgeprint PnP-materiaal. Facilitator = ik zelf. Duur: 2-3 uur.</li>
+<li><strong>Week +1-2:</strong> playtest-bevindingen verwerken in
+<code>docs/analog_v*_rpg.md</code> (versie 0.2)</li>
+<li><strong>Week +2-3:</strong> PnP-versies (PDF) publiceren op
+icthorse.nl. Free downloads. Meten: downloads/week.</li>
+<li><strong>Week +3-4:</strong> contact leggen met The Game Crafter voor
+upload PoD-materiaal (v1 first). Fee: setup gratis, per verkoop 30%
+commissie</li>
+<li><strong>Maand 2:</strong> gesprek met Mark Paauwe over v2-fysiek
+co-productie (parallel aan digital pitch die al loopt)</li>
+<li><strong>Maand 2-3:</strong> eerste betaalde workshop v2 als POC
+(facilitator = ik zelf, klant = 1 consultancy-firma of 1 team op
+Werk-DB)</li>
+<li><strong>Maand 4-6:</strong> afhankelijk van signalen: Kickstarter v1
+opstarten (2-3 maanden voorbereiding vereist) OF curriculum-pilot
+HBO/uni</li>
+<li><strong>Maand 6-9:</strong> eerste eigen kleinschalige oplage
+(200-500 stuks) — mits validatie voldoende is</li>
+<li><strong>Maand 9-12:</strong> internationale variant (EN-editie)
+alleen als NL-editie zich bewezen heeft</li>
+</ol>
+<p><strong>Onmisbaar voor go-live analog:</strong> - Playtest (minimaal
+5 rondes) → <strong>€0-2k (eigen tijd + koffie)</strong> -
+Facilitator-gids v1 + v2 → <strong>€5-10k schrijven</strong> - Doos +
+grafisch design → <strong>€2-5k</strong> - PnP-PDF met snijlijnen →
+<strong>€1-2k opmaak</strong> - Shop-integratie op icthorse.nl (Gumroad
+of Woo Commerce) → <strong>€1-3k</strong> - Kickstarter-video (2-3 min)
+→ <strong>€2-5k</strong></p>
+<p><strong>Totaal go-live budget (voorzichtig):</strong>
+<strong>€10k-25k</strong> <strong>Time-to-first-euro:</strong> ~3-4
+maanden (PnP PDF-verkoop) <strong>Time-to-materiële-omzet:</strong> ~6-9
+maanden (workshop-verkoop + Kickstarter)</p>
+<hr />
+<h2 id="financiële-projectie-jaar-1-indicatief-analog">8 · Financiële
+projectie (jaar 1, indicatief analog)</h2>
+<table>
+<colgroup>
+<col style="width: 25%" />
+<col style="width: 25%" />
+<col style="width: 25%" />
+<col style="width: 25%" />
+</colgroup>
+<thead>
+<tr>
+<th>Scenario</th>
+<th>Verkoop-volume</th>
+<th>Omzet</th>
+<th>Marge</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Alleen PnP PDF-verkoop</strong></td>
+<td>200-500 downloads à €10</td>
+<td>€2k-5k</td>
+<td>90%</td>
+</tr>
+<tr>
+<td><strong>PnP + PoD via Game Crafter</strong></td>
+<td>30-80 fysieke sets</td>
+<td>€2k-6k (bruto), €500-2k marge</td>
+<td>25-30%</td>
+</tr>
+<tr>
+<td><strong>PnP + Workshops v2</strong></td>
+<td>5-15 workshop-sessies à €1.500</td>
+<td>€7,5k-22,5k</td>
+<td>65%</td>
+</tr>
+<tr>
+<td><strong>Alle bovenstaande + Dragon1-partner</strong></td>
+<td>100-300 branded sets + 10-25 workshops</td>
+<td>€25k-75k</td>
+<td>40-55%</td>
+</tr>
+<tr>
+<td><strong>Kickstarter v1 fantasy (succesvol)</strong></td>
+<td>200-600 backers à €55</td>
+<td>€11k-33k</td>
+<td>40-50% (na fulfillment)</td>
+</tr>
+<tr>
+<td><strong>Optimistisch scenario: alle sporen tegelijk</strong></td>
+<td>400-1000 units + 20-40 workshops</td>
+<td>€50k-150k</td>
+<td>40-55%</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Sensitiviteits-scenario:</strong> -
+<strong>Ondergrens:</strong> alleen PnP + 3-5 workshops → €10k-15k jaar
+1 - <strong>Realistisch:</strong> PnP + PoD + Dragon1-samenwerking + 10
+workshops → €30k-60k jaar 1 - <strong>Bovengrens:</strong> alle sporen
+actief, Kickstarter geslaagd → €80k-150k jaar 1</p>
+<hr />
+<h2 id="voor--en-nadelen-versus-digitaal">9 · Voor- en nadelen versus
+digitaal</h2>
+<table>
+<colgroup>
+<col style="width: 33%" />
+<col style="width: 33%" />
+<col style="width: 33%" />
+</colgroup>
+<thead>
+<tr>
+<th>Aspect</th>
+<th>Digitaal</th>
+<th>Analog</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Productiekosten</strong></td>
+<td>Nul (single-file HTML)</td>
+<td>€25-90 per doos</td>
+</tr>
+<tr>
+<td><strong>Distributie-kosten</strong></td>
+<td>Nul (URL)</td>
+<td>€5-15 verzending per doos</td>
+</tr>
+<tr>
+<td><strong>Marginale kosten</strong></td>
+<td>Nul</td>
+<td>20-40% van retail</td>
+</tr>
+<tr>
+<td><strong>Bruto-marge</strong></td>
+<td>~95%</td>
+<td>30-70% (afhankelijk van kanaal)</td>
+</tr>
+<tr>
+<td><strong>Adoptie-drempel</strong></td>
+<td>Zeer laag (klik URL)</td>
+<td>Hoger (koop, printen, opzet)</td>
+</tr>
+<tr>
+<td><strong>Herbruikbaarheid</strong></td>
+<td>Onbeperkt</td>
+<td>Onbeperkt (fysiek slijt maar niet snel)</td>
+</tr>
+<tr>
+<td><strong>Team-dynamiek</strong></td>
+<td>Beperkt (single-player of remote)</td>
+<td>Hoog (tafel-sessie 2-8 spelers)</td>
+</tr>
+<tr>
+<td><strong>Boardroom-legitimiteit</strong></td>
+<td>Middelmatig (nog altijd “app”)</td>
+<td>Hoog (professioneel object)</td>
+</tr>
+<tr>
+<td><strong>Retail-kanaal</strong></td>
+<td>Niet realistisch</td>
+<td>Bol.com, boardgamestore.nl, 999 Games</td>
+</tr>
+<tr>
+<td><strong>Community-signal</strong></td>
+<td>Website-visits</td>
+<td>BoardGameGeek-listing, Kickstarter-tracker</td>
+</tr>
+<tr>
+<td><strong>Prijs-perceptie</strong></td>
+<td>Verwachting: €0-25</td>
+<td>Verwachting: €40-150</td>
+</tr>
+<tr>
+<td><strong>Prijspunt-headroom</strong></td>
+<td>Klein</td>
+<td>Groter</td>
+</tr>
+<tr>
+<td><strong>Piraterij-risico</strong></td>
+<td>Zeer hoog (open URL)</td>
+<td>Laag (fysiek dupliceerbaar met moeite)</td>
+</tr>
+<tr>
+<td><strong>Playtest-cyclus</strong></td>
+<td>Iteratie binnen dagen</td>
+<td>Iteratie in weken/maanden</td>
+</tr>
+<tr>
+<td><strong>Kwaliteitseisen</strong></td>
+<td>Software-testing</td>
+<td>Print-kwaliteit, componenten</td>
+</tr>
+<tr>
+<td><strong>Persoonlijk cadeau/plank-waarde</strong></td>
+<td>Nul</td>
+<td>Hoog (op de plank blijft “iets”)</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Kern-inzicht:</strong> analog en digitaal zijn
+<strong>complementaire</strong> productlijnen, geen vervanger van
+elkaar. Bepaalde doelgroepen (workshop-facilitators, docenten,
+corporate-gifts) willen fysiek; anderen (studenten, junior architecten,
+remote-teams) willen digitaal. <strong>De ideale strategie is beide
+aanbieden — met bewuste positionering per klantsegment.</strong></p>
+<hr />
+<h2 id="openstaande-vragen">10 · Openstaande vragen</h2>
+<ol type="1">
+<li>Zijn er contractuele beperkingen op productie/verkoop van fysieke
+items via iCt Horse (BTW-nummer, verkoop-registratie,
+retour-beleid)?</li>
+<li>Wat is de exacte kostenstructuur van The Game Crafter voor
+board+kaartset in retail-formaat? (offerte aanvragen)</li>
+<li>Kan Kickstarter/Gamefound legaal + praktisch vanuit Nederland
+(BTW-implicaties, EU-shipping, VS-fulfillment)?</li>
+<li>Zijn universiteiten (HAN, UvA, Nyenrode, Open Universiteit)
+geïnteresseerd in EA-curriculum-materiaal? Testen door 1-2
+curriculum-committee-benaderingen</li>
+<li>Wat is de MOQ voor kwaliteits-kaartendrukwerk in NL (via bv.
+Cartamundi of Boda)? Prijs per doos bij 100/250/500/1000 stuks?</li>
+<li>Wil 999 Games (Nederlandse retail-distributeur) fungeren als
+distributiepartner? Vergt eerst review, sample-versie sturen</li>
+<li>Is er behoefte aan een <strong>hybride</strong> editie (fysieke set
++ digitale companion-app voor scoring, achievements-tracking)?</li>
+<li>Kan de fysieke v2 als “Dragon1-officieel” gecertifieerd worden
+zonder €6k-licentie-conflict eerst op te lossen?</li>
+</ol>
+<hr />
+<h2 id="bijlagen">Bijlagen</h2>
+<ul>
+<li><code>docs/analog_v1_rpg.md</code> — Print &amp; Play design v1
+(fantasy-RPG)</li>
+<li><code>docs/analog_v2_dragon1.md</code> — Print &amp; Play design v2
+(Dragon1)</li>
+<li><code>docs/analyse_deepdive.md</code> — Deep-dive analyse digitale
+versies (context)</li>
+<li><code>docs/pitch_mark_paauwe.md</code> — Digital-versie-pitch
+(parallel spoor)</li>
+<li><code>docs/pitch_peter_hulst.md</code> — Digital-versie-pitch
+(parallel spoor)</li>
+</ul>
+<p><em>Intern beslissingsstuk — niet doorsturen naar Mark of Peter
+(bevat cross-referenties tussen beide sporen).</em></p>
+<p><strong>Datum eerste versie:</strong> 2026-07-07
+<strong>Auteur:</strong> Claude Opus 4.7 (1M context) namens Christian
+Glebbeek</p>
+</body>
+</html>

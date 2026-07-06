@@ -1,0 +1,1107 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>EnterpriseQuest v1 — Analoog PnP</title>
+  <style>
+    /* Default styles provided by pandoc.
+    ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+    */
+    html {
+      color: #1a1a1a;
+      background-color: #fdfdfd;
+    }
+    body {
+      margin: 0 auto;
+      max-width: 36em;
+      padding-left: 50px;
+      padding-right: 50px;
+      padding-top: 50px;
+      padding-bottom: 50px;
+      hyphens: auto;
+      overflow-wrap: break-word;
+      text-rendering: optimizeLegibility;
+      font-kerning: normal;
+    }
+    @media (max-width: 600px) {
+      body {
+        font-size: 0.9em;
+        padding: 12px;
+      }
+      h1 {
+        font-size: 1.8em;
+      }
+    }
+    @media print {
+      html {
+        background-color: white;
+      }
+      body {
+        background-color: transparent;
+        color: black;
+        font-size: 12pt;
+      }
+      p, h2, h3 {
+        orphans: 3;
+        widows: 3;
+      }
+      h2, h3, h4 {
+        page-break-after: avoid;
+      }
+    }
+    p {
+      margin: 1em 0;
+    }
+    a {
+      color: #1a1a1a;
+    }
+    a:visited {
+      color: #1a1a1a;
+    }
+    img {
+      max-width: 100%;
+    }
+    svg {
+      height: auto;
+      max-width: 100%;
+    }
+    h1, h2, h3, h4, h5, h6 {
+      margin-top: 1.4em;
+    }
+    h5, h6 {
+      font-size: 1em;
+      font-style: italic;
+    }
+    h6 {
+      font-weight: normal;
+    }
+    ol, ul {
+      padding-left: 1.7em;
+      margin-top: 1em;
+    }
+    li > ol, li > ul {
+      margin-top: 0;
+    }
+    blockquote {
+      margin: 1em 0 1em 1.7em;
+      padding-left: 1em;
+      border-left: 2px solid #e6e6e6;
+      color: #606060;
+    }
+    code {
+      white-space: pre-wrap;
+      font-family: Menlo, Monaco, Consolas, 'Lucida Console', monospace;
+      font-size: 85%;
+      margin: 0;
+      hyphens: manual;
+    }
+    pre {
+      margin: 1em 0;
+      overflow: auto;
+    }
+    pre code {
+      padding: 0;
+      overflow: visible;
+      overflow-wrap: normal;
+    }
+    .sourceCode {
+     background-color: transparent;
+     overflow: visible;
+    }
+    hr {
+      border: none;
+      border-top: 1px solid #1a1a1a;
+      height: 1px;
+      margin: 1em 0;
+    }
+    table {
+      margin: 1em 0;
+      border-collapse: collapse;
+      width: 100%;
+      overflow-x: auto;
+      display: block;
+      font-variant-numeric: lining-nums tabular-nums;
+    }
+    table caption {
+      margin-bottom: 0.75em;
+    }
+    tbody {
+      margin-top: 0.5em;
+      border-top: 1px solid #1a1a1a;
+      border-bottom: 1px solid #1a1a1a;
+    }
+    th {
+      border-top: 1px solid #1a1a1a;
+      padding: 0.25em 0.5em 0.25em 0.5em;
+    }
+    td {
+      padding: 0.125em 0.5em 0.25em 0.5em;
+    }
+    header {
+      margin-bottom: 4em;
+      text-align: center;
+    }
+    #TOC li {
+      list-style: none;
+    }
+    #TOC ul {
+      padding-left: 1.3em;
+    }
+    #TOC > ul {
+      padding-left: 0;
+    }
+    #TOC a:not(:hover) {
+      text-decoration: none;
+    }
+    span.smallcaps{font-variant: small-caps;}
+    div.columns{display: flex; gap: min(4vw, 1.5em);}
+    div.column{flex: auto; overflow-x: auto;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    /* The extra [class] is a hack that increases specificity enough to
+       override a similar rule in reveal.js */
+    ul.task-list[class]{list-style: none;}
+    ul.task-list li input[type="checkbox"] {
+      font-size: inherit;
+      width: 0.8em;
+      margin: 0 0.8em 0.2em -1.6em;
+      vertical-align: middle;
+    }
+    .display.math{display: block; text-align: center; margin: 0.5rem auto;}
+  </style>
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">EnterpriseQuest v1 — Analoog PnP</h1>
+</header>
+<h1
+id="enterprisequest-v1-analoge-print-play-uitwerking">EnterpriseQuest v1
+— Analoge Print &amp; Play uitwerking</h1>
+<p><strong>Basis:</strong> digitale versie
+<code>v1/EnterpriseQuest.html</code> (v0.0.1-Zachman)
+<strong>Vorm:</strong> fysiek bordspel + kaartspel + dobbelstenen +
+tokens <strong>Doelgroep:</strong> 2-6 spelers, 90-150 minuten, 16+
+(business/tech basiskennis handig) <strong>Setting:</strong> één
+architect moet de organisatie redden van de Chaos Architect —
+fantasy-RPG-flavour over EA/TOGAF/cloud/security/data/AI-content.</p>
+<hr />
+<h2 id="ontwerpprincipes-bij-vertaling-digitaal-analoog">1.
+Ontwerpprincipes bij vertaling digitaal → analoog</h2>
+<table>
+<colgroup>
+<col style="width: 33%" />
+<col style="width: 33%" />
+<col style="width: 33%" />
+</colgroup>
+<thead>
+<tr>
+<th>Digitaal element</th>
+<th>Analoge oplossing</th>
+<th>Reden</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>D20 movement (steps = ⌊d/2⌋+1 boven 15)</td>
+<td>1× D20 per speler</td>
+<td>Direct 1:1 overneembaar</td>
+</tr>
+<tr>
+<td>D20 combat (crit 20 / miss 1)</td>
+<td>Zelfde D20 hergebruiken</td>
+<td>Bekende RPG-conventie</td>
+</tr>
+<tr>
+<td>LocalStorage autosave</td>
+<td>Speler-dashboard-vel met potlood</td>
+<td>Save = beurten opschrijven op vel</td>
+</tr>
+<tr>
+<td>Web Audio API tones</td>
+<td>Optioneel: klein muziek-cue-kaartje voorleest facilitator</td>
+<td>Sfeer, niet essentieel</td>
+</tr>
+<tr>
+<td>Auto-shuffle 250-kaartendeck</td>
+<td>Fysiek shuffelen per deck-type</td>
+<td>Gebruikelijk in bordspel</td>
+</tr>
+<tr>
+<td>Level-up modal</td>
+<td>Level-track op speler-vel + level-up-kaartje</td>
+<td>Papieren XP-balk</td>
+</tr>
+<tr>
+<td>Night-cycle elke 5 beurten</td>
+<td>Beurten-teller-kraaltje aan bord + kaart “Nacht valt”</td>
+<td>Bekend uit Betrayal/Mansions</td>
+</tr>
+<tr>
+<td>10 klassen-passives</td>
+<td>Kartonnen klassen-tableau met blijvende regel-tekst</td>
+<td>Vergelijkbaar met Root/Scythe</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Grondregel bij twijfel:</strong> kies de eenvoudigste analoge
+oplossing en gebruik “de facilitator/spelleider beslist” als
+ontsnappingsclausule voor edge-cases.</p>
+<hr />
+<h2 id="componentenlijst">2. Componentenlijst</h2>
+<h3 id="bord-1">2.1 Bord (1×)</h3>
+<ul>
+<li><strong>Formaat:</strong> 60 × 60 cm gevouwen (2 helften), gedrukt
+op linnen-karton of stevig papier bij PnP</li>
+<li><strong>Layout:</strong> 40 tegels in een spiraal-parcours van tile
+0 (Kick-off Plaza) naar tile 39 (Throne of Chaos)</li>
+<li><strong>12 regio’s</strong> met eigen achtergrondkleur (zie tabel
+§3.1)</li>
+<li><strong>3 portaal-tegels</strong> (10, 20, 30) verbonden met
+portaal-lijnen tussen elkaar</li>
+<li><strong>Startpunt</strong> links onderin (tile 0),
+<strong>eindboss</strong> rechts bovenin (tile 39)</li>
+</ul>
+<h3 id="kaartdecks-4-decks-250-kaarten-totaal">2.2 Kaartdecks (4× decks,
+250 kaarten totaal)</h3>
+<table>
+<thead>
+<tr>
+<th>Deck</th>
+<th>Aantal</th>
+<th>Kaart-achterkant</th>
+<th>Trekt bij tile-type</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Quest</strong></td>
+<td>100</td>
+<td>groen</td>
+<td>tile-type <code>quest</code></td>
+</tr>
+<tr>
+<td><strong>Chaos</strong></td>
+<td>50</td>
+<td>zwart</td>
+<td>tile-type <code>chaos</code></td>
+</tr>
+<tr>
+<td><strong>Artifact</strong></td>
+<td>50</td>
+<td>goud</td>
+<td>tile-type <code>artifact</code></td>
+</tr>
+<tr>
+<td><strong>Event</strong></td>
+<td>50</td>
+<td>blauw</td>
+<td>tile-type <code>event</code></td>
+</tr>
+</tbody>
+</table>
+<p>Kaartformaat: standaard Euro-poker (63 × 88 mm).</p>
+<h3 id="monster-kaarten-22-apart-deck-met-rood-achterkant">2.3
+Monster-kaarten (22×, apart deck met rood achterkant)</h3>
+<ul>
+<li>15 minions/elites (tile-type <code>combat</code> in regio)</li>
+<li>6 mid-bosses (tile-type <code>boss</code>, één per grote regio)</li>
+<li>1 final boss (Chaos Architect) op 3 kaartjes — fase 1 / 2 / 3</li>
+</ul>
+<h3 id="speler-tokens">2.4 Speler-tokens</h3>
+<ul>
+<li><strong>6 klassen-pionnen</strong> (unieke kleur + icoon):
+<ul>
+<li>🏛️ Enterprise Architect</li>
+<li>🧩 Solution Architect</li>
+<li>🏢 Business Architect</li>
+<li>🛡️ Security Architect</li>
+<li>🗄️ Data Architect</li>
+<li>⚙️ DevOps Architect</li>
+</ul></li>
+<li><strong>6 klassen-tableaus</strong> (A5 kartonnen vellen) met
+special ability + starting stats + level-track (1-10)</li>
+</ul>
+<h3 id="dobbelstenen">2.5 Dobbelstenen</h3>
+<ul>
+<li><strong>1× D20 per speler</strong> (kleur bij pion)</li>
+<li><strong>1× D6</strong> voor Chaos Architect (fase-toewijzing bij
+random events in eindboss)</li>
+</ul>
+<h3 id="tokens-markers">2.6 Tokens &amp; markers</h3>
+<table>
+<colgroup>
+<col style="width: 25%" />
+<col style="width: 25%" />
+<col style="width: 25%" />
+<col style="width: 25%" />
+</colgroup>
+<thead>
+<tr>
+<th>Token</th>
+<th>Aantal</th>
+<th>Kleur</th>
+<th>Gebruik</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>HP-marker</td>
+<td>6 (1/speler)</td>
+<td>rood</td>
+<td>Verplaats over HP-track op tableau</td>
+</tr>
+<tr>
+<td>XP-marker</td>
+<td>6</td>
+<td>groen</td>
+<td>XP-track (0-1000+)</td>
+</tr>
+<tr>
+<td>Budget-cash (€)</td>
+<td>200 fiches (waarden 50/100/500)</td>
+<td>goud</td>
+<td>Startbudget, quest-kosten, boss-drops</td>
+</tr>
+<tr>
+<td>Stakeholder-token</td>
+<td>60</td>
+<td>wit</td>
+<td>Sociaal kapitaal — 3 startkapitaal per speler</td>
+</tr>
+<tr>
+<td>Security-token</td>
+<td>40</td>
+<td>blauw</td>
+<td>Security-status voor speler-vel</td>
+</tr>
+<tr>
+<td>Chaos-token</td>
+<td>40</td>
+<td>zwart</td>
+<td>Wereld-chaos-tracker (gedeeld)</td>
+</tr>
+<tr>
+<td>Night-cycle marker</td>
+<td>1</td>
+<td>maan</td>
+<td>Elke 5 beurten omgedraaid</td>
+</tr>
+<tr>
+<td>Achievement-kaarten</td>
+<td>51</td>
+<td>zilver</td>
+<td>Deck met behaalde achievements</td>
+</tr>
+<tr>
+<td>Artefact-slots</td>
+<td>5 per speler</td>
+<td>—</td>
+<td>Icoontjes op klassen-tableau: scroll / compass / crystal / armor /
+weapon (+crown voor Chief Architect)</td>
+</tr>
+</tbody>
+</table>
+<h3 id="facilitator-map">2.7 Facilitator-map</h3>
+<ul>
+<li>Regelboek (30 pag)</li>
+<li>Combat-referentiekaart (2× A5, dubbelzijdig)</li>
+<li>Referentiekaarten Chaos Architect (3 fases)</li>
+<li>Achievement-checklist (A4)</li>
+</ul>
+<hr />
+<h2 id="setup">3. Setup</h2>
+<h3 id="bord-neerleggen">3.1 Bord neerleggen</h3>
+<p>Regio-volgorde (kleur):</p>
+<table>
+<thead>
+<tr>
+<th>#</th>
+<th>Regio</th>
+<th>Kleur (hex)</th>
+<th>Difficulty</th>
+<th>Tiles</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>Business Village</td>
+<td>#8FBC8F</td>
+<td>1</td>
+<td>0-4</td>
+</tr>
+<tr>
+<td>2</td>
+<td>Vendor Market</td>
+<td>#FF8C00</td>
+<td>2</td>
+<td>5-9</td>
+</tr>
+<tr>
+<td>3</td>
+<td>Integration Bridge</td>
+<td>#20B2AA</td>
+<td>3</td>
+<td>10-13</td>
+</tr>
+<tr>
+<td>4</td>
+<td>Data Forest</td>
+<td>#228B22</td>
+<td>3</td>
+<td>14-19</td>
+</tr>
+<tr>
+<td>5</td>
+<td>Cloud Mountains</td>
+<td>#87CEEB</td>
+<td>3</td>
+<td>20-23</td>
+</tr>
+<tr>
+<td>6</td>
+<td>Innovation Tower</td>
+<td>#FFD700</td>
+<td>2</td>
+<td>24-26</td>
+</tr>
+<tr>
+<td>7</td>
+<td>Legacy Dungeon</td>
+<td>#5C4033</td>
+<td>4</td>
+<td>27-29</td>
+</tr>
+<tr>
+<td>8</td>
+<td>Security Castle</td>
+<td>#4B0082</td>
+<td>4</td>
+<td>30-33</td>
+</tr>
+<tr>
+<td>9</td>
+<td>Compliance Swamp</td>
+<td>#556B2F</td>
+<td>4</td>
+<td>34-36</td>
+</tr>
+<tr>
+<td>10</td>
+<td>AI Temple</td>
+<td>#DA70D6</td>
+<td>5</td>
+<td>37</td>
+</tr>
+<tr>
+<td>11</td>
+<td>Executive Palace</td>
+<td>#B22222</td>
+<td>4</td>
+<td>38</td>
+</tr>
+<tr>
+<td>12</td>
+<td>Digital Portal</td>
+<td>#000000</td>
+<td>5</td>
+<td>39</td>
+</tr>
+</tbody>
+</table>
+<p>Elke tile toont: - <strong>Type-icoon</strong>
+(quest/chaos/event/artifact/combat/boss/rest/portal/start) -
+<strong>Label</strong> (bv “Zero Trust Fundering”, “GDPR-lek”, “Vendor
+Hydra”) - <strong>Regio-kleur</strong> rondom rand</p>
+<h3 id="deck-shuffling">3.2 Deck-shuffling</h3>
+<p>Shuffle elk deck apart en leg met achterkant boven op de bijbehorende
+slots naast het bord (4 quest/chaos/artifact/event + 1 monster-deck
+opzij + 3 gestapelde Chaos Architect-fasekaarten in aparte
+enveloppe).</p>
+<h3 id="klasse-keuze">3.3 Klasse-keuze</h3>
+<p>Elke speler kiest een klasse-tableau:</p>
+<table>
+<colgroup>
+<col style="width: 20%" />
+<col style="width: 20%" />
+<col style="width: 20%" />
+<col style="width: 20%" />
+<col style="width: 20%" />
+</colgroup>
+<thead>
+<tr>
+<th>Klasse</th>
+<th>Special Ability</th>
+<th>Start-HP</th>
+<th>Start-attack</th>
+<th>Start-defense</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Enterprise Architect</td>
+<td><em>Big Picture</em> — 1× per spel: bekijk top 5 van elk deck</td>
+<td>40</td>
+<td>8</td>
+<td>8</td>
+</tr>
+<tr>
+<td>Solution Architect</td>
+<td><em>Blueprint Sprint</em> — 1× per spel: solo een quest tekenen
+(skip roll)</td>
+<td>40</td>
+<td>9</td>
+<td>7</td>
+</tr>
+<tr>
+<td>Business Architect</td>
+<td><em>Stakeholder Rally</em> — +2 stakeholder-tokens bij elke
+succesvolle quest</td>
+<td>45</td>
+<td>6</td>
+<td>9</td>
+</tr>
+<tr>
+<td>Security Architect</td>
+<td><em>Threat Shield</em> — 1× per gevecht: negeer 1 aanval
+volledig</td>
+<td>45</td>
+<td>7</td>
+<td>11</td>
+</tr>
+<tr>
+<td>Data Architect</td>
+<td><em>Data Lineage</em> — 1× per spel: onthul komende 3 tegels</td>
+<td>40</td>
+<td>8</td>
+<td>8</td>
+</tr>
+<tr>
+<td>DevOps Architect</td>
+<td><em>Automated Pipeline</em> — +1 XP-multiplier voor
+build-quests</td>
+<td>42</td>
+<td>9</td>
+<td>8</td>
+</tr>
+</tbody>
+</table>
+<p>Startloadout per speler: - <strong>HP-track:</strong> vol (40-45
+afhankelijk van klasse) - <strong>XP:</strong> 0 -
+<strong>Budget:</strong> €1000 - <strong>Stakeholder:</strong> 3 tokens
+- <strong>Security:</strong> 0 - <strong>Level:</strong> 1 (Junior
+Architect) - Trek <strong>2 starter Artifact-kaarten</strong>
+(common-rariteit); mag er 1 uitrusten in vrije slot</p>
+<h3 id="bord-startpositie">3.4 Bord-startpositie</h3>
+<p>Alle pionnen op tile 0 (Kick-off Plaza).</p>
+<hr />
+<h2 id="speelverloop">4. Speelverloop</h2>
+<h3 id="beurten-in-tafel-volgorde">4.1 Beurten in tafel-volgorde</h3>
+<p>Per beurt van een speler:</p>
+<ol type="1">
+<li><strong>Start-fase</strong>
+<ul>
+<li>Ontvang budget-per-beurt uit uitgeruste artifacten (bv Cloud Crystal
++€20/beurt)</li>
+<li>Herstel 0 HP tenzij op rest-tile</li>
+<li>Check “Night-cycle”: elke 5e beurt (na alle spelers) → nachtkaart
+lezen (extra chaos-effect)</li>
+</ul></li>
+<li><strong>Move-fase</strong>
+<ul>
+<li>Rol de D20</li>
+<li><strong>Steps</strong> = ⌊worp/2⌋ + 1 als worp ≤ 15, anders steps =
+worp − 15 + 8 (bonus voor hoge worp; snelle vooruitgang)</li>
+<li>Voorbeeld: worp 10 → 6 stappen; worp 18 → 11 stappen</li>
+<li>Verplaats pion langs het parcours (zonder over-shoot: stop bij de
+tile die je bereikt)</li>
+<li><strong>Portaal-tile</strong> (10/20/30) bereikt? → mag optioneel
+teleporteren naar een andere portaal-tile (kies)</li>
+</ul></li>
+<li><strong>Tile-fase</strong> (voer effect uit)</li>
+</ol>
+<table>
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
+<thead>
+<tr>
+<th>Tile-type</th>
+<th>Actie</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>start</code></td>
+<td>(alleen begin) Ontvang €1000 + 3 stakeholder-tokens</td>
+</tr>
+<tr>
+<td><code>quest</code></td>
+<td>Trek Quest-kaart, lees effect, apply</td>
+</tr>
+<tr>
+<td><code>chaos</code></td>
+<td>Trek Chaos-kaart, apply (meestal negatief)</td>
+</tr>
+<tr>
+<td><code>event</code></td>
+<td>Trek Event-kaart, apply (kan branching-choice hebben)</td>
+</tr>
+<tr>
+<td><code>artifact</code></td>
+<td>Trek Artifact-kaart, mag uitrusten in vrije slot of ruilen</td>
+</tr>
+<tr>
+<td><code>combat</code></td>
+<td>Trek monster-kaart die bij regio hoort → combat-flow (§5)</td>
+</tr>
+<tr>
+<td><code>boss</code></td>
+<td>Trek regio-boss-kaart → combat-flow (mid-boss = boven-tafel)</td>
+</tr>
+<tr>
+<td><code>rest</code></td>
+<td>Herstel HP (5 of 8 afhankelijk van tile)</td>
+</tr>
+<tr>
+<td><code>portal</code></td>
+<td>Kies teleporteren naar andere portal (al gedaan in move-fase)</td>
+</tr>
+</tbody>
+</table>
+<ol start="4" type="1">
+<li><strong>Level-up-check</strong>
+<ul>
+<li>XP-drempels: 100 / 250 / 500 / 900 / 1500 / 2200 / 3000 / 4000 /
+5500 XP</li>
+<li>Bij overschrijden: +1 level, +5 max HP, +1 attack óf +1 defense
+(keuze)</li>
+</ul></li>
+<li><strong>Actie-fase (optioneel)</strong>
+<ul>
+<li>Ruil artefacten met andere spelers (facilitator kan onderhandelen
+faciliteren)</li>
+<li>Verkoop 1 artefact voor 50% waarde → budget</li>
+<li>Verplaats stakeholder-tokens naar quest-drempels op tableau</li>
+</ul></li>
+<li><strong>Einde beurt</strong> — volgende speler.</li>
+</ol>
+<h3 id="vals-alarm-check-chaos-oploopt">4.2 Vals-alarm-check “Chaos
+oploopt”</h3>
+<p>Aan het einde van élke ronde (alle spelers gehad): - Als het
+gezamenlijke Chaos-token-aantal boven 20 komt: trek 1 extra Chaos-kaart
+en apply op de speler met de meeste XP. - Boven 30: Chaos Architect
+(fase 1) verschijnt bij tile 39 en beweegt langzaam richting
+spelers.</p>
+<h3 id="kaart-anatomie">4.3 Kaart-anatomie</h3>
+<p><strong>Voorbeeld Quest-kaart:</strong></p>
+<pre><code>┌─────────────────────────────────┐
+│ Q004 · Zero Trust Fundering  ⚔️ │
+│─────────────────────────────────│
+│ Sla de fundering van het        │
+│ Zero Trust bastion; nooit       │
+│ vertrouwen, altijd verifiëren.  │
+│─────────────────────────────────│
+│ Regio: Security Castle · DL 4   │
+│─────────────────────────────────│
+│ EFFECT (moet accepteren):       │
+│ +300 XP · −€250                 │
+│ +35 Security · +10 Stakeholder  │
+│ HP: 0                           │
+└─────────────────────────────────┘</code></pre>
+<p><strong>Voorbeeld Chaos-kaart:</strong></p>
+<pre><code>┌─────────────────────────────────┐
+│ C012 · CIO Reorg                │
+│─────────────────────────────────│
+│ Nieuwe CIO wijzigt het          │
+│ IT-portfolio: alle roadmaps     │
+│ terug naar de tekentafel.       │
+│─────────────────────────────────│
+│ EFFECT:                         │
+│ −100 XP · −€150 · −5 Stakeholder│
+│ Trek daarnaast een Event-kaart. │
+└─────────────────────────────────┘</code></pre>
+<p><strong>Voorbeeld Artifact-kaart (uitrust-slot):</strong></p>
+<pre><code>┌─────────────────────────────────┐
+│ A004 · Security Shield  🛡️      │
+│ Rarity: common · Slot: armor    │
+│─────────────────────────────────│
+│ Beukelaar met OWASP-runen.      │
+│─────────────────────────────────│
+│ PASSIVE (permanent zolang       │
+│ uitgerust):                     │
+│  +3 defense                     │
+│  +10 security-per-beurt         │
+└─────────────────────────────────┘</code></pre>
+<p><strong>Voorbeeld Event-kaart (branching):</strong></p>
+<pre><code>┌─────────────────────────────────┐
+│ E017 · Auditor komt langs       │
+│─────────────────────────────────│
+│ De externe auditor stelt vragen │
+│ over je change-proces.          │
+│─────────────────────────────────│
+│ KIES ÉÉN:                       │
+│ A) Toon Runbook Codex           │
+│    → +50 XP · +2 Stakeholder    │
+│    (vereist: dit artifact)      │
+│ B) Improviseer met CAB          │
+│    → +25 XP · 50% kans −€100    │
+│ C) Vraag uitstel                │
+│    → −5 Stakeholder             │
+└─────────────────────────────────┘</code></pre>
+<hr />
+<h2 id="combat-d20-mechanica">5. Combat (D20-mechanica)</h2>
+<h3 id="initiatief">5.1 Initiatief</h3>
+<p>Speler rolt D20; monster heeft vaste initiative-waarde op kaart.
+Hoogste eerst. Bij gelijk: speler eerst.</p>
+<h3 id="aanval-worp">5.2 Aanval-worp</h3>
+<pre><code>Aanvals-totaal = D20 + attack-stat + eventuele artifact-bonus
+Defense-drempel = monster-defense
+Hit als: aanvals-totaal ≥ defense-drempel</code></pre>
+<p><strong>Crit / Miss:</strong> - Natuurlijke 20 → automatisch hit,
+<strong>dubbele schade</strong> - Natuurlijke 1 → automatisch miss,
+verlies 1 stakeholder-token (embarrassment)</p>
+<h3 id="schade-berekening">5.3 Schade berekening</h3>
+<pre><code>Schade = (aanvals-totaal − defense-drempel) + 5</code></pre>
+<p>(Minimum 5 schade bij hit, geen negatieve schade)</p>
+<p>Monster verliest HP op referentiekaart; bij 0 HP: overwinning → XP +
+budget beloningen.</p>
+<h3 id="speciale-monster-abilities">5.4 Speciale monster-abilities</h3>
+<p>Elke monster-kaart heeft één abilities-regel. Voorbeelden:</p>
+<table>
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
+<thead>
+<tr>
+<th>Monster</th>
+<th>Ability</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Legacy Dragon</td>
+<td><em>Breath of Technical Debt</em>: +2 chaos-token per beurt</td>
+</tr>
+<tr>
+<td>Shadow IT Goblins</td>
+<td><em>Swarm</em>: verschijnt altijd in groep van 3 (drie kaartjes
+tegelijk)</td>
+</tr>
+<tr>
+<td>Data Kraken</td>
+<td><em>Tentacle Grip</em>: bij hit → speler skipt volgende beurt</td>
+</tr>
+<tr>
+<td>Compliance Ghost</td>
+<td><em>Phase</em>: 50% kans (D6 ≥ 4) om schade te ontwijken</td>
+</tr>
+<tr>
+<td>Prompt Injection Djinn</td>
+<td><em>Override</em>: negeert eenmalig defense-bonus</td>
+</tr>
+</tbody>
+</table>
+<h3 id="vluchten">5.5 Vluchten</h3>
+<p>Speler mag vluchten aan begin van elke combat-ronde: - Rol D20. Bij ≥
+14 gelukt: keer terug naar vorige tile, verlies 5 HP + 1 stakeholder. -
+Bij &lt; 14 gefaald: monster krijgt gratis aanval.</p>
+<h3 id="final-boss-chaos-architect-3-fases">5.6 Final Boss (Chaos
+Architect, 3 fases)</h3>
+<p>Kaart-drieluik:</p>
+<table style="width:100%;">
+<colgroup>
+<col style="width: 16%" />
+<col style="width: 16%" />
+<col style="width: 16%" />
+<col style="width: 16%" />
+<col style="width: 16%" />
+<col style="width: 16%" />
+</colgroup>
+<thead>
+<tr>
+<th>Fase</th>
+<th>Naam</th>
+<th>HP</th>
+<th>Attack</th>
+<th>Defense</th>
+<th>Speciaal</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>The Whiteboard Phase</td>
+<td>200</td>
+<td>25</td>
+<td>18</td>
+<td><em>Scope Explosion</em> — trek elke 3 rondes 1 extra
+minion-kaart</td>
+</tr>
+<tr>
+<td>2</td>
+<td>The Implementation Phase</td>
+<td>350</td>
+<td>30</td>
+<td>22</td>
+<td><em>Cascading Failure</em> — bij &lt;50% HP: 3 aanvallen per
+beurt</td>
+</tr>
+<tr>
+<td>3</td>
+<td>The Chaos Ascendant</td>
+<td>500</td>
+<td>38</td>
+<td>28</td>
+<td><em>Reality Rewrite</em> — negeert 1× alle uitgeruste artefacten +
+roept 2 minions op</td>
+</tr>
+</tbody>
+</table>
+<p>Fases worden opeenvolgend gespeeld: fase 2 kaart verschijnt zodra
+fase 1 verslagen is, etc. Spelers herstellen niets tussen fases
+(verhoogt spanning).</p>
+<p><strong>Winst voor coop-partij:</strong> Chaos Architect fase 3
+verslagen. <strong>Winst voor solo-partij:</strong> Chaos Architect fase
+3 verslagen én HP &gt; 0.</p>
+<hr />
+<h2 id="progressie-en-tellingen-op-speler-vel">6. Progressie en
+tellingen op speler-vel</h2>
+<p>Elk klassen-tableau bevat vier tracks:</p>
+<pre><code>HP     [1][2][3]...[45]    ← markeer met rood token
+XP     [0][100][250]...[5500+]  ← groen token schuift
+LEVEL  [1][2][3][4][5][6][7][8][9][10]
+BUDGET (schrijf op met potlood, of fiches op vak &quot;€&quot;)
+STAKEHOLDER (max 20 tokens in stakeholder-vak)
+SECURITY  0-100 track</code></pre>
+<p>En vijf artifact-slots:</p>
+<pre><code>[scroll] [compass] [crystal] [armor] [weapon]  (+[crown] bij level 10)</code></pre>
+<hr />
+<h2 id="achievements">7. Achievements</h2>
+<p>51 achievements analoog geïmplementeerd:</p>
+<ul>
+<li><strong>Achievement-deck</strong> ligt open naast bord.
+Voorbeeld-kaartjes: “Legendary Slayer — versla 3 mid-bosses”, “Cloud
+Master — voltooi 5 Cloud Mountains quests”, “Zero Trust Champion — heb
+Zero-Trust Aegis uitgerust bij final boss”.</li>
+<li>Zodra voorwaarde vervuld: pak kaart, leg op eigen tableau. Sommige
+achievements geven <strong>eenmalige bonus</strong> (bv +100 XP, +1
+artifact-slot).</li>
+<li>Voor lange campagnes: houd achievements bij op
+vervolg-campagne-vel.</li>
+</ul>
+<hr />
+<h2 id="winstconditie-en-scoring">8. Winstconditie en scoring</h2>
+<h3 id="solo-1-speler">8.1 Solo (1 speler)</h3>
+<p>Winst: verslaat Chaos Architect fase 3. Verlies: HP = 0 óf 40 beurten
+voorbij zonder tile 39 bereikt.</p>
+<h3 id="coop-2-6-spelers">8.2 Coop (2-6 spelers)</h3>
+<p>Winst: gezamenlijk final boss verslaan. Iedereen mag rollen tijdens
+boss-fight. Score-ranking:</p>
+<pre><code>Score = XP × level + (behaalde achievements × 100)
+       + budget-bonus (−100 per rondes over 25)
+       − chaos-token-penalty (×5)</code></pre>
+<p>Hoogste score = “Grand Chief Architect” van de sessie.</p>
+<h3 id="competitief-2-4-spelers">8.3 Competitief (2-4 spelers)</h3>
+<p>Alternatieve modus: elke speler probeert éérst Chaos Architect te
+verslaan (los van elkaar). PvP-tegels 22 en 33 laten spelers duel-worp
+doen om HP van elkaar af te bijten.</p>
+<hr />
+<h2 id="print-play-checklist">9. Print &amp; Play checklist</h2>
+<ul class="task-list">
+<li><label><input type="checkbox" />Bord op A2/A1 geprint of gestikt uit
+4× A4-tegels</label></li>
+<li><label><input type="checkbox" />250 kaart-tekst-vellen laminated (of
+gesleeved in Ultra Pro)</label></li>
+<li><label><input type="checkbox" />22 monster-referentie-kaartjes
+(A6)</label></li>
+<li><label><input type="checkbox" />6 klassen-tableau’s
+(A5)</label></li>
+<li><label><input type="checkbox" />1 D20 per speler + 1 D6 voor
+facilitator</label></li>
+<li><label><input type="checkbox" />Tokens: HP, XP, budget, stakeholder,
+security, chaos, night, achievement</label></li>
+<li><label><input type="checkbox" />Facilitator-map: regelboek (dit
+document), combat-referentie, achievement-checklist</label></li>
+<li><label><input type="checkbox" />Optioneel: 3D-print pionnen in de 6
+klasse-iconen</label></li>
+<li><label><input type="checkbox" />Optioneel: MP3-track met
+Web-Audio-jingles voor sfeer</label></li>
+</ul>
+<p>Kosten PnP-productie (indicatief 2026): - Zelf-print A4 kleur:
+<strong>€25</strong> (thuis) — €80 (copyshop met stevige karton) -
+Print-on-demand (The Game Crafter, MakePlayingCards):
+<strong>€45-60</strong> per doos - Kleinschalige oplage (100 stuks) via
+BoardGameLab / MPC: <strong>€25-32</strong> per doos</p>
+<hr />
+<h2 id="verschillen-digitaal-analoog">10. Verschillen digitaal ↔︎
+analoog</h2>
+<table>
+<colgroup>
+<col style="width: 33%" />
+<col style="width: 33%" />
+<col style="width: 33%" />
+</colgroup>
+<thead>
+<tr>
+<th>Aspect</th>
+<th>Digitaal (HTML5)</th>
+<th>Analoog (bordspel)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Speeltijd</td>
+<td>45-90 min</td>
+<td>90-150 min (langer door fysieke handelingen)</td>
+</tr>
+<tr>
+<td>Speleraantal</td>
+<td>1 (single-player)</td>
+<td>1-6 (uitbreiding coop/competitief)</td>
+</tr>
+<tr>
+<td>Random events</td>
+<td>JavaScript RNG</td>
+<td>D20 + gemarkeerde tables</td>
+</tr>
+<tr>
+<td>Save/resume</td>
+<td>LocalStorage autosave</td>
+<td>Foto van speler-vel met telefoon</td>
+</tr>
+<tr>
+<td>Achievements</td>
+<td>Auto-detection op predicates</td>
+<td>Manueel bijhouden via checklist</td>
+</tr>
+<tr>
+<td>Chaos-oploop</td>
+<td>Berekend per beurt</td>
+<td>Gedeelde Chaos-tokens (max 40)</td>
+</tr>
+<tr>
+<td>Night cycle</td>
+<td>Elke 5 beurten</td>
+<td>Elke 5 rondes; night-kaart wordt hardop voorgelezen</td>
+</tr>
+<tr>
+<td>Tutorial</td>
+<td>Interactieve modal</td>
+<td>5-minuten intro door facilitator (script bijgevoegd)</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="facilitator-tips">11. Facilitator-tips</h2>
+<ul>
+<li><strong>Sessie-tijd:</strong> Reserveer 3 uur voor volledige sessie
+inclusief 15 min intro + 30 min debrief.</li>
+<li><strong>Debrief-vragen</strong> (voor workshop-context):
+<ol type="1">
+<li>Welke architectuur-beslissingen in het spel herken je uit je eigen
+praktijk?</li>
+<li>Welke artifact zou je in real-life willen hebben — en waarom?</li>
+<li>Welke monster (Vendor Hydra, Legacy Dragon, etc.) worstel je
+momenteel mee?</li>
+<li>Zou je Chaos Architect fase 1, 2 of 3 karakteriseren als jouw
+huidige uitdaging?</li>
+</ol></li>
+<li><strong>Variant “Consultant-modus”:</strong> Spelers zijn extern
+architect-team; ze delen budget-pool.</li>
+<li><strong>Variant “Junior-focus”:</strong> Alleen tiles 0-19; verslaat
+mid-boss Chaos CIO om te winnen.</li>
+</ul>
+<hr />
+<h2 id="verantwoording-ontwerp-keuzes">12. Verantwoording
+ontwerp-keuzes</h2>
+<table>
+<colgroup>
+<col style="width: 33%" />
+<col style="width: 33%" />
+<col style="width: 33%" />
+</colgroup>
+<thead>
+<tr>
+<th>Keuze</th>
+<th>Alternatief overwogen</th>
+<th>Argumentatie</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>40 tiles (parcours)</td>
+<td>6×6 grid (36 tiles)</td>
+<td>Digitale versie heeft 40 tiles; behoud 1:1 lengte</td>
+</tr>
+<tr>
+<td>D20 hergebruiken</td>
+<td>D6 + kaartjes</td>
+<td>D20 is bekend uit D&amp;D-tradition; drukt EA-nerd-flavour uit</td>
+</tr>
+<tr>
+<td>5 artifact-slots</td>
+<td>3 slots</td>
+<td>Kaartcollectie stimuleert engagement; digitale versie kent
+slot-icoons</td>
+</tr>
+<tr>
+<td>Gedeelde Chaos-tokens</td>
+<td>Individuele chaos</td>
+<td>Coop-ervaring vereist gedeelde druk; sluit aan bij “organisatie in
+crisis”-narratief</td>
+</tr>
+<tr>
+<td>Fysiek klassen-tableau</td>
+<td>Alleen kaartjes</td>
+<td>Vergelijkbaar met Root/Scythe; nodig voor level/HP/XP-tracks</td>
+</tr>
+<tr>
+<td>Vluchten bij ≥ 14</td>
+<td>Automatisch vluchten</td>
+<td>Risk/reward — matcht digitale keuzes</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="openstaande-vragen-bij-playtest">13. Openstaande vragen bij
+playtest</h2>
+<ul>
+<li><strong>Balancing:</strong> Loopt de beurt-teller-druk (25 rondes
+plafond) niet uit de hand bij 6 spelers?</li>
+<li><strong>Kaart-lengte:</strong> Zijn 250 kaarten te veel voor 2-3 uur
+sessie? Overweeg subsets per regio.</li>
+<li><strong>Nacht-cyclus:</strong> Werkt “elke 5e ronde” ook bij hoge
+speler-aantallen (5 rondes = 30 beurten)?</li>
+<li><strong>Solo-modus:</strong> Is 40 rondes zonder tile 39 een
+realistisch verlies-criterium?</li>
+<li><strong>Kaarttekst-lengte:</strong> Passen alle event-effecten op
+poker-formaat (63×88 mm)?</li>
+</ul>
+<hr />
+<h2 id="bijlagen-kaartuitgifte-overzichten">Bijlagen
+(kaartuitgifte-overzichten)</h2>
+<ul>
+<li><strong>Quest 100</strong> — zie <code>content/quests.json</code>
+(100 kaarten, verspreid over regio’s)</li>
+<li><strong>Chaos 50</strong> — zie <code>content/chaos.json</code></li>
+<li><strong>Artifact 50</strong> — zie
+<code>content/artifacts.json</code> (5 rariteits-tiers:
+common/rare/epic/legendary)</li>
+<li><strong>Event 50</strong> — zie <code>content/events.json</code> (19
+met branching-choices)</li>
+<li><strong>Monsters 22</strong> — zie
+<code>content/monsters.json</code></li>
+<li><strong>Achievements 51</strong> — zie
+<code>content/achievements.json</code></li>
+</ul>
+<hr />
+<p><strong>Versie doc:</strong> analog_v1_rpg v0.1 <strong>Gebaseerd op
+digitale versie:</strong> v0.0.1-Zachman (commit <code>aae8e69</code>)
+<strong>Auteur:</strong> Claude Opus 4.7 (1M context) namens Christian
+Glebbeek <strong>Licentie:</strong> AGPL-3.0 (matches repo)</p>
+</body>
+</html>
