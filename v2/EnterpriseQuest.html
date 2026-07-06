@@ -1,0 +1,1386 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="theme-color" content="#0b1235">
+<title>Enterprise Quest — Dragon1 Architect's Journey (v0.2.0-Paauwe)</title>
+<style>
+/* ============================================================
+   Enterprise Quest: Dragon1 Architect's Journey
+   v0.2.0-Paauwe — serious game / Dragon1 workshop-simulatie
+   iCt Horse — PUBLIC AGPL-3.0
+   ============================================================ */
+
+:root{
+  --c-bg:#050a1e;
+  --c-bg2:#0a1236;
+  --c-panel:#111a44;
+  --c-panel2:#182258;
+  --c-border:#2a356b;
+  --c-gold:#e5b640;
+  --c-gold2:#c9990e;
+  --c-purple:#8258e0;
+  --c-purple2:#5b39b8;
+  --c-silver:#c9d1e5;
+  --c-silver2:#8a94b0;
+  --c-red:#dc4550;
+  --c-green:#3fc887;
+  --c-cyan:#3ec8e8;
+  --c-teal:#20a89a;
+  --c-text:#eef1fb;
+  --c-text-dim:#a2abc7;
+  --font:'Segoe UI',Roboto,'Helvetica Neue',Arial,sans-serif;
+  --radius:8px;
+  --shadow:0 4px 20px rgba(0,0,0,.5);
+  --shadow-glow:0 0 20px rgba(229,182,64,.4);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%;overflow:hidden;background:var(--c-bg);color:var(--c-text);font-family:var(--font);-webkit-font-smoothing:antialiased}
+body{background:
+  radial-gradient(circle at 20% 20%,rgba(130,88,224,.12),transparent 40%),
+  radial-gradient(circle at 80% 70%,rgba(229,182,64,.08),transparent 45%),
+  linear-gradient(135deg,var(--c-bg) 0%,var(--c-bg2) 100%);}
+button{font-family:inherit;cursor:pointer;border:none;outline:none;background:none;color:inherit}
+button:disabled{opacity:.4;cursor:not-allowed}
+
+#app{position:relative;width:100vw;height:100vh;overflow:hidden}
+.screen{position:absolute;inset:0;display:none;padding:20px;overflow-y:auto}
+.screen.active{display:flex;flex-direction:column}
+.screen-center{align-items:center;justify-content:center;text-align:center}
+
+h1{font-size:clamp(28px,4vw,52px);font-weight:800;letter-spacing:.02em;
+  background:linear-gradient(180deg,var(--c-gold) 0%,var(--c-gold2) 100%);
+  -webkit-background-clip:text;background-clip:text;color:transparent;
+  text-shadow:0 2px 30px rgba(229,182,64,.4);margin-bottom:6px}
+h2{font-size:clamp(18px,2.4vw,28px);color:var(--c-gold);margin-bottom:10px;font-weight:700}
+h3{font-size:16px;color:var(--c-purple);margin-bottom:6px;font-weight:600}
+.sub{color:var(--c-silver2);font-size:14px;margin-bottom:20px}
+
+.btn{
+  display:inline-flex;align-items:center;justify-content:center;gap:8px;
+  padding:12px 26px;border-radius:var(--radius);
+  background:linear-gradient(180deg,var(--c-panel2) 0%,var(--c-panel) 100%);
+  border:1px solid var(--c-border);color:var(--c-text);
+  font-size:15px;font-weight:600;letter-spacing:.02em;
+  transition:all .2s;min-width:200px;
+}
+.btn:hover:not(:disabled){transform:translateY(-2px);border-color:var(--c-gold);box-shadow:var(--shadow-glow)}
+.btn-gold{background:linear-gradient(180deg,var(--c-gold) 0%,var(--c-gold2) 100%);color:#1a1200;border-color:var(--c-gold2)}
+.btn-purple{background:linear-gradient(180deg,var(--c-purple) 0%,var(--c-purple2) 100%);border-color:var(--c-purple2)}
+.btn-small{padding:6px 12px;font-size:13px;min-width:auto}
+.btn-danger{background:linear-gradient(180deg,#a52a2a 0%,#671818 100%);border-color:#671818}
+
+/* Start screen */
+#screen-start .subtitle{color:var(--c-purple);font-size:clamp(14px,1.6vw,20px);font-style:italic;margin-bottom:30px;letter-spacing:.08em;text-transform:uppercase}
+#screen-start .menu{display:flex;flex-direction:column;gap:12px;margin:30px 0 auto;width:min(320px,90vw)}
+.version-tag{position:absolute;bottom:12px;right:16px;color:var(--c-silver2);font-size:11px;font-family:monospace}
+.credit-line{position:absolute;bottom:12px;left:16px;color:var(--c-silver2);font-size:11px}
+.dragon1-badge{background:linear-gradient(90deg,var(--c-teal),var(--c-cyan));color:#052a2a;padding:3px 10px;border-radius:12px;font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;margin-top:6px;display:inline-block}
+.method-hint{color:var(--c-silver2);font-size:13px;max-width:520px;margin:10px auto 0;line-height:1.5}
+
+/* Role select */
+.role-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:14px;max-width:1200px;margin:0 auto;width:100%;padding:20px}
+.role-card{
+  background:linear-gradient(160deg,var(--c-panel) 0%,var(--c-bg2) 100%);
+  border:2px solid var(--c-border);border-radius:var(--radius);
+  padding:16px;cursor:pointer;transition:all .25s;
+  display:flex;flex-direction:column;gap:6px;text-align:left;
+}
+.role-card:hover{transform:translateY(-3px);border-color:var(--c-gold);box-shadow:var(--shadow-glow)}
+.role-card.selected{border-color:var(--c-gold);background:linear-gradient(160deg,var(--c-panel2) 0%,var(--c-panel) 100%)}
+.role-card .icon{font-size:34px;line-height:1}
+.role-card .name{font-size:17px;font-weight:700;color:var(--c-gold)}
+.role-card .role{font-size:12px;color:var(--c-silver2);text-transform:uppercase;letter-spacing:.05em}
+.role-card .desc{font-size:12px;color:var(--c-text-dim);flex:1;line-height:1.4}
+.role-card .special{font-size:11px;color:var(--c-purple);border-top:1px solid var(--c-border);padding-top:6px;margin-top:4px}
+.role-card .attrs{display:grid;grid-template-columns:1fr 1fr;gap:2px 10px;font-size:11px;color:var(--c-silver);font-family:monospace}
+.role-card .attrs b{color:var(--c-gold)}
+
+/* Game layout */
+#screen-game{padding:0}
+.game-root{display:grid;grid-template-columns:300px 1fr 280px;height:100%;gap:8px;padding:8px}
+.dashboard,.side-panel{background:linear-gradient(180deg,var(--c-panel) 0%,var(--c-bg2) 100%);border:1px solid var(--c-border);border-radius:var(--radius);padding:12px;overflow-y:auto}
+.board-wrap{background:linear-gradient(180deg,var(--c-bg2) 0%,var(--c-bg) 100%);border:1px solid var(--c-border);border-radius:var(--radius);display:flex;flex-direction:column;overflow:hidden}
+
+/* Dashboard */
+.dash-h{color:var(--c-gold);font-size:12px;text-transform:uppercase;letter-spacing:.08em;margin:10px 0 4px;border-bottom:1px solid var(--c-border);padding-bottom:3px}
+.dash-h:first-child{margin-top:0}
+.stat-row{display:flex;justify-content:space-between;align-items:center;font-size:13px;padding:2px 0}
+.stat-row .label{color:var(--c-silver2)}
+.stat-row .val{color:var(--c-text);font-weight:600;font-family:monospace}
+.bar{height:6px;background:var(--c-bg);border-radius:3px;overflow:hidden;margin:2px 0 4px;border:1px solid var(--c-border)}
+.bar-fill{height:100%;transition:width .4s ease}
+.bar-value{background:linear-gradient(90deg,var(--c-gold) 0%,var(--c-green) 100%)}
+.bar-xp{background:linear-gradient(90deg,var(--c-purple) 0%,var(--c-cyan) 100%)}
+.bar-debt{background:linear-gradient(90deg,var(--c-green) 0%,var(--c-red) 100%)}
+.bar-conf{background:linear-gradient(90deg,var(--c-cyan) 0%,var(--c-teal) 100%)}
+.chip-list{display:flex;flex-wrap:wrap;gap:4px}
+.chip{background:var(--c-bg2);border:1px solid var(--c-border);border-radius:12px;padding:2px 8px;font-size:11px;color:var(--c-silver)}
+.chip.artefact{border-color:var(--c-gold);color:var(--c-gold)}
+.chip.category{border-color:var(--c-teal);color:var(--c-teal)}
+
+/* Board — 4x4 grid van 16 locaties */
+#board{
+  flex:1;padding:16px;
+  display:grid;grid-template-columns:repeat(4,1fr);grid-template-rows:repeat(4,1fr);gap:8px;
+  background:
+    radial-gradient(circle at 40% 40%,rgba(130,88,224,.06),transparent 50%);
+}
+.tile{
+  position:relative;background:linear-gradient(160deg,var(--c-panel) 0%,var(--c-bg2) 100%);
+  border:1px solid var(--c-border);border-radius:8px;padding:10px 8px;font-size:12px;
+  text-align:center;cursor:pointer;transition:transform .15s,box-shadow .15s;
+  display:flex;flex-direction:column;justify-content:center;align-items:center;overflow:hidden;min-height:80px;
+}
+.tile .tile-icon{font-size:26px;line-height:1;margin-bottom:4px}
+.tile .tile-label{color:var(--c-text);font-weight:600;font-size:11px;line-height:1.15}
+.tile .tile-concept{font-size:9px;color:var(--c-silver2);text-transform:uppercase;margin-top:2px;letter-spacing:.05em}
+.tile:hover{transform:scale(1.02);box-shadow:var(--shadow)}
+.tile.player-here{outline:3px solid var(--c-gold);box-shadow:var(--shadow-glow);z-index:3}
+.tile.visited{border-color:var(--c-purple)}
+.tile .pawn{position:absolute;top:-4px;right:-4px;width:22px;height:22px;background:var(--c-gold);color:#1a1200;border-radius:50%;font-size:12px;display:flex;align-items:center;justify-content:center;font-weight:800;border:2px solid #fff;box-shadow:0 0 10px rgba(229,182,64,.9)}
+.tile .badge-mission{position:absolute;top:4px;left:4px;width:16px;height:16px;background:var(--c-cyan);border-radius:50%;font-size:9px;display:flex;align-items:center;justify-content:center;color:#052a2a;font-weight:800}
+
+/* Action bar */
+#action-bar{padding:10px 12px;border-top:1px solid var(--c-border);display:flex;gap:8px;align-items:center;background:var(--c-panel);flex-wrap:wrap}
+.action-info{flex:1;font-size:13px;color:var(--c-silver);min-width:150px}
+.action-info b{color:var(--c-gold)}
+
+/* Log */
+#log{display:flex;flex-direction:column-reverse;gap:4px;font-size:12px}
+.log-item{padding:6px 8px;background:var(--c-bg2);border-radius:5px;border-left:3px solid var(--c-border);animation:logIn .3s ease}
+.log-item.info{border-left-color:var(--c-cyan)}
+.log-item.good{border-left-color:var(--c-green)}
+.log-item.bad{border-left-color:var(--c-red)}
+.log-item.magic{border-left-color:var(--c-purple)}
+.log-item.legendary{border-left-color:var(--c-gold);background:linear-gradient(90deg,rgba(229,182,64,.15),var(--c-bg2))}
+@keyframes logIn{from{opacity:0;transform:translateX(-6px)}to{opacity:1;transform:none}}
+
+/* Modals */
+.modal-back{position:absolute;inset:0;background:rgba(4,7,20,.85);backdrop-filter:blur(4px);z-index:100;display:none;align-items:center;justify-content:center;padding:20px;animation:fadeIn .2s}
+.modal-back.active{display:flex}
+.modal{background:linear-gradient(180deg,var(--c-panel2) 0%,var(--c-panel) 100%);border:2px solid var(--c-gold);border-radius:var(--radius);padding:22px;max-width:640px;width:100%;max-height:90vh;overflow-y:auto;box-shadow:var(--shadow),var(--shadow-glow);animation:modalIn .3s ease}
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+@keyframes modalIn{from{opacity:0;transform:scale(.92) translateY(20px)}to{opacity:1;transform:none}}
+.modal h2{text-align:center}
+.cardface{background:linear-gradient(160deg,var(--c-bg2) 0%,var(--c-bg) 100%);border:1px solid var(--c-border);border-radius:var(--radius);padding:14px;margin:12px 0}
+.cardface .meta-row{display:flex;flex-wrap:wrap;gap:8px;margin-top:6px}
+.tag{background:var(--c-bg);border:1px solid var(--c-border);padding:2px 8px;border-radius:10px;font-size:11px;color:var(--c-silver)}
+.tag.dragon1{border-color:var(--c-teal);color:var(--c-teal)}
+.tag.loc{border-color:var(--c-purple);color:var(--c-purple)}
+.tag.diff{border-color:var(--c-gold);color:var(--c-gold)}
+.tag.sev{border-color:var(--c-red);color:var(--c-red)}
+.effects-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:6px;margin-top:10px;font-size:12px;font-family:monospace}
+.effect-pos{color:var(--c-green)}
+.effect-neg{color:var(--c-red)}
+.effect-neutral{color:var(--c-silver)}
+.choice-list{display:flex;flex-direction:column;gap:8px;margin-top:10px}
+.choice{background:var(--c-bg2);border:1px solid var(--c-border);border-radius:var(--radius);padding:10px 12px;text-align:left;transition:all .15s;cursor:pointer;color:var(--c-text)}
+.choice:hover{border-color:var(--c-gold);background:var(--c-panel)}
+.choice-title{font-weight:600;color:var(--c-gold);font-size:14px;margin-bottom:2px}
+.choice-effect{font-size:11px;color:var(--c-silver2);font-family:monospace}
+.modal .actions{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin-top:14px}
+
+/* Level up */
+.levelup{position:absolute;top:40%;left:50%;transform:translate(-50%,-50%);padding:20px 40px;background:linear-gradient(180deg,var(--c-gold) 0%,var(--c-gold2) 100%);color:#1a1200;font-size:24px;font-weight:800;border-radius:12px;z-index:200;box-shadow:var(--shadow-glow),0 0 60px rgba(229,182,64,.6);animation:levelupPop 2s ease forwards;pointer-events:none}
+@keyframes levelupPop{0%{opacity:0;transform:translate(-50%,-50%) scale(.5)}20%{opacity:1;transform:translate(-50%,-50%) scale(1.15)}80%{opacity:1;transform:translate(-50%,-50%) scale(1)}100%{opacity:0;transform:translate(-50%,-140%) scale(.9)}}
+
+/* Toasts */
+#toasts{position:absolute;top:10px;left:50%;transform:translateX(-50%);z-index:300;display:flex;flex-direction:column;gap:6px;pointer-events:none}
+.toast{padding:10px 18px;background:linear-gradient(180deg,var(--c-panel2) 0%,var(--c-panel) 100%);border:1px solid var(--c-gold);border-radius:var(--radius);color:var(--c-text);font-size:13px;box-shadow:var(--shadow);animation:toastIn .3s ease,toastOut .3s ease 2.5s forwards}
+@keyframes toastIn{from{opacity:0;transform:translateY(-10px)}to{opacity:1;transform:none}}
+@keyframes toastOut{to{opacity:0;transform:translateY(-6px)}}
+.toast.artefact{border-color:var(--c-teal)}
+.toast.bad{border-color:var(--c-red)}
+.toast.mission{border-color:var(--c-purple)}
+
+/* Settings/tutorial/report */
+.panel{max-width:720px;margin:0 auto;background:var(--c-panel);border:1px solid var(--c-border);border-radius:var(--radius);padding:24px;width:100%}
+.settings-row{display:flex;justify-content:space-between;align-items:center;padding:10px 0;border-bottom:1px solid var(--c-border)}
+.settings-row:last-child{border-bottom:none}
+.toggle{width:48px;height:26px;background:var(--c-bg);border:1px solid var(--c-border);border-radius:14px;position:relative;cursor:pointer;transition:.2s}
+.toggle::after{content:'';position:absolute;top:2px;left:2px;width:20px;height:20px;border-radius:50%;background:var(--c-silver);transition:.2s}
+.toggle.on{background:var(--c-gold)}
+.toggle.on::after{left:24px;background:var(--c-bg)}
+
+/* Tutorial */
+.tutorial ol{padding-left:22px;line-height:1.75;font-size:14px;color:var(--c-text-dim)}
+.tutorial ol li{margin-bottom:6px}
+.tutorial strong{color:var(--c-gold)}
+
+/* Assessment report */
+.score-block{background:var(--c-bg2);border:1px solid var(--c-border);border-radius:var(--radius);padding:16px;margin:10px 0}
+.score-row{display:grid;grid-template-columns:180px 1fr 60px;gap:12px;align-items:center;padding:6px 0;font-size:14px}
+.score-row .lbl{color:var(--c-silver)}
+.score-row .val{color:var(--c-gold);font-weight:700;font-family:monospace;text-align:right}
+.score-row .bar{margin:0}
+.grade{display:inline-block;padding:4px 12px;border-radius:20px;font-weight:800;font-size:14px;margin-left:8px}
+.grade-a{background:var(--c-green);color:#052a12}
+.grade-b{background:var(--c-cyan);color:#052a2a}
+.grade-c{background:var(--c-gold);color:#1a1200}
+.grade-d{background:#dc8547;color:#2a0f00}
+.grade-e{background:var(--c-red);color:#fff}
+.overall-score{text-align:center;font-size:48px;font-weight:800;color:var(--c-gold);margin:12px 0;text-shadow:0 0 24px rgba(229,182,64,.5)}
+.improvement{background:var(--c-bg2);border-left:3px solid var(--c-purple);padding:8px 12px;margin:6px 0;border-radius:0 var(--radius) var(--radius) 0;font-size:13px}
+.improvement .imp-title{color:var(--c-purple);font-weight:700;margin-bottom:2px}
+
+/* Game topbar */
+.game-topbar{display:flex;gap:6px;padding:6px 8px;background:var(--c-panel);border-bottom:1px solid var(--c-border);align-items:center}
+.game-topbar .title-small{color:var(--c-gold);font-weight:700;font-size:14px;margin-right:auto}
+.game-topbar .btn{min-width:auto;padding:6px 10px;font-size:12px}
+
+/* Mission tracker in dashboard */
+.mission-item{background:var(--c-bg2);border:1px solid var(--c-purple);border-radius:6px;padding:6px 8px;margin:4px 0;font-size:12px}
+.mission-item .m-title{color:var(--c-gold);font-weight:600;font-size:12px}
+.mission-item .m-desc{color:var(--c-silver);font-size:11px;margin-top:2px;line-height:1.3}
+.mission-item.completed{border-color:var(--c-green);opacity:.7}
+
+/* Achievements grid */
+.ach-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:8px}
+.ach-card{background:var(--c-bg2);border:1px solid var(--c-border);border-radius:var(--radius);padding:10px;display:flex;gap:8px;align-items:flex-start;font-size:12px}
+.ach-card.unlocked{border-color:var(--c-gold);background:linear-gradient(160deg,var(--c-panel2) 0%,var(--c-panel) 100%)}
+.ach-card .icon{font-size:22px}
+.ach-card b{color:var(--c-gold);font-size:13px;display:block;margin-bottom:2px}
+.ach-card span{color:var(--c-silver2)}
+
+/* Responsive */
+@media (max-width:1100px){
+  .game-root{grid-template-columns:230px 1fr 220px}
+}
+@media (max-width:820px){
+  .game-root{grid-template-columns:1fr;grid-template-rows:auto 1fr auto}
+  .dashboard,.side-panel{max-height:200px}
+  #board{grid-template-columns:repeat(4,1fr);grid-template-rows:repeat(4,1fr)}
+  .tile{min-height:60px;padding:6px 4px}
+  .tile .tile-icon{font-size:20px}
+  .tile .tile-label{font-size:10px}
+}
+@media (max-width:520px){
+  .btn{min-width:auto;padding:10px 16px;font-size:14px}
+  #board{grid-template-columns:repeat(4,1fr);gap:4px;padding:8px}
+  .tile{min-height:50px}
+  .tile .tile-icon{font-size:18px}
+  .modal{padding:16px}
+  h1{font-size:26px}
+}
+@media (prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation-duration:.01s!important;transition-duration:.01s!important}
+}
+</style>
+</head>
+<body>
+<div id="app">
+
+  <div id="screen-start" class="screen screen-center active">
+    <div style="margin-top:auto"></div>
+    <h1>Enterprise Quest</h1>
+    <div class="subtitle">Dragon1 Architect's Journey</div>
+    <div class="dragon1-badge">Dragon1 Enterprise Architecture</div>
+    <p class="method-hint">Serious game / workshop-simulatie voor Enterprise Architects, Solution Architects, CIO's, IT-managers en studenten EA. Werk met visie, capability maps, architectuurprincipes, Value Streams en Roadmaps. Presenteer je volledige architectuur aan de virtuele Raad van Bestuur en ontvang een evaluatierapport.</p>
+    <div class="menu">
+      <button class="btn btn-gold" data-action="new-game">Nieuwe workshop</button>
+      <button class="btn" data-action="continue" id="btn-continue">Doorgaan</button>
+      <button class="btn" data-action="tutorial">Speluitleg</button>
+      <button class="btn" data-action="achievements">Achievements</button>
+      <button class="btn" data-action="settings">Instellingen</button>
+      <button class="btn" data-action="credits">Credits</button>
+    </div>
+    <div style="margin-top:auto"></div>
+    <div class="version-tag">v0.2.0-Paauwe · Dragon1</div>
+    <div class="credit-line">iCt Horse — AGPL-3.0</div>
+  </div>
+
+  <div id="screen-roleselect" class="screen">
+    <h2 style="text-align:center;margin-top:20px">Kies je rol</h2>
+    <div class="sub" style="text-align:center">Elke rol heeft eigen sterktes, start-bonus en unieke special ability.</div>
+    <div class="role-grid" id="role-grid"></div>
+    <div style="display:flex;gap:12px;justify-content:center;margin:20px 0;padding-bottom:20px">
+      <button class="btn" data-action="back-start">Terug</button>
+      <button class="btn btn-gold" id="btn-start-workshop" disabled>Start workshop</button>
+    </div>
+  </div>
+
+  <div id="screen-game" class="screen">
+    <div class="game-topbar">
+      <div class="title-small">Enterprise Quest — Dragon1</div>
+      <button class="btn" data-action="save-now">Opslaan</button>
+      <button class="btn" data-action="show-artefacts">Artefacten</button>
+      <button class="btn" data-action="show-achievements-game">Achievements</button>
+      <button class="btn btn-gold" data-action="present-to-board">Presenteer aan RvB</button>
+      <button class="btn" data-action="quit-to-menu">Menu</button>
+    </div>
+    <div class="game-root">
+      <div class="dashboard" id="dashboard"></div>
+      <div class="board-wrap">
+        <div id="board"></div>
+        <div id="action-bar">
+          <div class="action-info" id="action-info">Kies een <b>aangrenzende locatie</b> op het bord om te verplaatsen.</div>
+          <button class="btn btn-purple" id="btn-draw-mission">Trek missie</button>
+          <button class="btn" id="btn-end-turn">Beurt afronden</button>
+        </div>
+      </div>
+      <div class="side-panel">
+        <div class="dash-h">Beurt-log</div>
+        <div id="log"></div>
+      </div>
+    </div>
+    <div class="modal-back" id="modal-back"><div class="modal" id="modal"></div></div>
+    <div id="toasts"></div>
+  </div>
+
+  <div id="screen-settings" class="screen">
+    <h2 style="text-align:center;margin-top:20px">Instellingen</h2>
+    <div class="panel" id="settings-panel"></div>
+    <div style="display:flex;justify-content:center;margin:20px 0"><button class="btn" data-action="back-start">Terug</button></div>
+  </div>
+
+  <div id="screen-credits" class="screen">
+    <h2 style="text-align:center;margin-top:20px">Credits</h2>
+    <div class="panel">
+      <p style="line-height:1.7">
+        <strong style="color:var(--c-gold)">Enterprise Quest — Dragon1 Architect's Journey</strong><br>
+        v0.2.0-Paauwe<br><br>
+        Ontwerp &amp; ontwikkeling: iCt Horse<br>
+        Concept &amp; opdracht: Joyce Kaag-Glebbeek<br>
+        Code: Christian Glebbeek + Claude (Anthropic)<br><br>
+        Methodiek: <em>Dragon1 Enterprise Architecture</em><br>
+        Codenaam: <strong>Paauwe</strong> — Mark Paauwe, grondlegger van Dragon1<br>
+        Thema: Enterprise Architecture pioniers<br><br>
+        Geen externe libraries. Geen assets. Pure HTML/CSS/JS + Web Audio API.<br>
+        Vrijgegeven onder GNU AGPL-3.0.
+      </p>
+    </div>
+    <div style="display:flex;justify-content:center;margin:20px 0"><button class="btn" data-action="back-start">Terug</button></div>
+  </div>
+
+  <div id="screen-tutorial" class="screen">
+    <h2 style="text-align:center;margin-top:20px">Speluitleg</h2>
+    <div class="panel tutorial">
+      <ol>
+        <li>Je bent een <strong>architect</strong> in een organisatie die een toekomstbestendige Enterprise Architecture moet neerzetten volgens de <strong>Dragon1-methodiek</strong>.</li>
+        <li>Kies een <strong>rol</strong>: Enterprise / Solution / Business / Information / Security Architect, CIO, IT-Manager of Student.</li>
+        <li>Verplaats over het <strong>4×4 bord</strong> van 16 organisatie-onderdelen (Directiekamer → Governance Board).</li>
+        <li>Op elke locatie kun je een <strong>missie</strong> trekken. Missies leveren <strong>Dragon1-artefacten</strong> op (Vision Blueprint, Strategy Map, Capability Map, Application Landscape, …).</li>
+        <li>Onderweg krijg je <strong>uitdagingen</strong> (Legacy, ShadowIT, NIS2, Ransomware, Fusie, …). Je kiest hoe je erop reageert — elke keuze heeft impact op je 8 kernmetrieken.</li>
+        <li><strong>Events</strong> zijn neutraal/gemengd, vaak met branching-keuzes.</li>
+        <li>Je 12 dashboard-metrieken: Level · XP · Business Value · Stakeholder Confidence · Governance · Innovation · Security · Technical Debt · Budget · Digital Maturity · Lopende missie · Artefacten.</li>
+        <li>Verzamel de <strong>12 kern-Dragon1-artefacten</strong> — sommige hebben cascade-vereisten (bv. Application Landscape vereist Capability Map).</li>
+        <li>Wanneer klaar: klik <strong>Presenteer aan RvB</strong>. Je ontvangt een <strong>evaluatierapport</strong> op 8 aspecten (Samenhang / Strategie-uitlijning / Businesswaarde / Innovatie / Governance / Security / Digitale volwassenheid / Stakeholdertevredenheid) met verbeterpunten.</li>
+        <li>Autosave staat aan. Kies "Doorgaan" op het startscherm om terug te keren in je workshop.</li>
+      </ol>
+    </div>
+    <div style="display:flex;justify-content:center;margin:20px 0"><button class="btn" data-action="back-start">Terug</button></div>
+  </div>
+
+  <div id="screen-achievements" class="screen">
+    <h2 style="text-align:center;margin-top:20px">Achievements</h2>
+    <div class="sub" style="text-align:center" id="ach-progress">0/0 ontgrendeld</div>
+    <div class="panel" style="max-width:1000px"><div class="ach-grid" id="ach-grid"></div></div>
+    <div style="display:flex;justify-content:center;margin:20px 0"><button class="btn" data-action="back-start">Terug</button></div>
+  </div>
+
+  <div id="screen-report" class="screen">
+    <h2 style="text-align:center;margin-top:20px">Presentatie aan de Raad van Bestuur</h2>
+    <div class="sub" style="text-align:center" id="report-headline"></div>
+    <div class="panel" style="max-width:900px" id="report-panel"></div>
+    <div style="display:flex;gap:12px;justify-content:center;margin:20px 0">
+      <button class="btn btn-gold" data-action="new-workshop">Nieuwe workshop</button>
+      <button class="btn" data-action="back-start">Naar menu</button>
+    </div>
+  </div>
+
+</div>
+
+<script>
+"use strict";
+/* ============================================================
+   ENTERPRISE QUEST v0.2.0-Paauwe — DRAGON1 ENGINE
+   ============================================================ */
+
+/* ---------- CONTENT — placeholders, gevuld door build.py ---------- */
+const CONTENT_ROLES = [{"id": "enterprise_architect", "name": "Enterprise Architect", "icon": "🏛️", "role": "Ontwerper van het geheel", "description": "Verbindt strategie, business, informatie en technologie tot een samenhangend architectuurbeeld voor de hele onderneming.", "attrs": {"strategie": 9, "communicatie": 8, "leiderschap": 7, "businessKennis": 8, "techKennis": 7, "dataKennis": 6, "security": 5, "innovation": 6, "governance": 8}, "startBonus": {"businessValue": 10, "stakeholderConfidence": 8, "governance": 5}, "specialAbility": "Big Picture", "specialDescription": "Toont in een beurt de samenhang tussen alle locaties en geeft +15 stakeholderConfidence bij het uitrollen van een strategisch artefact."}, {"id": "solution_architect", "name": "Solution Architect", "icon": "🧩", "role": "Ontwerper van oplossingen", "description": "Vertaalt business-behoeftes naar concrete oplossingsontwerpen die passen binnen de enterprise-architectuur.", "attrs": {"strategie": 6, "communicatie": 7, "leiderschap": 5, "businessKennis": 7, "techKennis": 9, "dataKennis": 7, "security": 6, "innovation": 7, "governance": 6}, "startBonus": {"businessValue": 6, "digitalMaturity": 8, "stakeholderConfidence": 4}, "specialAbility": "Blueprint Sprint", "specialDescription": "Levert in een enkele beurt een Solution Overview op met dubbele digitalMaturity-bonus."}, {"id": "business_architect", "name": "Business Architect", "icon": "🏢", "role": "Ontwerper van de business", "description": "Modelleert business capabilities, processen en waardestromen om de organisatie wendbaar en klantgericht te maken.", "attrs": {"strategie": 8, "communicatie": 9, "leiderschap": 7, "businessKennis": 10, "techKennis": 5, "dataKennis": 6, "security": 4, "innovation": 7, "governance": 7}, "startBonus": {"businessValue": 12, "stakeholderConfidence": 6, "governance": 3}, "specialAbility": "Value Stream Insight", "specialDescription": "Onthult knelpunten in een business-locatie en levert +10 businessValue bij een Value Stream Map."}, {"id": "information_architect", "name": "Information Architect", "icon": "🗄️", "role": "Ontwerper van informatie", "description": "Structureert bedrijfsinformatie, datamodellen en informatiestromen zodat data betrouwbaar en herbruikbaar is.", "attrs": {"strategie": 6, "communicatie": 7, "leiderschap": 5, "businessKennis": 7, "techKennis": 7, "dataKennis": 10, "security": 7, "innovation": 6, "governance": 8}, "startBonus": {"digitalMaturity": 10, "governance": 6, "businessValue": 3}, "specialAbility": "Data Lineage", "specialDescription": "Toont dataketens tussen locaties en verhoogt de effectiviteit van het Information Model met 50%."}, {"id": "security_architect", "name": "Security Architect", "icon": "🛡️", "role": "Bewaker van veiligheid", "description": "Ontwerpt security-controls, zero-trust-principes en compliance-kaders die de organisatie beschermen tegen dreigingen.", "attrs": {"strategie": 6, "communicatie": 6, "leiderschap": 5, "businessKennis": 5, "techKennis": 8, "dataKennis": 7, "security": 10, "innovation": 6, "governance": 9}, "startBonus": {"security": 15, "governance": 6, "stakeholderConfidence": 3}, "specialAbility": "Threat Shield", "specialDescription": "Verlaagt de impact van een security-incident-event naar nul en geeft +8 security voor de rest van de beurt."}, {"id": "cio", "name": "CIO", "icon": "🎛️", "role": "Digitale bestuurder", "description": "Bepaalt de digitale koers, beheert het IT-budget en verbindt technologie met de bestuurlijke agenda.", "attrs": {"strategie": 10, "communicatie": 9, "leiderschap": 10, "businessKennis": 9, "techKennis": 7, "dataKennis": 6, "security": 6, "innovation": 8, "governance": 9}, "startBonus": {"businessValue": 8, "stakeholderConfidence": 12, "governance": 6}, "specialAbility": "Executive Mandate", "specialDescription": "Geeft eenmalig +20 budgetPerTurn en versnelt de goedkeuring van elk artefact met een volledige beurt."}, {"id": "it_manager", "name": "IT-Manager", "icon": "💼", "role": "Operationeel leider", "description": "Stuurt IT-teams aan, bewaakt operationele KPI's en zorgt dat de architectuur in de praktijk wordt uitgevoerd.", "attrs": {"strategie": 6, "communicatie": 8, "leiderschap": 9, "businessKennis": 7, "techKennis": 8, "dataKennis": 6, "security": 6, "innovation": 5, "governance": 8}, "startBonus": {"governance": 8, "digitalMaturity": 6, "budgetPerTurn": 5}, "specialAbility": "Delivery Push", "specialDescription": "Levert een project uit het Project Portfolio een beurt eerder op en geeft +6 businessValue."}, {"id": "student_enterprise_architecture", "name": "Student Enterprise Architecture", "icon": "🎓", "role": "Leerling-architect", "description": "Leert de kunst van enterprise architectuur door observatie, modelleren en experimenteren met de Dragon1-methode.", "attrs": {"strategie": 5, "communicatie": 6, "leiderschap": 4, "businessKennis": 5, "techKennis": 6, "dataKennis": 6, "security": 5, "innovation": 8, "governance": 5}, "startBonus": {"innovation": 10, "stakeholderConfidence": 3, "businessValue": 2}, "specialAbility": "Fresh Perspective", "specialDescription": "Verdient dubbele XP op elk gemodelleerd artefact en mag eenmalig een architectuur-quiz doen voor +10 op alle attributen deze beurt."}];
+const CONTENT_LEVELS = [{"n": 1, "name": "Junior Architect"}, {"n": 2, "name": "Medior Architect"}, {"n": 3, "name": "Senior Architect"}, {"n": 4, "name": "Lead Architect"}, {"n": 5, "name": "Domain Architect"}, {"n": 6, "name": "Enterprise Architect"}, {"n": 7, "name": "Principal Architect"}, {"n": 8, "name": "Chief Architect"}, {"n": 9, "name": "Digital Strategist"}, {"n": 10, "name": "Dragon1 Master Architect"}];
+const CONTENT_LOCATIONS = [{"id": "directiekamer", "name": "Directiekamer", "color": "#1B2A49", "icon": "🏛️", "description": "Hier bepaalt de raad van bestuur de strategische koers en neemt zij besluiten over investeringen en transformatie.", "primaryConcept": "Strategie", "boardIcon": "🏛️"}, {"id": "strategiecentrum", "name": "Strategiecentrum", "color": "#2E4A7B", "icon": "🧭", "description": "Vertaalt de bestuursvisie naar strategische doelstellingen, kaders en meetbare programma's.", "primaryConcept": "Strategy Map", "boardIcon": "🧭"}, {"id": "business_domein", "name": "Business Domein", "color": "#4B3F72", "icon": "🏢", "description": "Bundelt business capabilities en bedrijfsfuncties die klantwaarde leveren binnen een afgebakend werkveld.", "primaryConcept": "Business Function", "boardIcon": "🏢"}, {"id": "hr", "name": "HR", "color": "#7A5C3E", "icon": "👥", "description": "Beheert medewerkers, rollen, competenties en organisatiestructuur ter ondersteuning van alle domeinen.", "primaryConcept": "Actor & Role Model", "boardIcon": "👥"}, {"id": "finance", "name": "Finance", "color": "#C9A227", "icon": "💰", "description": "Bewaakt de financiele huishouding, budgetten en control en levert de business case voor architectuurinvesteringen.", "primaryConcept": "Business Value & Cost Model", "boardIcon": "💰"}, {"id": "operations", "name": "Operations", "color": "#37535E", "icon": "⚙️", "description": "Voert de dagelijkse bedrijfsprocessen uit en zorgt voor operationele continuiteit en kwaliteit.", "primaryConcept": "Business Process", "boardIcon": "⚙️"}, {"id": "sales", "name": "Sales", "color": "#8C1C40", "icon": "📈", "description": "Werft nieuwe klanten en beheert het commerciele proces van lead tot contract.", "primaryConcept": "Value Stream", "boardIcon": "📈"}, {"id": "klantenservice", "name": "Klantenservice", "color": "#B76E39", "icon": "🎧", "description": "Behandelt vragen, klachten en serviceverzoeken en voedt de organisatie met klantfeedback.", "primaryConcept": "Customer Journey", "boardIcon": "🎧"}, {"id": "applicatielandschap", "name": "Applicatielandschap", "color": "#274060", "icon": "🖥️", "description": "Geeft overzicht van alle applicaties, hun functies en onderlinge samenhang binnen de organisatie.", "primaryConcept": "Applicatie-portfolio", "boardIcon": "🖥️"}, {"id": "dataplatform", "name": "Dataplatform", "color": "#3E6680", "icon": "🗄️", "description": "Verzamelt, verwerkt en ontsluit bedrijfsdata voor rapportage, analyse en AI-toepassingen.", "primaryConcept": "Information Architecture", "boardIcon": "🗄️"}, {"id": "integratielaag", "name": "Integratielaag", "color": "#5B7B7A", "icon": "🔗", "description": "Verbindt applicaties en systemen via APIs, event streams en messaging voor betrouwbare gegevensuitwisseling.", "primaryConcept": "Integration Architecture", "boardIcon": "🔗"}, {"id": "cloudplatform", "name": "Cloudplatform", "color": "#4A6FA5", "icon": "☁️", "description": "Levert schaalbare infrastructuur en platformdiensten waarop applicaties en data draaien.", "primaryConcept": "Technology Platform", "boardIcon": "☁️"}, {"id": "security_operations_center", "name": "Security Operations Center", "color": "#2C2C54", "icon": "🛡️", "description": "Monitort continu op cyberdreigingen, incidenten en compliance en beschermt digitale assets.", "primaryConcept": "Security Architecture", "boardIcon": "🛡️"}, {"id": "innovatielab", "name": "Innovatielab", "color": "#6A0DAD", "icon": "🧪", "description": "Verkent nieuwe technologieen en business-modellen via prototypes, pilots en proof-of-concepts.", "primaryConcept": "Innovation Portfolio", "boardIcon": "🧪"}, {"id": "project_portfolio", "name": "Project Portfolio", "color": "#8E7C42", "icon": "📋", "description": "Beheert de verzameling projecten en programma's die de transformatie-roadmap uitvoeren.", "primaryConcept": "Portfolio Management", "boardIcon": "📋"}, {"id": "governance_board", "name": "Governance Board", "color": "#4B4B4B", "icon": "⚖️", "description": "Waarborgt architectuurprincipes, standaarden en besluitvorming rond veranderingen in het landschap.", "primaryConcept": "Architecture Governance", "boardIcon": "⚖️"}];
+const CONTENT_MISSIONS = [{"id": "M001", "title": "Ontwikkel Enterprise Vision voor directie", "description": "Faciliteer een directie-sessie en leg de Enterprise Vision vast als eerste ankerpunt van de Dragon1 architectuurcascade.", "artefact": "Enterprise Vision", "location": "Directiekamer", "effect": {"xp": 250, "businessValue": 25, "stakeholderConfidence": 30, "governance": 10, "innovation": 15, "security": 0, "technicalDebt": 0, "digitalMaturity": 10, "budget": -100}, "difficulty": 3, "dragon1Concept": "Visie"}, {"id": "M002", "title": "Stel Dragon1 Architectuurprincipes op", "description": "Formuleer een set richtinggevende architectuurprincipes conform Dragon1-notatie en laat deze bekrachtigen door de Architecture Board.", "artefact": "Architecture Principles", "location": "Governance Board", "effect": {"xp": 200, "businessValue": 15, "stakeholderConfidence": 20, "governance": 25, "innovation": 5, "security": 10, "technicalDebt": -10, "digitalMaturity": 10, "budget": -50}, "difficulty": 2, "dragon1Concept": "Governance"}, {"id": "M003", "title": "Maak Capability Map voor business domein", "description": "Modelleer een volledige Capability Map voor een kern-business-domein met heat-map voor strategische investeringsprioriteit.", "artefact": "Capability Map", "location": "Business Domein", "effect": {"xp": 220, "businessValue": 30, "stakeholderConfidence": 20, "governance": 10, "innovation": 10, "security": 0, "technicalDebt": -5, "digitalMaturity": 15, "budget": -80}, "difficulty": 3, "dragon1Concept": "Capability"}, {"id": "M004", "title": "Ontwerp Business Reference Model", "description": "Bouw een Business Reference Model dat waardestromen, functies en capabilities integraal koppelt aan de strategische doelen.", "artefact": "Business Reference Model", "location": "Strategiecentrum", "effect": {"xp": 240, "businessValue": 30, "stakeholderConfidence": 20, "governance": 15, "innovation": 10, "security": 0, "technicalDebt": 0, "digitalMaturity": 15, "budget": -100}, "difficulty": 3, "dragon1Concept": "Business Value"}, {"id": "M005", "title": "Bouw Applicatielandschap-overzicht", "description": "Inventariseer het volledige applicatielandschap met lifecycle-status en breng het in de Dragon1 Architecture Repository.", "artefact": "Application Landscape", "location": "Applicatielandschap", "effect": {"xp": 200, "businessValue": 20, "stakeholderConfidence": 15, "governance": 20, "innovation": 5, "security": 10, "technicalDebt": -15, "digitalMaturity": 10, "budget": -120}, "difficulty": 2, "dragon1Concept": "Applicatie"}, {"id": "M006", "title": "Maak Technology Blueprint cloudplatform", "description": "Ontwerp een Technology Blueprint voor het nieuwe cloudplatform inclusief runtime, netwerken en observability-standaarden.", "artefact": "Technology Blueprint", "location": "Cloudplatform", "effect": {"xp": 260, "businessValue": 20, "stakeholderConfidence": 15, "governance": 15, "innovation": 20, "security": 15, "technicalDebt": -10, "digitalMaturity": 20, "budget": -200}, "difficulty": 4, "dragon1Concept": "Technologie"}, {"id": "M007", "title": "Ontwerp Digital Transformation Roadmap", "description": "Vertaal de Enterprise Vision naar een meerjarige Transformation Roadmap met epics, dependencies en investeringsvensters.", "artefact": "Transformation Roadmap", "location": "Strategiecentrum", "effect": {"xp": 300, "businessValue": 35, "stakeholderConfidence": 30, "governance": 15, "innovation": 20, "security": 5, "technicalDebt": -10, "digitalMaturity": 25, "budget": -150}, "difficulty": 4, "dragon1Concept": "Transformatie"}, {"id": "M008", "title": "Reduceer Technical Debt in legacy-stack", "description": "Voer een Dragon1 debt-assessment uit op de legacy-stack en definieer een saneringsplan met meetbare debt-reductie.", "artefact": "Application Landscape", "location": "Applicatielandschap", "effect": {"xp": 220, "businessValue": 15, "stakeholderConfidence": 10, "governance": 10, "innovation": 5, "security": 15, "technicalDebt": -25, "digitalMaturity": 10, "budget": -250}, "difficulty": 3, "dragon1Concept": "Applicatie"}, {"id": "M009", "title": "Integreer twee organisaties na fusie", "description": "Modelleer de post-merger Solution Overview en harmoniseer twee applicatielandschappen tot een single target architecture.", "artefact": "Solution Overview", "location": "Project Portfolio", "effect": {"xp": 350, "businessValue": 35, "stakeholderConfidence": 25, "governance": 20, "innovation": 10, "security": 10, "technicalDebt": -15, "digitalMaturity": 15, "budget": -400}, "difficulty": 5, "dragon1Concept": "Transformatie"}, {"id": "M010", "title": "Presenteer architectuur aan Raad van Bestuur", "description": "Verzorg een executive-briefing over de doelarchitectuur en verkrijg mandaat voor de Transformation Roadmap.", "artefact": "Vision Blueprint", "location": "Directiekamer", "effect": {"xp": 200, "businessValue": 25, "stakeholderConfidence": 35, "governance": 15, "innovation": 5, "security": 0, "technicalDebt": 0, "digitalMaturity": 10, "budget": 100}, "difficulty": 3, "dragon1Concept": "Visie"}, {"id": "M011", "title": "Ontwerp Value Stream klantonboarding", "description": "Modelleer een end-to-end Value Stream voor klantonboarding en identificeer knelpunten in doorlooptijd en waarde-realisatie.", "artefact": "Business Reference Model", "location": "Klantenservice", "effect": {"xp": 210, "businessValue": 30, "stakeholderConfidence": 20, "governance": 5, "innovation": 15, "security": 0, "technicalDebt": -5, "digitalMaturity": 15, "budget": -60}, "difficulty": 3, "dragon1Concept": "Value Stream"}, {"id": "M012", "title": "Definieer Governance Framework", "description": "Stel een Dragon1 Governance Framework op met besluitvormingsrechten, RACI en Architecture Board-processen.", "artefact": "Governance Framework", "location": "Governance Board", "effect": {"xp": 230, "businessValue": 10, "stakeholderConfidence": 20, "governance": 30, "innovation": 0, "security": 10, "technicalDebt": -5, "digitalMaturity": 10, "budget": -80}, "difficulty": 3, "dragon1Concept": "Governance"}, {"id": "M013", "title": "Maak Information Model voor customer data", "description": "Ontwerp een canoniek Information Model voor customer data met semantiek, kwaliteitseisen en master-data-relaties.", "artefact": "Information Model", "location": "Dataplatform", "effect": {"xp": 220, "businessValue": 20, "stakeholderConfidence": 15, "governance": 15, "innovation": 10, "security": 15, "technicalDebt": -10, "digitalMaturity": 15, "budget": -100}, "difficulty": 3, "dragon1Concept": "Data"}, {"id": "M014", "title": "Publiceer Reference Architecture microservices", "description": "Documenteer een microservices Reference Architecture met patronen voor resilience, observability en API-management.", "artefact": "Reference Architecture", "location": "Applicatielandschap", "effect": {"xp": 260, "businessValue": 20, "stakeholderConfidence": 15, "governance": 20, "innovation": 20, "security": 10, "technicalDebt": -10, "digitalMaturity": 20, "budget": -120}, "difficulty": 4, "dragon1Concept": "Applicatie"}, {"id": "M015", "title": "Beoordeel cloud-strategie multi-provider", "description": "Voer een architectuur-review uit op de multi-cloud strategie en toets deze aan resilience-, cost- en lock-in-criteria.", "artefact": "Strategy Map", "location": "Cloudplatform", "effect": {"xp": 230, "businessValue": 20, "stakeholderConfidence": 15, "governance": 15, "innovation": 15, "security": 10, "technicalDebt": -5, "digitalMaturity": 15, "budget": -60}, "difficulty": 3, "dragon1Concept": "Strategie"}, {"id": "M016", "title": "Faciliteer Architecture Review Board", "description": "Zit de ARB voor, beoordeel drie Solution Overviews en registreer besluiten in de Architecture Repository.", "artefact": "Architecture Repository", "location": "Governance Board", "effect": {"xp": 180, "businessValue": 10, "stakeholderConfidence": 20, "governance": 25, "innovation": 5, "security": 5, "technicalDebt": -5, "digitalMaturity": 5, "budget": -40}, "difficulty": 2, "dragon1Concept": "Governance"}, {"id": "M017", "title": "Definieer Portfolio Dashboard KPI's", "description": "Bepaal de KPI-set voor het Portfolio Dashboard en koppel elke KPI aan een capability en een strategisch doel.", "artefact": "Portfolio Dashboard", "location": "Project Portfolio", "effect": {"xp": 190, "businessValue": 20, "stakeholderConfidence": 25, "governance": 15, "innovation": 5, "security": 0, "technicalDebt": -5, "digitalMaturity": 10, "budget": -50}, "difficulty": 2, "dragon1Concept": "Business Value"}, {"id": "M018", "title": "Modelleer Business Functions taxonomie", "description": "Bouw een consistente Business Functions-taxonomie als basislaag onder het Business Reference Model.", "artefact": "Business Reference Model", "location": "Business Domein", "effect": {"xp": 170, "businessValue": 20, "stakeholderConfidence": 15, "governance": 15, "innovation": 5, "security": 0, "technicalDebt": -5, "digitalMaturity": 10, "budget": -40}, "difficulty": 2, "dragon1Concept": "Business Process"}, {"id": "M019", "title": "Ontwerp Data Mesh domein-architectuur", "description": "Definieer domein-owned data products in een Data Mesh Reference Architecture met federated governance-principes.", "artefact": "Reference Architecture", "location": "Dataplatform", "effect": {"xp": 280, "businessValue": 25, "stakeholderConfidence": 15, "governance": 20, "innovation": 25, "security": 10, "technicalDebt": -10, "digitalMaturity": 25, "budget": -180}, "difficulty": 4, "dragon1Concept": "Data"}, {"id": "M020", "title": "Formuleer AI Governance-principes", "description": "Stel AI Governance-principes op inclusief risk-tiering, human-in-the-loop en model-lifecycle-controls.", "artefact": "Governance Framework", "location": "Innovatielab", "effect": {"xp": 240, "businessValue": 15, "stakeholderConfidence": 20, "governance": 25, "innovation": 20, "security": 15, "technicalDebt": -5, "digitalMaturity": 20, "budget": -80}, "difficulty": 4, "dragon1Concept": "Governance"}, {"id": "M021", "title": "Verwerk NIS2 en DORA in compliance-model", "description": "Vertaal NIS2- en DORA-verplichtingen naar controls in het Governance Framework en koppel ze aan capabilities.", "artefact": "Governance Framework", "location": "Security Operations Center", "effect": {"xp": 260, "businessValue": 10, "stakeholderConfidence": 20, "governance": 25, "innovation": 0, "security": 25, "technicalDebt": -5, "digitalMaturity": 10, "budget": -150}, "difficulty": 4, "dragon1Concept": "Compliance"}, {"id": "M022", "title": "Stel FinOps-strategie op voor cloud-uitgaven", "description": "Definieer een FinOps-operating-model met showback, unit-economics en optimalisatie-loops voor het cloudplatform.", "artefact": "Strategy Map", "location": "Finance", "effect": {"xp": 220, "businessValue": 30, "stakeholderConfidence": 20, "governance": 15, "innovation": 10, "security": 5, "technicalDebt": -5, "digitalMaturity": 15, "budget": 200}, "difficulty": 3, "dragon1Concept": "Strategie"}, {"id": "M023", "title": "Maak Sustainability GreenOps roadmap", "description": "Ontwerp een Sustainability Roadmap met carbon-KPI's, workload-placement en CO2-rapportage over de architectuurlagen.", "artefact": "Transformation Roadmap", "location": "Cloudplatform", "effect": {"xp": 230, "businessValue": 15, "stakeholderConfidence": 20, "governance": 15, "innovation": 20, "security": 0, "technicalDebt": -5, "digitalMaturity": 15, "budget": -120}, "difficulty": 3, "dragon1Concept": "Transformatie"}, {"id": "M024", "title": "Definieer Zero Trust security-architectuur", "description": "Ontwerp een Zero Trust Reference Architecture met identity-, device- en workload-controls en migratie-blauwdruk.", "artefact": "Reference Architecture", "location": "Security Operations Center", "effect": {"xp": 300, "businessValue": 20, "stakeholderConfidence": 20, "governance": 20, "innovation": 15, "security": 30, "technicalDebt": -10, "digitalMaturity": 20, "budget": -300}, "difficulty": 5, "dragon1Concept": "Compliance"}, {"id": "M025", "title": "Ontwerp Event-Driven Architecture pattern", "description": "Standaardiseer een Event-Driven Architecture-pattern met event-taxonomie, schemas en delivery-guarantees.", "artefact": "Reference Architecture", "location": "Integratielaag", "effect": {"xp": 250, "businessValue": 20, "stakeholderConfidence": 15, "governance": 15, "innovation": 20, "security": 10, "technicalDebt": -10, "digitalMaturity": 20, "budget": -100}, "difficulty": 4, "dragon1Concept": "Applicatie"}, {"id": "M026", "title": "Bouw Strategy Map met OKR-koppeling", "description": "Modelleer de Strategy Map en koppel strategische doelen aan OKR's, capabilities en portfolio-initiatieven.", "artefact": "Strategy Map", "location": "Strategiecentrum", "effect": {"xp": 240, "businessValue": 30, "stakeholderConfidence": 25, "governance": 15, "innovation": 10, "security": 0, "technicalDebt": 0, "digitalMaturity": 15, "budget": -60}, "difficulty": 3, "dragon1Concept": "Strategie"}, {"id": "M027", "title": "Vision Blueprint voor omni-channel klant", "description": "Werk de Vision Blueprint uit voor de omni-channel klantpropositie inclusief experience-, kanaal- en dataperspectief.", "artefact": "Vision Blueprint", "location": "Sales", "effect": {"xp": 230, "businessValue": 30, "stakeholderConfidence": 25, "governance": 10, "innovation": 20, "security": 0, "technicalDebt": -5, "digitalMaturity": 20, "budget": -100}, "difficulty": 3, "dragon1Concept": "Visie"}, {"id": "M028", "title": "Modelleer API-strategie in Integratielaag", "description": "Definieer een API-strategie met API-catalogus, lifecycle en consumer-experience als onderdeel van de integratie-architectuur.", "artefact": "Reference Architecture", "location": "Integratielaag", "effect": {"xp": 240, "businessValue": 25, "stakeholderConfidence": 15, "governance": 20, "innovation": 15, "security": 15, "technicalDebt": -10, "digitalMaturity": 20, "budget": -90}, "difficulty": 3, "dragon1Concept": "Applicatie"}, {"id": "M029", "title": "HR Capability Map voor talent-strategie", "description": "Modelleer de HR Capability Map en koppel deze aan de talent- en workforce-strategie in het Business Reference Model.", "artefact": "Capability Map", "location": "HR", "effect": {"xp": 180, "businessValue": 20, "stakeholderConfidence": 20, "governance": 10, "innovation": 10, "security": 0, "technicalDebt": -5, "digitalMaturity": 10, "budget": -50}, "difficulty": 2, "dragon1Concept": "Capability"}, {"id": "M030", "title": "Finance target-architectuur ERP-transitie", "description": "Ontwerp de target-architectuur voor de Finance-domein ERP-transitie inclusief data-migratie en interface-strategie.", "artefact": "Solution Overview", "location": "Finance", "effect": {"xp": 300, "businessValue": 30, "stakeholderConfidence": 20, "governance": 20, "innovation": 10, "security": 10, "technicalDebt": -20, "digitalMaturity": 20, "budget": -400}, "difficulty": 5, "dragon1Concept": "Transformatie"}, {"id": "M031", "title": "Operations Value Stream productie", "description": "Modelleer de Value Stream productie en identificeer capabilities die de OEE en doorlooptijd meetbaar verbeteren.", "artefact": "Business Reference Model", "location": "Operations", "effect": {"xp": 220, "businessValue": 30, "stakeholderConfidence": 20, "governance": 10, "innovation": 15, "security": 0, "technicalDebt": -10, "digitalMaturity": 15, "budget": -80}, "difficulty": 3, "dragon1Concept": "Value Stream"}, {"id": "M032", "title": "Innovatielab Proof-of-Concept GenAI", "description": "Zet een gecontroleerde GenAI-PoC op in het Innovatielab en toets de aansluiting op AI Governance en architectuurprincipes.", "artefact": "Solution Overview", "location": "Innovatielab", "effect": {"xp": 260, "businessValue": 20, "stakeholderConfidence": 15, "governance": 10, "innovation": 30, "security": 10, "technicalDebt": 0, "digitalMaturity": 25, "budget": -150}, "difficulty": 3, "dragon1Concept": "Innovation"}, {"id": "M033", "title": "Klantenservice contact-center blueprint", "description": "Ontwerp een Solution Overview voor het nieuwe contact-center met CTI, kennisbank en AI-assistentie voor agents.", "artefact": "Solution Overview", "location": "Klantenservice", "effect": {"xp": 220, "businessValue": 25, "stakeholderConfidence": 20, "governance": 10, "innovation": 20, "security": 10, "technicalDebt": -5, "digitalMaturity": 20, "budget": -180}, "difficulty": 3, "dragon1Concept": "Business Process"}, {"id": "M034", "title": "Sales CRM Application Landscape rationalisatie", "description": "Rationaliseer het Sales-applicatielandschap rondom het target-CRM en definieer decommissioning-golf per capability.", "artefact": "Application Landscape", "location": "Sales", "effect": {"xp": 230, "businessValue": 25, "stakeholderConfidence": 15, "governance": 15, "innovation": 10, "security": 5, "technicalDebt": -20, "digitalMaturity": 15, "budget": -100}, "difficulty": 3, "dragon1Concept": "Applicatie"}, {"id": "M035", "title": "Dataplatform target Information Model", "description": "Ontwerp het target Information Model voor het analytisch dataplatform met conforme dimensies en semantische laag.", "artefact": "Information Model", "location": "Dataplatform", "effect": {"xp": 240, "businessValue": 20, "stakeholderConfidence": 15, "governance": 15, "innovation": 15, "security": 10, "technicalDebt": -10, "digitalMaturity": 20, "budget": -120}, "difficulty": 3, "dragon1Concept": "Data"}, {"id": "M036", "title": "SOC Threat-Informed defense-architectuur", "description": "Werk in het SOC een threat-informed defense-architectuur uit op basis van MITRE ATT&CK en Zero Trust-controls.", "artefact": "Technology Blueprint", "location": "Security Operations Center", "effect": {"xp": 270, "businessValue": 15, "stakeholderConfidence": 15, "governance": 15, "innovation": 10, "security": 30, "technicalDebt": -5, "digitalMaturity": 15, "budget": -200}, "difficulty": 4, "dragon1Concept": "Compliance"}, {"id": "M037", "title": "Integratie-referentie voor legacy-uitfasering", "description": "Definieer een integratie-referentie voor de gefaseerde uitfasering van legacy-koppelingen richting event-based interfaces.", "artefact": "Reference Architecture", "location": "Integratielaag", "effect": {"xp": 250, "businessValue": 20, "stakeholderConfidence": 15, "governance": 15, "innovation": 10, "security": 10, "technicalDebt": -25, "digitalMaturity": 15, "budget": -150}, "difficulty": 4, "dragon1Concept": "Transformatie"}, {"id": "M038", "title": "Populeer Architecture Repository baseline", "description": "Voer de baseline-vulling uit van de Architecture Repository met alle huidige artefacten volgens Dragon1-metamodel.", "artefact": "Architecture Repository", "location": "Project Portfolio", "effect": {"xp": 180, "businessValue": 10, "stakeholderConfidence": 15, "governance": 25, "innovation": 5, "security": 5, "technicalDebt": -10, "digitalMaturity": 10, "budget": -60}, "difficulty": 2, "dragon1Concept": "Governance"}, {"id": "M039", "title": "Innovation Portfolio Dashboard opzetten", "description": "Zet een Innovation Portfolio Dashboard op met horizon-1/2/3-KPI's en koppeling aan de Transformation Roadmap.", "artefact": "Portfolio Dashboard", "location": "Innovatielab", "effect": {"xp": 210, "businessValue": 20, "stakeholderConfidence": 20, "governance": 15, "innovation": 25, "security": 0, "technicalDebt": 0, "digitalMaturity": 15, "budget": -80}, "difficulty": 3, "dragon1Concept": "Innovation"}, {"id": "M040", "title": "HR People Analytics Information Model", "description": "Ontwerp een People Analytics Information Model met privacy-by-design en koppeling aan de HR Capability Map.", "artefact": "Information Model", "location": "HR", "effect": {"xp": 200, "businessValue": 15, "stakeholderConfidence": 15, "governance": 20, "innovation": 15, "security": 20, "technicalDebt": -5, "digitalMaturity": 15, "budget": -100}, "difficulty": 3, "dragon1Concept": "Data"}];
+const CONTENT_CHALLENGES = [{"id": "CH001", "title": "Legacy mainframe blijkt onmisbaar", "description": "COBOL-mainframe uit 1987 draait nog steeds kernprocessen. Leverancier stopt met support, interne kennis is nihil.", "category": "Legacy", "severity": 5, "effect": {"technicalDebt": 25, "innovation": -10, "digitalMaturity": -15, "xp": 0}, "response": {"choices": [{"label": "Strangler-pattern modernisatie starten", "effect": {"budget": -400, "technicalDebt": -20, "digitalMaturity": 20, "xp": 200}, "requiresArtefact": "roadmap"}, {"label": "Externe COBOL-specialisten inhuren", "effect": {"budget": -250, "technicalDebt": 5, "xp": 100}}, {"label": "Big-bang vervanging plannen", "effect": {"budget": -700, "technicalDebt": -30, "stakeholderConfidence": -15, "xp": 250}}, {"label": "Documenteren en freezen", "effect": {"technicalDebt": 10, "governance": 10, "xp": 75}}]}, "location": "Applicatielandschap"}, {"id": "CH002", "title": "Shadow-IT ontdekt in Marketing", "description": "Marketing gebruikt 14 SaaS-tools buiten IT om, waaronder klantdata in ongesanctioneerde cloud-oplossingen.", "category": "ShadowIT", "severity": 4, "effect": {"governance": -15, "security": -20, "stakeholderConfidence": -5, "xp": 0}, "response": {"choices": [{"label": "SaaS-catalogus + governance-board opzetten", "effect": {"governance": 20, "security": 10, "xp": 150}, "requiresArtefact": "governance-model"}, {"label": "Alle shadow-tools direct blokkeren", "effect": {"security": 15, "stakeholderConfidence": -20, "xp": 75}}, {"label": "Marketing eigenaarschap geven binnen kaders", "effect": {"governance": 10, "innovation": 10, "stakeholderConfidence": 10, "xp": 175}}]}, "location": "Sales"}, {"id": "CH003", "title": "Weerstand tegen cloud-migratie", "description": "Managementteam blokkeert cloud-strategie uit angst voor controleverlies en onvoorspelbare kosten.", "category": "Weerstand", "severity": 4, "effect": {"stakeholderConfidence": -15, "innovation": -10, "digitalMaturity": -10, "xp": 0}, "response": {"choices": [{"label": "Business case + TCO-model presenteren", "effect": {"stakeholderConfidence": 15, "digitalMaturity": 10, "xp": 150}, "requiresArtefact": "business-case"}, {"label": "Pilot met beperkte scope starten", "effect": {"budget": -150, "digitalMaturity": 10, "innovation": 10, "xp": 175}}, {"label": "Hybrid-strategie voorstellen", "effect": {"stakeholderConfidence": 10, "technicalDebt": 5, "xp": 125}}]}, "location": "Directiekamer"}, {"id": "CH004", "title": "Budget bevroren mid-project", "description": "CFO bevriest transformatie-budget na tegenvallende Q3-cijfers. Drie strategische programma's dreigen te stoppen.", "category": "Budget", "severity": 5, "effect": {"budget": -300, "stakeholderConfidence": -10, "innovation": -15, "xp": 0}, "response": {"choices": [{"label": "Portfolio-prioritering met CFO uitvoeren", "effect": {"governance": 15, "stakeholderConfidence": 10, "xp": 175}, "requiresArtefact": "portfolio-review"}, {"label": "Programma's opsplitsen in MVP-fases", "effect": {"innovation": 10, "digitalMaturity": 5, "xp": 150}}, {"label": "Quick-wins tonen met bestaande scope", "effect": {"businessValue": 10, "xp": 100}}]}, "location": "Finance"}, {"id": "CH005", "title": "Vendor kondigt end-of-life aan", "description": "Kern-ERP-leverancier stopt met huidige productlijn over 18 maanden. Migratiepad is onduidelijk en duur.", "category": "VendorLockIn", "severity": 5, "effect": {"technicalDebt": 20, "budget": -100, "stakeholderConfidence": -10, "xp": 0}, "response": {"choices": [{"label": "Multi-vendor selectietraject starten", "effect": {"budget": -500, "technicalDebt": -20, "governance": 15, "xp": 225}, "requiresArtefact": "vendor-assessment"}, {"label": "Migreren naar opvolger van dezelfde leverancier", "effect": {"budget": -600, "technicalDebt": -10, "xp": 150}}, {"label": "Uitstel bedingen via premium-support", "effect": {"budget": -200, "technicalDebt": 15, "xp": 75}}]}, "location": "Applicatielandschap"}, {"id": "CH006", "title": "Ransomware in productie", "description": "Productie-omgeving getroffen door ransomware. Backups deels versleuteld, uptime-SLA in gevaar.", "category": "Cyber", "severity": 5, "effect": {"security": -30, "businessValue": -25, "stakeholderConfidence": -20, "xp": 0}, "response": {"choices": [{"label": "Incident-response team activeren, herstel uit air-gap backup", "effect": {"security": 20, "budget": -300, "xp": 250}, "requiresArtefact": "incident-response-plan"}, {"label": "Losgeld betalen (via verzekeraar)", "effect": {"budget": -400, "stakeholderConfidence": -15, "xp": 100}}, {"label": "Systemen isoleren en handmatig verder", "effect": {"businessValue": -15, "security": 10, "xp": 150}}]}, "location": "Security Operations Center"}, {"id": "CH007", "title": "Datalek klantendatabase", "description": "SQL-injectie in klantportaal leidt tot lek van 120.000 records. AP moet binnen 72 uur gemeld worden.", "category": "Datalek", "severity": 5, "effect": {"security": -25, "stakeholderConfidence": -25, "governance": -15, "xp": 0}, "response": {"choices": [{"label": "AP-melding + klantcommunicatie + forensisch onderzoek", "effect": {"governance": 20, "security": 15, "budget": -250, "xp": 225}, "requiresArtefact": "privacy-incident-plan"}, {"label": "Alleen minimum wettelijk melden", "effect": {"governance": 5, "stakeholderConfidence": -10, "xp": 75}}, {"label": "WAF + secure-coding programma opzetten", "effect": {"security": 25, "budget": -200, "xp": 175}}]}, "location": "Security Operations Center"}, {"id": "CH008", "title": "Audit-bevindingen op IAM", "description": "Externe auditor vindt 340 orphaned accounts en 12 shared admin-accounts. Rapportage aan RvC volgt.", "category": "Compliance", "severity": 4, "effect": {"governance": -20, "security": -15, "stakeholderConfidence": -10, "xp": 0}, "response": {"choices": [{"label": "IAM-remediation programma + PAM-tool implementeren", "effect": {"governance": 25, "security": 20, "budget": -350, "xp": 200}, "requiresArtefact": "iam-roadmap"}, {"label": "Quick-clean-up van orphaned accounts", "effect": {"governance": 10, "security": 10, "xp": 100}}, {"label": "Compenserende controls documenteren", "effect": {"governance": 5, "xp": 75}}]}, "location": "Security Operations Center"}, {"id": "CH009", "title": "M&A-integratie in 6 maanden", "description": "Overname van concurrent aangekondigd. Board eist volledige systeem-integratie binnen half jaar.", "category": "Fusie", "severity": 5, "effect": {"budget": -200, "technicalDebt": 15, "stakeholderConfidence": -10, "xp": 0}, "response": {"choices": [{"label": "Integratie-blueprint + fasering opstellen", "effect": {"governance": 20, "businessValue": 15, "xp": 225}, "requiresArtefact": "integration-blueprint"}, {"label": "Coexistence-strategie met API-laag", "effect": {"technicalDebt": 10, "innovation": 10, "xp": 175}}, {"label": "Best-of-breed keuze per domein", "effect": {"budget": -400, "digitalMaturity": 15, "xp": 200}}]}, "location": "Directiekamer"}, {"id": "CH010", "title": "Datacenter end-of-life", "description": "Huidige colocatie sluit over 12 maanden. Migratie van 240 servers en 40 legacy-apps vereist.", "category": "Infrastructuur", "severity": 4, "effect": {"budget": -150, "technicalDebt": 10, "xp": 0}, "response": {"choices": [{"label": "Lift-and-shift naar public cloud", "effect": {"budget": -500, "digitalMaturity": 15, "technicalDebt": -10, "xp": 200}, "requiresArtefact": "migration-plan"}, {"label": "Nieuwe colocatie + hardware-refresh", "effect": {"budget": -600, "technicalDebt": -5, "xp": 150}}, {"label": "Re-platform kernsystemen, rest cloud", "effect": {"budget": -700, "digitalMaturity": 25, "innovation": 15, "xp": 250}}]}, "location": "Applicatielandschap"}, {"id": "CH011", "title": "Business-eigenaren geven geen prioriteit", "description": "Backlog-refinement wordt structureel afgezegd. Roadmap loopt vast door gebrek aan business-input.", "category": "Draagvlak", "severity": 3, "effect": {"stakeholderConfidence": -15, "businessValue": -10, "xp": 0}, "response": {"choices": [{"label": "Product-ownership escaleren naar directie", "effect": {"governance": 15, "stakeholderConfidence": 10, "xp": 150}}, {"label": "Value-stream workshops organiseren", "effect": {"stakeholderConfidence": 15, "businessValue": 10, "xp": 175}, "requiresArtefact": "value-stream-map"}, {"label": "Autonome architectuur-keuzes maken", "effect": {"governance": -10, "innovation": 10, "xp": 75}}]}, "location": "Business Domein"}, {"id": "CH012", "title": "NIS2-deadline nadert", "description": "Organisatie valt onder NIS2. Nog geen risk-management, incident-response of supply-chain-security ingericht.", "category": "Wetgeving", "severity": 5, "effect": {"governance": -20, "security": -15, "xp": 0}, "response": {"choices": [{"label": "NIS2-compliance programma + CISO-mandaat", "effect": {"governance": 25, "security": 20, "budget": -400, "xp": 225}, "requiresArtefact": "nis2-plan"}, {"label": "Gap-analyse en gefaseerd aanpakken", "effect": {"governance": 15, "budget": -150, "xp": 150}}, {"label": "Externe MSSP inschakelen", "effect": {"budget": -350, "security": 15, "xp": 125}}]}, "location": "Security Operations Center"}, {"id": "CH013", "title": "Sleutel-architect vertrekt", "description": "Lead-architect met 15 jaar kennis van kernsystemen vertrekt binnen een maand. Kennisoverdracht is minimaal.", "category": "Talent", "severity": 4, "effect": {"technicalDebt": 15, "innovation": -10, "stakeholderConfidence": -10, "xp": 0}, "response": {"choices": [{"label": "Kennisoverdracht + architectuurrepository", "effect": {"governance": 15, "technicalDebt": -5, "xp": 175}, "requiresArtefact": "architecture-repository"}, {"label": "Interim-architect + tandem-constructie", "effect": {"budget": -200, "technicalDebt": 5, "xp": 125}}, {"label": "Team upskillen via community-of-practice", "effect": {"innovation": 15, "digitalMaturity": 10, "xp": 175}}]}, "location": "HR"}, {"id": "CH014", "title": "R&D-budget onder druk", "description": "Innovatiebudget wordt gehalveerd om operationele lasten te dekken. Twee lopende POC's dreigen te stoppen.", "category": "Budget", "severity": 3, "effect": {"innovation": -20, "digitalMaturity": -10, "xp": 0}, "response": {"choices": [{"label": "Innovation-portfolio scherper prioriteren", "effect": {"innovation": 10, "governance": 10, "xp": 150}, "requiresArtefact": "innovation-portfolio"}, {"label": "Co-innovation met vendor of startup", "effect": {"innovation": 15, "stakeholderConfidence": 5, "xp": 175}}, {"label": "Subsidies (WBSO, EU) aanvragen", "effect": {"budget": 200, "innovation": 10, "xp": 175}}]}, "location": "Innovatielab"}, {"id": "CH015", "title": "AI Act-compliance vereist", "description": "Twee interne AI-modellen vallen als high-risk onder AI Act. Documentatie, bias-audits en toezicht ontbreken.", "category": "Wetgeving", "severity": 4, "effect": {"governance": -15, "innovation": -10, "xp": 0}, "response": {"choices": [{"label": "AI-governance framework opzetten", "effect": {"governance": 25, "innovation": 5, "budget": -200, "xp": 200}, "requiresArtefact": "ai-governance"}, {"label": "High-risk modellen pauzeren", "effect": {"innovation": -15, "governance": 15, "xp": 100}}, {"label": "Externe conformiteitsbeoordeling", "effect": {"budget": -300, "governance": 20, "xp": 175}}]}, "location": "Innovatielab"}, {"id": "CH016", "title": "DORA-testregime niet gehaald", "description": "Financiële toezichthouder vraagt Threat-Led Penetration Test bewijs. Huidige testcadans voldoet niet.", "category": "Wetgeving", "severity": 4, "effect": {"governance": -15, "security": -10, "xp": 0}, "response": {"choices": [{"label": "TLPT-programma + red-team contracteren", "effect": {"security": 20, "governance": 15, "budget": -350, "xp": 200}, "requiresArtefact": "tlpt-scope"}, {"label": "Interne pentest-capaciteit opbouwen", "effect": {"security": 15, "budget": -250, "xp": 175}}, {"label": "Uitstel aanvragen bij toezichthouder", "effect": {"stakeholderConfidence": -10, "xp": 50}}]}, "location": "Security Operations Center"}, {"id": "CH017", "title": "Onverwachte technische schuld", "description": "Code-quality scan onthult 4200 kritieke bevindingen in kernapplicatie. Deployment-frequentie halveert.", "category": "Legacy", "severity": 3, "effect": {"technicalDebt": 20, "businessValue": -10, "xp": 0}, "response": {"choices": [{"label": "Technical-debt sprint elke iteratie inplannen", "effect": {"technicalDebt": -15, "digitalMaturity": 10, "xp": 150}}, {"label": "Boy-Scout-rule + coding-standard invoeren", "effect": {"technicalDebt": -10, "innovation": 5, "xp": 125}}, {"label": "Applicatie herbouwen in strategisch platform", "effect": {"budget": -500, "technicalDebt": -25, "digitalMaturity": 20, "xp": 225}, "requiresArtefact": "target-architecture"}]}, "location": "Applicatielandschap"}, {"id": "CH018", "title": "Klachten over trage systemen", "description": "Klantenservice ontvangt dagelijks klachten over trage kernapplicatie. NPS daalt 12 punten in kwartaal.", "category": "Infrastructuur", "severity": 3, "effect": {"businessValue": -15, "stakeholderConfidence": -10, "xp": 0}, "response": {"choices": [{"label": "Performance-engineering team + observability", "effect": {"businessValue": 15, "digitalMaturity": 10, "budget": -200, "xp": 175}, "requiresArtefact": "observability-stack"}, {"label": "Capaciteit uitbreiden (scale-up)", "effect": {"budget": -250, "businessValue": 10, "xp": 100}}, {"label": "Root-cause analyse en gerichte fix", "effect": {"businessValue": 10, "technicalDebt": -5, "xp": 125}}]}, "location": "Applicatielandschap"}, {"id": "CH019", "title": "Overname door PE-fonds", "description": "Private equity neemt organisatie over en eist EBITDA-verbetering van 15% in 18 maanden. IT-kosten in scope.", "category": "Fusie", "severity": 4, "effect": {"budget": -100, "stakeholderConfidence": -15, "innovation": -10, "xp": 0}, "response": {"choices": [{"label": "Rationalisatie applicatielandschap", "effect": {"budget": 200, "technicalDebt": -15, "xp": 200}, "requiresArtefact": "application-portfolio"}, {"label": "Sourcing-strategie herzien (offshore/nearshore)", "effect": {"budget": 300, "stakeholderConfidence": -10, "xp": 150}}, {"label": "Automatisering FinOps + GreenOps", "effect": {"budget": 150, "digitalMaturity": 10, "xp": 175}}]}, "location": "Finance"}, {"id": "CH020", "title": "Sales pusht point-solution", "description": "Sales heeft niche-tool getekend zonder architectuur-review. Tool overlapt 60% met bestaand platform.", "category": "ShadowIT", "severity": 3, "effect": {"governance": -15, "technicalDebt": 10, "budget": -100, "xp": 0}, "response": {"choices": [{"label": "Architecture Review Board mandaat versterken", "effect": {"governance": 20, "stakeholderConfidence": -5, "xp": 150}, "requiresArtefact": "arb-charter"}, {"label": "Contract heronderhandelen met Sales aan tafel", "effect": {"budget": 100, "stakeholderConfidence": 5, "xp": 125}}, {"label": "Integratie met platform toestaan onder voorwaarden", "effect": {"technicalDebt": 5, "innovation": 10, "xp": 100}}]}, "location": "Sales"}, {"id": "CH021", "title": "Phishing-campagne succesvol", "description": "23 medewerkers klikten op gerichte phishing-mail. Twee CFO-accounts vertoonden verdachte OAuth-toestemmingen.", "category": "Cyber", "severity": 4, "effect": {"security": -20, "stakeholderConfidence": -10, "xp": 0}, "response": {"choices": [{"label": "OAuth-tokens intrekken + MFA verplicht", "effect": {"security": 25, "budget": -100, "xp": 175}, "requiresArtefact": "mfa-rollout"}, {"label": "Security-awareness campagne + simulaties", "effect": {"security": 15, "digitalMaturity": 5, "budget": -150, "xp": 150}}, {"label": "E-mail-gateway upgraden met AI-detectie", "effect": {"budget": -200, "security": 15, "xp": 125}}]}, "location": "Security Operations Center"}, {"id": "CH022", "title": "GDPR-verzoek verwerkersregister", "description": "Toezichthouder vraagt actueel register van verwerkingsactiviteiten. Laatst bijgewerkt in 2021.", "category": "Compliance", "severity": 3, "effect": {"governance": -15, "xp": 0}, "response": {"choices": [{"label": "Data-catalog + eigenaarschap organiseren", "effect": {"governance": 25, "digitalMaturity": 10, "budget": -150, "xp": 175}, "requiresArtefact": "data-catalog"}, {"label": "Quick-update door DPO + externe hulp", "effect": {"budget": -200, "governance": 15, "xp": 125}}, {"label": "Automated-discovery tool inzetten", "effect": {"budget": -250, "governance": 20, "digitalMaturity": 15, "xp": 175}}]}, "location": "Governance Board"}, {"id": "CH023", "title": "Cloud-kosten exploderen", "description": "Onbeheerde cloud-uitgaven stijgen 45% YoY. FinOps ontbreekt, teams provisioneren onbeperkt.", "category": "Budget", "severity": 4, "effect": {"budget": -300, "governance": -10, "xp": 0}, "response": {"choices": [{"label": "FinOps-team + tagging-policy", "effect": {"budget": 250, "governance": 20, "xp": 200}, "requiresArtefact": "finops-model"}, {"label": "Reserved-instances + savings-plans", "effect": {"budget": 150, "xp": 125}}, {"label": "Chargeback-model per business-unit", "effect": {"governance": 15, "stakeholderConfidence": -5, "budget": 100, "xp": 150}}]}, "location": "Finance"}, {"id": "CH024", "title": "Business wil AI-copilot nu", "description": "COO eist enterprise-copilot uitrol binnen 3 maanden. Data-classificatie, DLP en licentiemodel ontbreken.", "category": "Innovation", "severity": 3, "effect": {"stakeholderConfidence": -5, "security": -10, "xp": 0}, "response": {"choices": [{"label": "AI-enablement blueprint + DLP-baseline", "effect": {"governance": 15, "innovation": 20, "budget": -300, "xp": 200}, "requiresArtefact": "ai-blueprint"}, {"label": "Pilot met 200 gebruikers en meten", "effect": {"innovation": 15, "digitalMaturity": 10, "budget": -150, "xp": 175}}, {"label": "Wachten tot data-classificatie klaar is", "effect": {"stakeholderConfidence": -15, "governance": 10, "xp": 75}}]}, "location": "Innovatielab"}, {"id": "CH025", "title": "Klantportaal offline door DDoS", "description": "Aanhoudende DDoS-aanval maakt klantportaal 6 uur onbereikbaar. Media-aandacht en reputatie-impact.", "category": "Cyber", "severity": 4, "effect": {"security": -15, "stakeholderConfidence": -20, "businessValue": -15, "xp": 0}, "response": {"choices": [{"label": "Anti-DDoS-service (Cloudflare/Akamai)", "effect": {"security": 20, "budget": -200, "xp": 150}}, {"label": "Multi-region failover + CDN", "effect": {"budget": -400, "digitalMaturity": 15, "security": 15, "xp": 225}, "requiresArtefact": "resilience-plan"}, {"label": "Rate-limiting + edge-hardening", "effect": {"security": 10, "budget": -100, "xp": 100}}]}, "location": "Applicatielandschap"}, {"id": "CH026", "title": "Data-scientist team verzuipt", "description": "Data-scientists besteden 70% aan data-preparatie. Modellen komen niet in productie, business haakt af.", "category": "Talent", "severity": 3, "effect": {"innovation": -15, "stakeholderConfidence": -10, "xp": 0}, "response": {"choices": [{"label": "MLOps-platform + feature-store", "effect": {"innovation": 20, "digitalMaturity": 15, "budget": -350, "xp": 225}, "requiresArtefact": "mlops-platform"}, {"label": "Data-engineers aannemen", "effect": {"budget": -300, "innovation": 10, "xp": 150}}, {"label": "Scope reduceren tot 2 productie-modellen", "effect": {"businessValue": 10, "innovation": -5, "xp": 100}}]}, "location": "Innovatielab"}, {"id": "CH027", "title": "Ondernemingsraad blokkeert monitoring", "description": "OR weigert instemming voor endpoint-detection tool wegens privacy-zorgen medewerkers.", "category": "Weerstand", "severity": 3, "effect": {"security": -15, "stakeholderConfidence": -5, "xp": 0}, "response": {"choices": [{"label": "DPIA + OR-dialoog + waarborgen", "effect": {"governance": 20, "security": 10, "stakeholderConfidence": 10, "xp": 175}, "requiresArtefact": "dpia"}, {"label": "Alternatief met minder telemetrie kiezen", "effect": {"security": 5, "innovation": -5, "xp": 100}}, {"label": "Escaleren naar directie", "effect": {"security": 10, "stakeholderConfidence": -15, "xp": 75}}]}, "location": "HR"}, {"id": "CH028", "title": "Concurrent lanceert digitaal product", "description": "Concurrent introduceert AI-gedreven zelfbedieningsportaal. Marktaandeel daalt zichtbaar in twee kwartalen.", "category": "Innovation", "severity": 4, "effect": {"businessValue": -20, "stakeholderConfidence": -10, "innovation": -10, "xp": 0}, "response": {"choices": [{"label": "Digital-product tribe + fast-track roadmap", "effect": {"innovation": 25, "businessValue": 15, "budget": -500, "xp": 250}, "requiresArtefact": "product-vision"}, {"label": "Overnemen van kleinere spelers", "effect": {"budget": -700, "businessValue": 20, "xp": 200}}, {"label": "Kern-value-proposition versterken", "effect": {"businessValue": 10, "innovation": 5, "xp": 125}}]}, "location": "Business Domein"}, {"id": "CH029", "title": "Onbekende API's op internet", "description": "External Attack Surface Management vindt 47 onbekende API's exposed. Auth-status onduidelijk.", "category": "Cyber", "severity": 4, "effect": {"security": -20, "governance": -10, "xp": 0}, "response": {"choices": [{"label": "API-gateway + inventarisatie verplicht", "effect": {"governance": 20, "security": 20, "budget": -250, "xp": 200}, "requiresArtefact": "api-inventory"}, {"label": "Kwetsbare API's direct offline halen", "effect": {"security": 15, "businessValue": -10, "xp": 125}}, {"label": "Bug-bounty programma starten", "effect": {"security": 15, "innovation": 5, "budget": -150, "xp": 175}}]}, "location": "Security Operations Center"}, {"id": "CH030", "title": "Change-freeze voor jaarafsluiting", "description": "Finance eist 8-weekse change-freeze rond jaarafsluiting. Twee kritieke releases moeten wachten.", "category": "Draagvlak", "severity": 2, "effect": {"innovation": -10, "businessValue": -5, "xp": 0}, "response": {"choices": [{"label": "Risk-based change-window afspreken", "effect": {"governance": 15, "innovation": 5, "xp": 150}, "requiresArtefact": "change-policy"}, {"label": "Freeze accepteren en communiceren", "effect": {"stakeholderConfidence": 5, "innovation": -5, "xp": 75}}, {"label": "Feature-flags voor uitgestelde release", "effect": {"digitalMaturity": 15, "innovation": 10, "xp": 175}}]}, "location": "Finance"}, {"id": "CH031", "title": "Master-data chaos", "description": "Vier bronnen voor klantdata, geen SSOT. Rapportages spreken elkaar tegen, directie verliest vertrouwen.", "category": "Legacy", "severity": 4, "effect": {"governance": -20, "businessValue": -15, "xp": 0}, "response": {"choices": [{"label": "MDM-platform + data-stewardship", "effect": {"governance": 25, "digitalMaturity": 15, "budget": -400, "xp": 225}, "requiresArtefact": "mdm-roadmap"}, {"label": "Golden-record via ETL consolideren", "effect": {"governance": 15, "technicalDebt": 10, "xp": 150}}, {"label": "Data-mesh met domain-ownership", "effect": {"digitalMaturity": 20, "innovation": 15, "budget": -350, "xp": 200}}]}, "location": "Business Domein"}, {"id": "CH032", "title": "Vakbond eist mens-in-de-loop", "description": "Vakbond eist dat AI-besluiten in HR altijd door mens beoordeeld worden. Efficiency-case onder druk.", "category": "Weerstand", "severity": 3, "effect": {"stakeholderConfidence": -10, "innovation": -10, "xp": 0}, "response": {"choices": [{"label": "Human-oversight framework + escalatiepaden", "effect": {"governance": 20, "stakeholderConfidence": 10, "xp": 175}, "requiresArtefact": "human-oversight"}, {"label": "AI beperken tot lage-risico beslissingen", "effect": {"innovation": -5, "governance": 15, "xp": 125}}, {"label": "CAO-onderhandeling opnemen", "effect": {"stakeholderConfidence": 5, "governance": 10, "xp": 100}}]}, "location": "HR"}, {"id": "CH033", "title": "Duurzaamheidsrapportage CSRD", "description": "CSRD eist Scope-3 IT-emissies. Metingen, dataverzameling en assurance-pad ontbreken volledig.", "category": "Wetgeving", "severity": 3, "effect": {"governance": -15, "xp": 0}, "response": {"choices": [{"label": "GreenOps + ESG-dashboard opzetten", "effect": {"governance": 20, "digitalMaturity": 15, "budget": -250, "xp": 200}, "requiresArtefact": "greenops-plan"}, {"label": "Externe ESG-consultant en tooling", "effect": {"budget": -350, "governance": 20, "xp": 150}}, {"label": "Cloud-vendor emissie-rapportages hergebruiken", "effect": {"governance": 10, "budget": -50, "xp": 100}}]}, "location": "Governance Board"}, {"id": "CH034", "title": "Off-boarding leverancier chaotisch", "description": "Contract met outsourcing-partner eindigt. Kennis, code-repositories en credentials zijn niet overgedragen.", "category": "VendorLockIn", "severity": 4, "effect": {"governance": -15, "security": -15, "technicalDebt": 15, "xp": 0}, "response": {"choices": [{"label": "Exit-plan + reverse-KT programma", "effect": {"governance": 20, "security": 15, "budget": -300, "xp": 200}, "requiresArtefact": "exit-plan"}, {"label": "Contract met 6 maanden verlengen", "effect": {"budget": -400, "technicalDebt": 5, "xp": 100}}, {"label": "Nieuwe partner met kennisovername-clausule", "effect": {"budget": -350, "governance": 15, "xp": 175}}]}, "location": "Applicatielandschap"}, {"id": "CH035", "title": "Test-omgeving bevat productiedata", "description": "Audit constateert dat test- en OTAP-omgevingen ongeanonimiseerde klantdata bevatten.", "category": "Datalek", "severity": 4, "effect": {"governance": -15, "security": -20, "xp": 0}, "response": {"choices": [{"label": "Data-masking + synthetic-data platform", "effect": {"security": 25, "governance": 15, "budget": -250, "xp": 200}, "requiresArtefact": "masking-policy"}, {"label": "Alle non-prod data direct wissen", "effect": {"security": 15, "businessValue": -5, "xp": 100}}, {"label": "Access-controls op non-prod verscherpen", "effect": {"security": 10, "governance": 10, "xp": 125}}]}, "location": "Security Operations Center"}, {"id": "CH036", "title": "IT-team burn-out signalen", "description": "Ziekteverzuim in Ops-team 18%. Twee sleutelfiguren dreigen te vertrekken door pager-fatigue.", "category": "Talent", "severity": 4, "effect": {"stakeholderConfidence": -10, "innovation": -15, "businessValue": -10, "xp": 0}, "response": {"choices": [{"label": "SRE-model + toil-reductie programma", "effect": {"digitalMaturity": 20, "innovation": 10, "budget": -300, "xp": 200}, "requiresArtefact": "sre-model"}, {"label": "24/7-support extern beleggen", "effect": {"budget": -400, "stakeholderConfidence": 5, "xp": 125}}, {"label": "Freeze op nieuwe changes, focus op stabiliteit", "effect": {"businessValue": 10, "innovation": -10, "xp": 100}}]}, "location": "HR"}, {"id": "CH037", "title": "Regulator vraagt AI-uitlegbaarheid", "description": "Toezichthouder vraagt uitlegbaarheid van kredietscore-model. Zwarte doos-karakter is onhoudbaar.", "category": "Compliance", "severity": 4, "effect": {"governance": -15, "stakeholderConfidence": -10, "xp": 0}, "response": {"choices": [{"label": "XAI-methodes + model-cards + documentatie", "effect": {"governance": 25, "innovation": 10, "budget": -250, "xp": 200}, "requiresArtefact": "model-card"}, {"label": "Model vervangen door uitlegbaar alternatief", "effect": {"budget": -350, "innovation": -5, "governance": 20, "xp": 175}}, {"label": "Human-in-the-loop review-laag toevoegen", "effect": {"governance": 15, "businessValue": -5, "xp": 125}}]}, "location": "Innovatielab"}, {"id": "CH038", "title": "Supply-chain aanval via dependency", "description": "Open-source afhankelijkheid blijkt gecompromitteerd. Vier services moeten met spoed gepatched worden.", "category": "Cyber", "severity": 4, "effect": {"security": -20, "businessValue": -10, "xp": 0}, "response": {"choices": [{"label": "SBOM + SCA in CI-pipelines afdwingen", "effect": {"security": 25, "governance": 15, "budget": -200, "xp": 200}, "requiresArtefact": "sbom"}, {"label": "Getroffen services isoleren en patchen", "effect": {"security": 15, "businessValue": -5, "xp": 125}}, {"label": "Vendored dependencies + interne mirror", "effect": {"security": 15, "technicalDebt": 5, "budget": -150, "xp": 150}}]}, "location": "Security Operations Center"}, {"id": "CH039", "title": "Board twijfelt aan IT-strategie", "description": "RvC vraagt second-opinion op IT-strategie na tegenvallende resultaten. CIO-mandaat staat onder druk.", "category": "Draagvlak", "severity": 4, "effect": {"stakeholderConfidence": -20, "governance": -10, "xp": 0}, "response": {"choices": [{"label": "Strategie-review + business-alignment sessies", "effect": {"stakeholderConfidence": 20, "governance": 15, "xp": 200}, "requiresArtefact": "it-strategy"}, {"label": "Externe assessment (Gartner/McKinsey)", "effect": {"budget": -300, "stakeholderConfidence": 15, "xp": 175}}, {"label": "Quick-wins programma tonen", "effect": {"stakeholderConfidence": 10, "businessValue": 10, "xp": 125}}]}, "location": "Directiekamer"}, {"id": "CH040", "title": "Klant eist ISO 27001-certificaat", "description": "Strategische klant maakt contractverlenging afhankelijk van ISO 27001-certificering binnen 12 maanden.", "category": "Compliance", "severity": 4, "effect": {"governance": -10, "businessValue": -15, "xp": 0}, "response": {"choices": [{"label": "ISMS-programma + certificeringstraject", "effect": {"governance": 25, "security": 20, "businessValue": 15, "budget": -400, "xp": 225}, "requiresArtefact": "isms"}, {"label": "SOC2 als tussenstap aanbieden", "effect": {"governance": 15, "budget": -250, "xp": 150}}, {"label": "Attestation-of-controls van vendor gebruiken", "effect": {"governance": 10, "businessValue": -5, "xp": 100}}]}, "location": "Governance Board"}];
+const CONTENT_EVENTS = [{"id": "EV001", "title": "RFI ontvangen van prospect", "description": "Grote prospect stuurt Request for Information over cloud-security en data-residency.", "effect": {"stakeholderConfidence": 5, "businessValue": 5, "xp": 50}, "choices": [{"label": "Volledige RFI beantwoorden met bewijs", "effect": {"businessValue": 15, "governance": 10, "budget": -50, "xp": 100}}, {"label": "Standaard-antwoorden hergebruiken", "effect": {"businessValue": 5, "xp": 50}}, {"label": "Pre-sales gesprek aanbieden ipv papierwerk", "effect": {"stakeholderConfidence": 10, "businessValue": 10, "xp": 75}}], "location": "Sales"}, {"id": "EV002", "title": "RFP-uitnodiging Europese aanbesteding", "description": "Overheidsaanbesteding voor multi-jaar contract. Deelname kost inspanning maar biedt strategische omzet.", "effect": {"xp": 50}, "choices": [{"label": "Bid-team samenstellen en meeschrijven", "effect": {"budget": -200, "businessValue": 30, "stakeholderConfidence": 10, "xp": 150}}, {"label": "Alleen partner-rol claimen", "effect": {"businessValue": 10, "xp": 75}}, {"label": "Overslaan wegens capaciteit", "effect": {"businessValue": -10, "xp": 25}}], "location": "Sales"}, {"id": "EV003", "title": "Board-vergadering", "description": "Kwartaal-board vraagt update over transformatie-programma en IT-risico's.", "effect": {"xp": 50}, "choices": [{"label": "OKR-driven dashboard tonen", "effect": {"stakeholderConfidence": 15, "governance": 10, "xp": 125}}, {"label": "Focus op risico-mitigatie", "effect": {"stakeholderConfidence": 10, "security": 5, "xp": 100}}, {"label": "Innovatie-portfolio uitlichten", "effect": {"innovation": 10, "stakeholderConfidence": 5, "xp": 100}}], "location": "Directiekamer"}, {"id": "EV004", "title": "Architecture Review Board", "description": "Vier grote initiatieven vragen ARB-goedkeuring. Kwaliteit varieert sterk.", "effect": {"governance": 5, "xp": 50}, "choices": [{"label": "Strenge kwaliteitspoort afdwingen", "effect": {"governance": 20, "stakeholderConfidence": -5, "technicalDebt": -5, "xp": 125}}, {"label": "Fast-track met randvoorwaarden", "effect": {"governance": 10, "innovation": 10, "xp": 125}}, {"label": "Coaching-model naast review", "effect": {"governance": 15, "stakeholderConfidence": 10, "xp": 150}}], "location": "Applicatielandschap"}, {"id": "EV005", "title": "Hackathon 48 uur", "description": "Interne hackathon: 12 teams presenteren proof-of-concepts. Twee ideeen zijn commercieel interessant.", "effect": {"innovation": 15, "xp": 75}, "choices": [{"label": "Beste POC's naar innovatie-portfolio", "effect": {"innovation": 20, "digitalMaturity": 10, "budget": -100, "xp": 150}}, {"label": "Winnaars promoveren en zichtbaarheid geven", "effect": {"stakeholderConfidence": 10, "innovation": 10, "xp": 100}}, {"label": "Alleen viering, geen vervolgtraject", "effect": {"innovation": 5, "xp": 50}}], "location": "Innovatielab"}, {"id": "EV006", "title": "Kwartaal business-review", "description": "Business-eigenaren reviewen roadmap en value-delivery van afgelopen kwartaal.", "effect": {"xp": 50}, "choices": [{"label": "Value-metrics kwantitatief onderbouwen", "effect": {"stakeholderConfidence": 15, "businessValue": 10, "xp": 125}}, {"label": "Focus op storytelling met klant-cases", "effect": {"stakeholderConfidence": 15, "xp": 100}}, {"label": "Backlog-herschikking voorstellen", "effect": {"governance": 10, "businessValue": 5, "xp": 75}}], "location": "Business Domein"}, {"id": "EV007", "title": "Sales pusht product-launch", "description": "Sales wil launch 6 weken naar voren halen wegens concurrentie-druk.", "effect": {"technicalDebt": 5, "xp": 50}, "choices": [{"label": "MVP-scope + feature-flags", "effect": {"innovation": 15, "businessValue": 10, "technicalDebt": 5, "xp": 150}}, {"label": "Vasthouden aan oorspronkelijke datum", "effect": {"governance": 10, "stakeholderConfidence": -10, "xp": 75}}, {"label": "Beperkte launch bij pilot-klanten", "effect": {"innovation": 10, "businessValue": 10, "xp": 125}}], "location": "Sales"}, {"id": "EV008", "title": "Trainingsbudget vrijgegeven", "description": "HR maakt eenmalig extra opleidingsbudget vrij voor IT-teams.", "effect": {"budget": 100, "xp": 50}, "choices": [{"label": "Cloud/AI-certificeringen breed uitrollen", "effect": {"digitalMaturity": 15, "innovation": 10, "xp": 125}}, {"label": "Security-awareness voor iedereen", "effect": {"security": 15, "xp": 100}}, {"label": "Leadership-training voor tech leads", "effect": {"stakeholderConfidence": 10, "governance": 5, "xp": 100}}], "location": "HR"}, {"id": "EV009", "title": "Externe consultant biedt aan", "description": "Onafhankelijke consultant biedt reference-architectuur review aan tegen dagtarief.", "effect": {"xp": 50}, "choices": [{"label": "Assessment inkopen en aanbevelingen uitvoeren", "effect": {"budget": -150, "governance": 15, "digitalMaturity": 10, "xp": 125}}, {"label": "Second-opinion op enkele pijnpunten", "effect": {"budget": -50, "governance": 5, "xp": 75}}, {"label": "Zelf uitvoeren met team", "effect": {"innovation": 5, "xp": 75}}], "location": "Applicatielandschap"}, {"id": "EV010", "title": "Vendor-summit uitnodiging", "description": "Strategische leverancier nodigt CIO uit voor exclusieve summit met roadmap-preview.", "effect": {"stakeholderConfidence": 5, "xp": 50}, "choices": [{"label": "Deelnemen en roadmap-input geven", "effect": {"innovation": 10, "stakeholderConfidence": 10, "xp": 100}}, {"label": "Sturen met inkoopvoordeel-agenda", "effect": {"budget": 100, "stakeholderConfidence": 5, "xp": 100}}, {"label": "Afzeggen wegens onafhankelijkheid", "effect": {"governance": 10, "xp": 75}}], "location": "Directiekamer"}, {"id": "EV011", "title": "Buy-vs-build dilemma", "description": "Nieuw platform nodig. Bouwen kost 18 maanden, kopen kost licentie maar levert lock-in op.", "effect": {"xp": 50}, "choices": [{"label": "Kopen en integreren via anti-corruption layer", "effect": {"budget": -400, "innovation": 5, "digitalMaturity": 10, "xp": 150}}, {"label": "Bouwen op open-source foundation", "effect": {"budget": -300, "innovation": 20, "technicalDebt": 10, "xp": 175}}, {"label": "Hybride: kopen + eigen extensies", "effect": {"budget": -350, "innovation": 10, "governance": 5, "xp": 150}}], "location": "Applicatielandschap"}, {"id": "EV012", "title": "MVP-scope discussie", "description": "Product-team en business-owner zijn het oneens over minimale scope van eerste release.", "effect": {"xp": 50}, "choices": [{"label": "Value-slicing workshop faciliteren", "effect": {"stakeholderConfidence": 15, "businessValue": 10, "xp": 125}}, {"label": "Steilste risico eerst leveren", "effect": {"innovation": 10, "governance": 5, "xp": 100}}, {"label": "Business-owner beslist finaal", "effect": {"stakeholderConfidence": 5, "governance": -5, "xp": 75}}], "location": "Business Domein"}, {"id": "EV013", "title": "Datalake vs Data-warehouse keuze", "description": "Data-strategie eist keuze: flexibele datalake of gestructureerd warehouse voor analytics.", "effect": {"xp": 50}, "choices": [{"label": "Lakehouse-architectuur (best of both)", "effect": {"digitalMaturity": 15, "innovation": 10, "budget": -300, "xp": 175}}, {"label": "Klassiek warehouse voor betrouwbaarheid", "effect": {"governance": 15, "budget": -250, "xp": 125}}, {"label": "Datalake voor snelheid en experimenten", "effect": {"innovation": 15, "technicalDebt": 10, "budget": -200, "xp": 125}}], "location": "Innovatielab"}, {"id": "EV014", "title": "Zelfhosten vs SaaS", "description": "Nieuwe workload: intern hosten (controle) of SaaS (snelheid) — team is verdeeld.", "effect": {"xp": 50}, "choices": [{"label": "SaaS met exit-clausules", "effect": {"digitalMaturity": 10, "budget": -150, "governance": 10, "xp": 125}}, {"label": "Zelfhosten in eigen platform", "effect": {"governance": 15, "budget": -250, "technicalDebt": 5, "xp": 125}}, {"label": "Managed-service tussenoplossing", "effect": {"budget": -200, "digitalMaturity": 10, "xp": 125}}], "location": "Applicatielandschap"}, {"id": "EV015", "title": "Open-source vs commercieel", "description": "Team wil open-source alternatief kiezen. Vendor biedt commerciële suite met support.", "effect": {"xp": 50}, "choices": [{"label": "Open-source + commercial support-abo", "effect": {"innovation": 15, "budget": -100, "xp": 125}}, {"label": "Commerciële suite met SLA", "effect": {"budget": -250, "governance": 10, "xp": 100}}, {"label": "OSS zonder support (risico eigen team)", "effect": {"innovation": 20, "technicalDebt": 10, "xp": 100}}], "location": "Innovatielab"}, {"id": "EV016", "title": "Micro-frontends vs monoliet", "description": "Frontend-team stelt micro-frontends voor. Discussie over complexiteit versus autonomie.", "effect": {"xp": 50}, "choices": [{"label": "Micro-frontends met design-system", "effect": {"digitalMaturity": 15, "innovation": 10, "technicalDebt": 5, "xp": 150}}, {"label": "Modulaire monoliet houden", "effect": {"governance": 10, "technicalDebt": -5, "xp": 100}}, {"label": "Pilot per team en later beslissen", "effect": {"innovation": 5, "governance": 5, "xp": 100}}], "location": "Applicatielandschap"}, {"id": "EV017", "title": "Multi-cloud vs single-cloud", "description": "Board vraagt cloud-strategie. Multi-cloud kost meer, single-cloud verhoogt lock-in.", "effect": {"xp": 50}, "choices": [{"label": "Primair single-cloud + escape-hatch", "effect": {"digitalMaturity": 15, "budget": -100, "xp": 150}}, {"label": "Multi-cloud per workload-fit", "effect": {"innovation": 10, "budget": -300, "governance": 5, "xp": 150}}, {"label": "Hybrid met on-prem kernsystemen", "effect": {"technicalDebt": 5, "governance": 10, "xp": 100}}], "location": "Applicatielandschap"}, {"id": "EV018", "title": "Copilot enterprise-rollout", "description": "Licenties beschikbaar voor 500 gebruikers. Meten van productiviteit is uitdaging.", "effect": {"innovation": 10, "xp": 75}, "choices": [{"label": "Gestructureerd rollout-plan met meting", "effect": {"digitalMaturity": 20, "innovation": 15, "budget": -250, "xp": 175}}, {"label": "Alleen voor engineers uitrollen", "effect": {"innovation": 10, "digitalMaturity": 10, "budget": -100, "xp": 100}}, {"label": "Wachten op meer bewijs", "effect": {"innovation": -5, "xp": 25}}], "location": "Innovatielab"}, {"id": "EV019", "title": "GreenOps-metric-doel gehaald", "description": "CO2-per-transactie doel voor kwartaal gehaald door FinOps-optimalisatie.", "effect": {"digitalMaturity": 10, "stakeholderConfidence": 10, "budget": 50, "xp": 75}, "choices": [{"label": "Volgende doel ambitieuzer stellen", "effect": {"digitalMaturity": 15, "governance": 5, "xp": 100}}, {"label": "Externe communicatie richting CSRD", "effect": {"stakeholderConfidence": 10, "governance": 10, "xp": 100}}], "location": "Finance"}, {"id": "EV020", "title": "Startup pitcht partnership", "description": "Nederlandse scale-up pitcht co-innovation partnership. Belofte veel, referenties beperkt.", "effect": {"xp": 50}, "choices": [{"label": "POC binnen 90 dagen met exit-criteria", "effect": {"innovation": 20, "budget": -150, "xp": 150}}, {"label": "Investeren via corporate venturing", "effect": {"budget": -400, "innovation": 15, "stakeholderConfidence": 5, "xp": 175}}, {"label": "Bedanken wegens risico", "effect": {"governance": 5, "xp": 50}}], "location": "Innovatielab"}, {"id": "EV021", "title": "Analist-rapport gepubliceerd", "description": "Gartner/Forrester positioneert organisatie in Magic Quadrant/Wave. Positionering beïnvloedt reputatie.", "effect": {"stakeholderConfidence": 10, "xp": 50}, "location": "Sales"}, {"id": "EV022", "title": "Wetsvoorstel in consultatie", "description": "Nieuw wetsvoorstel over datasoevereiniteit gaat in consultatie. Impact op cloud-strategie mogelijk.", "effect": {"governance": -5, "xp": 50}, "choices": [{"label": "Consultatie-reactie indienen via brancheorganisatie", "effect": {"governance": 15, "stakeholderConfidence": 10, "xp": 125}}, {"label": "Interne impact-analyse starten", "effect": {"governance": 10, "budget": -50, "xp": 100}}, {"label": "Afwachten definitieve wetgeving", "effect": {"governance": -5, "xp": 25}}], "location": "Governance Board"}, {"id": "EV023", "title": "Universiteit zoekt stagiaires", "description": "TU biedt onderzoeksstages aan rond graph-databases en enterprise architecture.", "effect": {"xp": 50}, "choices": [{"label": "Stageplaatsen openstellen en onderzoek sponsoren", "effect": {"innovation": 15, "stakeholderConfidence": 5, "budget": -100, "xp": 125}}, {"label": "Alleen inhoudelijk begeleiden", "effect": {"innovation": 10, "xp": 75}}, {"label": "Nu geen capaciteit", "effect": {"xp": 25}}], "location": "HR"}, {"id": "EV024", "title": "Klantsatisfactie-onderzoek", "description": "Kwartaal-NPS meting: score stijgt met 4 punten na portaal-verbetering.", "effect": {"businessValue": 15, "stakeholderConfidence": 10, "xp": 75}, "location": "Sales"}, {"id": "EV025", "title": "Interne wisseling CIO", "description": "CIO stapt over naar andere rol. Interim-CIO wil eerste 100 dagen inhoud geven.", "effect": {"stakeholderConfidence": -10, "xp": 50}, "choices": [{"label": "Onboarding-pack met architectuur-status", "effect": {"stakeholderConfidence": 15, "governance": 10, "xp": 125}}, {"label": "Quick-wins pitchen voor 100-dagenplan", "effect": {"stakeholderConfidence": 10, "businessValue": 5, "xp": 100}}, {"label": "Afwachten en observeren", "effect": {"stakeholderConfidence": -5, "xp": 25}}], "location": "Directiekamer"}, {"id": "EV026", "title": "Prijsstijging licenties", "description": "Belangrijke leverancier kondigt 18% prijsverhoging aan bij renewal.", "effect": {"budget": -150, "xp": 50}, "choices": [{"label": "Onderhandelen met multi-year commitment", "effect": {"budget": 100, "governance": 5, "xp": 100}}, {"label": "Alternatief evalueren en druk zetten", "effect": {"innovation": 10, "budget": 50, "xp": 125}}, {"label": "Prijsverhoging accepteren", "effect": {"budget": -100, "xp": 25}}], "location": "Finance"}, {"id": "EV027", "title": "Media-aandacht positief", "description": "Vakblad publiceert case-study over digitale transformatie van de organisatie.", "effect": {"stakeholderConfidence": 15, "innovation": 5, "xp": 75}, "choices": [{"label": "Employer-branding campagne opzetten", "effect": {"stakeholderConfidence": 10, "budget": -100, "xp": 100}}, {"label": "Extern spreken op conferenties", "effect": {"stakeholderConfidence": 10, "innovation": 5, "xp": 100}}], "location": "Sales"}, {"id": "EV028", "title": "Compliance-training verplicht", "description": "Toezichthouder eist jaarlijkse compliance-training voor alle IT-medewerkers.", "effect": {"governance": 5, "budget": -50, "xp": 50}, "choices": [{"label": "Interactieve e-learning laten ontwikkelen", "effect": {"governance": 15, "digitalMaturity": 5, "budget": -100, "xp": 125}}, {"label": "Standaard training inkopen", "effect": {"governance": 10, "budget": -150, "xp": 75}}], "location": "HR"}, {"id": "EV029", "title": "Open-innovation call", "description": "EU-programma opent call voor consortium-projecten rond digitale soevereiniteit.", "effect": {"xp": 50}, "choices": [{"label": "Consortium leiden en subsidie aanvragen", "effect": {"budget": 300, "innovation": 20, "stakeholderConfidence": 10, "xp": 175}}, {"label": "Als junior partner aansluiten", "effect": {"budget": 100, "innovation": 10, "xp": 100}}, {"label": "Niet meedoen — te veel overhead", "effect": {"xp": 25}}], "location": "Innovatielab"}, {"id": "EV030", "title": "Interne mobiliteit-programma", "description": "HR lanceert programma waarin medewerkers 20% werktijd elders in organisatie kunnen besteden.", "effect": {"stakeholderConfidence": 5, "innovation": 5, "xp": 50}, "choices": [{"label": "IT stimuleren om deel te nemen", "effect": {"innovation": 15, "stakeholderConfidence": 10, "digitalMaturity": 5, "xp": 125}}, {"label": "Beperken tot niet-kritieke rollen", "effect": {"governance": 5, "innovation": 5, "xp": 75}}, {"label": "Uitstel wegens deadlines", "effect": {"stakeholderConfidence": -5, "xp": 25}}], "location": "HR"}];
+const CONTENT_ARTEFACTS = [{"id": "A001", "title": "Vision Blueprint", "description": "Visuele weergave van de langetermijnvisie en het gewenste toekomstbeeld van de onderneming.", "passiveEffect": {"stakeholderConfidence": 8, "businessValue": 5, "xpMultiplier": 1.1}, "category": "Strategisch"}, {"id": "A002", "title": "Strategy Map", "description": "Overzicht dat strategische doelstellingen koppelt aan KPI's, initiatieven en oorzaak-gevolg-relaties.", "passiveEffect": {"businessValue": 10, "governance": 3, "stakeholderConfidence": 4}, "category": "Strategisch", "required": ["A001"]}, {"id": "A003", "title": "Capability Map", "description": "Hierarchische kaart van business capabilities die laat zien wat de organisatie moet kunnen om haar strategie te realiseren.", "passiveEffect": {"businessValue": 8, "digitalMaturity": 5, "governance": 2}, "category": "Business", "required": ["A002"]}, {"id": "A004", "title": "Architecture Principles", "description": "Set van richtinggevende principes die ontwerpkeuzes in de gehele organisatie sturen en normeren.", "passiveEffect": {"governance": 12, "stakeholderConfidence": 3, "digitalMaturity": 2}, "category": "Governance", "required": ["A001"]}, {"id": "A005", "title": "Business Reference Model", "description": "Referentie-model met standaard business-functies, processen en objecten voor consistentie tussen domeinen.", "passiveEffect": {"businessValue": 6, "governance": 5, "digitalMaturity": 3}, "category": "Business", "required": ["A003"]}, {"id": "A006", "title": "Application Landscape", "description": "Totaaloverzicht van alle applicaties, hun functies, eigenaren en lifecycle-status.", "passiveEffect": {"digitalMaturity": 8, "governance": 4, "budgetPerTurn": 5}, "category": "Applicatie", "required": ["A003"]}, {"id": "A007", "title": "Information Model", "description": "Gestructureerd model van kernbegrippen, entiteiten en relaties van de bedrijfsinformatie.", "passiveEffect": {"digitalMaturity": 6, "governance": 4, "businessValue": 3}, "category": "Informatie", "required": ["A005"]}, {"id": "A008", "title": "Technology Blueprint", "description": "Overzicht van technologiedomeinen, standaarden en platformen die de applicaties ondersteunen.", "passiveEffect": {"digitalMaturity": 7, "security": 4, "governance": 3}, "category": "Technologie", "required": ["A006"]}, {"id": "A009", "title": "Governance Framework", "description": "Raamwerk van rollen, gremia en besluitvormingsprocessen voor architectuurbeheer.", "passiveEffect": {"governance": 15, "stakeholderConfidence": 5, "security": 3}, "category": "Governance", "required": ["A004"]}, {"id": "A010", "title": "Transformation Roadmap", "description": "Meerjarige routekaart die transitie-stappen van huidige naar gewenste architectuur zichtbaar maakt.", "passiveEffect": {"businessValue": 8, "innovation": 5, "stakeholderConfidence": 6, "xpMultiplier": 1.15}, "category": "Transformatie", "required": ["A002", "A006"]}, {"id": "A011", "title": "Portfolio Dashboard", "description": "Live dashboard met de status, waarde en risico's van alle lopende projecten en programma's.", "passiveEffect": {"governance": 6, "businessValue": 5, "budgetPerTurn": 8}, "category": "Governance", "required": ["A010"]}, {"id": "A012", "title": "Architecture Repository", "description": "Centrale opslag van alle architectuur-modellen, artefacten en referenties met versiebeheer.", "passiveEffect": {"governance": 8, "digitalMaturity": 6, "xpMultiplier": 1.2}, "category": "Governance", "required": ["A004", "A009"]}, {"id": "A013", "title": "Enterprise Vision Poster", "description": "Eenpagina-visualisatie die de kern-visie communiceerbaar maakt naar medewerkers en stakeholders.", "passiveEffect": {"stakeholderConfidence": 10, "businessValue": 3, "innovation": 2}, "category": "Strategisch", "required": ["A001"]}, {"id": "A014", "title": "Solution Overview", "description": "Concept-schets die per initiatief laat zien welke oplossing wordt gebouwd en welke componenten daarbij horen.", "passiveEffect": {"digitalMaturity": 5, "businessValue": 4, "innovation": 3}, "category": "Applicatie", "required": ["A006", "A008"]}, {"id": "A015", "title": "Value Stream Map", "description": "Visualisatie van de waardestroom van klantvraag tot geleverde waarde, inclusief knelpunten en verbeterkansen.", "passiveEffect": {"businessValue": 9, "innovation": 4, "stakeholderConfidence": 3}, "category": "Business", "required": ["A003"]}];
+const CONTENT_ACHIEVEMENTS = [{"id": "da01", "title": "Eerste artefact", "description": "Lever je eerste Dragon1-artefact op.", "icon": "📜", "xpReward": 50}, {"id": "da02", "title": "Portfolio-bouwer", "description": "Lever 6 artefacten op.", "icon": "📚", "xpReward": 150}, {"id": "da03", "title": "Architect met bagage", "description": "Lever 12 artefacten op.", "icon": "🎖", "xpReward": 300}, {"id": "da04", "title": "Dragon1 Grand Slam", "description": "Lever alle 15 Dragon1-artefacten op.", "icon": "🐉", "xpReward": 600}, {"id": "da05", "title": "Eerste missie", "description": "Rond je eerste missie succesvol af.", "icon": "✅", "xpReward": 40}, {"id": "da06", "title": "Missiedecoratie", "description": "Rond 10 missies af.", "icon": "🎯", "xpReward": 150}, {"id": "da07", "title": "Missie-machine", "description": "Rond 25 missies af.", "icon": "⚡", "xpReward": 400}, {"id": "da08", "title": "Eerste bluspoging", "description": "Los 1 uitdaging op.", "icon": "🧯", "xpReward": 40}, {"id": "da09", "title": "Firefighter", "description": "Los 10 uitdagingen op.", "icon": "🚒", "xpReward": 180}, {"id": "da10", "title": "Crisis-manager", "description": "Los 25 uitdagingen op.", "icon": "🛠", "xpReward": 400}, {"id": "da11", "title": "Groei", "description": "Bereik level 3 (Senior Architect).", "icon": "📈", "xpReward": 100}, {"id": "da12", "title": "Enterprise-scope", "description": "Bereik level 6 (Enterprise Architect).", "icon": "🏛", "xpReward": 250}, {"id": "da13", "title": "Dragon1 Master", "description": "Bereik level 10 (Dragon1 Master Architect).", "icon": "🐲", "xpReward": 800}, {"id": "da14", "title": "Business Value Champion", "description": "Business Value ≥ 80.", "icon": "💼", "xpReward": 150}, {"id": "da15", "title": "Stakeholder Whisperer", "description": "Stakeholder Confidence ≥ 90.", "icon": "🤝", "xpReward": 200}, {"id": "da16", "title": "Governance Guardian", "description": "Governance ≥ 80.", "icon": "⚖", "xpReward": 150}, {"id": "da17", "title": "Innovation Guru", "description": "Innovation ≥ 80.", "icon": "💡", "xpReward": 150}, {"id": "da18", "title": "Zero Trust Adept", "description": "Security ≥ 80.", "icon": "🛡", "xpReward": 150}, {"id": "da19", "title": "Digitaal Volwassen", "description": "Digital Maturity ≥ 80.", "icon": "☁", "xpReward": 150}, {"id": "da20", "title": "Debt Slayer", "description": "Technical Debt ≤ 15.", "icon": "💀", "xpReward": 250}, {"id": "da21", "title": "Budget-koning", "description": "Budget ≥ €5000.", "icon": "💰", "xpReward": 100}, {"id": "da22", "title": "Wereldreiziger", "description": "Bezoek 8 organisatie-onderdelen.", "icon": "🗺", "xpReward": 100}, {"id": "da23", "title": "Kartograaf", "description": "Bezoek alle 16 organisatie-onderdelen.", "icon": "🧭", "xpReward": 250}, {"id": "da24", "title": "Visie geland", "description": "Vision Blueprint opgeleverd.", "icon": "👁", "xpReward": 80}, {"id": "da25", "title": "Strategie in kaart", "description": "Strategy Map opgeleverd.", "icon": "🎯", "xpReward": 80}, {"id": "da26", "title": "Capability Master", "description": "Capability Map opgeleverd.", "icon": "🧩", "xpReward": 80}, {"id": "da27", "title": "Principes vast", "description": "Architecture Principles opgeleverd.", "icon": "📖", "xpReward": 80}, {"id": "da28", "title": "App-landschap in beeld", "description": "Application Landscape opgeleverd.", "icon": "🏙", "xpReward": 80}, {"id": "da29", "title": "Tech Blueprint", "description": "Technology Blueprint opgeleverd.", "icon": "🖥", "xpReward": 80}, {"id": "da30", "title": "Governance-frame", "description": "Governance Framework opgeleverd.", "icon": "⚖", "xpReward": 80}, {"id": "da31", "title": "Transformatie-roadmap", "description": "Transformation Roadmap opgeleverd.", "icon": "🛣", "xpReward": 80}, {"id": "da32", "title": "Portfolio-inzicht", "description": "Portfolio Dashboard opgeleverd.", "icon": "📊", "xpReward": 80}, {"id": "da33", "title": "Repository operationeel", "description": "Architecture Repository opgeleverd.", "icon": "🗄", "xpReward": 80}, {"id": "da34", "title": "Event-manager", "description": "Handel 10 events af.", "icon": "📜", "xpReward": 100}, {"id": "da35", "title": "Beslisser", "description": "Maak 20 keuzes bij uitdagingen/events.", "icon": "⚡", "xpReward": 120}, {"id": "da36", "title": "Voldoende", "description": "Presenteer met eindscore ≥ 80.", "icon": "🎓", "xpReward": 300}, {"id": "da37", "title": "Uitstekend", "description": "Presenteer met eindscore ≥ 90.", "icon": "🏅", "xpReward": 500}, {"id": "da38", "title": "Legendarisch", "description": "Presenteer met eindscore ≥ 95.", "icon": "👑", "xpReward": 800}, {"id": "da39", "title": "Debt-arm", "description": "Presenteer met Technical Debt ≤ 20.", "icon": "🧹", "xpReward": 250}, {"id": "da40", "title": "Compleet portfolio", "description": "Presenteer met alle 15 Dragon1-artefacten.", "icon": "📜", "xpReward": 600}, {"id": "da41", "title": "Special!", "description": "Gebruik je special ability.", "icon": "✦", "xpReward": 50}, {"id": "da42", "title": "Speedrunner", "description": "Presenteer binnen 40 beurten.", "icon": "⚡", "xpReward": 300}, {"id": "da43", "title": "Krap budget", "description": "Overleef tot Budget ≤ €100.", "icon": "🪙", "xpReward": 150}, {"id": "da44", "title": "Draagvlak weg", "description": "Overleef level 4+ met Stakeholder Confidence ≤ 20.", "icon": "🚧", "xpReward": 180}, {"id": "da45", "title": "Governance + Security", "description": "Presenteer met Governance≥90 én Security≥90.", "icon": "🏛", "xpReward": 400}, {"id": "da46", "title": "Innovation + Digital", "description": "Presenteer met Innovation≥90 én Digital Maturity≥90.", "icon": "🚀", "xpReward": 400}, {"id": "da47", "title": "Meta Master", "description": "Ontgrendel alle andere achievements.", "icon": "🐉", "xpReward": 1000}];
+
+/* ---------- Utility ---------- */
+const $ = (s,r=document)=>r.querySelector(s);
+const $$ = (s,r=document)=>Array.from(r.querySelectorAll(s));
+const clamp = (v,lo,hi)=>Math.max(lo,Math.min(hi,v));
+const rand = (n)=>Math.floor(Math.random()*n);
+const pick = (a)=>a[rand(a.length)];
+const shuffle = (a)=>{const r=a.slice();for(let i=r.length-1;i>0;i--){const j=rand(i+1);[r[i],r[j]]=[r[j],r[i]]}return r};
+const now = ()=>Date.now();
+const fmt = (n)=>(n>=0?'+':'')+n;
+
+/* ============================================================
+   AudioEngine — Web Audio API, geen externe assets
+   ============================================================ */
+class AudioEngine{
+  constructor(){this.ctx=null;this.enabled=true;this.musicEnabled=true;this.volume=.35;this.musicNode=null}
+  ensure(){if(!this.ctx){try{this.ctx=new (window.AudioContext||window.webkitAudioContext)()}catch(e){this.enabled=false}}}
+  tone(f,d=.12,type='sine',g=.4){
+    if(!this.enabled)return;this.ensure();if(!this.ctx)return;
+    const t=this.ctx.currentTime,o=this.ctx.createOscillator(),gg=this.ctx.createGain();
+    o.type=type;o.frequency.setValueAtTime(f,t);
+    gg.gain.setValueAtTime(0,t);gg.gain.linearRampToValueAtTime(g*this.volume,t+.01);gg.gain.exponentialRampToValueAtTime(.001,t+d);
+    o.connect(gg);gg.connect(this.ctx.destination);o.start(t);o.stop(t+d+.05);
+  }
+  sweep(f1,f2,d=.2,type='triangle',g=.3){
+    if(!this.enabled)return;this.ensure();if(!this.ctx)return;
+    const t=this.ctx.currentTime,o=this.ctx.createOscillator(),gg=this.ctx.createGain();
+    o.type=type;o.frequency.setValueAtTime(f1,t);o.frequency.exponentialRampToValueAtTime(f2,t+d);
+    gg.gain.setValueAtTime(0,t);gg.gain.linearRampToValueAtTime(g*this.volume,t+.01);gg.gain.exponentialRampToValueAtTime(.001,t+d);
+    o.connect(gg);gg.connect(this.ctx.destination);o.start(t);o.stop(t+d+.05);
+  }
+  chord(fs,d=.3,g=.25){fs.forEach(f=>this.tone(f,d,'triangle',g))}
+  click(){this.tone(600,.05,'square',.2)}
+  cardFlip(){this.sweep(400,900,.12,'triangle',.3)}
+  levelUp(){this.chord([523.25,659.25,783.99],.6,.35);setTimeout(()=>this.chord([659.25,783.99,987.77],.5,.35),200)}
+  achievement(){this.chord([659.25,783.99,987.77,1318.51],.4,.3)}
+  artefact(){this.chord([523.25,659.25,783.99,1046.5],.5,.3)}
+  bad(){this.sweep(400,150,.35,'sawtooth',.3)}
+  choice(){this.tone(700,.08,'triangle',.3)}
+  present(){this.chord([392,523.25,659.25],.8,.35);setTimeout(()=>this.chord([523.25,659.25,783.99],.8,.35),400);setTimeout(()=>this.chord([659.25,783.99,987.77,1174.66],1.0,.35),900)}
+  startMusic(){
+    if(!this.musicEnabled||!this.enabled)return;this.ensure();if(!this.ctx)return;this.stopMusic();
+    const t=this.ctx.currentTime,o1=this.ctx.createOscillator(),o2=this.ctx.createOscillator(),g=this.ctx.createGain();
+    o1.type='sine';o2.type='sine';o1.frequency.value=98;o2.frequency.value=147;g.gain.value=.03*this.volume;
+    o1.connect(g);o2.connect(g);g.connect(this.ctx.destination);o1.start(t);o2.start(t);
+    this.musicNode={o1,o2,g};
+  }
+  stopMusic(){if(this.musicNode){try{const t=this.ctx.currentTime;this.musicNode.g.gain.exponentialRampToValueAtTime(.0001,t+.2);this.musicNode.o1.stop(t+.3);this.musicNode.o2.stop(t+.3)}catch(e){}this.musicNode=null}}
+  setEnabled(v){this.enabled=v;if(!v)this.stopMusic()}
+  setMusic(v){this.musicEnabled=v;if(!v)this.stopMusic();else this.startMusic()}
+}
+
+/* ============================================================
+   SaveSystem — LocalStorage
+   ============================================================ */
+class SaveSystem{
+  constructor(){this.key='eq2.save.v1';this.settingsKey='eq2.settings.v1';this.achKey='eq2.ach.v1';this.historyKey='eq2.history.v1'}
+  save(d){try{localStorage.setItem(this.key,JSON.stringify(d));return true}catch(e){return false}}
+  load(){try{const v=localStorage.getItem(this.key);return v?JSON.parse(v):null}catch(e){return null}}
+  clear(){try{localStorage.removeItem(this.key)}catch(e){}}
+  has(){return !!this.load()}
+  saveSettings(s){try{localStorage.setItem(this.settingsKey,JSON.stringify(s))}catch(e){}}
+  loadSettings(){try{const v=localStorage.getItem(this.settingsKey);return v?JSON.parse(v):null}catch(e){return null}}
+  saveAch(a){try{localStorage.setItem(this.achKey,JSON.stringify(a))}catch(e){}}
+  loadAch(){try{const v=localStorage.getItem(this.achKey);return v?JSON.parse(v):null}catch(e){return null}}
+  addHistoryEntry(e){
+    try{const arr=JSON.parse(localStorage.getItem(this.historyKey)||'[]');arr.unshift(e);
+      localStorage.setItem(this.historyKey,JSON.stringify(arr.slice(0,20)))}catch(e){}
+  }
+  history(){try{return JSON.parse(localStorage.getItem(this.historyKey)||'[]')}catch(e){return []}}
+  resetAll(){[this.key,this.settingsKey,this.achKey,this.historyKey].forEach(k=>{try{localStorage.removeItem(k)}catch(e){}})}
+}
+
+/* ============================================================
+   Architect (Player)
+   ============================================================ */
+class Architect{
+  constructor(role){
+    this.role=role;
+    this.level=1;
+    this.xp=0;
+    this.xpNext=100;
+    this.metrics={
+      businessValue: 30 + (role.startBonus?.businessValue||0),
+      stakeholderConfidence: 40 + (role.startBonus?.stakeholderConfidence||0),
+      governance: 30 + (role.startBonus?.governance||0),
+      innovation: 30 + (role.startBonus?.innovation||0),
+      security: 30 + (role.startBonus?.security||0),
+      technicalDebt: 40 - (role.startBonus?.technicalDebtReduce||0),
+      digitalMaturity: 25 + (role.startBonus?.digitalMaturity||0),
+      budget: 2000 + (role.startBonus?.budget||0)
+    };
+    this.attrs={...(role.attrs||{})};
+    this.position=0; // location index (0..15)
+    this.artefacts=[]; // artefact ids
+    this.completedMissions=[]; // mission ids
+    this.currentMission=null;
+    this.unlockedAchievements=[];
+    this.turnCount=0;
+    this.visitedLocations=new Set([0]);
+    this.specialCooldown=0;
+    this.specialUsed=0;
+    this.startTime=now();
+    this.stats={
+      missionsAttempted:0, missionsCompleted:0,
+      challengesFaced:0, challengesResolved:0,
+      eventsHandled:0, choicesMade:0,
+      artefactsGained:0, movesMade:0, cardsDrawn:0,
+      xpGained:0, budgetSpent:0
+    };
+  }
+  addXp(n,ui){
+    this.xp+=n; this.stats.xpGained+=n;
+    while(this.xp>=this.xpNext && this.level<CONTENT_LEVELS.length){
+      this.xp-=this.xpNext; this.level++;
+      const lvl=CONTENT_LEVELS[this.level-1];
+      this.xpNext=Math.round(this.xpNext*1.5);
+      if(ui) ui.onLevelUp(lvl);
+    }
+  }
+  applyEffect(eff){
+    if(!eff) return;
+    const m=this.metrics;
+    if(eff.xp)this.addXp(eff.xp);
+    if(eff.businessValue) m.businessValue=clamp(m.businessValue+eff.businessValue,0,100);
+    if(eff.stakeholderConfidence) m.stakeholderConfidence=clamp(m.stakeholderConfidence+eff.stakeholderConfidence,0,100);
+    if(eff.governance) m.governance=clamp(m.governance+eff.governance,0,100);
+    if(eff.innovation) m.innovation=clamp(m.innovation+eff.innovation,0,100);
+    if(eff.security) m.security=clamp(m.security+eff.security,0,100);
+    if(eff.technicalDebt) m.technicalDebt=clamp(m.technicalDebt+eff.technicalDebt,0,100);
+    if(eff.digitalMaturity) m.digitalMaturity=clamp(m.digitalMaturity+eff.digitalMaturity,0,100);
+    if(eff.budget){ m.budget=Math.max(0,m.budget+eff.budget); if(eff.budget<0)this.stats.budgetSpent+=(-eff.budget); }
+    if(eff.stakeholder) m.stakeholderConfidence=clamp(m.stakeholderConfidence+eff.stakeholder,0,100);
+  }
+  hasArtefact(id){ return this.artefacts.includes(id) }
+  gainArtefact(id){
+    if(!this.artefacts.includes(id)){
+      this.artefacts.push(id);
+      this.stats.artefactsGained++;
+      const a=CONTENT_ARTEFACTS.find(x=>x.id===id);
+      if(a && a.passiveEffect) this.applyEffect(a.passiveEffect);
+      return true;
+    }
+    return false;
+  }
+  serialize(){ return JSON.parse(JSON.stringify({...this,visitedLocations:Array.from(this.visitedLocations)})) }
+  static from(obj){
+    const a=new Architect(obj.role);
+    Object.assign(a,obj);
+    a.visitedLocations=new Set(obj.visitedLocations||[]);
+    return a;
+  }
+}
+
+/* ============================================================
+   Deck
+   ============================================================ */
+class Deck{
+  constructor(src){this.source=src.slice();this.pile=shuffle(src.slice());this.discard=[]}
+  drawFrom(filterFn){
+    // Try to draw a card matching filter; else fall back to any
+    if(this.pile.length===0){this.pile=shuffle(this.discard);this.discard=[]}
+    let idx=filterFn ? this.pile.findIndex(filterFn) : this.pile.length-1;
+    if(idx<0) idx=this.pile.length-1;
+    const c=this.pile.splice(idx,1)[0];
+    if(c)this.discard.push(c);
+    return c;
+  }
+  size(){ return this.pile.length }
+}
+
+/* ============================================================
+   Achievement Manager
+   ============================================================ */
+class AchievementManager{
+  constructor(save){this.save=save;this.unlocked=new Set(save.loadAch()||[])}
+  unlock(id,ui){
+    if(this.unlocked.has(id))return false;
+    this.unlocked.add(id); this.save.saveAch(Array.from(this.unlocked));
+    const a=CONTENT_ACHIEVEMENTS.find(x=>x.id===id);
+    if(a && ui){ ui.toast(`🏆 ${a.title}`,'artefact'); ui.log(`Achievement: ${a.title}`,'legendary'); if(ui.audio)ui.audio.achievement(); }
+    return true;
+  }
+  check(player,ctx,ui){
+    const p=player, c=ctx||{};
+    const preds={
+      da01:()=>p.artefacts.length>=1,
+      da02:()=>p.artefacts.length>=6,
+      da03:()=>p.artefacts.length>=12,
+      da04:()=>p.artefacts.length>=CONTENT_ARTEFACTS.length,
+      da05:()=>p.stats.missionsCompleted>=1,
+      da06:()=>p.stats.missionsCompleted>=10,
+      da07:()=>p.stats.missionsCompleted>=25,
+      da08:()=>p.stats.challengesResolved>=1,
+      da09:()=>p.stats.challengesResolved>=10,
+      da10:()=>p.stats.challengesResolved>=25,
+      da11:()=>p.level>=3,
+      da12:()=>p.level>=6,
+      da13:()=>p.level>=CONTENT_LEVELS.length,
+      da14:()=>p.metrics.businessValue>=80,
+      da15:()=>p.metrics.stakeholderConfidence>=90,
+      da16:()=>p.metrics.governance>=80,
+      da17:()=>p.metrics.innovation>=80,
+      da18:()=>p.metrics.security>=80,
+      da19:()=>p.metrics.digitalMaturity>=80,
+      da20:()=>p.metrics.technicalDebt<=15,
+      da21:()=>p.metrics.budget>=5000,
+      da22:()=>p.visitedLocations.size>=8,
+      da23:()=>p.visitedLocations.size>=CONTENT_LOCATIONS.length,
+      da24:()=>p.hasArtefact('A001'),
+      da25:()=>p.hasArtefact('A002'),
+      da26:()=>p.hasArtefact('A003'),
+      da27:()=>p.hasArtefact('A004'),
+      da28:()=>p.hasArtefact('A006'),
+      da29:()=>p.hasArtefact('A008'),
+      da30:()=>p.hasArtefact('A009'),
+      da31:()=>p.hasArtefact('A010'),
+      da32:()=>p.hasArtefact('A011'),
+      da33:()=>p.hasArtefact('A012'),
+      da34:()=>p.stats.eventsHandled>=10,
+      da35:()=>p.stats.choicesMade>=20,
+      da36:()=>c.presented && c.overallScore>=80,
+      da37:()=>c.presented && c.overallScore>=90,
+      da38:()=>c.presented && c.overallScore>=95,
+      da39:()=>c.presented && p.metrics.technicalDebt<=20,
+      da40:()=>c.presented && p.artefacts.length>=CONTENT_ARTEFACTS.length,
+      da41:()=>p.specialUsed>=1,
+      da42:()=>p.turnCount<=40 && c.presented,
+      da43:()=>p.metrics.budget<=100,
+      da44:()=>p.metrics.stakeholderConfidence<=20 && p.level>=4,
+      da45:()=>c.presented && p.metrics.governance>=90 && p.metrics.security>=90,
+      da46:()=>c.presented && p.metrics.innovation>=90 && p.metrics.digitalMaturity>=90,
+      da47:()=>this.unlocked.size>=CONTENT_ACHIEVEMENTS.length-1
+    };
+    for(const a of CONTENT_ACHIEVEMENTS){
+      if(this.unlocked.has(a.id))continue;
+      const pred=preds[a.id]; if(!pred) continue;
+      try{ if(pred()) this.unlock(a.id,ui); }catch(e){}
+    }
+  }
+  reset(){this.unlocked.clear();this.save.saveAch([])}
+}
+
+/* ============================================================
+   UI Renderer
+   ============================================================ */
+class UI{
+  constructor(audio){
+    this.audio=audio;
+    this.game=null;
+    this.modalCallback=null;
+  }
+  bind(g){this.game=g}
+  show(id){$$('.screen').forEach(s=>s.classList.remove('active'));$('#'+id)?.classList.add('active')}
+  log(msg,kind='info'){
+    const w=$('#log'); if(!w) return;
+    const el=document.createElement('div'); el.className='log-item '+kind; el.textContent=msg;
+    w.insertBefore(el,w.firstChild);
+    while(w.children.length>60) w.removeChild(w.lastChild);
+  }
+  toast(msg,kind=''){
+    const w=$('#toasts'); if(!w) return;
+    const el=document.createElement('div'); el.className='toast '+kind; el.textContent=msg;
+    w.appendChild(el);
+    setTimeout(()=>el.remove(),3000);
+  }
+  renderDashboard(){
+    const g=this.game, p=g.player; if(!p||!$('#dashboard'))return;
+    const d=$('#dashboard');
+    const lvl=CONTENT_LEVELS[p.level-1]||{name:'Junior'};
+    const loc=CONTENT_LOCATIONS[p.position]||{name:'—',color:'#666'};
+    const xpPct=Math.round(p.xp/p.xpNext*100);
+    const m=p.metrics;
+    const mission=p.currentMission;
+    // Mission tracker
+    const missionHtml = mission
+      ? `<div class="mission-item"><div class="m-title">📋 ${mission.title}</div><div class="m-desc">${mission.description}</div><div style="margin-top:4px;font-size:11px;color:var(--c-cyan)">→ ${mission.artefact || mission.dragon1Concept || ''}</div></div>`
+      : `<div style="color:var(--c-silver2);font-size:12px;font-style:italic">Geen actieve missie — trek er een.</div>`;
+    d.innerHTML=`
+      <div class="dash-h">${p.role.icon||'👤'} ${p.role.name}</div>
+      <div class="stat-row"><span class="label">Level ${p.level}</span><span class="val">${lvl.name}</span></div>
+      <div class="dash-h">XP</div>
+      <div class="stat-row"><span class="label">${p.xp} / ${p.xpNext}</span><span class="val">${xpPct}%</span></div>
+      <div class="bar"><div class="bar-fill bar-xp" style="width:${xpPct}%"></div></div>
+      <div class="dash-h">Kernmetrieken</div>
+      ${this.metricRow('💼 Business Value', m.businessValue, 'bar-value')}
+      ${this.metricRow('🤝 Stakeholder Confidence', m.stakeholderConfidence, 'bar-conf')}
+      ${this.metricRow('⚖ Governance', m.governance, 'bar-conf')}
+      ${this.metricRow('💡 Innovation', m.innovation, 'bar-value')}
+      ${this.metricRow('🛡 Security', m.security, 'bar-conf')}
+      ${this.metricRow('☁ Digital Maturity', m.digitalMaturity, 'bar-value')}
+      ${this.metricRow('💀 Technical Debt', m.technicalDebt, 'bar-debt', true)}
+      <div class="stat-row"><span class="label">💰 Budget</span><span class="val">€${m.budget}</span></div>
+      <div class="dash-h">Locatie</div>
+      <div class="stat-row"><span class="label">Nu</span><span class="val" style="color:${loc.color}">${loc.name}</span></div>
+      <div class="stat-row"><span class="label">Bezocht</span><span class="val">${p.visitedLocations.size}/${CONTENT_LOCATIONS.length}</span></div>
+      <div class="dash-h">Lopende missie</div>
+      ${missionHtml}
+      <div class="dash-h">Dragon1-artefacten (${p.artefacts.length}/${CONTENT_ARTEFACTS.length})</div>
+      <div class="chip-list">${p.artefacts.map(id=>{const a=CONTENT_ARTEFACTS.find(x=>x.id===id);return a?`<span class="chip artefact" title="${a.description}">${a.title}</span>`:''}).join('')||'<span style="color:var(--c-silver2);font-size:11px">Nog geen</span>'}</div>
+      <div class="dash-h">Attributen</div>
+      ${Object.entries(p.attrs).map(([k,v])=>`<div class="stat-row"><span class="label">${k}</span><span class="val">${v}</span></div>`).join('')}
+      <div class="dash-h">Statistiek</div>
+      <div class="stat-row"><span class="label">Beurten</span><span class="val">${p.turnCount}</span></div>
+      <div class="stat-row"><span class="label">Missies</span><span class="val">${p.stats.missionsCompleted}/${p.stats.missionsAttempted}</span></div>
+      <div class="stat-row"><span class="label">Uitdagingen</span><span class="val">${p.stats.challengesResolved}/${p.stats.challengesFaced}</span></div>
+      <div class="stat-row"><span class="label">Events</span><span class="val">${p.stats.eventsHandled}</span></div>
+      <div class="stat-row"><span class="label">Achievements</span><span class="val">${g.ach.unlocked.size}/${CONTENT_ACHIEVEMENTS.length}</span></div>
+    `;
+  }
+  metricRow(label,val,cls,inverse=false){
+    const pct=val;
+    const goodCls = inverse ? (val<=30?'good':(val>=70?'bad':'')) : (val>=70?'good':(val<=30?'bad':''));
+    return `<div class="stat-row"><span class="label">${label}</span><span class="val">${val}</span></div>
+      <div class="bar"><div class="bar-fill ${cls}" style="width:${pct}%"></div></div>`;
+  }
+  renderBoard(){
+    const w=$('#board'); if(!w)return;
+    const p=this.game.player;
+    w.innerHTML=CONTENT_LOCATIONS.map((loc,i)=>{
+      const isHere = p.position===i;
+      const visited = p.visitedLocations.has(i);
+      const hasMission = this.game.locationMissions[i] ? '<div class="badge-mission">M</div>' : '';
+      return `<div class="tile ${isHere?'player-here':''} ${visited?'visited':''}" data-loc="${i}" style="border-top:3px solid ${loc.color}">
+        ${hasMission}
+        <div class="tile-icon">${loc.boardIcon||loc.icon||'◆'}</div>
+        <div class="tile-label">${loc.name}</div>
+        <div class="tile-concept">${loc.primaryConcept||''}</div>
+        ${isHere?`<div class="pawn">${p.role.icon||'★'}</div>`:''}
+      </div>`;
+    }).join('');
+    $$('#board .tile').forEach(t=>t.addEventListener('click',()=>{
+      const idx=parseInt(t.dataset.loc,10);
+      this.game.tryMoveTo(idx);
+    }));
+  }
+  renderRoleSelect(){
+    const g=$('#role-grid');
+    g.innerHTML=CONTENT_ROLES.map(r=>`
+      <div class="role-card" data-role="${r.id}">
+        <div class="icon">${r.icon}</div>
+        <div class="name">${r.name}</div>
+        <div class="role">${r.role}</div>
+        <div class="desc">${r.description}</div>
+        <div class="attrs">
+          ${Object.entries(r.attrs||{}).slice(0,8).map(([k,v])=>`<span>${k} <b>${v}</b></span>`).join('')}
+        </div>
+        <div class="special">✦ ${r.specialAbility} — ${r.specialDescription||''}</div>
+      </div>
+    `).join('');
+    $$('.role-card').forEach(el=>el.addEventListener('click',()=>{
+      $$('.role-card').forEach(x=>x.classList.remove('selected'));
+      el.classList.add('selected');
+      const id=el.dataset.role;
+      this.game.selectedRole=CONTENT_ROLES.find(r=>r.id===id);
+      $('#btn-start-workshop').disabled=!this.game.selectedRole;
+    }));
+  }
+  modal(html,cb){
+    const mb=$('#modal-back'), m=$('#modal');
+    m.innerHTML=html; mb.classList.add('active');
+    this.modalCallback=cb||null;
+    $$('.modal button[data-close]').forEach(b=>b.addEventListener('click',()=>this.closeModal()));
+  }
+  closeModal(){
+    const mb=$('#modal-back'); mb.classList.remove('active');
+    if(this.modalCallback){const cb=this.modalCallback;this.modalCallback=null;cb()}
+  }
+  showMission(mission){
+    this.audio.cardFlip();
+    const eff=mission.effect||{};
+    const effHtml=this.effectsHtml(eff);
+    const loc=CONTENT_LOCATIONS[this.game.player.position];
+    const artefactTag = mission.artefact ? `<span class="tag dragon1">📜 ${mission.artefact}</span>` : '';
+    const conceptTag = mission.dragon1Concept ? `<span class="tag dragon1">Dragon1: ${mission.dragon1Concept}</span>` : '';
+    this.modal(`
+      <h2>📋 Missie — Dragon1</h2>
+      <div class="cardface">
+        <h3>${mission.title}</h3>
+        <div style="color:var(--c-text-dim);font-size:13px;line-height:1.5;margin:8px 0">${mission.description}</div>
+        <div class="meta-row">
+          ${artefactTag}
+          ${conceptTag}
+          <span class="tag loc">📍 ${loc.name}</span>
+          <span class="tag diff">Moeilijkheid: ${mission.difficulty||3}/5</span>
+        </div>
+        <div class="effects-grid">${effHtml}</div>
+      </div>
+      <div class="actions">
+        <button class="btn btn-gold" data-close data-accept>✓ Accepteren &amp; uitvoeren</button>
+        <button class="btn" data-close data-decline>Overslaan</button>
+      </div>
+    `,()=>{
+      // handled by button listeners
+    });
+    $$('.modal [data-accept]').forEach(b=>b.addEventListener('click',()=>{ this.modalCallback=()=>this.game.acceptMission(mission) }));
+    $$('.modal [data-decline]').forEach(b=>b.addEventListener('click',()=>{ this.modalCallback=()=>this.game.declineMission(mission) }));
+  }
+  showChallenge(challenge){
+    this.audio.bad();
+    const eff=challenge.effect||{};
+    const preEffHtml=this.effectsHtml(eff);
+    const choices = (challenge.response && challenge.response.choices) || [];
+    const loc=CONTENT_LOCATIONS[this.game.player.position];
+    this.modal(`
+      <h2>⚠ Uitdaging</h2>
+      <div class="cardface" style="border-color:var(--c-red)">
+        <h3>${challenge.title}</h3>
+        <div style="color:var(--c-text-dim);font-size:13px;line-height:1.5;margin:8px 0">${challenge.description}</div>
+        <div class="meta-row">
+          <span class="tag sev">Categorie: ${challenge.category}</span>
+          <span class="tag sev">Severity ${challenge.severity||3}/5</span>
+          <span class="tag loc">📍 ${loc.name}</span>
+        </div>
+        <div style="font-size:12px;color:var(--c-silver2);margin:8px 0 4px">Directe impact:</div>
+        <div class="effects-grid">${preEffHtml}</div>
+      </div>
+      <div style="font-size:13px;color:var(--c-purple);margin:12px 0 6px;font-weight:600">Hoe reageer je?</div>
+      <div class="choice-list">
+        ${choices.map((c,i)=>{
+          const eH=this.effectsInline(c.effect||{});
+          const reqTxt = c.requiresArtefact ? ` <span style="color:var(--c-cyan);font-size:10px">[vereist: ${c.requiresArtefact}]</span>` : '';
+          return `<button class="choice" data-choice="${i}"><div class="choice-title">${c.label||('Optie '+(i+1))}${reqTxt}</div><div class="choice-effect">${eH}</div></button>`;
+        }).join('')}
+      </div>
+    `);
+    $$('.modal .choice').forEach(btn=>btn.addEventListener('click',()=>{
+      const idx=parseInt(btn.dataset.choice,10);
+      const ch=choices[idx];
+      this.audio.choice();
+      this.closeModal();
+      this.game.applyChallenge(challenge, ch);
+    }));
+  }
+  showEvent(event){
+    this.audio.cardFlip();
+    const eff=event.effect||{};
+    const effHtml=this.effectsHtml(eff);
+    const loc=CONTENT_LOCATIONS[this.game.player.position];
+    const choices=event.choices||[];
+    const choicesHtml = choices.length
+      ? `<div style="font-size:13px;color:var(--c-purple);margin:12px 0 6px;font-weight:600">Keuze:</div>
+         <div class="choice-list">${choices.map((c,i)=>{
+           const eH=this.effectsInline(c.effect||{});
+           return `<button class="choice" data-choice="${i}"><div class="choice-title">${c.label||c.title||('Optie '+(i+1))}</div><div class="choice-effect">${eH}</div></button>`;
+         }).join('')}</div>`
+      : `<div class="actions"><button class="btn btn-gold" data-close>OK</button></div>`;
+    this.modal(`
+      <h2>📜 Event</h2>
+      <div class="cardface">
+        <h3>${event.title}</h3>
+        <div style="color:var(--c-text-dim);font-size:13px;line-height:1.5;margin:8px 0">${event.description}</div>
+        <div class="meta-row">
+          <span class="tag loc">📍 ${loc.name}</span>
+        </div>
+        <div class="effects-grid">${effHtml || '<span class="effect-neutral">Geen directe effecten</span>'}</div>
+      </div>
+      ${choicesHtml}
+    `,()=>{
+      if(choices.length===0){ this.game.applyEvent(event, null) }
+    });
+    $$('.modal .choice').forEach(btn=>btn.addEventListener('click',()=>{
+      const idx=parseInt(btn.dataset.choice,10);
+      const ch=choices[idx];
+      this.audio.choice();
+      this.closeModal();
+      this.game.applyEvent(event, ch);
+    }));
+  }
+  showArtefactGain(artefact){
+    this.audio.artefact();
+    const eff=artefact.passiveEffect||{};
+    const effHtml=this.effectsHtml(eff);
+    this.modal(`
+      <h2>📜 Dragon1-artefact opgeleverd!</h2>
+      <div class="cardface" style="border-color:var(--c-gold)">
+        <h3>${artefact.title}</h3>
+        <div style="color:var(--c-text-dim);font-size:13px;line-height:1.5;margin:8px 0">${artefact.description}</div>
+        <div class="meta-row">
+          <span class="tag dragon1">${artefact.category||'Dragon1'}</span>
+        </div>
+        <div style="font-size:12px;color:var(--c-silver2);margin:8px 0 4px">Passieve bonus:</div>
+        <div class="effects-grid">${effHtml}</div>
+      </div>
+      <div class="actions"><button class="btn btn-gold" data-close>In portfolio opnemen</button></div>
+    `,()=>{});
+  }
+  effectsHtml(eff){
+    return Object.entries(eff).filter(([,v])=>typeof v==='number' && v!==0).map(([k,v])=>{
+      const inverse = (k==='technicalDebt');
+      const good = inverse ? v<0 : v>0;
+      const cls = good ? 'effect-pos' : 'effect-neg';
+      return `<div class="${cls}">${k}: ${fmt(v)}</div>`;
+    }).join('') || '<span class="effect-neutral">Geen directe effecten</span>';
+  }
+  effectsInline(eff){
+    return Object.entries(eff).filter(([,v])=>typeof v==='number' && v!==0).map(([k,v])=>`${k} ${fmt(v)}`).join(', ');
+  }
+  onLevelUp(lvl){
+    this.audio.levelUp();
+    const el=document.createElement('div'); el.className='levelup'; el.textContent=`LEVEL UP! ${lvl.name}`;
+    $('#screen-game').appendChild(el); setTimeout(()=>el.remove(),2100);
+    this.log(`Level up: ${lvl.name}`,'legendary');
+  }
+  renderAchievements(rootId){
+    const root=$('#'+rootId); if(!root)return;
+    const un=this.game?this.game.ach.unlocked:new Set(new SaveSystem().loadAch()||[]);
+    root.innerHTML=CONTENT_ACHIEVEMENTS.map(a=>{
+      const on=un.has(a.id);
+      return `<div class="ach-card ${on?'unlocked':'locked'}"><div class="icon">${a.icon||'⭐'}</div><div><b>${a.title}</b><span>${a.description||''}</span>${a.xpReward?`<div style="margin-top:2px;color:var(--c-cyan);font-size:11px;font-family:monospace">+${a.xpReward} XP</div>`:''}</div></div>`;
+    }).join('');
+    const p=$('#ach-progress'); if(p) p.textContent=`${un.size}/${CONTENT_ACHIEVEMENTS.length} ontgrendeld`;
+  }
+  renderReport(report){
+    const p=$('#report-panel'); if(!p)return;
+    $('#report-headline').textContent=report.headline;
+    const gradeClass=(g)=>({A:'grade-a',B:'grade-b',C:'grade-c',D:'grade-d',E:'grade-e'})[g]||'grade-c';
+    const rowsHtml=report.aspects.map(a=>{
+      return `<div class="score-row">
+        <span class="lbl">${a.name}</span>
+        <div class="bar"><div class="bar-fill bar-value" style="width:${a.score}%"></div></div>
+        <span class="val">${a.score} <span class="grade ${gradeClass(a.grade)}">${a.grade}</span></span>
+      </div>`;
+    }).join('');
+    const improvementsHtml=report.improvements.map(i=>`<div class="improvement"><div class="imp-title">${i.title}</div>${i.text}</div>`).join('');
+    const artefactsList=this.game.player.artefacts.map(id=>{const a=CONTENT_ARTEFACTS.find(x=>x.id===id);return a?a.title:''}).filter(Boolean).join(' · ');
+    p.innerHTML=`
+      <div class="score-block">
+        <div style="text-align:center;color:var(--c-silver2);font-size:14px">Eindscore</div>
+        <div class="overall-score">${report.overallScore} <span class="grade ${gradeClass(report.overallGrade)}">${report.overallGrade}</span></div>
+        <div style="text-align:center;color:var(--c-silver2);font-size:13px">${report.verdict}</div>
+      </div>
+      <div class="score-block">
+        <h3>Score per aspect</h3>
+        ${rowsHtml}
+      </div>
+      <div class="score-block">
+        <h3>Verbeterpunten</h3>
+        ${improvementsHtml}
+      </div>
+      <div class="score-block">
+        <h3>Opgeleverde Dragon1-artefacten (${report.artefactsCount}/${CONTENT_ARTEFACTS.length})</h3>
+        <p style="color:var(--c-silver);font-size:13px;line-height:1.6">${artefactsList||'Geen artefacten opgeleverd — presentatie voortijdig gegeven.'}</p>
+      </div>
+      <div class="score-block">
+        <h3>Sessie-statistiek</h3>
+        <div class="stat-row"><span class="label">Rol</span><span class="val">${this.game.player.role.name}</span></div>
+        <div class="stat-row"><span class="label">Level</span><span class="val">${this.game.player.level} — ${(CONTENT_LEVELS[this.game.player.level-1]||{}).name||''}</span></div>
+        <div class="stat-row"><span class="label">Beurten</span><span class="val">${this.game.player.turnCount}</span></div>
+        <div class="stat-row"><span class="label">Missies</span><span class="val">${this.game.player.stats.missionsCompleted}/${this.game.player.stats.missionsAttempted}</span></div>
+        <div class="stat-row"><span class="label">Uitdagingen aangepakt</span><span class="val">${this.game.player.stats.challengesResolved}/${this.game.player.stats.challengesFaced}</span></div>
+        <div class="stat-row"><span class="label">Events</span><span class="val">${this.game.player.stats.eventsHandled}</span></div>
+        <div class="stat-row"><span class="label">Bezochte locaties</span><span class="val">${this.game.player.visitedLocations.size}/${CONTENT_LOCATIONS.length}</span></div>
+        <div class="stat-row"><span class="label">Achievements</span><span class="val">${this.game.ach.unlocked.size}/${CONTENT_ACHIEVEMENTS.length}</span></div>
+      </div>
+    `;
+  }
+}
+
+/* ============================================================
+   Game — main state machine
+   ============================================================ */
+class Game{
+  constructor(){
+    this.save=new SaveSystem();
+    this.audio=new AudioEngine();
+    this.settings={sound:true,music:true,animations:true};
+    const s=this.save.loadSettings(); if(s)Object.assign(this.settings,s);
+    this.audio.setEnabled(this.settings.sound);
+    this.audio.setMusic(this.settings.music);
+    this.ach=new AchievementManager(this.save);
+    this.ui=new UI(this.audio); this.ui.bind(this);
+    this.player=null;
+    this.selectedRole=null;
+    this.decks={
+      mission:new Deck(CONTENT_MISSIONS),
+      challenge:new Deck(CONTENT_CHALLENGES),
+      event:new Deck(CONTENT_EVENTS)
+    };
+    this.locationMissions={}; // idx -> mission preloaded
+    this.state='menu';
+  }
+  start(){
+    this.bindGlobal();
+    this.updateContinueBtn();
+    this.ui.renderRoleSelect();
+    this.renderSettings();
+    this.ui.renderAchievements('ach-grid');
+    this.audio.startMusic();
+  }
+  updateContinueBtn(){
+    const btn=$('#btn-continue'); if(!btn)return;
+    btn.disabled = !this.save.has();
+  }
+  bindGlobal(){
+    document.addEventListener('click',(e)=>{
+      const btn=e.target.closest('[data-action]'); if(!btn)return;
+      const act=btn.dataset.action;
+      this.audio.click();
+      switch(act){
+        case 'new-game': case 'new-workshop': this.ui.show('screen-roleselect'); this.ui.renderRoleSelect(); break;
+        case 'continue': this.continueWorkshop(); break;
+        case 'tutorial': this.ui.show('screen-tutorial'); break;
+        case 'settings': this.renderSettings(); this.ui.show('screen-settings'); break;
+        case 'credits': this.ui.show('screen-credits'); break;
+        case 'achievements': this.ui.renderAchievements('ach-grid'); this.ui.show('screen-achievements'); break;
+        case 'back-start': this.ui.show('screen-start'); this.updateContinueBtn(); break;
+        case 'save-now': this.saveGame(); this.ui.toast('💾 Opgeslagen'); break;
+        case 'show-artefacts': this.showArtefactsInventory(); break;
+        case 'show-achievements-game': this.ui.renderAchievements('ach-grid'); this.ui.show('screen-achievements'); break;
+        case 'present-to-board': this.confirmPresent(); break;
+        case 'quit-to-menu': this.saveGame(); this.ui.show('screen-start'); this.updateContinueBtn(); break;
+      }
+    });
+    $('#btn-start-workshop')?.addEventListener('click',()=>this.startWorkshop());
+    $('#btn-draw-mission')?.addEventListener('click',()=>this.drawMission());
+    $('#btn-end-turn')?.addEventListener('click',()=>this.endTurn());
+    document.addEventListener('click',()=>this.audio.ensure(),{once:true});
+  }
+  startWorkshop(){
+    if(!this.selectedRole)return;
+    this.save.clear();
+    this.player=new Architect(this.selectedRole);
+    this.decks={
+      mission:new Deck(CONTENT_MISSIONS),
+      challenge:new Deck(CONTENT_CHALLENGES),
+      event:new Deck(CONTENT_EVENTS)
+    };
+    this.locationMissions={};
+    this.state='playing';
+    this.ui.show('screen-game');
+    this.ui.log(`Workshop gestart — rol ${this.player.role.name}. Verplaats en trek missies.`,'magic');
+    this.ui.renderDashboard(); this.ui.renderBoard();
+    this.saveGame();
+  }
+  continueWorkshop(){
+    const data=this.save.load(); if(!data)return;
+    try{
+      const role=CONTENT_ROLES.find(r=>r.id===data.player.role?.id) || data.player.role;
+      const p=new Architect(role);
+      Object.assign(p,data.player);
+      p.role=role;
+      p.visitedLocations=new Set(data.player.visitedLocations||[0]);
+      this.player=p;
+      this.locationMissions=data.locationMissions||{};
+      this.state='playing';
+      this.ui.show('screen-game');
+      this.ui.renderDashboard(); this.ui.renderBoard();
+      this.ui.log('Sessie hervat.','info');
+    }catch(e){
+      console.error(e);
+      this.ui.toast('Save corrupt — nieuwe workshop','bad');
+      this.ui.show('screen-roleselect');
+    }
+  }
+  saveGame(){
+    if(!this.player)return;
+    this.save.save({
+      player:this.player.serialize(),
+      locationMissions:this.locationMissions,
+      savedAt:now()
+    });
+  }
+  neighbors(idx){
+    // 4x4 grid: row = floor(idx/4), col = idx%4
+    const row=Math.floor(idx/4), col=idx%4;
+    const list=[];
+    if(row>0) list.push(idx-4);
+    if(row<3) list.push(idx+4);
+    if(col>0) list.push(idx-1);
+    if(col<3) list.push(idx+1);
+    return list;
+  }
+  tryMoveTo(idx){
+    if(!this.player||this.state!=='playing')return;
+    if(idx===this.player.position)return;
+    const neigh=this.neighbors(this.player.position);
+    if(!neigh.includes(idx)){
+      this.ui.toast('Alleen aangrenzend verplaatsen','bad');
+      return;
+    }
+    this.player.position=idx;
+    this.player.visitedLocations.add(idx);
+    this.player.stats.movesMade++;
+    this.player.turnCount++;
+    if(this.player.specialCooldown>0)this.player.specialCooldown--;
+    const loc=CONTENT_LOCATIONS[idx];
+    this.ui.log(`Verplaatst naar ${loc.name}`,'info');
+    // Chance-based location trigger: 40% event, 40% challenge, 20% niets
+    const r=Math.random();
+    if(r<0.40) this.triggerEvent();
+    else if(r<0.80) this.triggerChallenge();
+    else {
+      this.ui.log(`${loc.name} — rustig moment. Trek eventueel een missie.`,'info');
+      this.afterAction();
+    }
+  }
+  triggerEvent(){
+    const ev=this.decks.event.drawFrom();
+    if(!ev){ this.afterAction(); return }
+    this.player.stats.cardsDrawn++;
+    this.ui.showEvent(ev);
+  }
+  triggerChallenge(){
+    const loc=CONTENT_LOCATIONS[this.player.position];
+    const ch=this.decks.challenge.drawFrom(c=>c.location===loc.name) || this.decks.challenge.drawFrom();
+    if(!ch){ this.afterAction(); return }
+    this.player.stats.challengesFaced++;
+    this.player.stats.cardsDrawn++;
+    // apply immediate effect
+    this.player.applyEffect(ch.effect||{});
+    this.ui.showChallenge(ch);
+  }
+  drawMission(){
+    if(!this.player)return;
+    if(this.player.currentMission){
+      this.ui.toast('Je hebt al een lopende missie — rond die eerst af','bad');
+      return;
+    }
+    const loc=CONTENT_LOCATIONS[this.player.position];
+    const m=this.decks.mission.drawFrom(x=>x.location===loc.name) || this.decks.mission.drawFrom();
+    if(!m){ this.ui.toast('Geen missies meer beschikbaar'); return }
+    this.player.stats.cardsDrawn++;
+    this.player.stats.missionsAttempted++;
+    this.ui.showMission(m);
+  }
+  acceptMission(mission){
+    this.player.currentMission=mission;
+    this.player.applyEffect(mission.effect||{});
+    // Auto-succes: mission executed. Award artefact if defined.
+    let artefactAwarded=false;
+    if(mission.artefact){
+      const art=CONTENT_ARTEFACTS.find(a=>a.title===mission.artefact);
+      if(art){
+        if(!this.player.hasArtefact(art.id)){
+          // check required
+          if(art.required && art.required.length){
+            const missing=art.required.filter(r=>!this.player.hasArtefact(r));
+            if(missing.length){
+              this.ui.log(`Missie uitgevoerd — ${art.title} nog niet volledig (vereist: ${missing.join(',')})`,'info');
+              this.ui.toast(`Missie klaar — vereist eerst ${missing.length} artefact(en)`,'bad');
+            } else {
+              this.player.gainArtefact(art.id);
+              this.ui.showArtefactGain(art);
+              artefactAwarded=true;
+            }
+          } else {
+            this.player.gainArtefact(art.id);
+            this.ui.showArtefactGain(art);
+            artefactAwarded=true;
+          }
+        } else {
+          this.ui.log(`${art.title} al eerder opgeleverd — kwaliteit versterkt`,'info');
+          this.player.applyEffect({governance:+3,businessValue:+3});
+        }
+      }
+    }
+    this.player.stats.missionsCompleted++;
+    this.player.currentMission=null;
+    this.ui.log(`✓ Missie afgerond: ${mission.title}`,'good');
+    this.ui.toast('📋 Missie voltooid','mission');
+    if(!artefactAwarded) this.afterAction();
+    // afterAction runs after modal close via callback in showArtefactGain
+    this.ui.modalCallback = ()=>this.afterAction();
+  }
+  declineMission(mission){
+    this.player.applyEffect({stakeholder:-3,xp:5});
+    this.ui.log(`Missie afgewezen: ${mission.title}`,'bad');
+    this.afterAction();
+  }
+  applyChallenge(challenge, choice){
+    if(choice){
+      this.player.applyEffect(choice.effect||{});
+      this.player.stats.choicesMade++;
+      this.ui.log(`Uitdaging ${challenge.title} → keuze: ${choice.label}`,'magic');
+    } else {
+      this.ui.log(`Uitdaging genegeerd: ${challenge.title}`,'bad');
+    }
+    this.player.stats.challengesResolved++;
+    this.afterAction();
+  }
+  applyEvent(event, choice){
+    if(choice){
+      this.player.applyEffect(choice.effect||{});
+      this.player.stats.choicesMade++;
+      this.ui.log(`Event ${event.title} → ${choice.label||choice.title}`,'magic');
+    } else {
+      this.player.applyEffect(event.effect||{});
+      this.ui.log(`Event: ${event.title}`,'info');
+    }
+    this.player.stats.eventsHandled++;
+    this.afterAction();
+  }
+  afterAction(){
+    if(!this.player) return;
+    this.ui.renderDashboard(); this.ui.renderBoard();
+    this.ach.check(this.player,{}, this.ui);
+    this.saveGame();
+    // Loss condition: budget 0 and technicalDebt>=95 and stakeholder<=15
+    if(this.player.metrics.stakeholderConfidence<=10 && this.player.metrics.governance<=15){
+      this.ui.log('Stakeholders trekken de stekker uit het architectuur-programma','bad');
+      setTimeout(()=>this.presentToBoard({forced:true, reason:'Vertrouwenscrisis'}),800);
+    }
+  }
+  endTurn(){
+    if(!this.player)return;
+    this.player.turnCount++;
+    if(this.player.specialCooldown>0)this.player.specialCooldown--;
+    this.ui.log(`Beurt ${this.player.turnCount} afgerond`,'info');
+    this.ui.renderDashboard();
+    this.saveGame();
+  }
+  showArtefactsInventory(){
+    const p=this.player; if(!p)return;
+    const items=CONTENT_ARTEFACTS.map(a=>{
+      const owned=p.hasArtefact(a.id);
+      const eff=Object.entries(a.passiveEffect||{}).filter(([,v])=>v).map(([k,v])=>`${k} ${fmt(v)}`).join(', ');
+      const reqTxt=a.required && a.required.length ? `<div style="font-size:11px;color:var(--c-purple);margin-top:4px">Vereist: ${a.required.join(', ')}</div>`:'';
+      return `<div class="cardface" style="${owned?'border-color:var(--c-gold)':'opacity:.5'}">
+        <h3>${a.title} ${owned?'<span style="color:var(--c-green);font-size:12px">✓ opgeleverd</span>':'<span style="color:var(--c-silver2);font-size:12px">(nog te maken)</span>'}</h3>
+        <div style="color:var(--c-text-dim);font-size:12px;margin:6px 0">${a.description}</div>
+        <div style="font-size:12px;color:var(--c-cyan);font-family:monospace">${eff}</div>
+        <div style="font-size:11px;color:var(--c-silver2);margin-top:2px">Categorie: ${a.category||'—'}</div>
+        ${reqTxt}
+      </div>`;
+    }).join('');
+    this.ui.modal(`<h2>Dragon1-artefactenportfolio (${p.artefacts.length}/${CONTENT_ARTEFACTS.length})</h2>${items}<div class="actions"><button class="btn" data-close>Sluit</button></div>`);
+  }
+  confirmPresent(){
+    if(!this.player)return;
+    const p=this.player;
+    const missing=CONTENT_ARTEFACTS.length - p.artefacts.length;
+    this.ui.modal(`
+      <h2>Presentatie aan de Raad van Bestuur</h2>
+      <div class="cardface">
+        <div style="font-size:13px;line-height:1.6;color:var(--c-text)">Weet je zeker dat je nu wilt presenteren aan de virtuele Raad van Bestuur? Je krijgt direct een evaluatierapport op 8 aspecten.</div>
+        <div style="margin-top:10px;font-size:12px;color:var(--c-silver)">
+          Voltooide artefacten: <b style="color:var(--c-gold)">${p.artefacts.length}/${CONTENT_ARTEFACTS.length}</b> (${missing} nog te leveren)<br>
+          Beurten: ${p.turnCount} · Level: ${p.level}
+        </div>
+      </div>
+      <div class="actions">
+        <button class="btn btn-gold" id="btn-confirm-present">Ja, presenteer nu</button>
+        <button class="btn" data-close>Nog niet</button>
+      </div>
+    `);
+    $('#btn-confirm-present')?.addEventListener('click',()=>{
+      this.ui.closeModal();
+      this.presentToBoard({forced:false});
+    });
+  }
+  presentToBoard(opts={}){
+    const p=this.player; if(!p) return;
+    this.audio.present();
+    const m=p.metrics;
+    // Compute 8 aspects
+    const artefactCascadeScore = this.calcCascadeScore(p);
+    const alignmentScore = clamp(Math.round((m.businessValue*0.6 + m.stakeholderConfidence*0.4)),0,100);
+    const aspects = [
+      {name:'Samenhang', score: Math.round((p.artefacts.length/CONTENT_ARTEFACTS.length)*70 + artefactCascadeScore*0.3)},
+      {name:'Strategie-uitlijning', score: alignmentScore},
+      {name:'Businesswaarde', score: m.businessValue},
+      {name:'Innovatie', score: m.innovation},
+      {name:'Governance', score: m.governance},
+      {name:'Security', score: m.security},
+      {name:'Digitale volwassenheid', score: m.digitalMaturity},
+      {name:'Stakeholdertevredenheid', score: m.stakeholderConfidence}
+    ];
+    // Technical debt penalty
+    const debtPenalty = Math.round(m.technicalDebt*0.15);
+    aspects.forEach(a=>{ a.score = clamp(a.score - Math.round(debtPenalty*0.5),0,100); a.grade = this.grade(a.score) });
+    const overallScore = Math.round(aspects.reduce((s,a)=>s+a.score,0)/aspects.length);
+    const overallGrade = this.grade(overallScore);
+    const verdict = this.verdict(overallScore, opts.reason);
+    const headline = opts.reason
+      ? `Voortijdige presentatie — reden: ${opts.reason}`
+      : `Presentatie voltooid op beurt ${p.turnCount}`;
+    const improvements = this.buildImprovements(p, aspects);
+    const report = {
+      headline, overallScore, overallGrade, verdict, aspects, improvements,
+      artefactsCount: p.artefacts.length
+    };
+    this.save.addHistoryEntry({
+      ts: now(), role: p.role.id, level: p.level, overallScore, overallGrade,
+      artefactsCount: p.artefacts.length, turnCount: p.turnCount
+    });
+    // Achievement check with presentation ctx
+    this.ach.check(p, {presented:true, overallScore, overallGrade}, this.ui);
+    this.ui.renderReport(report);
+    this.ui.show('screen-report');
+    this.save.clear();
+    this.state='report';
+  }
+  calcCascadeScore(p){
+    let sat=0, total=0;
+    for(const a of CONTENT_ARTEFACTS){
+      if(!p.hasArtefact(a.id))continue;
+      total++;
+      if(!a.required || a.required.length===0){ sat++; continue }
+      const okAll=a.required.every(r=>p.hasArtefact(r));
+      if(okAll) sat++;
+    }
+    return total===0 ? 0 : Math.round(sat/total*100);
+  }
+  grade(score){
+    if(score>=90) return 'A';
+    if(score>=75) return 'B';
+    if(score>=60) return 'C';
+    if(score>=45) return 'D';
+    return 'E';
+  }
+  verdict(score, reason){
+    if(reason) return 'De Raad prijst de eerlijkheid maar constateert dat het traject onvoldoende volwassen is.';
+    if(score>=90) return 'De Raad is unaniem lovend — een exemplarische Dragon1-architectuur, klaar voor uitvoering.';
+    if(score>=75) return 'De Raad ziet een sterk fundament met enkele aandachtspunten voor verdieping.';
+    if(score>=60) return 'De Raad ziet potentie maar mist samenhang op strategisch en operationeel niveau.';
+    if(score>=45) return 'De Raad heeft twijfels bij de haalbaarheid en vraagt om een herijking van de aanpak.';
+    return 'De Raad besluit tot herstart onder externe begeleiding.';
+  }
+  buildImprovements(p, aspects){
+    const list=[];
+    const m=p.metrics;
+    const missing=CONTENT_ARTEFACTS.filter(a=>!p.hasArtefact(a.id));
+    if(missing.length){
+      const names=missing.slice(0,4).map(a=>a.title).join(', ')+(missing.length>4?`, +${missing.length-4} meer`:'');
+      list.push({title:`Ontbrekende Dragon1-artefacten (${missing.length}/${CONTENT_ARTEFACTS.length})`, text:`Werk de volgende deliverables af voor volledige samenhang: ${names}.`});
+    }
+    if(m.technicalDebt>50) list.push({title:'Hoge technische schuld', text:'Start een expliciet debt-reductieprogramma; maak Technical Debt Register en koppel aan Portfolio Dashboard.'});
+    if(m.governance<50) list.push({title:'Zwakke governance', text:'Herzie het Governance Framework: rollen, mandaten, ARB-cadans, principes-adoptie en compliance-checks.'});
+    if(m.security<50) list.push({title:'Onvoldoende security-maturity', text:'Voer Zero Trust reference architecture in, verhoog SOC-dekking en oefen incident response.'});
+    if(m.stakeholderConfidence<50) list.push({title:'Stakeholders onvoldoende betrokken', text:'Investeer in stakeholder mapping, communicatie-cadans en tastbare quick wins per business-domein.'});
+    if(m.innovation<50) list.push({title:'Innovatie stagneert', text:'Formaliseer Innovation Lab, koppel aan strategy map en creëer sandbox voor emerging tech (AI, edge, quantum-ready).'});
+    if(m.digitalMaturity<50) list.push({title:'Lage digitale volwassenheid', text:'Bouw referentie-architectuur voor cloud-native, event-driven en data-platforms; deploy DevSecOps als default.'});
+    if(m.businessValue<60) list.push({title:'Businesswaarde onvoldoende zichtbaar', text:'Koppel elke architectuur-inspanning aan meetbare business outcomes via Value Streams en OKRs.'});
+    if(p.artefacts.length>=CONTENT_ARTEFACTS.length && m.governance>=70 && m.security>=70){
+      list.push({title:'Uitbreiding naar ecosysteem', text:'Overweeg extended enterprise: partners, klanten en toeleveranciers meenemen in Dragon1-artefact-cascade.'});
+    }
+    if(list.length===0) list.push({title:'Geen kritische verbeterpunten', text:'De Dragon1-architectuur is coherent, gedragen en future-proof. Focus nu op executie-discipline.'});
+    return list;
+  }
+  renderSettings(){
+    const root=$('#settings-panel'); if(!root)return;
+    const s=this.settings;
+    const row=(id,label,val)=>`<div class="settings-row"><span>${label}</span><div class="toggle ${val?'on':''}" data-setting="${id}"></div></div>`;
+    root.innerHTML =
+      row('sound','Geluid',s.sound)+
+      row('music','Muziek',s.music)+
+      row('animations','Animaties',s.animations)+
+      `<div class="settings-row"><span>Volume</span><input type="range" min="0" max="100" value="${Math.round(this.audio.volume*100)}" id="vol-slider" style="flex:1;margin-left:12px"></div>`+
+      `<div class="settings-row"><span>Reset alle voortgang</span><button class="btn btn-danger btn-small" id="btn-reset">Wissen</button></div>`;
+    $$('.toggle[data-setting]').forEach(el=>el.addEventListener('click',()=>{
+      const k=el.dataset.setting; s[k]=!s[k]; el.classList.toggle('on',s[k]);
+      if(k==='sound') this.audio.setEnabled(s.sound);
+      if(k==='music') this.audio.setMusic(s.music);
+      this.save.saveSettings(s);
+    }));
+    $('#vol-slider')?.addEventListener('input',(e)=>{
+      this.audio.volume=parseInt(e.target.value,10)/100;
+      this.save.saveSettings(this.settings);
+    });
+    $('#btn-reset')?.addEventListener('click',()=>{
+      if(confirm('Alle voortgang, achievements en instellingen wissen?')){
+        this.save.resetAll(); this.ach.reset();
+        this.ui.toast('🗑 Gereset','bad');
+        setTimeout(()=>location.reload(),800);
+      }
+    });
+  }
+}
+
+/* ---------- Boot ---------- */
+window.addEventListener('DOMContentLoaded',()=>{
+  window.__eq2=new Game(); window.__eq2.start();
+});
+</script>
+</body>
+</html>

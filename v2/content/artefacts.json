@@ -1,0 +1,182 @@
+[
+  {
+    "id": "A001",
+    "title": "Vision Blueprint",
+    "description": "Visuele weergave van de langetermijnvisie en het gewenste toekomstbeeld van de onderneming.",
+    "passiveEffect": {
+      "stakeholderConfidence": 8,
+      "businessValue": 5,
+      "xpMultiplier": 1.1
+    },
+    "category": "Strategisch"
+  },
+  {
+    "id": "A002",
+    "title": "Strategy Map",
+    "description": "Overzicht dat strategische doelstellingen koppelt aan KPI's, initiatieven en oorzaak-gevolg-relaties.",
+    "passiveEffect": {
+      "businessValue": 10,
+      "governance": 3,
+      "stakeholderConfidence": 4
+    },
+    "category": "Strategisch",
+    "required": ["A001"]
+  },
+  {
+    "id": "A003",
+    "title": "Capability Map",
+    "description": "Hierarchische kaart van business capabilities die laat zien wat de organisatie moet kunnen om haar strategie te realiseren.",
+    "passiveEffect": {
+      "businessValue": 8,
+      "digitalMaturity": 5,
+      "governance": 2
+    },
+    "category": "Business",
+    "required": ["A002"]
+  },
+  {
+    "id": "A004",
+    "title": "Architecture Principles",
+    "description": "Set van richtinggevende principes die ontwerpkeuzes in de gehele organisatie sturen en normeren.",
+    "passiveEffect": {
+      "governance": 12,
+      "stakeholderConfidence": 3,
+      "digitalMaturity": 2
+    },
+    "category": "Governance",
+    "required": ["A001"]
+  },
+  {
+    "id": "A005",
+    "title": "Business Reference Model",
+    "description": "Referentie-model met standaard business-functies, processen en objecten voor consistentie tussen domeinen.",
+    "passiveEffect": {
+      "businessValue": 6,
+      "governance": 5,
+      "digitalMaturity": 3
+    },
+    "category": "Business",
+    "required": ["A003"]
+  },
+  {
+    "id": "A006",
+    "title": "Application Landscape",
+    "description": "Totaaloverzicht van alle applicaties, hun functies, eigenaren en lifecycle-status.",
+    "passiveEffect": {
+      "digitalMaturity": 8,
+      "governance": 4,
+      "budgetPerTurn": 5
+    },
+    "category": "Applicatie",
+    "required": ["A003"]
+  },
+  {
+    "id": "A007",
+    "title": "Information Model",
+    "description": "Gestructureerd model van kernbegrippen, entiteiten en relaties van de bedrijfsinformatie.",
+    "passiveEffect": {
+      "digitalMaturity": 6,
+      "governance": 4,
+      "businessValue": 3
+    },
+    "category": "Informatie",
+    "required": ["A005"]
+  },
+  {
+    "id": "A008",
+    "title": "Technology Blueprint",
+    "description": "Overzicht van technologiedomeinen, standaarden en platformen die de applicaties ondersteunen.",
+    "passiveEffect": {
+      "digitalMaturity": 7,
+      "security": 4,
+      "governance": 3
+    },
+    "category": "Technologie",
+    "required": ["A006"]
+  },
+  {
+    "id": "A009",
+    "title": "Governance Framework",
+    "description": "Raamwerk van rollen, gremia en besluitvormingsprocessen voor architectuurbeheer.",
+    "passiveEffect": {
+      "governance": 15,
+      "stakeholderConfidence": 5,
+      "security": 3
+    },
+    "category": "Governance",
+    "required": ["A004"]
+  },
+  {
+    "id": "A010",
+    "title": "Transformation Roadmap",
+    "description": "Meerjarige routekaart die transitie-stappen van huidige naar gewenste architectuur zichtbaar maakt.",
+    "passiveEffect": {
+      "businessValue": 8,
+      "innovation": 5,
+      "stakeholderConfidence": 6,
+      "xpMultiplier": 1.15
+    },
+    "category": "Transformatie",
+    "required": ["A002", "A006"]
+  },
+  {
+    "id": "A011",
+    "title": "Portfolio Dashboard",
+    "description": "Live dashboard met de status, waarde en risico's van alle lopende projecten en programma's.",
+    "passiveEffect": {
+      "governance": 6,
+      "businessValue": 5,
+      "budgetPerTurn": 8
+    },
+    "category": "Governance",
+    "required": ["A010"]
+  },
+  {
+    "id": "A012",
+    "title": "Architecture Repository",
+    "description": "Centrale opslag van alle architectuur-modellen, artefacten en referenties met versiebeheer.",
+    "passiveEffect": {
+      "governance": 8,
+      "digitalMaturity": 6,
+      "xpMultiplier": 1.2
+    },
+    "category": "Governance",
+    "required": ["A004", "A009"]
+  },
+  {
+    "id": "A013",
+    "title": "Enterprise Vision Poster",
+    "description": "Eenpagina-visualisatie die de kern-visie communiceerbaar maakt naar medewerkers en stakeholders.",
+    "passiveEffect": {
+      "stakeholderConfidence": 10,
+      "businessValue": 3,
+      "innovation": 2
+    },
+    "category": "Strategisch",
+    "required": ["A001"]
+  },
+  {
+    "id": "A014",
+    "title": "Solution Overview",
+    "description": "Concept-schets die per initiatief laat zien welke oplossing wordt gebouwd en welke componenten daarbij horen.",
+    "passiveEffect": {
+      "digitalMaturity": 5,
+      "businessValue": 4,
+      "innovation": 3
+    },
+    "category": "Applicatie",
+    "required": ["A006", "A008"]
+  },
+  {
+    "id": "A015",
+    "title": "Value Stream Map",
+    "description": "Visualisatie van de waardestroom van klantvraag tot geleverde waarde, inclusief knelpunten en verbeterkansen.",
+    "passiveEffect": {
+      "businessValue": 9,
+      "innovation": 4,
+      "stakeholderConfidence": 3
+    },
+    "category": "Business",
+    "required": ["A003"]
+  }
+]

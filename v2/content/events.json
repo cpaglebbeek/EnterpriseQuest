@@ -1,0 +1,351 @@
+{
+  "events": [
+    {
+      "id": "EV001",
+      "title": "RFI ontvangen van prospect",
+      "description": "Grote prospect stuurt Request for Information over cloud-security en data-residency.",
+      "effect": {"stakeholderConfidence": 5, "businessValue": 5, "xp": 50},
+      "choices": [
+        {"label": "Volledige RFI beantwoorden met bewijs", "effect": {"businessValue": 15, "governance": 10, "budget": -50, "xp": 100}},
+        {"label": "Standaard-antwoorden hergebruiken", "effect": {"businessValue": 5, "xp": 50}},
+        {"label": "Pre-sales gesprek aanbieden ipv papierwerk", "effect": {"stakeholderConfidence": 10, "businessValue": 10, "xp": 75}}
+      ],
+      "location": "Sales"
+    },
+    {
+      "id": "EV002",
+      "title": "RFP-uitnodiging Europese aanbesteding",
+      "description": "Overheidsaanbesteding voor multi-jaar contract. Deelname kost inspanning maar biedt strategische omzet.",
+      "effect": {"xp": 50},
+      "choices": [
+        {"label": "Bid-team samenstellen en meeschrijven", "effect": {"budget": -200, "businessValue": 30, "stakeholderConfidence": 10, "xp": 150}},
+        {"label": "Alleen partner-rol claimen", "effect": {"businessValue": 10, "xp": 75}},
+        {"label": "Overslaan wegens capaciteit", "effect": {"businessValue": -10, "xp": 25}}
+      ],
+      "location": "Sales"
+    },
+    {
+      "id": "EV003",
+      "title": "Board-vergadering",
+      "description": "Kwartaal-board vraagt update over transformatie-programma en IT-risico's.",
+      "effect": {"xp": 50},
+      "choices": [
+        {"label": "OKR-driven dashboard tonen", "effect": {"stakeholderConfidence": 15, "governance": 10, "xp": 125}},
+        {"label": "Focus op risico-mitigatie", "effect": {"stakeholderConfidence": 10, "security": 5, "xp": 100}},
+        {"label": "Innovatie-portfolio uitlichten", "effect": {"innovation": 10, "stakeholderConfidence": 5, "xp": 100}}
+      ],
+      "location": "Directie"
+    },
+    {
+      "id": "EV004",
+      "title": "Architecture Review Board",
+      "description": "Vier grote initiatieven vragen ARB-goedkeuring. Kwaliteit varieert sterk.",
+      "effect": {"governance": 5, "xp": 50},
+      "choices": [
+        {"label": "Strenge kwaliteitspoort afdwingen", "effect": {"governance": 20, "stakeholderConfidence": -5, "technicalDebt": -5, "xp": 125}},
+        {"label": "Fast-track met randvoorwaarden", "effect": {"governance": 10, "innovation": 10, "xp": 125}},
+        {"label": "Coaching-model naast review", "effect": {"governance": 15, "stakeholderConfidence": 10, "xp": 150}}
+      ],
+      "location": "IT-Operations"
+    },
+    {
+      "id": "EV005",
+      "title": "Hackathon 48 uur",
+      "description": "Interne hackathon: 12 teams presenteren proof-of-concepts. Twee ideeen zijn commercieel interessant.",
+      "effect": {"innovation": 15, "xp": 75},
+      "choices": [
+        {"label": "Beste POC's naar innovatie-portfolio", "effect": {"innovation": 20, "digitalMaturity": 10, "budget": -100, "xp": 150}},
+        {"label": "Winnaars promoveren en zichtbaarheid geven", "effect": {"stakeholderConfidence": 10, "innovation": 10, "xp": 100}},
+        {"label": "Alleen viering, geen vervolgtraject", "effect": {"innovation": 5, "xp": 50}}
+      ],
+      "location": "R&D"
+    },
+    {
+      "id": "EV006",
+      "title": "Kwartaal business-review",
+      "description": "Business-eigenaren reviewen roadmap en value-delivery van afgelopen kwartaal.",
+      "effect": {"xp": 50},
+      "choices": [
+        {"label": "Value-metrics kwantitatief onderbouwen", "effect": {"stakeholderConfidence": 15, "businessValue": 10, "xp": 125}},
+        {"label": "Focus op storytelling met klant-cases", "effect": {"stakeholderConfidence": 15, "xp": 100}},
+        {"label": "Backlog-herschikking voorstellen", "effect": {"governance": 10, "businessValue": 5, "xp": 75}}
+      ],
+      "location": "Business"
+    },
+    {
+      "id": "EV007",
+      "title": "Sales pusht product-launch",
+      "description": "Sales wil launch 6 weken naar voren halen wegens concurrentie-druk.",
+      "effect": {"technicalDebt": 5, "xp": 50},
+      "choices": [
+        {"label": "MVP-scope + feature-flags", "effect": {"innovation": 15, "businessValue": 10, "technicalDebt": 5, "xp": 150}},
+        {"label": "Vasthouden aan oorspronkelijke datum", "effect": {"governance": 10, "stakeholderConfidence": -10, "xp": 75}},
+        {"label": "Beperkte launch bij pilot-klanten", "effect": {"innovation": 10, "businessValue": 10, "xp": 125}}
+      ],
+      "location": "Sales"
+    },
+    {
+      "id": "EV008",
+      "title": "Trainingsbudget vrijgegeven",
+      "description": "HR maakt eenmalig extra opleidingsbudget vrij voor IT-teams.",
+      "effect": {"budget": 100, "xp": 50},
+      "choices": [
+        {"label": "Cloud/AI-certificeringen breed uitrollen", "effect": {"digitalMaturity": 15, "innovation": 10, "xp": 125}},
+        {"label": "Security-awareness voor iedereen", "effect": {"security": 15, "xp": 100}},
+        {"label": "Leadership-training voor tech leads", "effect": {"stakeholderConfidence": 10, "governance": 5, "xp": 100}}
+      ],
+      "location": "HR"
+    },
+    {
+      "id": "EV009",
+      "title": "Externe consultant biedt aan",
+      "description": "Onafhankelijke consultant biedt reference-architectuur review aan tegen dagtarief.",
+      "effect": {"xp": 50},
+      "choices": [
+        {"label": "Assessment inkopen en aanbevelingen uitvoeren", "effect": {"budget": -150, "governance": 15, "digitalMaturity": 10, "xp": 125}},
+        {"label": "Second-opinion op enkele pijnpunten", "effect": {"budget": -50, "governance": 5, "xp": 75}},
+        {"label": "Zelf uitvoeren met team", "effect": {"innovation": 5, "xp": 75}}
+      ],
+      "location": "IT-Operations"
+    },
+    {
+      "id": "EV010",
+      "title": "Vendor-summit uitnodiging",
+      "description": "Strategische leverancier nodigt CIO uit voor exclusieve summit met roadmap-preview.",
+      "effect": {"stakeholderConfidence": 5, "xp": 50},
+      "choices": [
+        {"label": "Deelnemen en roadmap-input geven", "effect": {"innovation": 10, "stakeholderConfidence": 10, "xp": 100}},
+        {"label": "Sturen met inkoopvoordeel-agenda", "effect": {"budget": 100, "stakeholderConfidence": 5, "xp": 100}},
+        {"label": "Afzeggen wegens onafhankelijkheid", "effect": {"governance": 10, "xp": 75}}
+      ],
+      "location": "Directie"
+    },
+    {
+      "id": "EV011",
+      "title": "Buy-vs-build dilemma",
+      "description": "Nieuw platform nodig. Bouwen kost 18 maanden, kopen kost licentie maar levert lock-in op.",
+      "effect": {"xp": 50},
+      "choices": [
+        {"label": "Kopen en integreren via anti-corruption layer", "effect": {"budget": -400, "innovation": 5, "digitalMaturity": 10, "xp": 150}},
+        {"label": "Bouwen op open-source foundation", "effect": {"budget": -300, "innovation": 20, "technicalDebt": 10, "xp": 175}},
+        {"label": "Hybride: kopen + eigen extensies", "effect": {"budget": -350, "innovation": 10, "governance": 5, "xp": 150}}
+      ],
+      "location": "IT-Operations"
+    },
+    {
+      "id": "EV012",
+      "title": "MVP-scope discussie",
+      "description": "Product-team en business-owner zijn het oneens over minimale scope van eerste release.",
+      "effect": {"xp": 50},
+      "choices": [
+        {"label": "Value-slicing workshop faciliteren", "effect": {"stakeholderConfidence": 15, "businessValue": 10, "xp": 125}},
+        {"label": "Steilste risico eerst leveren", "effect": {"innovation": 10, "governance": 5, "xp": 100}},
+        {"label": "Business-owner beslist finaal", "effect": {"stakeholderConfidence": 5, "governance": -5, "xp": 75}}
+      ],
+      "location": "Business"
+    },
+    {
+      "id": "EV013",
+      "title": "Datalake vs Data-warehouse keuze",
+      "description": "Data-strategie eist keuze: flexibele datalake of gestructureerd warehouse voor analytics.",
+      "effect": {"xp": 50},
+      "choices": [
+        {"label": "Lakehouse-architectuur (best of both)", "effect": {"digitalMaturity": 15, "innovation": 10, "budget": -300, "xp": 175}},
+        {"label": "Klassiek warehouse voor betrouwbaarheid", "effect": {"governance": 15, "budget": -250, "xp": 125}},
+        {"label": "Datalake voor snelheid en experimenten", "effect": {"innovation": 15, "technicalDebt": 10, "budget": -200, "xp": 125}}
+      ],
+      "location": "R&D"
+    },
+    {
+      "id": "EV014",
+      "title": "Zelfhosten vs SaaS",
+      "description": "Nieuwe workload: intern hosten (controle) of SaaS (snelheid) — team is verdeeld.",
+      "effect": {"xp": 50},
+      "choices": [
+        {"label": "SaaS met exit-clausules", "effect": {"digitalMaturity": 10, "budget": -150, "governance": 10, "xp": 125}},
+        {"label": "Zelfhosten in eigen platform", "effect": {"governance": 15, "budget": -250, "technicalDebt": 5, "xp": 125}},
+        {"label": "Managed-service tussenoplossing", "effect": {"budget": -200, "digitalMaturity": 10, "xp": 125}}
+      ],
+      "location": "IT-Operations"
+    },
+    {
+      "id": "EV015",
+      "title": "Open-source vs commercieel",
+      "description": "Team wil open-source alternatief kiezen. Vendor biedt commerciële suite met support.",
+      "effect": {"xp": 50},
+      "choices": [
+        {"label": "Open-source + commercial support-abo", "effect": {"innovation": 15, "budget": -100, "xp": 125}},
+        {"label": "Commerciële suite met SLA", "effect": {"budget": -250, "governance": 10, "xp": 100}},
+        {"label": "OSS zonder support (risico eigen team)", "effect": {"innovation": 20, "technicalDebt": 10, "xp": 100}}
+      ],
+      "location": "R&D"
+    },
+    {
+      "id": "EV016",
+      "title": "Micro-frontends vs monoliet",
+      "description": "Frontend-team stelt micro-frontends voor. Discussie over complexiteit versus autonomie.",
+      "effect": {"xp": 50},
+      "choices": [
+        {"label": "Micro-frontends met design-system", "effect": {"digitalMaturity": 15, "innovation": 10, "technicalDebt": 5, "xp": 150}},
+        {"label": "Modulaire monoliet houden", "effect": {"governance": 10, "technicalDebt": -5, "xp": 100}},
+        {"label": "Pilot per team en later beslissen", "effect": {"innovation": 5, "governance": 5, "xp": 100}}
+      ],
+      "location": "IT-Operations"
+    },
+    {
+      "id": "EV017",
+      "title": "Multi-cloud vs single-cloud",
+      "description": "Board vraagt cloud-strategie. Multi-cloud kost meer, single-cloud verhoogt lock-in.",
+      "effect": {"xp": 50},
+      "choices": [
+        {"label": "Primair single-cloud + escape-hatch", "effect": {"digitalMaturity": 15, "budget": -100, "xp": 150}},
+        {"label": "Multi-cloud per workload-fit", "effect": {"innovation": 10, "budget": -300, "governance": 5, "xp": 150}},
+        {"label": "Hybrid met on-prem kernsystemen", "effect": {"technicalDebt": 5, "governance": 10, "xp": 100}}
+      ],
+      "location": "IT-Operations"
+    },
+    {
+      "id": "EV018",
+      "title": "Copilot enterprise-rollout",
+      "description": "Licenties beschikbaar voor 500 gebruikers. Meten van productiviteit is uitdaging.",
+      "effect": {"innovation": 10, "xp": 75},
+      "choices": [
+        {"label": "Gestructureerd rollout-plan met meting", "effect": {"digitalMaturity": 20, "innovation": 15, "budget": -250, "xp": 175}},
+        {"label": "Alleen voor engineers uitrollen", "effect": {"innovation": 10, "digitalMaturity": 10, "budget": -100, "xp": 100}},
+        {"label": "Wachten op meer bewijs", "effect": {"innovation": -5, "xp": 25}}
+      ],
+      "location": "R&D"
+    },
+    {
+      "id": "EV019",
+      "title": "GreenOps-metric-doel gehaald",
+      "description": "CO2-per-transactie doel voor kwartaal gehaald door FinOps-optimalisatie.",
+      "effect": {"digitalMaturity": 10, "stakeholderConfidence": 10, "budget": 50, "xp": 75},
+      "choices": [
+        {"label": "Volgende doel ambitieuzer stellen", "effect": {"digitalMaturity": 15, "governance": 5, "xp": 100}},
+        {"label": "Externe communicatie richting CSRD", "effect": {"stakeholderConfidence": 10, "governance": 10, "xp": 100}}
+      ],
+      "location": "Finance"
+    },
+    {
+      "id": "EV020",
+      "title": "Startup pitcht partnership",
+      "description": "Nederlandse scale-up pitcht co-innovation partnership. Belofte veel, referenties beperkt.",
+      "effect": {"xp": 50},
+      "choices": [
+        {"label": "POC binnen 90 dagen met exit-criteria", "effect": {"innovation": 20, "budget": -150, "xp": 150}},
+        {"label": "Investeren via corporate venturing", "effect": {"budget": -400, "innovation": 15, "stakeholderConfidence": 5, "xp": 175}},
+        {"label": "Bedanken wegens risico", "effect": {"governance": 5, "xp": 50}}
+      ],
+      "location": "R&D"
+    },
+    {
+      "id": "EV021",
+      "title": "Analist-rapport gepubliceerd",
+      "description": "Gartner/Forrester positioneert organisatie in Magic Quadrant/Wave. Positionering beïnvloedt reputatie.",
+      "effect": {"stakeholderConfidence": 10, "xp": 50},
+      "location": "Marketing"
+    },
+    {
+      "id": "EV022",
+      "title": "Wetsvoorstel in consultatie",
+      "description": "Nieuw wetsvoorstel over datasoevereiniteit gaat in consultatie. Impact op cloud-strategie mogelijk.",
+      "effect": {"governance": -5, "xp": 50},
+      "choices": [
+        {"label": "Consultatie-reactie indienen via brancheorganisatie", "effect": {"governance": 15, "stakeholderConfidence": 10, "xp": 125}},
+        {"label": "Interne impact-analyse starten", "effect": {"governance": 10, "budget": -50, "xp": 100}},
+        {"label": "Afwachten definitieve wetgeving", "effect": {"governance": -5, "xp": 25}}
+      ],
+      "location": "Legal"
+    },
+    {
+      "id": "EV023",
+      "title": "Universiteit zoekt stagiaires",
+      "description": "TU biedt onderzoeksstages aan rond graph-databases en enterprise architecture.",
+      "effect": {"xp": 50},
+      "choices": [
+        {"label": "Stageplaatsen openstellen en onderzoek sponsoren", "effect": {"innovation": 15, "stakeholderConfidence": 5, "budget": -100, "xp": 125}},
+        {"label": "Alleen inhoudelijk begeleiden", "effect": {"innovation": 10, "xp": 75}},
+        {"label": "Nu geen capaciteit", "effect": {"xp": 25}}
+      ],
+      "location": "HR"
+    },
+    {
+      "id": "EV024",
+      "title": "Klantsatisfactie-onderzoek",
+      "description": "Kwartaal-NPS meting: score stijgt met 4 punten na portaal-verbetering.",
+      "effect": {"businessValue": 15, "stakeholderConfidence": 10, "xp": 75},
+      "location": "Marketing"
+    },
+    {
+      "id": "EV025",
+      "title": "Interne wisseling CIO",
+      "description": "CIO stapt over naar andere rol. Interim-CIO wil eerste 100 dagen inhoud geven.",
+      "effect": {"stakeholderConfidence": -10, "xp": 50},
+      "choices": [
+        {"label": "Onboarding-pack met architectuur-status", "effect": {"stakeholderConfidence": 15, "governance": 10, "xp": 125}},
+        {"label": "Quick-wins pitchen voor 100-dagenplan", "effect": {"stakeholderConfidence": 10, "businessValue": 5, "xp": 100}},
+        {"label": "Afwachten en observeren", "effect": {"stakeholderConfidence": -5, "xp": 25}}
+      ],
+      "location": "Directie"
+    },
+    {
+      "id": "EV026",
+      "title": "Prijsstijging licenties",
+      "description": "Belangrijke leverancier kondigt 18% prijsverhoging aan bij renewal.",
+      "effect": {"budget": -150, "xp": 50},
+      "choices": [
+        {"label": "Onderhandelen met multi-year commitment", "effect": {"budget": 100, "governance": 5, "xp": 100}},
+        {"label": "Alternatief evalueren en druk zetten", "effect": {"innovation": 10, "budget": 50, "xp": 125}},
+        {"label": "Prijsverhoging accepteren", "effect": {"budget": -100, "xp": 25}}
+      ],
+      "location": "Finance"
+    },
+    {
+      "id": "EV027",
+      "title": "Media-aandacht positief",
+      "description": "Vakblad publiceert case-study over digitale transformatie van de organisatie.",
+      "effect": {"stakeholderConfidence": 15, "innovation": 5, "xp": 75},
+      "choices": [
+        {"label": "Employer-branding campagne opzetten", "effect": {"stakeholderConfidence": 10, "budget": -100, "xp": 100}},
+        {"label": "Extern spreken op conferenties", "effect": {"stakeholderConfidence": 10, "innovation": 5, "xp": 100}}
+      ],
+      "location": "Marketing"
+    },
+    {
+      "id": "EV028",
+      "title": "Compliance-training verplicht",
+      "description": "Toezichthouder eist jaarlijkse compliance-training voor alle IT-medewerkers.",
+      "effect": {"governance": 5, "budget": -50, "xp": 50},
+      "choices": [
+        {"label": "Interactieve e-learning laten ontwikkelen", "effect": {"governance": 15, "digitalMaturity": 5, "budget": -100, "xp": 125}},
+        {"label": "Standaard training inkopen", "effect": {"governance": 10, "budget": -150, "xp": 75}}
+      ],
+      "location": "HR"
+    },
+    {
+      "id": "EV029",
+      "title": "Open-innovation call",
+      "description": "EU-programma opent call voor consortium-projecten rond digitale soevereiniteit.",
+      "effect": {"xp": 50},
+      "choices": [
+        {"label": "Consortium leiden en subsidie aanvragen", "effect": {"budget": 300, "innovation": 20, "stakeholderConfidence": 10, "xp": 175}},
+        {"label": "Als junior partner aansluiten", "effect": {"budget": 100, "innovation": 10, "xp": 100}},
+        {"label": "Niet meedoen — te veel overhead", "effect": {"xp": 25}}
+      ],
+      "location": "R&D"
+    },
+    {
+      "id": "EV030",
+      "title": "Interne mobiliteit-programma",
+      "description": "HR lanceert programma waarin medewerkers 20% werktijd elders in organisatie kunnen besteden.",
+      "effect": {"stakeholderConfidence": 5, "innovation": 5, "xp": 50},
+      "choices": [
+        {"label": "IT stimuleren om deel te nemen", "effect": {"innovation": 15, "stakeholderConfidence": 10, "digitalMaturity": 5, "xp": 125}},
+        {"label": "Beperken tot niet-kritieke rollen", "effect": {"governance": 5, "innovation": 5, "xp": 75}},
+        {"label": "Uitstel wegens deadlines", "effect": {"stakeholderConfidence": -5, "xp": 25}}
+      ],
+      "location": "HR"
+    }
+  ]
+}

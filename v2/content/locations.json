@@ -1,0 +1,146 @@
+[
+  {
+    "id": "directiekamer",
+    "name": "Directiekamer",
+    "color": "#1B2A49",
+    "icon": "🏛️",
+    "description": "Hier bepaalt de raad van bestuur de strategische koers en neemt zij besluiten over investeringen en transformatie.",
+    "primaryConcept": "Strategie",
+    "boardIcon": "🏛️"
+  },
+  {
+    "id": "strategiecentrum",
+    "name": "Strategiecentrum",
+    "color": "#2E4A7B",
+    "icon": "🧭",
+    "description": "Vertaalt de bestuursvisie naar strategische doelstellingen, kaders en meetbare programma's.",
+    "primaryConcept": "Strategy Map",
+    "boardIcon": "🧭"
+  },
+  {
+    "id": "business_domein",
+    "name": "Business Domein",
+    "color": "#4B3F72",
+    "icon": "🏢",
+    "description": "Bundelt business capabilities en bedrijfsfuncties die klantwaarde leveren binnen een afgebakend werkveld.",
+    "primaryConcept": "Business Function",
+    "boardIcon": "🏢"
+  },
+  {
+    "id": "hr",
+    "name": "HR",
+    "color": "#7A5C3E",
+    "icon": "👥",
+    "description": "Beheert medewerkers, rollen, competenties en organisatiestructuur ter ondersteuning van alle domeinen.",
+    "primaryConcept": "Actor & Role Model",
+    "boardIcon": "👥"
+  },
+  {
+    "id": "finance",
+    "name": "Finance",
+    "color": "#C9A227",
+    "icon": "💰",
+    "description": "Bewaakt de financiele huishouding, budgetten en control en levert de business case voor architectuurinvesteringen.",
+    "primaryConcept": "Business Value & Cost Model",
+    "boardIcon": "💰"
+  },
+  {
+    "id": "operations",
+    "name": "Operations",
+    "color": "#37535E",
+    "icon": "⚙️",
+    "description": "Voert de dagelijkse bedrijfsprocessen uit en zorgt voor operationele continuiteit en kwaliteit.",
+    "primaryConcept": "Business Process",
+    "boardIcon": "⚙️"
+  },
+  {
+    "id": "sales",
+    "name": "Sales",
+    "color": "#8C1C40",
+    "icon": "📈",
+    "description": "Werft nieuwe klanten en beheert het commerciele proces van lead tot contract.",
+    "primaryConcept": "Value Stream",
+    "boardIcon": "📈"
+  },
+  {
+    "id": "klantenservice",
+    "name": "Klantenservice",
+    "color": "#B76E39",
+    "icon": "🎧",
+    "description": "Behandelt vragen, klachten en serviceverzoeken en voedt de organisatie met klantfeedback.",
+    "primaryConcept": "Customer Journey",
+    "boardIcon": "🎧"
+  },
+  {
+    "id": "applicatielandschap",
+    "name": "Applicatielandschap",
+    "color": "#274060",
+    "icon": "🖥️",
+    "description": "Geeft overzicht van alle applicaties, hun functies en onderlinge samenhang binnen de organisatie.",
+    "primaryConcept": "Applicatie-portfolio",
+    "boardIcon": "🖥️"
+  },
+  {
+    "id": "dataplatform",
+    "name": "Dataplatform",
+    "color": "#3E6680",
+    "icon": "🗄️",
+    "description": "Verzamelt, verwerkt en ontsluit bedrijfsdata voor rapportage, analyse en AI-toepassingen.",
+    "primaryConcept": "Information Architecture",
+    "boardIcon": "🗄️"
+  },
+  {
+    "id": "integratielaag",
+    "name": "Integratielaag",
+    "color": "#5B7B7A",
+    "icon": "🔗",
+    "description": "Verbindt applicaties en systemen via APIs, event streams en messaging voor betrouwbare gegevensuitwisseling.",
+    "primaryConcept": "Integration Architecture",
+    "boardIcon": "🔗"
+  },
+  {
+    "id": "cloudplatform",
+    "name": "Cloudplatform",
+    "color": "#4A6FA5",
+    "icon": "☁️",
+    "description": "Levert schaalbare infrastructuur en platformdiensten waarop applicaties en data draaien.",
+    "primaryConcept": "Technology Platform",
+    "boardIcon": "☁️"
+  },
+  {
+    "id": "security_operations_center",
+    "name": "Security Operations Center",
+    "color": "#2C2C54",
+    "icon": "🛡️",
+    "description": "Monitort continu op cyberdreigingen, incidenten en compliance en beschermt digitale assets.",
+    "primaryConcept": "Security Architecture",
+    "boardIcon": "🛡️"
+  },
+  {
+    "id": "innovatielab",
+    "name": "Innovatielab",
+    "color": "#6A0DAD",
+    "icon": "🧪",
+    "description": "Verkent nieuwe technologieen en business-modellen via prototypes, pilots en proof-of-concepts.",
+    "primaryConcept": "Innovation Portfolio",
+    "boardIcon": "🧪"
+  },
+  {
+    "id": "project_portfolio",
+    "name": "Project Portfolio",
+    "color": "#8E7C42",
+    "icon": "📋",
+    "description": "Beheert de verzameling projecten en programma's die de transformatie-roadmap uitvoeren.",
+    "primaryConcept": "Portfolio Management",
+    "boardIcon": "📋"
+  },
+  {
+    "id": "governance_board",
+    "name": "Governance Board",
+    "color": "#4B4B4B",
+    "icon": "⚖️",
+    "description": "Waarborgt architectuurprincipes, standaarden en besluitvorming rond veranderingen in het landschap.",
+    "primaryConcept": "Architecture Governance",
+    "boardIcon": "⚖️"
+  }
+]

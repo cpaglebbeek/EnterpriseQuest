@@ -1,0 +1,202 @@
+[
+  {
+    "id": "enterprise_architect",
+    "name": "Enterprise Architect",
+    "icon": "🏛️",
+    "role": "Ontwerper van het geheel",
+    "description": "Verbindt strategie, business, informatie en technologie tot een samenhangend architectuurbeeld voor de hele onderneming.",
+    "attrs": {
+      "strategie": 9,
+      "communicatie": 8,
+      "leiderschap": 7,
+      "businessKennis": 8,
+      "techKennis": 7,
+      "dataKennis": 6,
+      "security": 5,
+      "innovation": 6,
+      "governance": 8
+    },
+    "startBonus": {
+      "businessValue": 10,
+      "stakeholderConfidence": 8,
+      "governance": 5
+    },
+    "specialAbility": "Big Picture",
+    "specialDescription": "Toont in een beurt de samenhang tussen alle locaties en geeft +15 stakeholderConfidence bij het uitrollen van een strategisch artefact."
+  },
+  {
+    "id": "solution_architect",
+    "name": "Solution Architect",
+    "icon": "🧩",
+    "role": "Ontwerper van oplossingen",
+    "description": "Vertaalt business-behoeftes naar concrete oplossingsontwerpen die passen binnen de enterprise-architectuur.",
+    "attrs": {
+      "strategie": 6,
+      "communicatie": 7,
+      "leiderschap": 5,
+      "businessKennis": 7,
+      "techKennis": 9,
+      "dataKennis": 7,
+      "security": 6,
+      "innovation": 7,
+      "governance": 6
+    },
+    "startBonus": {
+      "businessValue": 6,
+      "digitalMaturity": 8,
+      "stakeholderConfidence": 4
+    },
+    "specialAbility": "Blueprint Sprint",
+    "specialDescription": "Levert in een enkele beurt een Solution Overview op met dubbele digitalMaturity-bonus."
+  },
+  {
+    "id": "business_architect",
+    "name": "Business Architect",
+    "icon": "🏢",
+    "role": "Ontwerper van de business",
+    "description": "Modelleert business capabilities, processen en waardestromen om de organisatie wendbaar en klantgericht te maken.",
+    "attrs": {
+      "strategie": 8,
+      "communicatie": 9,
+      "leiderschap": 7,
+      "businessKennis": 10,
+      "techKennis": 5,
+      "dataKennis": 6,
+      "security": 4,
+      "innovation": 7,
+      "governance": 7
+    },
+    "startBonus": {
+      "businessValue": 12,
+      "stakeholderConfidence": 6,
+      "governance": 3
+    },
+    "specialAbility": "Value Stream Insight",
+    "specialDescription": "Onthult knelpunten in een business-locatie en levert +10 businessValue bij een Value Stream Map."
+  },
+  {
+    "id": "information_architect",
+    "name": "Information Architect",
+    "icon": "🗄️",
+    "role": "Ontwerper van informatie",
+    "description": "Structureert bedrijfsinformatie, datamodellen en informatiestromen zodat data betrouwbaar en herbruikbaar is.",
+    "attrs": {
+      "strategie": 6,
+      "communicatie": 7,
+      "leiderschap": 5,
+      "businessKennis": 7,
+      "techKennis": 7,
+      "dataKennis": 10,
+      "security": 7,
+      "innovation": 6,
+      "governance": 8
+    },
+    "startBonus": {
+      "digitalMaturity": 10,
+      "governance": 6,
+      "businessValue": 3
+    },
+    "specialAbility": "Data Lineage",
+    "specialDescription": "Toont dataketens tussen locaties en verhoogt de effectiviteit van het Information Model met 50%."
+  },
+  {
+    "id": "security_architect",
+    "name": "Security Architect",
+    "icon": "🛡️",
+    "role": "Bewaker van veiligheid",
+    "description": "Ontwerpt security-controls, zero-trust-principes en compliance-kaders die de organisatie beschermen tegen dreigingen.",
+    "attrs": {
+      "strategie": 6,
+      "communicatie": 6,
+      "leiderschap": 5,
+      "businessKennis": 5,
+      "techKennis": 8,
+      "dataKennis": 7,
+      "security": 10,
+      "innovation": 6,
+      "governance": 9
+    },
+    "startBonus": {
+      "security": 15,
+      "governance": 6,
+      "stakeholderConfidence": 3
+    },
+    "specialAbility": "Threat Shield",
+    "specialDescription": "Verlaagt de impact van een security-incident-event naar nul en geeft +8 security voor de rest van de beurt."
+  },
+  {
+    "id": "cio",
+    "name": "CIO",
+    "icon": "🎛️",
+    "role": "Digitale bestuurder",
+    "description": "Bepaalt de digitale koers, beheert het IT-budget en verbindt technologie met de bestuurlijke agenda.",
+    "attrs": {
+      "strategie": 10,
+      "communicatie": 9,
+      "leiderschap": 10,
+      "businessKennis": 9,
+      "techKennis": 7,
+      "dataKennis": 6,
+      "security": 6,
+      "innovation": 8,
+      "governance": 9
+    },
+    "startBonus": {
+      "businessValue": 8,
+      "stakeholderConfidence": 12,
+      "governance": 6
+    },
+    "specialAbility": "Executive Mandate",
+    "specialDescription": "Geeft eenmalig +20 budgetPerTurn en versnelt de goedkeuring van elk artefact met een volledige beurt."
+  },
+  {
+    "id": "it_manager",
+    "name": "IT-Manager",
+    "icon": "💼",
+    "role": "Operationeel leider",
+    "description": "Stuurt IT-teams aan, bewaakt operationele KPI's en zorgt dat de architectuur in de praktijk wordt uitgevoerd.",
+    "attrs": {
+      "strategie": 6,
+      "communicatie": 8,
+      "leiderschap": 9,
+      "businessKennis": 7,
+      "techKennis": 8,
+      "dataKennis": 6,
+      "security": 6,
+      "innovation": 5,
+      "governance": 8
+    },
+    "startBonus": {
+      "governance": 8,
+      "digitalMaturity": 6,
+      "budgetPerTurn": 5
+    },
+    "specialAbility": "Delivery Push",
+    "specialDescription": "Levert een project uit het Project Portfolio een beurt eerder op en geeft +6 businessValue."
+  },
+  {
+    "id": "student_enterprise_architecture",
+    "name": "Student Enterprise Architecture",
+    "icon": "🎓",
+    "role": "Leerling-architect",
+    "description": "Leert de kunst van enterprise architectuur door observatie, modelleren en experimenteren met de Dragon1-methode.",
+    "attrs": {
+      "strategie": 5,
+      "communicatie": 6,
+      "leiderschap": 4,
+      "businessKennis": 5,
+      "techKennis": 6,
+      "dataKennis": 6,
+      "security": 5,
+      "innovation": 8,
+      "governance": 5
+    },
+    "startBonus": {
+      "innovation": 10,
+      "stakeholderConfidence": 3,
+      "businessValue": 2
+    },
+    "specialAbility": "Fresh Perspective",
+    "specialDescription": "Verdient dubbele XP op elk gemodelleerd artefact en mag eenmalig een architectuur-quiz doen voor +10 op alle attributen deze beurt."
+  }
+]

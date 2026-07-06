@@ -1,0 +1,402 @@
+[
+  {
+    "id": "M001",
+    "title": "Ontwikkel Enterprise Vision voor directie",
+    "description": "Faciliteer een directie-sessie en leg de Enterprise Vision vast als eerste ankerpunt van de Dragon1 architectuurcascade.",
+    "artefact": "Enterprise Vision",
+    "location": "Directiekamer",
+    "effect": {"xp": 250, "businessValue": 25, "stakeholderConfidence": 30, "governance": 10, "innovation": 15, "security": 0, "technicalDebt": 0, "digitalMaturity": 10, "budget": -100},
+    "difficulty": 3,
+    "dragon1Concept": "Visie"
+  },
+  {
+    "id": "M002",
+    "title": "Stel Dragon1 Architectuurprincipes op",
+    "description": "Formuleer een set richtinggevende architectuurprincipes conform Dragon1-notatie en laat deze bekrachtigen door de Architecture Board.",
+    "artefact": "Architecture Principles",
+    "location": "Governance Board",
+    "effect": {"xp": 200, "businessValue": 15, "stakeholderConfidence": 20, "governance": 25, "innovation": 5, "security": 10, "technicalDebt": -10, "digitalMaturity": 10, "budget": -50},
+    "difficulty": 2,
+    "dragon1Concept": "Governance"
+  },
+  {
+    "id": "M003",
+    "title": "Maak Capability Map voor business domein",
+    "description": "Modelleer een volledige Capability Map voor een kern-business-domein met heat-map voor strategische investeringsprioriteit.",
+    "artefact": "Capability Map",
+    "location": "Business Domein",
+    "effect": {"xp": 220, "businessValue": 30, "stakeholderConfidence": 20, "governance": 10, "innovation": 10, "security": 0, "technicalDebt": -5, "digitalMaturity": 15, "budget": -80},
+    "difficulty": 3,
+    "dragon1Concept": "Capability"
+  },
+  {
+    "id": "M004",
+    "title": "Ontwerp Business Reference Model",
+    "description": "Bouw een Business Reference Model dat waardestromen, functies en capabilities integraal koppelt aan de strategische doelen.",
+    "artefact": "Business Reference Model",
+    "location": "Strategiecentrum",
+    "effect": {"xp": 240, "businessValue": 30, "stakeholderConfidence": 20, "governance": 15, "innovation": 10, "security": 0, "technicalDebt": 0, "digitalMaturity": 15, "budget": -100},
+    "difficulty": 3,
+    "dragon1Concept": "Business Value"
+  },
+  {
+    "id": "M005",
+    "title": "Bouw Applicatielandschap-overzicht",
+    "description": "Inventariseer het volledige applicatielandschap met lifecycle-status en breng het in de Dragon1 Architecture Repository.",
+    "artefact": "Application Landscape",
+    "location": "Applicatielandschap",
+    "effect": {"xp": 200, "businessValue": 20, "stakeholderConfidence": 15, "governance": 20, "innovation": 5, "security": 10, "technicalDebt": -15, "digitalMaturity": 10, "budget": -120},
+    "difficulty": 2,
+    "dragon1Concept": "Applicatie"
+  },
+  {
+    "id": "M006",
+    "title": "Maak Technology Blueprint cloudplatform",
+    "description": "Ontwerp een Technology Blueprint voor het nieuwe cloudplatform inclusief runtime, netwerken en observability-standaarden.",
+    "artefact": "Technology Blueprint",
+    "location": "Cloudplatform",
+    "effect": {"xp": 260, "businessValue": 20, "stakeholderConfidence": 15, "governance": 15, "innovation": 20, "security": 15, "technicalDebt": -10, "digitalMaturity": 20, "budget": -200},
+    "difficulty": 4,
+    "dragon1Concept": "Technologie"
+  },
+  {
+    "id": "M007",
+    "title": "Ontwerp Digital Transformation Roadmap",
+    "description": "Vertaal de Enterprise Vision naar een meerjarige Transformation Roadmap met epics, dependencies en investeringsvensters.",
+    "artefact": "Transformation Roadmap",
+    "location": "Strategiecentrum",
+    "effect": {"xp": 300, "businessValue": 35, "stakeholderConfidence": 30, "governance": 15, "innovation": 20, "security": 5, "technicalDebt": -10, "digitalMaturity": 25, "budget": -150},
+    "difficulty": 4,
+    "dragon1Concept": "Transformatie"
+  },
+  {
+    "id": "M008",
+    "title": "Reduceer Technical Debt in legacy-stack",
+    "description": "Voer een Dragon1 debt-assessment uit op de legacy-stack en definieer een saneringsplan met meetbare debt-reductie.",
+    "artefact": "Application Landscape",
+    "location": "Applicatielandschap",
+    "effect": {"xp": 220, "businessValue": 15, "stakeholderConfidence": 10, "governance": 10, "innovation": 5, "security": 15, "technicalDebt": -25, "digitalMaturity": 10, "budget": -250},
+    "difficulty": 3,
+    "dragon1Concept": "Applicatie"
+  },
+  {
+    "id": "M009",
+    "title": "Integreer twee organisaties na fusie",
+    "description": "Modelleer de post-merger Solution Overview en harmoniseer twee applicatielandschappen tot een single target architecture.",
+    "artefact": "Solution Overview",
+    "location": "Project Portfolio",
+    "effect": {"xp": 350, "businessValue": 35, "stakeholderConfidence": 25, "governance": 20, "innovation": 10, "security": 10, "technicalDebt": -15, "digitalMaturity": 15, "budget": -400},
+    "difficulty": 5,
+    "dragon1Concept": "Transformatie"
+  },
+  {
+    "id": "M010",
+    "title": "Presenteer architectuur aan Raad van Bestuur",
+    "description": "Verzorg een executive-briefing over de doelarchitectuur en verkrijg mandaat voor de Transformation Roadmap.",
+    "artefact": "Vision Blueprint",
+    "location": "Directiekamer",
+    "effect": {"xp": 200, "businessValue": 25, "stakeholderConfidence": 35, "governance": 15, "innovation": 5, "security": 0, "technicalDebt": 0, "digitalMaturity": 10, "budget": 100},
+    "difficulty": 3,
+    "dragon1Concept": "Visie"
+  },
+  {
+    "id": "M011",
+    "title": "Ontwerp Value Stream klantonboarding",
+    "description": "Modelleer een end-to-end Value Stream voor klantonboarding en identificeer knelpunten in doorlooptijd en waarde-realisatie.",
+    "artefact": "Business Reference Model",
+    "location": "Klantenservice",
+    "effect": {"xp": 210, "businessValue": 30, "stakeholderConfidence": 20, "governance": 5, "innovation": 15, "security": 0, "technicalDebt": -5, "digitalMaturity": 15, "budget": -60},
+    "difficulty": 3,
+    "dragon1Concept": "Value Stream"
+  },
+  {
+    "id": "M012",
+    "title": "Definieer Governance Framework",
+    "description": "Stel een Dragon1 Governance Framework op met besluitvormingsrechten, RACI en Architecture Board-processen.",
+    "artefact": "Governance Framework",
+    "location": "Governance Board",
+    "effect": {"xp": 230, "businessValue": 10, "stakeholderConfidence": 20, "governance": 30, "innovation": 0, "security": 10, "technicalDebt": -5, "digitalMaturity": 10, "budget": -80},
+    "difficulty": 3,
+    "dragon1Concept": "Governance"
+  },
+  {
+    "id": "M013",
+    "title": "Maak Information Model voor customer data",
+    "description": "Ontwerp een canoniek Information Model voor customer data met semantiek, kwaliteitseisen en master-data-relaties.",
+    "artefact": "Information Model",
+    "location": "Dataplatform",
+    "effect": {"xp": 220, "businessValue": 20, "stakeholderConfidence": 15, "governance": 15, "innovation": 10, "security": 15, "technicalDebt": -10, "digitalMaturity": 15, "budget": -100},
+    "difficulty": 3,
+    "dragon1Concept": "Data"
+  },
+  {
+    "id": "M014",
+    "title": "Publiceer Reference Architecture microservices",
+    "description": "Documenteer een microservices Reference Architecture met patronen voor resilience, observability en API-management.",
+    "artefact": "Reference Architecture",
+    "location": "Applicatielandschap",
+    "effect": {"xp": 260, "businessValue": 20, "stakeholderConfidence": 15, "governance": 20, "innovation": 20, "security": 10, "technicalDebt": -10, "digitalMaturity": 20, "budget": -120},
+    "difficulty": 4,
+    "dragon1Concept": "Applicatie"
+  },
+  {
+    "id": "M015",
+    "title": "Beoordeel cloud-strategie multi-provider",
+    "description": "Voer een architectuur-review uit op de multi-cloud strategie en toets deze aan resilience-, cost- en lock-in-criteria.",
+    "artefact": "Strategy Map",
+    "location": "Cloudplatform",
+    "effect": {"xp": 230, "businessValue": 20, "stakeholderConfidence": 15, "governance": 15, "innovation": 15, "security": 10, "technicalDebt": -5, "digitalMaturity": 15, "budget": -60},
+    "difficulty": 3,
+    "dragon1Concept": "Strategie"
+  },
+  {
+    "id": "M016",
+    "title": "Faciliteer Architecture Review Board",
+    "description": "Zit de ARB voor, beoordeel drie Solution Overviews en registreer besluiten in de Architecture Repository.",
+    "artefact": "Architecture Repository",
+    "location": "Governance Board",
+    "effect": {"xp": 180, "businessValue": 10, "stakeholderConfidence": 20, "governance": 25, "innovation": 5, "security": 5, "technicalDebt": -5, "digitalMaturity": 5, "budget": -40},
+    "difficulty": 2,
+    "dragon1Concept": "Governance"
+  },
+  {
+    "id": "M017",
+    "title": "Definieer Portfolio Dashboard KPI's",
+    "description": "Bepaal de KPI-set voor het Portfolio Dashboard en koppel elke KPI aan een capability en een strategisch doel.",
+    "artefact": "Portfolio Dashboard",
+    "location": "Project Portfolio",
+    "effect": {"xp": 190, "businessValue": 20, "stakeholderConfidence": 25, "governance": 15, "innovation": 5, "security": 0, "technicalDebt": -5, "digitalMaturity": 10, "budget": -50},
+    "difficulty": 2,
+    "dragon1Concept": "Business Value"
+  },
+  {
+    "id": "M018",
+    "title": "Modelleer Business Functions taxonomie",
+    "description": "Bouw een consistente Business Functions-taxonomie als basislaag onder het Business Reference Model.",
+    "artefact": "Business Reference Model",
+    "location": "Business Domein",
+    "effect": {"xp": 170, "businessValue": 20, "stakeholderConfidence": 15, "governance": 15, "innovation": 5, "security": 0, "technicalDebt": -5, "digitalMaturity": 10, "budget": -40},
+    "difficulty": 2,
+    "dragon1Concept": "Business Process"
+  },
+  {
+    "id": "M019",
+    "title": "Ontwerp Data Mesh domein-architectuur",
+    "description": "Definieer domein-owned data products in een Data Mesh Reference Architecture met federated governance-principes.",
+    "artefact": "Reference Architecture",
+    "location": "Dataplatform",
+    "effect": {"xp": 280, "businessValue": 25, "stakeholderConfidence": 15, "governance": 20, "innovation": 25, "security": 10, "technicalDebt": -10, "digitalMaturity": 25, "budget": -180},
+    "difficulty": 4,
+    "dragon1Concept": "Data"
+  },
+  {
+    "id": "M020",
+    "title": "Formuleer AI Governance-principes",
+    "description": "Stel AI Governance-principes op inclusief risk-tiering, human-in-the-loop en model-lifecycle-controls.",
+    "artefact": "Governance Framework",
+    "location": "Innovatielab",
+    "effect": {"xp": 240, "businessValue": 15, "stakeholderConfidence": 20, "governance": 25, "innovation": 20, "security": 15, "technicalDebt": -5, "digitalMaturity": 20, "budget": -80},
+    "difficulty": 4,
+    "dragon1Concept": "Governance"
+  },
+  {
+    "id": "M021",
+    "title": "Verwerk NIS2 en DORA in compliance-model",
+    "description": "Vertaal NIS2- en DORA-verplichtingen naar controls in het Governance Framework en koppel ze aan capabilities.",
+    "artefact": "Governance Framework",
+    "location": "Security Operations Center",
+    "effect": {"xp": 260, "businessValue": 10, "stakeholderConfidence": 20, "governance": 25, "innovation": 0, "security": 25, "technicalDebt": -5, "digitalMaturity": 10, "budget": -150},
+    "difficulty": 4,
+    "dragon1Concept": "Compliance"
+  },
+  {
+    "id": "M022",
+    "title": "Stel FinOps-strategie op voor cloud-uitgaven",
+    "description": "Definieer een FinOps-operating-model met showback, unit-economics en optimalisatie-loops voor het cloudplatform.",
+    "artefact": "Strategy Map",
+    "location": "Finance",
+    "effect": {"xp": 220, "businessValue": 30, "stakeholderConfidence": 20, "governance": 15, "innovation": 10, "security": 5, "technicalDebt": -5, "digitalMaturity": 15, "budget": 200},
+    "difficulty": 3,
+    "dragon1Concept": "Strategie"
+  },
+  {
+    "id": "M023",
+    "title": "Maak Sustainability GreenOps roadmap",
+    "description": "Ontwerp een Sustainability Roadmap met carbon-KPI's, workload-placement en CO2-rapportage over de architectuurlagen.",
+    "artefact": "Transformation Roadmap",
+    "location": "Cloudplatform",
+    "effect": {"xp": 230, "businessValue": 15, "stakeholderConfidence": 20, "governance": 15, "innovation": 20, "security": 0, "technicalDebt": -5, "digitalMaturity": 15, "budget": -120},
+    "difficulty": 3,
+    "dragon1Concept": "Transformatie"
+  },
+  {
+    "id": "M024",
+    "title": "Definieer Zero Trust security-architectuur",
+    "description": "Ontwerp een Zero Trust Reference Architecture met identity-, device- en workload-controls en migratie-blauwdruk.",
+    "artefact": "Reference Architecture",
+    "location": "Security Operations Center",
+    "effect": {"xp": 300, "businessValue": 20, "stakeholderConfidence": 20, "governance": 20, "innovation": 15, "security": 30, "technicalDebt": -10, "digitalMaturity": 20, "budget": -300},
+    "difficulty": 5,
+    "dragon1Concept": "Compliance"
+  },
+  {
+    "id": "M025",
+    "title": "Ontwerp Event-Driven Architecture pattern",
+    "description": "Standaardiseer een Event-Driven Architecture-pattern met event-taxonomie, schemas en delivery-guarantees.",
+    "artefact": "Reference Architecture",
+    "location": "Integratielaag",
+    "effect": {"xp": 250, "businessValue": 20, "stakeholderConfidence": 15, "governance": 15, "innovation": 20, "security": 10, "technicalDebt": -10, "digitalMaturity": 20, "budget": -100},
+    "difficulty": 4,
+    "dragon1Concept": "Applicatie"
+  },
+  {
+    "id": "M026",
+    "title": "Bouw Strategy Map met OKR-koppeling",
+    "description": "Modelleer de Strategy Map en koppel strategische doelen aan OKR's, capabilities en portfolio-initiatieven.",
+    "artefact": "Strategy Map",
+    "location": "Strategiecentrum",
+    "effect": {"xp": 240, "businessValue": 30, "stakeholderConfidence": 25, "governance": 15, "innovation": 10, "security": 0, "technicalDebt": 0, "digitalMaturity": 15, "budget": -60},
+    "difficulty": 3,
+    "dragon1Concept": "Strategie"
+  },
+  {
+    "id": "M027",
+    "title": "Vision Blueprint voor omni-channel klant",
+    "description": "Werk de Vision Blueprint uit voor de omni-channel klantpropositie inclusief experience-, kanaal- en dataperspectief.",
+    "artefact": "Vision Blueprint",
+    "location": "Sales",
+    "effect": {"xp": 230, "businessValue": 30, "stakeholderConfidence": 25, "governance": 10, "innovation": 20, "security": 0, "technicalDebt": -5, "digitalMaturity": 20, "budget": -100},
+    "difficulty": 3,
+    "dragon1Concept": "Visie"
+  },
+  {
+    "id": "M028",
+    "title": "Modelleer API-strategie in Integratielaag",
+    "description": "Definieer een API-strategie met API-catalogus, lifecycle en consumer-experience als onderdeel van de integratie-architectuur.",
+    "artefact": "Reference Architecture",
+    "location": "Integratielaag",
+    "effect": {"xp": 240, "businessValue": 25, "stakeholderConfidence": 15, "governance": 20, "innovation": 15, "security": 15, "technicalDebt": -10, "digitalMaturity": 20, "budget": -90},
+    "difficulty": 3,
+    "dragon1Concept": "Applicatie"
+  },
+  {
+    "id": "M029",
+    "title": "HR Capability Map voor talent-strategie",
+    "description": "Modelleer de HR Capability Map en koppel deze aan de talent- en workforce-strategie in het Business Reference Model.",
+    "artefact": "Capability Map",
+    "location": "HR",
+    "effect": {"xp": 180, "businessValue": 20, "stakeholderConfidence": 20, "governance": 10, "innovation": 10, "security": 0, "technicalDebt": -5, "digitalMaturity": 10, "budget": -50},
+    "difficulty": 2,
+    "dragon1Concept": "Capability"
+  },
+  {
+    "id": "M030",
+    "title": "Finance target-architectuur ERP-transitie",
+    "description": "Ontwerp de target-architectuur voor de Finance-domein ERP-transitie inclusief data-migratie en interface-strategie.",
+    "artefact": "Solution Overview",
+    "location": "Finance",
+    "effect": {"xp": 300, "businessValue": 30, "stakeholderConfidence": 20, "governance": 20, "innovation": 10, "security": 10, "technicalDebt": -20, "digitalMaturity": 20, "budget": -400},
+    "difficulty": 5,
+    "dragon1Concept": "Transformatie"
+  },
+  {
+    "id": "M031",
+    "title": "Operations Value Stream productie",
+    "description": "Modelleer de Value Stream productie en identificeer capabilities die de OEE en doorlooptijd meetbaar verbeteren.",
+    "artefact": "Business Reference Model",
+    "location": "Operations",
+    "effect": {"xp": 220, "businessValue": 30, "stakeholderConfidence": 20, "governance": 10, "innovation": 15, "security": 0, "technicalDebt": -10, "digitalMaturity": 15, "budget": -80},
+    "difficulty": 3,
+    "dragon1Concept": "Value Stream"
+  },
+  {
+    "id": "M032",
+    "title": "Innovatielab Proof-of-Concept GenAI",
+    "description": "Zet een gecontroleerde GenAI-PoC op in het Innovatielab en toets de aansluiting op AI Governance en architectuurprincipes.",
+    "artefact": "Solution Overview",
+    "location": "Innovatielab",
+    "effect": {"xp": 260, "businessValue": 20, "stakeholderConfidence": 15, "governance": 10, "innovation": 30, "security": 10, "technicalDebt": 0, "digitalMaturity": 25, "budget": -150},
+    "difficulty": 3,
+    "dragon1Concept": "Innovation"
+  },
+  {
+    "id": "M033",
+    "title": "Klantenservice contact-center blueprint",
+    "description": "Ontwerp een Solution Overview voor het nieuwe contact-center met CTI, kennisbank en AI-assistentie voor agents.",
+    "artefact": "Solution Overview",
+    "location": "Klantenservice",
+    "effect": {"xp": 220, "businessValue": 25, "stakeholderConfidence": 20, "governance": 10, "innovation": 20, "security": 10, "technicalDebt": -5, "digitalMaturity": 20, "budget": -180},
+    "difficulty": 3,
+    "dragon1Concept": "Business Process"
+  },
+  {
+    "id": "M034",
+    "title": "Sales CRM Application Landscape rationalisatie",
+    "description": "Rationaliseer het Sales-applicatielandschap rondom het target-CRM en definieer decommissioning-golf per capability.",
+    "artefact": "Application Landscape",
+    "location": "Sales",
+    "effect": {"xp": 230, "businessValue": 25, "stakeholderConfidence": 15, "governance": 15, "innovation": 10, "security": 5, "technicalDebt": -20, "digitalMaturity": 15, "budget": -100},
+    "difficulty": 3,
+    "dragon1Concept": "Applicatie"
+  },
+  {
+    "id": "M035",
+    "title": "Dataplatform target Information Model",
+    "description": "Ontwerp het target Information Model voor het analytisch dataplatform met conforme dimensies en semantische laag.",
+    "artefact": "Information Model",
+    "location": "Dataplatform",
+    "effect": {"xp": 240, "businessValue": 20, "stakeholderConfidence": 15, "governance": 15, "innovation": 15, "security": 10, "technicalDebt": -10, "digitalMaturity": 20, "budget": -120},
+    "difficulty": 3,
+    "dragon1Concept": "Data"
+  },
+  {
+    "id": "M036",
+    "title": "SOC Threat-Informed defense-architectuur",
+    "description": "Werk in het SOC een threat-informed defense-architectuur uit op basis van MITRE ATT&CK en Zero Trust-controls.",
+    "artefact": "Technology Blueprint",
+    "location": "Security Operations Center",
+    "effect": {"xp": 270, "businessValue": 15, "stakeholderConfidence": 15, "governance": 15, "innovation": 10, "security": 30, "technicalDebt": -5, "digitalMaturity": 15, "budget": -200},
+    "difficulty": 4,
+    "dragon1Concept": "Compliance"
+  },
+  {
+    "id": "M037",
+    "title": "Integratie-referentie voor legacy-uitfasering",
+    "description": "Definieer een integratie-referentie voor de gefaseerde uitfasering van legacy-koppelingen richting event-based interfaces.",
+    "artefact": "Reference Architecture",
+    "location": "Integratielaag",
+    "effect": {"xp": 250, "businessValue": 20, "stakeholderConfidence": 15, "governance": 15, "innovation": 10, "security": 10, "technicalDebt": -25, "digitalMaturity": 15, "budget": -150},
+    "difficulty": 4,
+    "dragon1Concept": "Transformatie"
+  },
+  {
+    "id": "M038",
+    "title": "Populeer Architecture Repository baseline",
+    "description": "Voer de baseline-vulling uit van de Architecture Repository met alle huidige artefacten volgens Dragon1-metamodel.",
+    "artefact": "Architecture Repository",
+    "location": "Project Portfolio",
+    "effect": {"xp": 180, "businessValue": 10, "stakeholderConfidence": 15, "governance": 25, "innovation": 5, "security": 5, "technicalDebt": -10, "digitalMaturity": 10, "budget": -60},
+    "difficulty": 2,
+    "dragon1Concept": "Governance"
+  },
+  {
+    "id": "M039",
+    "title": "Innovation Portfolio Dashboard opzetten",
+    "description": "Zet een Innovation Portfolio Dashboard op met horizon-1/2/3-KPI's en koppeling aan de Transformation Roadmap.",
+    "artefact": "Portfolio Dashboard",
+    "location": "Innovatielab",
+    "effect": {"xp": 210, "businessValue": 20, "stakeholderConfidence": 20, "governance": 15, "innovation": 25, "security": 0, "technicalDebt": 0, "digitalMaturity": 15, "budget": -80},
+    "difficulty": 3,
+    "dragon1Concept": "Innovation"
+  },
+  {
+    "id": "M040",
+    "title": "HR People Analytics Information Model",
+    "description": "Ontwerp een People Analytics Information Model met privacy-by-design en koppeling aan de HR Capability Map.",
+    "artefact": "Information Model",
+    "location": "HR",
+    "effect": {"xp": 200, "businessValue": 15, "stakeholderConfidence": 15, "governance": 20, "innovation": 15, "security": 20, "technicalDebt": -5, "digitalMaturity": 15, "budget": -100},
+    "difficulty": 3,
+    "dragon1Concept": "Data"
+  }
+]

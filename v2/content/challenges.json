@@ -1,0 +1,645 @@
+{
+  "challenges": [
+    {
+      "id": "CH001",
+      "title": "Legacy mainframe blijkt onmisbaar",
+      "description": "COBOL-mainframe uit 1987 draait nog steeds kernprocessen. Leverancier stopt met support, interne kennis is nihil.",
+      "category": "Legacy",
+      "severity": 5,
+      "effect": {"technicalDebt": 25, "innovation": -10, "digitalMaturity": -15, "xp": 0},
+      "response": {
+        "choices": [
+          {"label": "Strangler-pattern modernisatie starten", "effect": {"budget": -400, "technicalDebt": -20, "digitalMaturity": 20, "xp": 200}, "requiresArtefact": "roadmap"},
+          {"label": "Externe COBOL-specialisten inhuren", "effect": {"budget": -250, "technicalDebt": 5, "xp": 100}},
+          {"label": "Big-bang vervanging plannen", "effect": {"budget": -700, "technicalDebt": -30, "stakeholderConfidence": -15, "xp": 250}},
+          {"label": "Documenteren en freezen", "effect": {"technicalDebt": 10, "governance": 10, "xp": 75}}
+        ]
+      },
+      "location": "IT-Operations"
+    },
+    {
+      "id": "CH002",
+      "title": "Shadow-IT ontdekt in Marketing",
+      "description": "Marketing gebruikt 14 SaaS-tools buiten IT om, waaronder klantdata in ongesanctioneerde cloud-oplossingen.",
+      "category": "ShadowIT",
+      "severity": 4,
+      "effect": {"governance": -15, "security": -20, "stakeholderConfidence": -5, "xp": 0},
+      "response": {
+        "choices": [
+          {"label": "SaaS-catalogus + governance-board opzetten", "effect": {"governance": 20, "security": 10, "xp": 150}, "requiresArtefact": "governance-model"},
+          {"label": "Alle shadow-tools direct blokkeren", "effect": {"security": 15, "stakeholderConfidence": -20, "xp": 75}},
+          {"label": "Marketing eigenaarschap geven binnen kaders", "effect": {"governance": 10, "innovation": 10, "stakeholderConfidence": 10, "xp": 175}}
+        ]
+      },
+      "location": "Marketing"
+    },
+    {
+      "id": "CH003",
+      "title": "Weerstand tegen cloud-migratie",
+      "description": "Managementteam blokkeert cloud-strategie uit angst voor controleverlies en onvoorspelbare kosten.",
+      "category": "Weerstand",
+      "severity": 4,
+      "effect": {"stakeholderConfidence": -15, "innovation": -10, "digitalMaturity": -10, "xp": 0},
+      "response": {
+        "choices": [
+          {"label": "Business case + TCO-model presenteren", "effect": {"stakeholderConfidence": 15, "digitalMaturity": 10, "xp": 150}, "requiresArtefact": "business-case"},
+          {"label": "Pilot met beperkte scope starten", "effect": {"budget": -150, "digitalMaturity": 10, "innovation": 10, "xp": 175}},
+          {"label": "Hybrid-strategie voorstellen", "effect": {"stakeholderConfidence": 10, "technicalDebt": 5, "xp": 125}}
+        ]
+      },
+      "location": "Directie"
+    },
+    {
+      "id": "CH004",
+      "title": "Budget bevroren mid-project",
+      "description": "CFO bevriest transformatie-budget na tegenvallende Q3-cijfers. Drie strategische programma's dreigen te stoppen.",
+      "category": "Budget",
+      "severity": 5,
+      "effect": {"budget": -300, "stakeholderConfidence": -10, "innovation": -15, "xp": 0},
+      "response": {
+        "choices": [
+          {"label": "Portfolio-prioritering met CFO uitvoeren", "effect": {"governance": 15, "stakeholderConfidence": 10, "xp": 175}, "requiresArtefact": "portfolio-review"},
+          {"label": "Programma's opsplitsen in MVP-fases", "effect": {"innovation": 10, "digitalMaturity": 5, "xp": 150}},
+          {"label": "Quick-wins tonen met bestaande scope", "effect": {"businessValue": 10, "xp": 100}}
+        ]
+      },
+      "location": "Finance"
+    },
+    {
+      "id": "CH005",
+      "title": "Vendor kondigt end-of-life aan",
+      "description": "Kern-ERP-leverancier stopt met huidige productlijn over 18 maanden. Migratiepad is onduidelijk en duur.",
+      "category": "VendorLockIn",
+      "severity": 5,
+      "effect": {"technicalDebt": 20, "budget": -100, "stakeholderConfidence": -10, "xp": 0},
+      "response": {
+        "choices": [
+          {"label": "Multi-vendor selectietraject starten", "effect": {"budget": -500, "technicalDebt": -20, "governance": 15, "xp": 225}, "requiresArtefact": "vendor-assessment"},
+          {"label": "Migreren naar opvolger van dezelfde leverancier", "effect": {"budget": -600, "technicalDebt": -10, "xp": 150}},
+          {"label": "Uitstel bedingen via premium-support", "effect": {"budget": -200, "technicalDebt": 15, "xp": 75}}
+        ]
+      },
+      "location": "IT-Operations"
+    },
+    {
+      "id": "CH006",
+      "title": "Ransomware in productie",
+      "description": "Productie-omgeving getroffen door ransomware. Backups deels versleuteld, uptime-SLA in gevaar.",
+      "category": "Cyber",
+      "severity": 5,
+      "effect": {"security": -30, "businessValue": -25, "stakeholderConfidence": -20, "xp": 0},
+      "response": {
+        "choices": [
+          {"label": "Incident-response team activeren, herstel uit air-gap backup", "effect": {"security": 20, "budget": -300, "xp": 250}, "requiresArtefact": "incident-response-plan"},
+          {"label": "Losgeld betalen (via verzekeraar)", "effect": {"budget": -400, "stakeholderConfidence": -15, "xp": 100}},
+          {"label": "Systemen isoleren en handmatig verder", "effect": {"businessValue": -15, "security": 10, "xp": 150}}
+        ]
+      },
+      "location": "IT-Security"
+    },
+    {
+      "id": "CH007",
+      "title": "Datalek klantendatabase",
+      "description": "SQL-injectie in klantportaal leidt tot lek van 120.000 records. AP moet binnen 72 uur gemeld worden.",
+      "category": "Datalek",
+      "severity": 5,
+      "effect": {"security": -25, "stakeholderConfidence": -25, "governance": -15, "xp": 0},
+      "response": {
+        "choices": [
+          {"label": "AP-melding + klantcommunicatie + forensisch onderzoek", "effect": {"governance": 20, "security": 15, "budget": -250, "xp": 225}, "requiresArtefact": "privacy-incident-plan"},
+          {"label": "Alleen minimum wettelijk melden", "effect": {"governance": 5, "stakeholderConfidence": -10, "xp": 75}},
+          {"label": "WAF + secure-coding programma opzetten", "effect": {"security": 25, "budget": -200, "xp": 175}}
+        ]
+      },
+      "location": "IT-Security"
+    },
+    {
+      "id": "CH008",
+      "title": "Audit-bevindingen op IAM",
+      "description": "Externe auditor vindt 340 orphaned accounts en 12 shared admin-accounts. Rapportage aan RvC volgt.",
+      "category": "Compliance",
+      "severity": 4,
+      "effect": {"governance": -20, "security": -15, "stakeholderConfidence": -10, "xp": 0},
+      "response": {
+        "choices": [
+          {"label": "IAM-remediation programma + PAM-tool implementeren", "effect": {"governance": 25, "security": 20, "budget": -350, "xp": 200}, "requiresArtefact": "iam-roadmap"},
+          {"label": "Quick-clean-up van orphaned accounts", "effect": {"governance": 10, "security": 10, "xp": 100}},
+          {"label": "Compenserende controls documenteren", "effect": {"governance": 5, "xp": 75}}
+        ]
+      },
+      "location": "IT-Security"
+    },
+    {
+      "id": "CH009",
+      "title": "M&A-integratie in 6 maanden",
+      "description": "Overname van concurrent aangekondigd. Board eist volledige systeem-integratie binnen half jaar.",
+      "category": "Fusie",
+      "severity": 5,
+      "effect": {"budget": -200, "technicalDebt": 15, "stakeholderConfidence": -10, "xp": 0},
+      "response": {
+        "choices": [
+          {"label": "Integratie-blueprint + fasering opstellen", "effect": {"governance": 20, "businessValue": 15, "xp": 225}, "requiresArtefact": "integration-blueprint"},
+          {"label": "Coexistence-strategie met API-laag", "effect": {"technicalDebt": 10, "innovation": 10, "xp": 175}},
+          {"label": "Best-of-breed keuze per domein", "effect": {"budget": -400, "digitalMaturity": 15, "xp": 200}}
+        ]
+      },
+      "location": "Directie"
+    },
+    {
+      "id": "CH010",
+      "title": "Datacenter end-of-life",
+      "description": "Huidige colocatie sluit over 12 maanden. Migratie van 240 servers en 40 legacy-apps vereist.",
+      "category": "Infrastructuur",
+      "severity": 4,
+      "effect": {"budget": -150, "technicalDebt": 10, "xp": 0},
+      "response": {
+        "choices": [
+          {"label": "Lift-and-shift naar public cloud", "effect": {"budget": -500, "digitalMaturity": 15, "technicalDebt": -10, "xp": 200}, "requiresArtefact": "migration-plan"},
+          {"label": "Nieuwe colocatie + hardware-refresh", "effect": {"budget": -600, "technicalDebt": -5, "xp": 150}},
+          {"label": "Re-platform kernsystemen, rest cloud", "effect": {"budget": -700, "digitalMaturity": 25, "innovation": 15, "xp": 250}}
+        ]
+      },
+      "location": "IT-Operations"
+    },
+    {
+      "id": "CH011",
+      "title": "Business-eigenaren geven geen prioriteit",
+      "description": "Backlog-refinement wordt structureel afgezegd. Roadmap loopt vast door gebrek aan business-input.",
+      "category": "Draagvlak",
+      "severity": 3,
+      "effect": {"stakeholderConfidence": -15, "businessValue": -10, "xp": 0},
+      "response": {
+        "choices": [
+          {"label": "Product-ownership escaleren naar directie", "effect": {"governance": 15, "stakeholderConfidence": 10, "xp": 150}},
+          {"label": "Value-stream workshops organiseren", "effect": {"stakeholderConfidence": 15, "businessValue": 10, "xp": 175}, "requiresArtefact": "value-stream-map"},
+          {"label": "Autonome architectuur-keuzes maken", "effect": {"governance": -10, "innovation": 10, "xp": 75}}
+        ]
+      },
+      "location": "Business"
+    },
+    {
+      "id": "CH012",
+      "title": "NIS2-deadline nadert",
+      "description": "Organisatie valt onder NIS2. Nog geen risk-management, incident-response of supply-chain-security ingericht.",
+      "category": "Wetgeving",
+      "severity": 5,
+      "effect": {"governance": -20, "security": -15, "xp": 0},
+      "response": {
+        "choices": [
+          {"label": "NIS2-compliance programma + CISO-mandaat", "effect": {"governance": 25, "security": 20, "budget": -400, "xp": 225}, "requiresArtefact": "nis2-plan"},
+          {"label": "Gap-analyse en gefaseerd aanpakken", "effect": {"governance": 15, "budget": -150, "xp": 150}},
+          {"label": "Externe MSSP inschakelen", "effect": {"budget": -350, "security": 15, "xp": 125}}
+        ]
+      },
+      "location": "IT-Security"
+    },
+    {
+      "id": "CH013",
+      "title": "Sleutel-architect vertrekt",
+      "description": "Lead-architect met 15 jaar kennis van kernsystemen vertrekt binnen een maand. Kennisoverdracht is minimaal.",
+      "category": "Talent",
+      "severity": 4,
+      "effect": {"technicalDebt": 15, "innovation": -10, "stakeholderConfidence": -10, "xp": 0},
+      "response": {
+        "choices": [
+          {"label": "Kennisoverdracht + architectuurrepository", "effect": {"governance": 15, "technicalDebt": -5, "xp": 175}, "requiresArtefact": "architecture-repository"},
+          {"label": "Interim-architect + tandem-constructie", "effect": {"budget": -200, "technicalDebt": 5, "xp": 125}},
+          {"label": "Team upskillen via community-of-practice", "effect": {"innovation": 15, "digitalMaturity": 10, "xp": 175}}
+        ]
+      },
+      "location": "HR"
+    },
+    {
+      "id": "CH014",
+      "title": "R&D-budget onder druk",
+      "description": "Innovatiebudget wordt gehalveerd om operationele lasten te dekken. Twee lopende POC's dreigen te stoppen.",
+      "category": "Budget",
+      "severity": 3,
+      "effect": {"innovation": -20, "digitalMaturity": -10, "xp": 0},
+      "response": {
+        "choices": [
+          {"label": "Innovation-portfolio scherper prioriteren", "effect": {"innovation": 10, "governance": 10, "xp": 150}, "requiresArtefact": "innovation-portfolio"},
+          {"label": "Co-innovation met vendor of startup", "effect": {"innovation": 15, "stakeholderConfidence": 5, "xp": 175}},
+          {"label": "Subsidies (WBSO, EU) aanvragen", "effect": {"budget": 200, "innovation": 10, "xp": 175}}
+        ]
+      },
+      "location": "R&D"
+    },
+    {
+      "id": "CH015",
+      "title": "AI Act-compliance vereist",
+      "description": "Twee interne AI-modellen vallen als high-risk onder AI Act. Documentatie, bias-audits en toezicht ontbreken.",
+      "category": "Wetgeving",
+      "severity": 4,
+      "effect": {"governance": -15, "innovation": -10, "xp": 0},
+      "response": {
+        "choices": [
+          {"label": "AI-governance framework opzetten", "effect": {"governance": 25, "innovation": 5, "budget": -200, "xp": 200}, "requiresArtefact": "ai-governance"},
+          {"label": "High-risk modellen pauzeren", "effect": {"innovation": -15, "governance": 15, "xp": 100}},
+          {"label": "Externe conformiteitsbeoordeling", "effect": {"budget": -300, "governance": 20, "xp": 175}}
+        ]
+      },
+      "location": "R&D"
+    },
+    {
+      "id": "CH016",
+      "title": "DORA-testregime niet gehaald",
+      "description": "Financiële toezichthouder vraagt Threat-Led Penetration Test bewijs. Huidige testcadans voldoet niet.",
+      "category": "Wetgeving",
+      "severity": 4,
+      "effect": {"governance": -15, "security": -10, "xp": 0},
+      "response": {
+        "choices": [
+          {"label": "TLPT-programma + red-team contracteren", "effect": {"security": 20, "governance": 15, "budget": -350, "xp": 200}, "requiresArtefact": "tlpt-scope"},
+          {"label": "Interne pentest-capaciteit opbouwen", "effect": {"security": 15, "budget": -250, "xp": 175}},
+          {"label": "Uitstel aanvragen bij toezichthouder", "effect": {"stakeholderConfidence": -10, "xp": 50}}
+        ]
+      },
+      "location": "IT-Security"
+    },
+    {
+      "id": "CH017",
+      "title": "Onverwachte technische schuld",
+      "description": "Code-quality scan onthult 4200 kritieke bevindingen in kernapplicatie. Deployment-frequentie halveert.",
+      "category": "Legacy",
+      "severity": 3,
+      "effect": {"technicalDebt": 20, "businessValue": -10, "xp": 0},
+      "response": {
+        "choices": [
+          {"label": "Technical-debt sprint elke iteratie inplannen", "effect": {"technicalDebt": -15, "digitalMaturity": 10, "xp": 150}},
+          {"label": "Boy-Scout-rule + coding-standard invoeren", "effect": {"technicalDebt": -10, "innovation": 5, "xp": 125}},
+          {"label": "Applicatie herbouwen in strategisch platform", "effect": {"budget": -500, "technicalDebt": -25, "digitalMaturity": 20, "xp": 225}, "requiresArtefact": "target-architecture"}
+        ]
+      },
+      "location": "IT-Operations"
+    },
+    {
+      "id": "CH018",
+      "title": "Klachten over trage systemen",
+      "description": "Klantenservice ontvangt dagelijks klachten over trage kernapplicatie. NPS daalt 12 punten in kwartaal.",
+      "category": "Infrastructuur",
+      "severity": 3,
+      "effect": {"businessValue": -15, "stakeholderConfidence": -10, "xp": 0},
+      "response": {
+        "choices": [
+          {"label": "Performance-engineering team + observability", "effect": {"businessValue": 15, "digitalMaturity": 10, "budget": -200, "xp": 175}, "requiresArtefact": "observability-stack"},
+          {"label": "Capaciteit uitbreiden (scale-up)", "effect": {"budget": -250, "businessValue": 10, "xp": 100}},
+          {"label": "Root-cause analyse en gerichte fix", "effect": {"businessValue": 10, "technicalDebt": -5, "xp": 125}}
+        ]
+      },
+      "location": "IT-Operations"
+    },
+    {
+      "id": "CH019",
+      "title": "Overname door PE-fonds",
+      "description": "Private equity neemt organisatie over en eist EBITDA-verbetering van 15% in 18 maanden. IT-kosten in scope.",
+      "category": "Fusie",
+      "severity": 4,
+      "effect": {"budget": -100, "stakeholderConfidence": -15, "innovation": -10, "xp": 0},
+      "response": {
+        "choices": [
+          {"label": "Rationalisatie applicatielandschap", "effect": {"budget": 200, "technicalDebt": -15, "xp": 200}, "requiresArtefact": "application-portfolio"},
+          {"label": "Sourcing-strategie herzien (offshore/nearshore)", "effect": {"budget": 300, "stakeholderConfidence": -10, "xp": 150}},
+          {"label": "Automatisering FinOps + GreenOps", "effect": {"budget": 150, "digitalMaturity": 10, "xp": 175}}
+        ]
+      },
+      "location": "Finance"
+    },
+    {
+      "id": "CH020",
+      "title": "Sales pusht point-solution",
+      "description": "Sales heeft niche-tool getekend zonder architectuur-review. Tool overlapt 60% met bestaand platform.",
+      "category": "ShadowIT",
+      "severity": 3,
+      "effect": {"governance": -15, "technicalDebt": 10, "budget": -100, "xp": 0},
+      "response": {
+        "choices": [
+          {"label": "Architecture Review Board mandaat versterken", "effect": {"governance": 20, "stakeholderConfidence": -5, "xp": 150}, "requiresArtefact": "arb-charter"},
+          {"label": "Contract heronderhandelen met Sales aan tafel", "effect": {"budget": 100, "stakeholderConfidence": 5, "xp": 125}},
+          {"label": "Integratie met platform toestaan onder voorwaarden", "effect": {"technicalDebt": 5, "innovation": 10, "xp": 100}}
+        ]
+      },
+      "location": "Sales"
+    },
+    {
+      "id": "CH021",
+      "title": "Phishing-campagne succesvol",
+      "description": "23 medewerkers klikten op gerichte phishing-mail. Twee CFO-accounts vertoonden verdachte OAuth-toestemmingen.",
+      "category": "Cyber",
+      "severity": 4,
+      "effect": {"security": -20, "stakeholderConfidence": -10, "xp": 0},
+      "response": {
+        "choices": [
+          {"label": "OAuth-tokens intrekken + MFA verplicht", "effect": {"security": 25, "budget": -100, "xp": 175}, "requiresArtefact": "mfa-rollout"},
+          {"label": "Security-awareness campagne + simulaties", "effect": {"security": 15, "digitalMaturity": 5, "budget": -150, "xp": 150}},
+          {"label": "E-mail-gateway upgraden met AI-detectie", "effect": {"budget": -200, "security": 15, "xp": 125}}
+        ]
+      },
+      "location": "IT-Security"
+    },
+    {
+      "id": "CH022",
+      "title": "GDPR-verzoek verwerkersregister",
+      "description": "Toezichthouder vraagt actueel register van verwerkingsactiviteiten. Laatst bijgewerkt in 2021.",
+      "category": "Compliance",
+      "severity": 3,
+      "effect": {"governance": -15, "xp": 0},
+      "response": {
+        "choices": [
+          {"label": "Data-catalog + eigenaarschap organiseren", "effect": {"governance": 25, "digitalMaturity": 10, "budget": -150, "xp": 175}, "requiresArtefact": "data-catalog"},
+          {"label": "Quick-update door DPO + externe hulp", "effect": {"budget": -200, "governance": 15, "xp": 125}},
+          {"label": "Automated-discovery tool inzetten", "effect": {"budget": -250, "governance": 20, "digitalMaturity": 15, "xp": 175}}
+        ]
+      },
+      "location": "Legal"
+    },
+    {
+      "id": "CH023",
+      "title": "Cloud-kosten exploderen",
+      "description": "Onbeheerde cloud-uitgaven stijgen 45% YoY. FinOps ontbreekt, teams provisioneren onbeperkt.",
+      "category": "Budget",
+      "severity": 4,
+      "effect": {"budget": -300, "governance": -10, "xp": 0},
+      "response": {
+        "choices": [
+          {"label": "FinOps-team + tagging-policy", "effect": {"budget": 250, "governance": 20, "xp": 200}, "requiresArtefact": "finops-model"},
+          {"label": "Reserved-instances + savings-plans", "effect": {"budget": 150, "xp": 125}},
+          {"label": "Chargeback-model per business-unit", "effect": {"governance": 15, "stakeholderConfidence": -5, "budget": 100, "xp": 150}}
+        ]
+      },
+      "location": "Finance"
+    },
+    {
+      "id": "CH024",
+      "title": "Business wil AI-copilot nu",
+      "description": "COO eist enterprise-copilot uitrol binnen 3 maanden. Data-classificatie, DLP en licentiemodel ontbreken.",
+      "category": "Innovation",
+      "severity": 3,
+      "effect": {"stakeholderConfidence": -5, "security": -10, "xp": 0},
+      "response": {
+        "choices": [
+          {"label": "AI-enablement blueprint + DLP-baseline", "effect": {"governance": 15, "innovation": 20, "budget": -300, "xp": 200}, "requiresArtefact": "ai-blueprint"},
+          {"label": "Pilot met 200 gebruikers en meten", "effect": {"innovation": 15, "digitalMaturity": 10, "budget": -150, "xp": 175}},
+          {"label": "Wachten tot data-classificatie klaar is", "effect": {"stakeholderConfidence": -15, "governance": 10, "xp": 75}}
+        ]
+      },
+      "location": "R&D"
+    },
+    {
+      "id": "CH025",
+      "title": "Klantportaal offline door DDoS",
+      "description": "Aanhoudende DDoS-aanval maakt klantportaal 6 uur onbereikbaar. Media-aandacht en reputatie-impact.",
+      "category": "Cyber",
+      "severity": 4,
+      "effect": {"security": -15, "stakeholderConfidence": -20, "businessValue": -15, "xp": 0},
+      "response": {
+        "choices": [
+          {"label": "Anti-DDoS-service (Cloudflare/Akamai)", "effect": {"security": 20, "budget": -200, "xp": 150}},
+          {"label": "Multi-region failover + CDN", "effect": {"budget": -400, "digitalMaturity": 15, "security": 15, "xp": 225}, "requiresArtefact": "resilience-plan"},
+          {"label": "Rate-limiting + edge-hardening", "effect": {"security": 10, "budget": -100, "xp": 100}}
+        ]
+      },
+      "location": "IT-Operations"
+    },
+    {
+      "id": "CH026",
+      "title": "Data-scientist team verzuipt",
+      "description": "Data-scientists besteden 70% aan data-preparatie. Modellen komen niet in productie, business haakt af.",
+      "category": "Talent",
+      "severity": 3,
+      "effect": {"innovation": -15, "stakeholderConfidence": -10, "xp": 0},
+      "response": {
+        "choices": [
+          {"label": "MLOps-platform + feature-store", "effect": {"innovation": 20, "digitalMaturity": 15, "budget": -350, "xp": 225}, "requiresArtefact": "mlops-platform"},
+          {"label": "Data-engineers aannemen", "effect": {"budget": -300, "innovation": 10, "xp": 150}},
+          {"label": "Scope reduceren tot 2 productie-modellen", "effect": {"businessValue": 10, "innovation": -5, "xp": 100}}
+        ]
+      },
+      "location": "R&D"
+    },
+    {
+      "id": "CH027",
+      "title": "Ondernemingsraad blokkeert monitoring",
+      "description": "OR weigert instemming voor endpoint-detection tool wegens privacy-zorgen medewerkers.",
+      "category": "Weerstand",
+      "severity": 3,
+      "effect": {"security": -15, "stakeholderConfidence": -5, "xp": 0},
+      "response": {
+        "choices": [
+          {"label": "DPIA + OR-dialoog + waarborgen", "effect": {"governance": 20, "security": 10, "stakeholderConfidence": 10, "xp": 175}, "requiresArtefact": "dpia"},
+          {"label": "Alternatief met minder telemetrie kiezen", "effect": {"security": 5, "innovation": -5, "xp": 100}},
+          {"label": "Escaleren naar directie", "effect": {"security": 10, "stakeholderConfidence": -15, "xp": 75}}
+        ]
+      },
+      "location": "HR"
+    },
+    {
+      "id": "CH028",
+      "title": "Concurrent lanceert digitaal product",
+      "description": "Concurrent introduceert AI-gedreven zelfbedieningsportaal. Marktaandeel daalt zichtbaar in twee kwartalen.",
+      "category": "Innovation",
+      "severity": 4,
+      "effect": {"businessValue": -20, "stakeholderConfidence": -10, "innovation": -10, "xp": 0},
+      "response": {
+        "choices": [
+          {"label": "Digital-product tribe + fast-track roadmap", "effect": {"innovation": 25, "businessValue": 15, "budget": -500, "xp": 250}, "requiresArtefact": "product-vision"},
+          {"label": "Overnemen van kleinere spelers", "effect": {"budget": -700, "businessValue": 20, "xp": 200}},
+          {"label": "Kern-value-proposition versterken", "effect": {"businessValue": 10, "innovation": 5, "xp": 125}}
+        ]
+      },
+      "location": "Business"
+    },
+    {
+      "id": "CH029",
+      "title": "Onbekende API's op internet",
+      "description": "External Attack Surface Management vindt 47 onbekende API's exposed. Auth-status onduidelijk.",
+      "category": "Cyber",
+      "severity": 4,
+      "effect": {"security": -20, "governance": -10, "xp": 0},
+      "response": {
+        "choices": [
+          {"label": "API-gateway + inventarisatie verplicht", "effect": {"governance": 20, "security": 20, "budget": -250, "xp": 200}, "requiresArtefact": "api-inventory"},
+          {"label": "Kwetsbare API's direct offline halen", "effect": {"security": 15, "businessValue": -10, "xp": 125}},
+          {"label": "Bug-bounty programma starten", "effect": {"security": 15, "innovation": 5, "budget": -150, "xp": 175}}
+        ]
+      },
+      "location": "IT-Security"
+    },
+    {
+      "id": "CH030",
+      "title": "Change-freeze voor jaarafsluiting",
+      "description": "Finance eist 8-weekse change-freeze rond jaarafsluiting. Twee kritieke releases moeten wachten.",
+      "category": "Draagvlak",
+      "severity": 2,
+      "effect": {"innovation": -10, "businessValue": -5, "xp": 0},
+      "response": {
+        "choices": [
+          {"label": "Risk-based change-window afspreken", "effect": {"governance": 15, "innovation": 5, "xp": 150}, "requiresArtefact": "change-policy"},
+          {"label": "Freeze accepteren en communiceren", "effect": {"stakeholderConfidence": 5, "innovation": -5, "xp": 75}},
+          {"label": "Feature-flags voor uitgestelde release", "effect": {"digitalMaturity": 15, "innovation": 10, "xp": 175}}
+        ]
+      },
+      "location": "Finance"
+    },
+    {
+      "id": "CH031",
+      "title": "Master-data chaos",
+      "description": "Vier bronnen voor klantdata, geen SSOT. Rapportages spreken elkaar tegen, directie verliest vertrouwen.",
+      "category": "Legacy",
+      "severity": 4,
+      "effect": {"governance": -20, "businessValue": -15, "xp": 0},
+      "response": {
+        "choices": [
+          {"label": "MDM-platform + data-stewardship", "effect": {"governance": 25, "digitalMaturity": 15, "budget": -400, "xp": 225}, "requiresArtefact": "mdm-roadmap"},
+          {"label": "Golden-record via ETL consolideren", "effect": {"governance": 15, "technicalDebt": 10, "xp": 150}},
+          {"label": "Data-mesh met domain-ownership", "effect": {"digitalMaturity": 20, "innovation": 15, "budget": -350, "xp": 200}}
+        ]
+      },
+      "location": "Business"
+    },
+    {
+      "id": "CH032",
+      "title": "Vakbond eist mens-in-de-loop",
+      "description": "Vakbond eist dat AI-besluiten in HR altijd door mens beoordeeld worden. Efficiency-case onder druk.",
+      "category": "Weerstand",
+      "severity": 3,
+      "effect": {"stakeholderConfidence": -10, "innovation": -10, "xp": 0},
+      "response": {
+        "choices": [
+          {"label": "Human-oversight framework + escalatiepaden", "effect": {"governance": 20, "stakeholderConfidence": 10, "xp": 175}, "requiresArtefact": "human-oversight"},
+          {"label": "AI beperken tot lage-risico beslissingen", "effect": {"innovation": -5, "governance": 15, "xp": 125}},
+          {"label": "CAO-onderhandeling opnemen", "effect": {"stakeholderConfidence": 5, "governance": 10, "xp": 100}}
+        ]
+      },
+      "location": "HR"
+    },
+    {
+      "id": "CH033",
+      "title": "Duurzaamheidsrapportage CSRD",
+      "description": "CSRD eist Scope-3 IT-emissies. Metingen, dataverzameling en assurance-pad ontbreken volledig.",
+      "category": "Wetgeving",
+      "severity": 3,
+      "effect": {"governance": -15, "xp": 0},
+      "response": {
+        "choices": [
+          {"label": "GreenOps + ESG-dashboard opzetten", "effect": {"governance": 20, "digitalMaturity": 15, "budget": -250, "xp": 200}, "requiresArtefact": "greenops-plan"},
+          {"label": "Externe ESG-consultant en tooling", "effect": {"budget": -350, "governance": 20, "xp": 150}},
+          {"label": "Cloud-vendor emissie-rapportages hergebruiken", "effect": {"governance": 10, "budget": -50, "xp": 100}}
+        ]
+      },
+      "location": "Legal"
+    },
+    {
+      "id": "CH034",
+      "title": "Off-boarding leverancier chaotisch",
+      "description": "Contract met outsourcing-partner eindigt. Kennis, code-repositories en credentials zijn niet overgedragen.",
+      "category": "VendorLockIn",
+      "severity": 4,
+      "effect": {"governance": -15, "security": -15, "technicalDebt": 15, "xp": 0},
+      "response": {
+        "choices": [
+          {"label": "Exit-plan + reverse-KT programma", "effect": {"governance": 20, "security": 15, "budget": -300, "xp": 200}, "requiresArtefact": "exit-plan"},
+          {"label": "Contract met 6 maanden verlengen", "effect": {"budget": -400, "technicalDebt": 5, "xp": 100}},
+          {"label": "Nieuwe partner met kennisovername-clausule", "effect": {"budget": -350, "governance": 15, "xp": 175}}
+        ]
+      },
+      "location": "IT-Operations"
+    },
+    {
+      "id": "CH035",
+      "title": "Test-omgeving bevat productiedata",
+      "description": "Audit constateert dat test- en OTAP-omgevingen ongeanonimiseerde klantdata bevatten.",
+      "category": "Datalek",
+      "severity": 4,
+      "effect": {"governance": -15, "security": -20, "xp": 0},
+      "response": {
+        "choices": [
+          {"label": "Data-masking + synthetic-data platform", "effect": {"security": 25, "governance": 15, "budget": -250, "xp": 200}, "requiresArtefact": "masking-policy"},
+          {"label": "Alle non-prod data direct wissen", "effect": {"security": 15, "businessValue": -5, "xp": 100}},
+          {"label": "Access-controls op non-prod verscherpen", "effect": {"security": 10, "governance": 10, "xp": 125}}
+        ]
+      },
+      "location": "IT-Security"
+    },
+    {
+      "id": "CH036",
+      "title": "IT-team burn-out signalen",
+      "description": "Ziekteverzuim in Ops-team 18%. Twee sleutelfiguren dreigen te vertrekken door pager-fatigue.",
+      "category": "Talent",
+      "severity": 4,
+      "effect": {"stakeholderConfidence": -10, "innovation": -15, "businessValue": -10, "xp": 0},
+      "response": {
+        "choices": [
+          {"label": "SRE-model + toil-reductie programma", "effect": {"digitalMaturity": 20, "innovation": 10, "budget": -300, "xp": 200}, "requiresArtefact": "sre-model"},
+          {"label": "24/7-support extern beleggen", "effect": {"budget": -400, "stakeholderConfidence": 5, "xp": 125}},
+          {"label": "Freeze op nieuwe changes, focus op stabiliteit", "effect": {"businessValue": 10, "innovation": -10, "xp": 100}}
+        ]
+      },
+      "location": "HR"
+    },
+    {
+      "id": "CH037",
+      "title": "Regulator vraagt AI-uitlegbaarheid",
+      "description": "Toezichthouder vraagt uitlegbaarheid van kredietscore-model. Zwarte doos-karakter is onhoudbaar.",
+      "category": "Compliance",
+      "severity": 4,
+      "effect": {"governance": -15, "stakeholderConfidence": -10, "xp": 0},
+      "response": {
+        "choices": [
+          {"label": "XAI-methodes + model-cards + documentatie", "effect": {"governance": 25, "innovation": 10, "budget": -250, "xp": 200}, "requiresArtefact": "model-card"},
+          {"label": "Model vervangen door uitlegbaar alternatief", "effect": {"budget": -350, "innovation": -5, "governance": 20, "xp": 175}},
+          {"label": "Human-in-the-loop review-laag toevoegen", "effect": {"governance": 15, "businessValue": -5, "xp": 125}}
+        ]
+      },
+      "location": "R&D"
+    },
+    {
+      "id": "CH038",
+      "title": "Supply-chain aanval via dependency",
+      "description": "Open-source afhankelijkheid blijkt gecompromitteerd. Vier services moeten met spoed gepatched worden.",
+      "category": "Cyber",
+      "severity": 4,
+      "effect": {"security": -20, "businessValue": -10, "xp": 0},
+      "response": {
+        "choices": [
+          {"label": "SBOM + SCA in CI-pipelines afdwingen", "effect": {"security": 25, "governance": 15, "budget": -200, "xp": 200}, "requiresArtefact": "sbom"},
+          {"label": "Getroffen services isoleren en patchen", "effect": {"security": 15, "businessValue": -5, "xp": 125}},
+          {"label": "Vendored dependencies + interne mirror", "effect": {"security": 15, "technicalDebt": 5, "budget": -150, "xp": 150}}
+        ]
+      },
+      "location": "IT-Security"
+    },
+    {
+      "id": "CH039",
+      "title": "Board twijfelt aan IT-strategie",
+      "description": "RvC vraagt second-opinion op IT-strategie na tegenvallende resultaten. CIO-mandaat staat onder druk.",
+      "category": "Draagvlak",
+      "severity": 4,
+      "effect": {"stakeholderConfidence": -20, "governance": -10, "xp": 0},
+      "response": {
+        "choices": [
+          {"label": "Strategie-review + business-alignment sessies", "effect": {"stakeholderConfidence": 20, "governance": 15, "xp": 200}, "requiresArtefact": "it-strategy"},
+          {"label": "Externe assessment (Gartner/McKinsey)", "effect": {"budget": -300, "stakeholderConfidence": 15, "xp": 175}},
+          {"label": "Quick-wins programma tonen", "effect": {"stakeholderConfidence": 10, "businessValue": 10, "xp": 125}}
+        ]
+      },
+      "location": "Directie"
+    },
+    {
+      "id": "CH040",
+      "title": "Klant eist ISO 27001-certificaat",
+      "description": "Strategische klant maakt contractverlenging afhankelijk van ISO 27001-certificering binnen 12 maanden.",
+      "category": "Compliance",
+      "severity": 4,
+      "effect": {"governance": -10, "businessValue": -15, "xp": 0},
+      "response": {
+        "choices": [
+          {"label": "ISMS-programma + certificeringstraject", "effect": {"governance": 25, "security": 20, "businessValue": 15, "budget": -400, "xp": 225}, "requiresArtefact": "isms"},
+          {"label": "SOC2 als tussenstap aanbieden", "effect": {"governance": 15, "budget": -250, "xp": 150}},
+          {"label": "Attestation-of-controls van vendor gebruiken", "effect": {"governance": 10, "businessValue": -5, "xp": 100}}
+        ]
+      },
+      "location": "Legal"
+    }
+  ]
+}
