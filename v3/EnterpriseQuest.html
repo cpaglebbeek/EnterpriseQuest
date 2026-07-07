@@ -276,7 +276,7 @@ button:disabled { opacity: 0.4; cursor: not-allowed; }
 
 <header>
   <h1>🐉 Train Your Dragon</h1>
-  <div class="tagline">EnterpriseQuest v3 — Agentic AI Governance Edition · v0.3.0-Turing</div>
+  <div class="tagline">EnterpriseQuest v3 — Agentic AI Governance Edition · v0.3.1-Norvig</div>
 </header>
 
 <!-- START SCREEN -->
@@ -300,7 +300,8 @@ button:disabled { opacity: 0.4; cursor: not-allowed; }
     </p>
     <p><b>Kern-mechaniek:</b></p>
     <ul>
-      <li>Elke beurt komen agent-verzoeken binnen (opportunity/threat cards)</li>
+      <li>Elke beurt komt <b>één</b> agent-verzoek binnen (opportunity / threat / governance / event). Kies één actie → beurt eindigt automatisch.</li>
+      <li>Optioneel per beurt: <b>1× bewegen</b> (D6) richting Drift Dragon (tile 14)</li>
       <li>Kies: <b>deterministisch</b> (regel-based, veilig maar traag), <b>stochastisch</b> (LLM, snel maar risico), of <b>hybride</b></li>
       <li>Bij data-toegang: <b>Vraag de Gouverneur</b> (4 policy-vragen) — skip = drift-punten</li>
       <li>Beheer Trust · Compliance · Determinisme · Data Sovereignty · Innovation-metrieken</li>
@@ -333,9 +334,10 @@ button:disabled { opacity: 0.4; cursor: not-allowed; }
         <h3>Actie deze beurt</h3>
         <div id="card-display" class="card-display"></div>
         <div class="action-bar">
-          <button class="secondary" onclick="drawCard()">🎴 Trek nieuwe kaart</button>
-          <button class="secondary" onclick="rollMove()">🎲 Beweeg (D6)</button>
-          <button class="secondary" onclick="endTurn()">➡ Beurt afronden</button>
+          <button class="secondary" id="move-btn" onclick="rollMove()">🎲 Beweeg (D6)</button>
+        </div>
+        <div style="font-size: 11px; color: var(--muted); margin-top: 8px;">
+          1 kaart per beurt. De beurt eindigt automatisch zodra je een keuze maakt. Bewegen mag 1× per beurt, vóór of ná je keuze.
         </div>
       </div>
 
@@ -558,7 +560,9 @@ const state = {
   currentCard: null,
   currentChoice: null,
   log: [],
-  dragonPhase: 0
+  dragonPhase: 0,
+  moved: false,
+  turnEnding: false
 };
 
 // ================ INIT ================
@@ -715,8 +719,9 @@ function applyChoice(gouvPassed) {
   updateUI();
   state.currentCard = null;
   state.currentChoice = null;
-  document.getElementById('card-display').innerHTML = '<div style="text-align:center; color: var(--muted); padding: 40px 0;">Trek een nieuwe kaart of eindig beurt</div>';
+  document.getElementById('card-display').innerHTML = '<div style="text-align:center; color: var(--muted); padding: 40px 0;">Beurt wordt afgerond…</div>';
   saveState();
+  scheduleEndTurn();
 }
 
 function applyEvent() {
@@ -728,8 +733,18 @@ function applyEvent() {
   if (state.currentCard.note) logMsg(state.currentCard.note);
   state.currentCard = null;
   updateUI();
-  document.getElementById('card-display').innerHTML = '<div style="text-align:center; color: var(--muted); padding: 40px 0;">Trek een nieuwe kaart of eindig beurt</div>';
+  document.getElementById('card-display').innerHTML = '<div style="text-align:center; color: var(--muted); padding: 40px 0;">Beurt wordt afgerond…</div>';
   saveState();
+  scheduleEndTurn();
+}
+
+function scheduleEndTurn() {
+  if (state.turnEnding) return;
+  state.turnEnding = true;
+  setTimeout(() => {
+    state.turnEnding = false;
+    endTurn();
+  }, 900);
 }
 
 // ================ GOUVERNEUR ================
@@ -747,12 +762,12 @@ function submitGouverneur() {
   const resultDiv = document.getElementById('gouv-result');
   if (passed) {
     resultDiv.innerHTML = '<div class="gouv-result pass">✓ Toegang verleend — 4/4 policy-vragen bevestigd</div>';
+    state.metrics.compliance = Math.min(100, state.metrics.compliance + 3);
+    state.metrics.data = Math.min(100, state.metrics.data + 3);
+    logMsg('Gouverneur akkoord — compliance/data-sovereignty +3', 'important');
     setTimeout(() => {
       document.getElementById('gouverneur-modal').classList.remove('active');
       applyChoice(true);
-      state.metrics.compliance = Math.min(100, state.metrics.compliance + 3);
-      state.metrics.data = Math.min(100, state.metrics.data + 3);
-      logMsg('Gouverneur akkoord — compliance/data-sovereignty +3', 'important');
     }, 1200);
   } else {
     resultDiv.innerHTML = '<div class="gouv-result fail">✗ Beleidsschending — heroverweeg of vraag mandaat</div>';
@@ -778,9 +793,16 @@ function checkRogueAgents() {
 
 // ================ TURN ================
 function rollMove() {
+  if (state.moved) {
+    logMsg('Je hebt deze beurt al bewogen.', 'danger');
+    return;
+  }
   const d = Math.floor(Math.random() * 6) + 1;
   const newPos = Math.min(14, state.playerPos + d);
   state.playerPos = newPos;
+  state.moved = true;
+  const moveBtn = document.getElementById('move-btn');
+  if (moveBtn) moveBtn.disabled = true;
   logMsg('Rol D6=' + d + ' → ' + LOCATIONS[newPos]);
   updateBoard();
   if (newPos === 14) triggerDragonEncounter();
@@ -825,6 +847,9 @@ function endTurn() {
   logMsg('Draak (' + DRAGON_PHASES[phaseIdx].name + ') veroorzaakt drift +' + dragonDmg, 'danger');
 
   state.turn++;
+  state.moved = false;
+  const moveBtn = document.getElementById('move-btn');
+  if (moveBtn) moveBtn.disabled = false;
   updateUI();
   saveState();
   if (state.turn > state.maxTurns || state.metrics.drift >= 100) {
@@ -915,7 +940,8 @@ function saveState() {
       role: state.role, turn: state.turn, playerPos: state.playerPos,
       metrics: state.metrics, artefacts: Array.from(state.artefacts),
       rogueAgents: state.rogueAgents, gouverneurSkips: state.gouverneurSkips,
-      log: state.log, dragonPhase: state.dragonPhase
+      log: state.log, dragonPhase: state.dragonPhase,
+      moved: state.moved
     }));
   } catch (e) {}
 }
@@ -928,12 +954,17 @@ function loadState() {
     if (!s.role) return false;
     Object.assign(state, s);
     state.artefacts = new Set(s.artefacts || []);
+    state.turnEnding = false;
+    state.currentCard = null;
+    state.currentChoice = null;
     document.getElementById('screen-start').classList.remove('active');
     document.getElementById('screen-game').classList.add('active');
     document.getElementById('role-display').textContent = state.role.icon + ' ' + state.role.name;
     initBoard();
     updateUI();
-    document.getElementById('card-display').innerHTML = '<div style="text-align:center; color: var(--muted); padding: 40px 0;">Trek een kaart om verder te gaan</div>';
+    const moveBtn = document.getElementById('move-btn');
+    if (moveBtn) moveBtn.disabled = !!state.moved;
+    drawCard();
     return true;
   } catch (e) { return false; }
 }
